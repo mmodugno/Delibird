@@ -1,12 +1,8 @@
-/*
+/* mendo
  * main.c
  *
  *  Created on: 28 feb. 2019
  *      Author: utnso
- */
-
-/*
- * test
  */
 
 #include "tp0.h"
