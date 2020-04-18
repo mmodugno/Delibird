@@ -52,7 +52,7 @@ int main(void)
 	//free(mensaje);
 
 	terminar_programa(conexion, logger, config);
-
+	//COMENTARIO ATR
 }
 
 //TODO

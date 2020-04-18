@@ -310,3 +310,5 @@
 [INFO] 15:30:48:978 iniciar logger/(6083:6083): soy un log
 [INFO] 15:33:13:933 iniciar logger/(6246:6246): soy un log
 [INFO] 15:33:13:936 iniciar logger/(6246:6246): el mensaje que recibi es: holas como estas
+[INFO] 15:43:06:95 iniciar logger/(7597:7597): soy un log
+[INFO] 15:43:06:161 iniciar logger/(7597:7597): el mensaje que recibi es: holas como estas
