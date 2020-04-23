@@ -11,42 +11,42 @@
 #include <sys/msg.h>
 
 typedef struct New_Pokemon{
-	uint_32 tamanioNombre;
+	uint32_t tamanioNombre;
 	char* nombrePokemon;
-	uint_32 posX;
-	uint_32 posY;
-	uint_32 cantidadPokemon;
+	uint32_t posX;
+	uint32_t posY;
+	uint32_t cantidadPokemon;
 };
 
 typedef struct Localize_Pokemon{
-	uint_32 tamanioNombre;
+	uint32_t tamanioNombre;
 	char* nombrePokemon;
-	uint_32 cantidadPosiciones;
-	uint_32 posX[];
-	uint_32 posY[];
+	uint32_t cantidadPosiciones;
+	uint32_t posX[];
+	uint32_t posY[];
 };
 
 typedef struct Get_Pokemon{
-	uint_32 tamanioNombre;
+	uint32_t tamanioNombre;
 	char* nombrePokemon;
 };
 
 typedef struct Appeared_Pokemon{
-	uint_32 tamanioNombre;
+	uint32_t tamanioNombre;
 	char* nombrePokemon;
-	uint_32 posX;
-	uint_32 posY;
+	uint32_t posX;
+	uint32_t posY;
 };
 
 typedef struct Catch_Pokemon{
-	uint_32 tamanioNombre;
+	uint32_t tamanioNombre;
 	char* nombrePokemon;
-	uint_32 posX;
-	uint_32 posY;
+	uint32_t posX;
+	uint32_t posY;
 };
 
 typedef struct Caught_Pokemon{
-	uint_32 puedoAtraparlo;
+	uint32_t puedoAtraparlo;
 };
 
 
