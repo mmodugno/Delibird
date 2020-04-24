@@ -1,4 +1,6 @@
-#include "gameboy.h"
+#ifndef UTILS_EN_COMUN_H_
+#define UTILS_EN_COMUN_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -9,52 +11,48 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include "stdint.h"
 
-typedef struct New_Pokemon{
+
+// //// ESTRUCTURAS DE MENSAJES //////
+typedef struct {
 	uint32_t tamanioNombre;
 	char* nombrePokemon;
 	uint32_t posX;
 	uint32_t posY;
 	uint32_t cantidadPokemon;
-};
+} new_pokemon;
 
-typedef struct Localize_Pokemon{
+typedef struct {
 	uint32_t tamanioNombre;
 	char* nombrePokemon;
 	uint32_t cantidadPosiciones;
 	uint32_t posX[];
 	uint32_t posY[];
-};
+} localize_pokemon;
 
-typedef struct Get_Pokemon{
+typedef struct {
 	uint32_t tamanioNombre;
 	char* nombrePokemon;
-};
+} get_pokemon;
 
-typedef struct Appeared_Pokemon{
-	uint32_t tamanioNombre;
-	char* nombrePokemon;
-	uint32_t posX;
-	uint32_t posY;
-};
-
-typedef struct Catch_Pokemon{
+typedef struct {
 	uint32_t tamanioNombre;
 	char* nombrePokemon;
 	uint32_t posX;
 	uint32_t posY;
-};
+} appeared_pokemon;
 
-typedef struct Caught_Pokemon{
+typedef struct {
+	uint32_t tamanioNombre;
+	char* nombrePokemon;
+	uint32_t posX;
+	uint32_t posY;
+} catch_pokemon;
+
+typedef struct {
 	uint32_t puedoAtraparlo;
-};
+} caught_pokemon;
+//////////////////////////////////////////////////
 
-
-int main(void){
-
-
-
-
-
-	return 0;
-}
+#endif /* UTILS_EN_COMUN_H_ */

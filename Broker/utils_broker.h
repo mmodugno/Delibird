@@ -1,12 +1,12 @@
 /*
- * utils.h
+ * utils_broker.h
  *
  *  Created on: 23 april 2020
  *      Author: The X Tea,
  */
 
-#ifndef UTILS_GAMEBOY_H_
-#define UTILS_GAMEBOY_H_
+#ifndef UTILS_BROKER_H_
+#define UTILS_BROKER_H_
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -15,8 +15,6 @@
 #include<sys/socket.h>
 #include<netdb.h>
 #include<string.h>
-#include "/home/utnso/tp-2020-1c-The-X-Team/utils_en_comun/utils_en_comun.h"
-
 
 typedef enum
 {
@@ -33,50 +31,6 @@ typedef enum
 	SUBCRIPCION = 11
 
 }op_code;
-
-typedef struct {
-	new_pokemon datos;
-} broker_new_pokemon;
-
-typedef struct {
-	uint32_t id;
-	appeared_pokemon datos;
-} broker_appeared_pokemon;
-
-typedef struct {
-	catch_pokemon datos;
-} broker_catch_pokemon;
-
-typedef struct {
-	uint32_t id;
-	caught_pokemon datos;
-} broker_caught_pokemon;
-
-typedef struct {
-	get_pokemon datos;
-} broken_get_pokemon;
-
-typedef struct {
-	appeared_pokemon datos;
-} team_appeared_pokemon;
-
-typedef struct {
-	uint32_t id;
-	new_pokemon datos;
-} gameCard_new_pokeomon;
-
-typedef struct {
-	uint32_t id;
-	catch_pokemon datos;
-} gameCard_catch_pokemon;
-
-typedef struct {
-	get_pokemon datos;
-} gameCard_get_pokemon;
-
-
-
-
 
 typedef struct
 {
