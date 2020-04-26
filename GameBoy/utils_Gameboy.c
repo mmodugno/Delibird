@@ -33,8 +33,105 @@ void* serializar_paquete(t_paquete* paquete, int *bytes)
 	return stream_a_enviar;
 }
 
+void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffer* buffer)
+{
+	// serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+	//5. uint32_t cantidadPokemon;
+
+	buffer->size=strlen(brokerNewPokemon->datos->nombrePokemon)+1 //longitud de string pokemon + 1 del centinela "/0"
+				+sizeof(uint32_t)*3 //posX, posY, cantidad de pokemons
+				+ sizeof(uint32_t);// size de longitud del string
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(brokerNewPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(brokerNewPokemon->datos->tamanioNombre);
+
+	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->cantidadPokemon),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+}
+
+void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer)
+{
+	// serializacion
+	//1. uint32_t id;
+	//2. uint32_t tamanioNombre;
+	//3. char* nombrePokemon;
+	//4. uint32_t posX;
+	//5. uint32_t posY;
+
+	buffer->size= sizeof(uint32_t) // id
+			+ sizeof(uint32_t)*3 // posX, posY, tamanioNombre
+			+ strlen(brokerAppearedPokemon->datos->nombrePokemon)+1; //longitud del strind nombre de pokemon
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->id),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(brokerAppearedPokemon->datos->tamanioNombre);
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+}
+
+void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t_buffer* buffer)
+{
+	// serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+
+	buffer->size= sizeof(uint32_t)*3 // posX, posY, tamanioNombre
+			+ strlen(brokerCatchPokemon->datos->nombrePokemon)+1; //longitud del strind nombre de pokemon
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+
+	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(brokerCatchPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(brokerCatchPokemon->datos->tamanioNombre);
+
+	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+}
 
 //TODO
+//usar este?
 int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
@@ -57,9 +154,101 @@ int crear_conexion(char *ip, char* puerto)
 	return socket_cliente;
 }
 
+void enviar_Broker_New_Pokemon(broker_new_pokemon *brokerNewPokemon , int socket_cliente)
+{
 
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__NEW_POKEMON;
+
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_new_pokemon(brokerNewPokemon,buffer);
+
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_Broker_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokemon , int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__APPEARED_POKEMON;
+
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_new_pokemon(brokerAppearedPokemon,buffer);
+
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_Broker_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon , int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__CATCH_POKEMON;
+
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_new_pokemon(brokerCatchPokemon,buffer);
+
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
 
 //TODO
+//se podria usar este para no repetir codigo, pero no se me ocurrio cómo
 void enviar_mensaje(char* mensaje, int socket_cliente)
 {
 
@@ -90,6 +279,7 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
 }
 
 //TODO?
+//podriamos modificar este y usar el server que nos dieron para probar los mensajes anteriores
 char* recibir_mensaje(int socket_cliente)
 {
 	t_paquete* paquete_recibido=malloc(sizeof(t_paquete));
