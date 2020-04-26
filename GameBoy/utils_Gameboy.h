@@ -2,7 +2,7 @@
  * utils.h
  *
  *  Created on: 23 april 2020
- *      Author: The X Tea,
+ *      Author: The X Team,
  */
 
 #ifndef UTILS_GAMEBOY_H_

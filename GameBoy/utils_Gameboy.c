@@ -14,7 +14,7 @@
  * el tamaño del stream de bytes serializados que devuelve
  */
 
-
+//TODO
 void* serializar_paquete(t_paquete* paquete, int *bytes)
 {
 	(*bytes) = sizeof(op_code)+sizeof(int)+(paquete->buffer->size);
@@ -34,7 +34,7 @@ void* serializar_paquete(t_paquete* paquete, int *bytes)
 }
 
 
-
+//TODO
 int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
@@ -60,7 +60,6 @@ int crear_conexion(char *ip, char* puerto)
 
 
 //TODO
-
 void enviar_mensaje(char* mensaje, int socket_cliente)
 {
 
@@ -90,7 +89,7 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
 	free(paquete_a_enviar);
 }
 
-//TODO
+//TODO?
 char* recibir_mensaje(int socket_cliente)
 {
 	t_paquete* paquete_recibido=malloc(sizeof(t_paquete));
