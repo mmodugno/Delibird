@@ -17,6 +17,8 @@
 #include<string.h>
 #include "/home/utnso/tp-2020-1c-The-X-Team/utils_en_comun/utils_en_comun.h"
 
+//#include "/home/utnso/Escritorio/TP_SO/tp-2020-1c-The-X-Team/tp-2020-1c-The-X-Team/utils_en_comun/utils_en_comun.h"
+
 
 typedef enum
 {
@@ -53,8 +55,9 @@ typedef struct {
 } broker_caught_pokemon;
 
 typedef struct {
+	uint32_t id;
 	get_pokemon datos;
-} broken_get_pokemon;
+} broker_get_pokemon;
 
 typedef struct {
 	appeared_pokemon datos;
@@ -63,7 +66,7 @@ typedef struct {
 typedef struct {
 	uint32_t id;
 	new_pokemon datos;
-} gameCard_new_pokeomon;
+} gameCard_new_pokemon;
 
 typedef struct {
 	uint32_t id;

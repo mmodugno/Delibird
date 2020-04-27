@@ -78,3 +78,10 @@ void terminar_programa(int conexBroker,int conexTeam,int conexGamecard, t_log* l
 	liberar_conexion(conexGamecard);
 	liberar_conexion(conexTeam);
 }
+
+
+
+
+
+
+

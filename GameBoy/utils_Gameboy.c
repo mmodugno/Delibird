@@ -67,6 +67,7 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 
 }
 
+//CONSULTAR CHARLY EN UNA COSA DE MEMCPY y corregir los mios si esta mal
 void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer)
 {
 	// serializacion
@@ -82,7 +83,6 @@ void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedP
 
 	buffer->stream = malloc(buffer->size);
 	int offset = 0;
-
 
 
 	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->id),sizeof(uint32_t));
@@ -102,6 +102,8 @@ void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedP
 }
 
 void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t_buffer* buffer)
+
+
 {
 	// serializacion
 	//1. uint32_t tamanioNombre;
@@ -128,6 +130,162 @@ void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t
 
 	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->posY),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
+}
+
+void serializar_broker_caught_pokemon(broker_caught_pokemon* brokerCaughtPokemon, t_buffer* buffer)
+
+{
+	// serializacion
+	//2. uint32_t id;
+	//1. uint32_t puedoAtraparlo;
+
+	buffer->size= sizeof(uint32_t) * 2;// size de puedoAtraparlo
+
+	buffer->stream = brokerCaughtPokemon->datos->puedoAtraparlo;
+	int offset = 0;
+
+	memcpy(buffer->stream+offset,&(brokerCaughtPokemon->id),sizeof(uint32_t));
+		offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerCaughtPokemon->datos->puedoAtraparlo),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+}
+
+void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffer* buffer)
+{
+	//serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+
+	buffer->size= sizeof(uint32_t)
+			+ strlen(brokerGetPokemon->datos->nombrePokemon)+1; //longitud del string nombre de pokemon
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+	memcpy(buffer->stream+offset,&(brokerGetPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(brokerGetPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(brokerGetPokemon->datos->tamanioNombre);
+
+}
+
+void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon, t_buffer* buffer)
+{
+
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+
+	buffer->size=
+			sizeof(uint32_t)*3 // posX, posY, tamanioNombre
+			+ strlen(teamAppearedPokemon->datos->nombrePokemon)+1; //longitud del strind nombre de pokemon
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+	memcpy(buffer->stream+offset,&(teamAppearedPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(teamAppearedPokemon->datos->nombrePokemon),teamAppearedPokemon->datos->tamanioNombre);
+	offset+=sizeof(teamAppearedPokemon->datos->tamanioNombre);
+
+	memcpy(buffer->stream+offset,&(teamAppearedPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(teamAppearedPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+}
+
+void serializar_gameCard_new_pokemon(gameCard_new_pokemon* gameCardNewPokemon, t_buffer* buffer)
+{
+	// serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+	//5. uint32_t cantidadPokemon;
+
+	buffer->size=strlen(gameCardNewPokemon->datos->nombrePokemon)+1 //longitud de string pokemon + 1 del centinela "/0"
+				+sizeof(uint32_t)*3 //posX, posY, cantidad de pokemons
+				+ sizeof(uint32_t);// size de longitud del string
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(gameCardNewPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(gameCardNewPokemon->datos->tamanioNombre);
+
+	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->cantidadPokemon),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+}
+
+void serializar_gameCard_catch_pokemon(gameCard_catch_pokemon* gameCardCatchPokemon, t_buffer* buffer)
+{
+	// serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+	//5. uint32_t idMensaje;
+
+	buffer->size= sizeof(uint32_t)*4 // posX, posY, tamanioNombre, id
+			+ strlen(gameCardCatchPokemon->datos->nombrePokemon)+1; //longitud del strind nombre de pokemon +1centinela
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+
+	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(gameCardCatchPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(gameCardCatchPokemon->datos->tamanioNombre);
+
+	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->id),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+}
+
+void serializar_gameCard_get_pokemon(gameCard_get_pokemon* gameCardGetPokemon, t_buffer* buffer)		// GET
+{
+	// serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+
+	buffer->size=strlen(gameCardGetPokemon->datos->nombrePokemon)+1 //longitud de string pokemon + 1 del centinela "/0"
+				+sizeof(uint32_t)*3 //posX, posY, cantidad de pokemons
+				+ sizeof(uint32_t);// size de longitud del string
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+	memcpy(buffer->stream+offset,&(gameCardGetPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(gameCardGetPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	offset+=sizeof(gameCardGetPokemon->datos->tamanioNombre);
 }
 
 //TODO
@@ -247,6 +405,181 @@ void enviar_Broker_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon , int 
 	free(paquete_a_enviar);
 }
 
+void enviar_Broker_Caught_Pokemon(broker_caught_pokemon* brokerCaughtPokemon, int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__CAUGHT_POKEMON;
+
+	//serializacion de brokerCaughtPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_caught_pokemon(brokerCaughtPokemon,buffer);
+
+	paquete_a_enviar->buffer = buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_Broker_Get_Pokemon(broker_get_pokemon *brokerGetPokemon , int socket_cliente)
+{
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__GET_POKEMON;
+
+	//serializacion de brokerGetPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_new_pokemon(brokerGetPokemon,buffer);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon , int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = TEAM__APPEARED_POKEMON;
+
+	//serializacion de teamNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_team_new_pokemon(teamAppearedPokemon,buffer);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_GameCard_New_Pokemon(gameCard_new_pokemon *gameCardNewPokemon , int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = GAMECARD__NEW_POKEMON;
+
+
+	//serializacion de gamecardNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_gameCard_new_pokemon(gameCardNewPokemon,buffer);
+
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_GameCard_Catch_Pokemon(gameCard_catch_pokemon *gameCardCatchPokemon , int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = GAMECARD__CATCH_POKEMON;
+
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_gameCard_catch_pokemon(gameCardCatchPokemon,buffer);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_GameCard_Get_Pokemon(gameCard_get_pokemon *gameCardGetPokemon , int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = GAMECARD__GET_POKEMON;
+
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_gameCard_get_pokemon(gameCardGetPokemon,buffer);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
 //TODO
 //se podria usar este para no repetir codigo, pero no se me ocurrio cómo
 void enviar_mensaje(char* mensaje, int socket_cliente)
@@ -304,7 +637,6 @@ char* recibir_mensaje(int socket_cliente)
 
 
 }
-
 
 
 void liberar_conexion(int socket_cliente)
