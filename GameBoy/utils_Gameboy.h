@@ -55,7 +55,6 @@ typedef struct {
 } broker_caught_pokemon;
 
 typedef struct {
-	uint32_t id;
 	get_pokemon datos;
 } broker_get_pokemon;
 
