@@ -53,7 +53,7 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(brokerNewPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(brokerNewPokemon->datos->nombrePokemon),brokerNewPokemon->datos->tamanioNombre);
 	offset+=sizeof(brokerNewPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->posX),sizeof(uint32_t));
@@ -91,7 +91,7 @@ void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedP
 	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon), brokerAppearedPokemon->datos->tamanioNombre);
 	offset+=sizeof(brokerAppearedPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
@@ -122,7 +122,7 @@ void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t
 	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(brokerCatchPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(brokerCatchPokemon->datos->nombrePokemon),brokerCatchPokemon->datos->tamanioNombre);
 	offset+=sizeof(brokerCatchPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->posX),sizeof(uint32_t));
@@ -167,7 +167,7 @@ void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffe
 	memcpy(buffer->stream+offset,&(brokerGetPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(brokerGetPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(brokerGetPokemon->datos->nombrePokemon),brokerGetPokemon->datos->tamanioNombre);
 	offset+=sizeof(brokerGetPokemon->datos->tamanioNombre);
 
 }
@@ -220,7 +220,7 @@ void serializar_gameCard_new_pokemon(gameCard_new_pokemon* gameCardNewPokemon, t
 	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(gameCardNewPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(gameCardNewPokemon->datos->nombrePokemon),gameCardNewPokemon->datos->tamanioNombre);
 	offset+=sizeof(gameCardNewPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->posX),sizeof(uint32_t));
@@ -254,7 +254,7 @@ void serializar_gameCard_catch_pokemon(gameCard_catch_pokemon* gameCardCatchPoke
 	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(gameCardCatchPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(gameCardCatchPokemon->datos->nombrePokemon), gameCardCatchPokemon->datos->tamanioNombre);
 	offset+=sizeof(gameCardCatchPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->datos->posX),sizeof(uint32_t));
@@ -284,7 +284,7 @@ void serializar_gameCard_get_pokemon(gameCard_get_pokemon* gameCardGetPokemon, t
 	memcpy(buffer->stream+offset,&(gameCardGetPokemon->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(gameCardGetPokemon->datos->nombrePokemon),sizeof(uint32_t));
+	memcpy(buffer->stream+offset,(gameCardGetPokemon->datos->nombrePokemon),gameCardGetPokemon->datos->tamanioNombre);
 	offset+=sizeof(gameCardGetPokemon->datos->tamanioNombre);
 }
 
@@ -352,7 +352,7 @@ void enviar_Broker_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokem
 
 	//serializacion de brokerNewPokemon
 	t_buffer* buffer = malloc(sizeof(t_buffer));
-	serializar_broker_new_pokemon(brokerAppearedPokemon,buffer);
+	serializar_broker_appeared_pokemon(brokerAppearedPokemon,buffer);
 
 
 	paquete_a_enviar->buffer= buffer;
@@ -383,7 +383,7 @@ void enviar_Broker_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon , int 
 
 	//serializacion de brokerNewPokemon
 	t_buffer* buffer = malloc(sizeof(t_buffer));
-	serializar_broker_new_pokemon(brokerCatchPokemon,buffer);
+	serializar_broker_catch_pokemon(brokerCatchPokemon,buffer);
 
 
 	paquete_a_enviar->buffer= buffer;
@@ -441,7 +441,7 @@ void enviar_Broker_Get_Pokemon(broker_get_pokemon *brokerGetPokemon , int socket
 
 	//serializacion de brokerGetPokemon
 	t_buffer* buffer = malloc(sizeof(t_buffer));
-	serializar_broker_new_pokemon(brokerGetPokemon,buffer);
+	serializar_broker_get_pokemon(brokerGetPokemon,buffer);
 
 	paquete_a_enviar->buffer= buffer;
 
@@ -469,7 +469,7 @@ void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon , i
 
 	//serializacion de teamNewPokemon
 	t_buffer* buffer = malloc(sizeof(t_buffer));
-	serializar_team_new_pokemon(teamAppearedPokemon,buffer);
+	serializar_team_appeared_pokemon(teamAppearedPokemon,buffer);
 
 	paquete_a_enviar->buffer= buffer;
 

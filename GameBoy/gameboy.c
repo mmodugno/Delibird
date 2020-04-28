@@ -1,8 +1,7 @@
 #include "gameboy.h"
 
 
-int main(int argc, char* argv){
-
+int main(int argc, char* argv[]){
 
 	//ESTO ME PARECE QUE SE PUEDE DEJAR COMO INT PORQUE NO SE VA A PASAR POR SOCKET
 	int conexionBroker;
