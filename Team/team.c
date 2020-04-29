@@ -7,22 +7,32 @@
 
 
 #include "team.h"
+#include "/home/utnso/workspace/tp-2020-1c-The-X-Team/Game-watch-client/log.h"
+
 
 
 int main(int argc, char* argv[]){
 
 	//POR AHORA DEJAMOS SOLO LA CONEXION CON BROKER PORQUE NO ESTAMOS SEGUROS SI HAY QUE CONECTAR CON GAMEBOY
-	int conexionBroker;
 
-	char* ipBroker;
-	int puertoBroker;
-	char* algoritmoPlanificacion;
 
-	t_config* config = leer_config();
+	int pid;
+    pid = fork();
+    if (pid < 0){
+    	fprintf(stderr, "falló");
+        exit(-1);
+    }else if (pid == 0){
+        execlp("/bin/ls","ls",NULL);
+    }else {
+        wait(NULL);
+        printf("Child Complete");
+        exit(0);
 
-	ipBroker=config_get_string_value(config,"IP_BROKER");
-	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
-	algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+    }
+
+    //Aca si van las colas de estado de procesos! y el algoritmo de sincronizacion, creo
+
+
 
 	////////////////////////////////////////////////////////////////////////////////
 	/*Cambio de un entrenador de cola de planificación (indicando la razón del porqué).
@@ -48,15 +58,20 @@ int main(int argc, char* argv[]){
 
 
 
-	t_log* iniciar_logger(char* tipoDeProceso){
+	t_log* iniciar_logger(char* tipoDeProceso,char* archivoLog){
 
 		//preguntar por el tipo de LOG_LEVEL
-		return log_create("team1.log",tipoDeProceso,0,LOG_LEVEL_INFO);
+		return log_create(archivoLog,tipoDeProceso,0,LOG_LEVEL_INFO);
 	}
 
 
-	t_config* leer_config(void){
+	t_config* leer_config(char* archivoConfig){
 
-		return config_create("team1.config");
+		return config_create(archivoConfig);
+
+
 
 	}
+
+	//aca deberiamos poner terminar_programa
+

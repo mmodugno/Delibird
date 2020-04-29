@@ -7,6 +7,7 @@
 
 #include "utils_team.h"
 
+//esto va?
 int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
@@ -27,4 +28,25 @@ int crear_conexion(char *ip, char* puerto)
 	freeaddrinfo(server_info);
 
 	return socket_cliente;
+}
+
+
+///
+
+//Ver que devuelve
+int crear_proceso(char* archivoConfig){ //team1.config
+	t_config* config = leer_config(archivoConfig); //devuelve la config
+
+		//
+	int conexionBroker; //ndea
+
+	char* ipBroker;
+	int puertoBroker;
+	char* algoritmoPlanificacion;
+
+	ipBroker=config_get_string_value(config,"IP_BROKER");
+	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
+	algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+
+
 }
