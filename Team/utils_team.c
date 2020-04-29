@@ -34,6 +34,7 @@ int crear_conexion(char *ip, char* puerto)
 ///
 
 //Ver que devuelve
+//cambiar nombre
 int crear_proceso(char* archivoConfig){ //team1.config
 	t_config* config = leer_config(archivoConfig); //devuelve la config
 
@@ -47,6 +48,8 @@ int crear_proceso(char* archivoConfig){ //team1.config
 	ipBroker=config_get_string_value(config,"IP_BROKER");
 	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
 	algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+
+
 
 
 }

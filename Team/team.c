@@ -14,23 +14,26 @@
 int main(int argc, char* argv[]){
 
 	//POR AHORA DEJAMOS SOLO LA CONEXION CON BROKER PORQUE NO ESTAMOS SEGUROS SI HAY QUE CONECTAR CON GAMEBOY
+	char* colaReady[];
 
-
-	int pid;
-    pid = fork();
-    if (pid < 0){
+	int pid1;
+    pid1 = fork();
+    if (pid1 < 0){
     	fprintf(stderr, "falló");
         exit(-1);
-    }else if (pid == 0){
-        execlp("/bin/ls","ls",NULL);
+    }else if (pid1 == 0){
+    	 //ACA HABRIA QUE CREAR LOS HILOS DEL PROCESO
+    	//agregar a cola ready
+
+
     }else {
         wait(NULL);
-        printf("Child Complete");
+        printf("Child Complete"); //meh
         exit(0);
 
     }
 
-    //Aca si van las colas de estado de procesos! y el algoritmo de sincronizacion, creo
+    //Aca si van las colas de estado de procesos y el algoritmo de sincronizacion, creo
 
 
 
