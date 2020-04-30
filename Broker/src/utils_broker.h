@@ -1,8 +1,8 @@
 /*
  * utils_broker.h
  *
- *  Created on: 23 april 2020
- *      Author: The X Tea,
+ *  Created on: 30 abr. 2020
+ *      Author: utnso
  */
 
 #ifndef UTILS_BROKER_H_
@@ -50,4 +50,4 @@ char* recibir_mensaje(int socket_cliente);
 void eliminar_paquete(t_paquete* paquete);
 void liberar_conexion(int socket_cliente);
 
-#endif /* UTILS_GAMEBOY_H_ */
+#endif /* UTILS_BROKER_H_ */

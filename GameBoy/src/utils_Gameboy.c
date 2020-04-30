@@ -1,9 +1,10 @@
 /*
- * conexiones.c
+ * utils_gameboy.c
  *
- *  Created on: 2 mar. 2019
- *      Author: the x team
+ *  Created on: 29 abr. 2020
+ *      Author: utnso
  */
+
 
 #include "utils_Gameboy.h"
 
@@ -141,6 +142,9 @@ void serializar_broker_caught_pokemon(broker_caught_pokemon* brokerCaughtPokemon
 
 	buffer->size= sizeof(uint32_t) * 2;// size de puedoAtraparlo
 
+	//preguntar
+	//supongo que es
+	//buffer->stream = malloc(buffer->size);
 	buffer->stream = brokerCaughtPokemon->datos->puedoAtraparlo;
 	int offset = 0;
 
@@ -405,7 +409,7 @@ void enviar_Broker_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon , int 
 	free(paquete_a_enviar);
 }
 
-void enviar_Broker_Caught_Pokemon(broker_caught_pokemon* brokerCaughtPokemon, int socket_cliente)
+void enviar_Broker_Caught_Pokemon(broker_caught_pokemon *brokerCaughtPokemon, int socket_cliente)
 {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));

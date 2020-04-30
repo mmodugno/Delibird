@@ -1,3 +1,10 @@
+/*
+ * utils_en_comun.h
+ *
+ *  Created on: 29 abr. 2020
+ *      Author: utnso
+ */
+
 #ifndef UTILS_EN_COMUN_H_
 #define UTILS_EN_COMUN_H_
 
@@ -27,6 +34,8 @@ typedef struct {
 	uint32_t tamanioNombre;
 	char* nombrePokemon;
 	uint32_t cantidadPosiciones;
+	//preguntar []
+
 	uint32_t posX[];
 	uint32_t posY[];
 } localize_pokemon;

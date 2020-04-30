@@ -1,10 +1,12 @@
 /*
- * team.c
- *
- *  Created on: 27 abr. 2020
- *      Author: utnso
+ ============================================================================
+ Name        : Team.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
  */
-
 
 #include "team.h"
 #include "/home/utnso/workspace/tp-2020-1c-The-X-Team/Game-watch-client/log.h"
@@ -59,22 +61,22 @@ int main(int argc, char* argv[]){
 	t_log* logEnviarNuevo= iniciar_logger("Enviar Mensaje");
 	////////////////////////////////////////////////////////////////////////////////
 
+}
+
+t_log* iniciar_logger(char* tipoDeProceso,char* archivoLog){
+
+	//preguntar por el tipo de LOG_LEVEL
+	return log_create(archivoLog,tipoDeProceso,0,LOG_LEVEL_INFO);
+}
 
 
-	t_log* iniciar_logger(char* tipoDeProceso,char* archivoLog){
+t_config* leer_config(char* archivoConfig){
 
-		//preguntar por el tipo de LOG_LEVEL
-		return log_create(archivoLog,tipoDeProceso,0,LOG_LEVEL_INFO);
-	}
-
-
-	t_config* leer_config(char* archivoConfig){
-
-		return config_create(archivoConfig);
+	return config_create(archivoConfig);
 
 
 
-	}
+}
 
 	//aca deberiamos poner terminar_programa
 

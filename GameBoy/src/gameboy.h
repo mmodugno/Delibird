@@ -1,8 +1,8 @@
 /*
- * Cliente.h
+ * gameboy.h
  *
- *  Created on: 28 feb. 2019
- *      Author: the X team
+ *  Created on: 29 abr. 2020
+ *      Author: utnso
  */
 
 #ifndef GAMEBOY_H_

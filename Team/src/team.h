@@ -1,12 +1,12 @@
 /*
  * team.h
  *
- *  Created on: 28 abr. 2020
+ *  Created on: 30 abr. 2020
  *      Author: utnso
  */
 
-#ifndef TEAM_TEAM_H_
-#define TEAM_TEAM_H_
+#ifndef TEAM_H_
+#define TEAM_H_
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -22,4 +22,5 @@ t_config* leer_config(void);
 //void terminar_programa(int,int,int, t_log*,t_log*,t_log*,t_log*, t_config*);
 //t_log* 		log_create(char* file, char *program_name, bool is_active_console, t_log_level level);
 
-#endif /* TEAM_TEAM_H_ */
+
+#endif /* TEAM_H_ */

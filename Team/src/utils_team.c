@@ -1,7 +1,7 @@
 /*
  * utils_team.c
  *
- *  Created on: 28 abr. 2020
+ *  Created on: 30 abr. 2020
  *      Author: utnso
  */
 
@@ -50,6 +50,5 @@ int crear_proceso(char* archivoConfig){ //team1.config
 	algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 
 
-
-
 }
+
