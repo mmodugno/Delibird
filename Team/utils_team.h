@@ -15,10 +15,12 @@
 #include<sys/socket.h>
 #include<netdb.h>
 #include<string.h>
-#include<p.thread>
+#include<pthread.h>
+#include<commons/collections/list.h>
+#include<commons/collections/dictionary.h>
+#include<commons/log.h>
+#include<commons/config.h>
 
-//ES ASI?
-#include "/home/utnso/tp-2020-1c-The-X-Team/utils_en_comun/utils_en_comun.h"
 
 typedef enum{ //Para futura planificacion:
     NEW=0,
@@ -48,10 +50,15 @@ typedef struct{
 int crear_conexion(char* ip, char* puerto);
 void enviar_mensaje(char mensaje, int socket_cliente);
 char* recibir_mensaje(int socket_cliente);
-void eliminar_paquete(t_paquete* paquete);
+//void eliminar_paquete(t_paquete* paquete);
 void liberar_conexion(int socket_cliente);
+t_config* leer_config(void);
+t_list* obtener_lista_posiciones(void);
+t_list* obtener_lista_objetivos(void);
+t_list* obtener_lista_pokemones(void);
 
 
 
 
-#endif / TEAM_UTILS_TEAMH */
+
+#endif /* TEAM_UTILS_TEAMH */

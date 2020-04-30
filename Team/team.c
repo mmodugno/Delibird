@@ -6,26 +6,41 @@
  */
 
 
-#include "team.h"
-#include "/home/utnso/workspace/tp-2020-1c-The-X-Team/Game-watch-client/log.h"
+#include "utils_team.h"
 
 
 
-int main(int argc, char argv[]){
+int main(int argc, char* argv[]){
 
     //POR AHORA DEJAMOS SOLO LA CONEXION CON BROKER PORQUE NO ESTAMOS SEGUROS SI HAY QUE CONECTAR CON GAMEBOY
-    char* ipBroker;
+	t_list* posiciones_entrenadores;
+	t_list* pokemones_obtenidos;
+	t_list* objetivos_entrenadores;
+	int tiempo_de_reconexion;
+	char* ipBroker;
     int puertoBroker;
     char* algoritmoPlanificacion;
 
-    t_config config = leer_config();
+    //uint32_t retardo_ciclo_cpu;
+    //uint32_t quantum;
+    //uint32_t estimacion_inicial;
+    char* archivo_log; //   --->           LOG_FILE=/home/utnso/Team/log_team1.txt
+
+
+    t_config* config;
+    config = leer_config();
+
+
+    //posiciones_entrenadores = obtener_lista_posiciones();
+    //pokemones_obtenidos = obtener_lista_pokemones();
+    //objetivos_entrenadores = obtener_lista_objetivos();
 
     ipBroker=config_get_string_value(config,"IP_BROKER");
     puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
     algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-    //leer todo de config
+    tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
 
-
+    printf("Recibi estos datos: %s, %d, %s, %d",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion);
 
 
     //Aca si van las colas de estado de procesos y el algoritmo de sincronizacion, creo
@@ -57,11 +72,13 @@ int main(int argc, char argv[]){
     }
 
 
-    t_config* leer_config(char* archivoConfig){
+    /*t_config* leer_config(char* archivoConfig){
         return config_create(archivoConfig);
     }
-    t_config* leer_config(void){
-            return config_create("team1.config");
-    }
+    */
+
+}
+
 
     //aca deberiamos poner terminar_programa
+
