@@ -15,10 +15,7 @@
 #include<sys/socket.h>
 #include<netdb.h>
 #include<string.h>
-#include "/home/utnso/tp-2020-1c-The-X-Team/utils_en_comun/src/utils_en_comun.h"
-
-//#include "/home/utnso/Escritorio/TP_SO/tp-2020-1c-The-X-Team/tp-2020-1c-The-X-Team/utils_en_comun/utils_en_comun.h"
-
+#include "/home/utnso/Escritorio/TP_SO/tp-2020-1c-The-X-Team/utils_en_comun/src/utils_en_comun.h"
 
 typedef enum
 {

@@ -144,8 +144,7 @@ void serializar_broker_caught_pokemon(broker_caught_pokemon* brokerCaughtPokemon
 
 	//preguntar
 	//supongo que es
-	//buffer->stream = malloc(buffer->size);
-	buffer->stream = brokerCaughtPokemon->datos->puedoAtraparlo;
+	buffer->stream = malloc(buffer->size);
 	int offset = 0;
 
 	memcpy(buffer->stream+offset,&(brokerCaughtPokemon->id),sizeof(uint32_t));
