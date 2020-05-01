@@ -1,12 +1,12 @@
 /*
- ============================================================================
- Name        : Broker.c
- Author      : 
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
+ * broker.h
+ *
+ *  Created on: 1 may. 2020
+ *      Author: utnso
  */
+
+#ifndef BROKER_H_
+#define BROKER_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,3 +20,5 @@
 #include <sys/msg.h>
 #include "utils_broker.h"
 #include "/home/utnso/tp-2020-1c-The-X-Team/utils_en_comun/src/utils_en_comun.h"
+
+#endif /* BROKER_H_ */

@@ -91,6 +91,8 @@ int main(int argc, char* argv[]){
 
 
 			enviar_Broker_New_Pokemon(newPokemon,conexionBroker);
+
+			free(newPokemon);
 		}
 		if(!strcmp(*&argv[2],"APPEARED_POKEMON")){
 
@@ -105,6 +107,8 @@ int main(int argc, char* argv[]){
 			appPokemon->id = atoi(*&argv[6]);
 
 			enviar_Broker_Appeared_Pokemon(appPokemon,conexionBroker);
+
+			free(appPokemon);
 		}
 		if(!strcmp(*&argv[2],"CATCH_POKEMON")){
 			broker_catch_pokemon *catchPoke = malloc(sizeof(broker_catch_pokemon));
@@ -118,6 +122,7 @@ int main(int argc, char* argv[]){
 
 			enviar_Broker_Catch_Pokemon(catchPoke,conexionBroker);
 
+			free(catchPoke);
 		}
 		if(!strcmp(*&argv[2],"CAUGHT_POKEMON")){
 
@@ -128,6 +133,8 @@ int main(int argc, char* argv[]){
 
 			enviar_Broker_Caught_Pokemon(caughtPoke,conexionBroker);
 
+			free(caughtPoke);
+
 		}
 		if(!strcmp(*&argv[2],"GET_POKEMON")){
 
@@ -137,6 +144,8 @@ int main(int argc, char* argv[]){
 			getPoke->datos->tamanioNombre = strlen(getPoke->datos->nombrePokemon)+1;
 
 			enviar_Broker_Get_Pokemon(getPoke,conexionBroker);
+
+			free(getPoke);
 
 		}
 	}
@@ -154,6 +163,7 @@ int main(int argc, char* argv[]){
 	        appearedPokemon->datos->posY = atoi(*&argv[5]);
 
 	        enviar_Team_Appeared_Pokemon(appearedPokemon,conexionTeam);
+	        free(appearedPokemon);
 	    }
 
 	}
@@ -174,6 +184,7 @@ int main(int argc, char* argv[]){
 
 			enviar_GameCard_New_Pokemon(newPokemon,conexionGamecard);
 
+			free(newPokemon);
 		}
 
 		if(!strcmp(*&argv[2],"CATCH_POKEMON")){
@@ -189,17 +200,21 @@ int main(int argc, char* argv[]){
 
 			enviar_GameCard_Catch_Pokemon(catchPokemon,conexionGamecard);
 
+			free(catchPokemon);
+
 		}
 
 
 		if(!strcmp(*&argv[2],"GET_POKEMON")){
 
-			gameCard_get_pokemon *getPokemon = malloc(sizeof(gameCard_new_pokemon));
+			gameCard_get_pokemon *getPokemon = malloc(sizeof(gameCard_get_pokemon));
 
 			getPokemon->datos->nombrePokemon = *&argv[3];
 			getPokemon->datos->tamanioNombre = strlen(getPokemon->datos->nombrePokemon)+1;
 
 			enviar_GameCard_Get_Pokemon(getPokemon,conexionGamecard);
+
+			free(getPokemon);
 		}
 
 

@@ -36,8 +36,8 @@ typedef struct {
 	uint32_t cantidadPosiciones;
 	//preguntar []
 
-	uint32_t posX[];
-	uint32_t posY[];
+	uint32_t* posX;
+	uint32_t* posY;
 } localize_pokemon;
 
 typedef struct {
