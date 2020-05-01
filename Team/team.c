@@ -21,19 +21,27 @@ int main(int argc, char* argv[]){
     int puertoBroker;
     char* algoritmoPlanificacion;
 
+
     //uint32_t retardo_ciclo_cpu;
     //uint32_t quantum;
     //uint32_t estimacion_inicial;
-    char* archivo_log; //   --->           LOG_FILE=/home/utnso/Team/log_team1.txt
+    char* archivo_log; //   --->           LOG_FILE=/home/utnso/Team/log_team1.txt -> separar por / y agarrar el ultimo elemento
 
 
     t_config* config;
     config = leer_config();
 
+    //t_log* logger;
+    //logger = iniciar_logger();
+    //conexion=crear_conexion(ipBroker,puertoBroker);
 
-    //posiciones_entrenadores = obtener_lista_posiciones();
-    //pokemones_obtenidos = obtener_lista_pokemones();
-    //objetivos_entrenadores = obtener_lista_objetivos();
+
+    //log_info(logger,"Comienzo");
+
+
+    posiciones_entrenadores = obtener_lista_posiciones();
+    pokemones_obtenidos = obtener_lista_pokemones();
+    objetivos_entrenadores = obtener_lista_objetivos();
 
     ipBroker=config_get_string_value(config,"IP_BROKER");
     puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
@@ -41,6 +49,10 @@ int main(int argc, char* argv[]){
     tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
 
     printf("Recibi estos datos: %s, %d, %s, %d",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion);
+
+
+
+
 
 
     //Aca si van las colas de estado de procesos y el algoritmo de sincronizacion, creo

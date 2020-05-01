@@ -46,6 +46,18 @@
  t_list* obtener_lista_pokemones(void){
       char** array_pokemones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
        return crear_lista(array_pokemones);
-
   }
+
+ entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig){
+	 entrenador* entrenador = malloc(sizeof(entrenador));
+	 entrenador->estado = NEW;
+	 entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
+	 entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
+
+	 char** posiciones = string_split(posicion,"|");
+	 entrenador->posX = atoi(posiciones[0]); //atoi para hacerlo int
+	 entrenador->posY = atoi(posiciones[1]);
+	 return entrenador;
+ }
+
     //aca deberiamos poner terminar_programa

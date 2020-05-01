@@ -57,6 +57,8 @@ t_list* obtener_lista_posiciones(void);
 t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
 
+void imprimirElementosLista (t_list *a);
+entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 
 
 
