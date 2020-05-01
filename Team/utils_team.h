@@ -20,6 +20,7 @@
 #include<commons/collections/dictionary.h>
 #include<commons/log.h>
 #include<commons/config.h>
+#include<commons/string.h>
 
 
 typedef enum{ //Para futura planificacion:
@@ -60,7 +61,7 @@ t_list* obtener_lista_pokemones(void);
 void imprimirElementosLista (t_list *a);
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 
-
+t_list* hacer_entrenadores(void);
 
 
 #endif /* TEAM_UTILS_TEAMH */

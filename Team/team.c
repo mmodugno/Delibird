@@ -13,9 +13,7 @@
 int main(int argc, char* argv[]){
 
     //POR AHORA DEJAMOS SOLO LA CONEXION CON BROKER PORQUE NO ESTAMOS SEGUROS SI HAY QUE CONECTAR CON GAMEBOY
-	t_list* posiciones_entrenadores;
-	t_list* pokemones_obtenidos;
-	t_list* objetivos_entrenadores;
+
 	int tiempo_de_reconexion;
 	char* ipBroker;
     int puertoBroker;
@@ -38,10 +36,6 @@ int main(int argc, char* argv[]){
 
     //log_info(logger,"Comienzo");
 
-
-    posiciones_entrenadores = obtener_lista_posiciones();
-    pokemones_obtenidos = obtener_lista_pokemones();
-    objetivos_entrenadores = obtener_lista_objetivos();
 
     ipBroker=config_get_string_value(config,"IP_BROKER");
     puertoBroker = config_get_int_value(config,"PUERTO_BROKER");

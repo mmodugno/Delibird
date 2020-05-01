@@ -60,4 +60,25 @@
 	 return entrenador;
  }
 
+ t_list* hacer_entrenadores(void){
+	 t_list* posiciones_entrenadores = obtener_lista_posiciones();
+	 t_list* pokemones_obtenidos = obtener_lista_pokemones();
+	 t_list* objetivos_entrenadores = obtener_lista_objetivos();
+
+	 t_list* entrenadores = list_create();
+	 int i;
+	 for(i=0 ; i< list_size(posiciones_entrenadores) ; i++){
+		// list_add(entrenadores, array[i]);
+		 entrenador entrenador_listo = configurar_entrenador(posiciones_entrenadores[i],pokemones_obtenidos[i],objetivos_entrenadores[i]);
+		 list_add(entrenadores,entrenador_listo);
+	 }
+
+	return entrenadores;
+
+
+
+ }
+
+
+
     //aca deberiamos poner terminar_programa
