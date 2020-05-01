@@ -55,23 +55,28 @@
 	 entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
 
 	 char** posiciones = string_split(posicion,"|");
-	 entrenador->posX = atoi(posiciones[0]); //atoi para hacerlo int
+	 entrenador->posX = atoi(posiciones[0]);
 	 entrenador->posY = atoi(posiciones[1]);
 	 return entrenador;
  }
 
+
  t_list* hacer_entrenadores(void){
-	 t_list* posiciones_entrenadores = obtener_lista_posiciones();
-	 t_list* pokemones_obtenidos = obtener_lista_pokemones();
-	 t_list* objetivos_entrenadores = obtener_lista_objetivos();
+	 t_list* posiciones = obtener_lista_posiciones();
+	 t_list* pokemones= obtener_lista_pokemones();
+	 t_list* objetivos = obtener_lista_objetivos();
 
 	 t_list* entrenadores = list_create();
+
 	 int i;
-	 for(i=0 ; i< list_size(posiciones_entrenadores) ; i++){
+	 for(i=0 ; i< list_size(posiciones) ; i++){
 		// list_add(entrenadores, array[i]);
-		 entrenador entrenador_listo = configurar_entrenador(posiciones_entrenadores[i],pokemones_obtenidos[i],objetivos_entrenadores[i]);
-		 list_add(entrenadores,entrenador_listo);
+		 //list_get(t_list*,int index)
+
+		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i));
+		list_add(entrenadores,entrenador_listo);
 	 }
+
 
 	return entrenadores;
 
