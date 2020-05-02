@@ -29,8 +29,10 @@ int main(int argc, char* argv[]){
     t_config* config;
     config = leer_config();
 
-    //t_log* logger;
-    //logger = iniciar_logger();
+
+    t_log* logger;
+    logger = iniciar_logger();
+
     //conexion=crear_conexion(ipBroker,puertoBroker);
 
 
@@ -73,10 +75,15 @@ int main(int argc, char* argv[]){
 
 
 
-    t_log* iniciar_logger(char* tipoDeProceso,char* archivoLog){
-        return log_create(archivoLog,tipoDeProceso,0,LOG_LEVEL_INFO);
-    }
 
+
+    t_log* iniciar_logger(void)
+    {
+    	return log_create(archivo_log(),"iniciar logger",true,LOG_LEVEL_INFO);
+    	//return log_create("tp0.log","iniciar logger",true,LOG_LEVEL_INFO);
+
+
+    }
 
     /*t_config* leer_config(char* archivoConfig){
         return config_create(archivoConfig);

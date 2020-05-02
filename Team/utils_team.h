@@ -45,6 +45,7 @@ typedef struct{
     char* nombre;
     uint32_t posX;
     uint32_t posY;
+    uint32_t  tamanio_nombre;
 }pokemon;
 
 
