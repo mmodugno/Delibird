@@ -30,8 +30,8 @@ int main(int argc, char* argv[]){
     config = leer_config();
 
 
-    //t_log* logger;
-    //logger = iniciar_logger();
+    t_log* logger;
+
 
     //conexion=crear_conexion(ipBroker,puertoBroker);
 
@@ -50,7 +50,8 @@ int main(int argc, char* argv[]){
     printf("Recibi estos datos: %s, %d, %s, %d, %s",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion,archivo);
 
 
-
+    logger = iniciar_logger(archivo);
+    log_info( logger, "inicio de programa");
 
 
 
@@ -79,19 +80,6 @@ int main(int argc, char* argv[]){
 
 
 
-
-    t_log* iniciar_logger(void)
-    {
-    	return log_create(archivo_log(),"iniciar logger",true,LOG_LEVEL_INFO);
-    	//return log_create("tp0.log","iniciar logger",true,LOG_LEVEL_INFO);
-
-
-    }
-
-    /*t_config* leer_config(char* archivoConfig){
-        return config_create(archivoConfig);
-    }
-    */
 
 }
 

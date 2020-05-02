@@ -17,7 +17,6 @@
 
 #include "utils_team.h"
 
-t_log iniciar_logger(char);
 t_config leer_config(void);
 
 //void terminar_programa(int,int,int, t_log,t_log,t_log,t_log, t_config);

@@ -79,8 +79,22 @@
 	return entrenadores;
  }
 
+ t_log* iniciar_logger(archivo){
+   	return log_create(archivo,"iniciar logger",true,LOG_LEVEL_INFO);
+   }
 
 
 
 
-    //aca deberiamos poner terminar_programa
+ /*
+
+  void terminar_programa(int conexion, t_log* logger, t_config* config)
+ {
+ 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+ 	log_destroy(logger);
+ 	config_destroy(config);
+ 	liberar_conexion(conexion);
+ }
+*/
+
+

@@ -63,6 +63,6 @@ void imprimirElementosLista (t_list *a);
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 
 t_list* hacer_entrenadores(void);
-
+void 		log_info(t_log* logger, const char* message, ...);
 
 #endif /* TEAM_UTILS_TEAMH */
