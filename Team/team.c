@@ -18,20 +18,20 @@ int main(int argc, char* argv[]){
 	char* ipBroker;
     int puertoBroker;
     char* algoritmoPlanificacion;
-
+    char* archivo;
 
     //uint32_t retardo_ciclo_cpu;
     //uint32_t quantum;
     //uint32_t estimacion_inicial;
-    char* archivo_log; //   --->           LOG_FILE=/home/utnso/Team/log_team1.txt -> separar por / y agarrar el ultimo elemento
+
 
 
     t_config* config;
     config = leer_config();
 
 
-    t_log* logger;
-    logger = iniciar_logger();
+    //t_log* logger;
+    //logger = iniciar_logger();
 
     //conexion=crear_conexion(ipBroker,puertoBroker);
 
@@ -43,8 +43,11 @@ int main(int argc, char* argv[]){
     puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
     algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
     tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
+    archivo = config_get_string_value(config,"LOG_FILE");
 
-    printf("Recibi estos datos: %s, %d, %s, %d",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion);
+
+
+    printf("Recibi estos datos: %s, %d, %s, %d, %s",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion,archivo);
 
 
 

@@ -70,8 +70,6 @@
 
 	 int i;
 	 for(i=0 ; i< list_size(posiciones) ; i++){
-		// list_add(entrenadores, array[i]);
-		 //list_get(t_list*,int index)
 
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i));
 		list_add(entrenadores,entrenador_listo);
@@ -81,13 +79,6 @@
 	return entrenadores;
  }
 
-char* archivo_log(void){
-	char* todo_el_archivo_log = config_get_string_value(config,"LOG_FILE");
-	t_list* lista_de_palabras = crear_lista(string_split(todo_el_archivo_log,"/"));
-	int tamanio = list_size(lista_de_palabras);
-	return list_get(lista_de_palabras,tamanio-1);
-}
-//LOG_FILE=        "/home/utnso/Team/log_team1.txt"
 
 
 
