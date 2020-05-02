@@ -7,7 +7,7 @@
 
 #ifndef UTILS_EN_COMUN_H_
 #define UTILS_EN_COMUN_H_
-
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,7 +18,7 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-#include "stdint.h"
+#include "stdint.h"*/
 
 
 // //// ESTRUCTURAS DE MENSAJES //////
