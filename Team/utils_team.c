@@ -79,10 +79,20 @@
 	return entrenadores;
  }
 
- t_log* iniciar_logger(archivo){
+ t_log* iniciar_logger(char* archivo){
    	return log_create(archivo,"iniciar logger",true,LOG_LEVEL_INFO);
    }
 
+//Arreglar:
+ /*
+ libm.a ?
+ double distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
+	double x_final = entrenador.posX - pokemon.posX;
+	double y_final = entrenador.posY - pokemon.posY;
+	double variable = pow(x_final, 2) + pow(y_final, 2);
+	return sqrt(variable);
+}
+*/
 
 
 

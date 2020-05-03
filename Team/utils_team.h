@@ -21,7 +21,8 @@
 #include<commons/log.h>
 #include<commons/config.h>
 #include<commons/string.h>
-
+#include<math.h>
+#include<commons/collections/queue.h>
 
 typedef enum{ //Para futura planificacion:
     NEW=0,
@@ -64,5 +65,6 @@ entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* obj
 
 t_list* hacer_entrenadores(void);
 void 		log_info(t_log* logger, const char* message, ...);
+double distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
 
 #endif /* TEAM_UTILS_TEAMH */
