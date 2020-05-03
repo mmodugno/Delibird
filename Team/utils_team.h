@@ -65,6 +65,9 @@ entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* obj
 
 t_list* hacer_entrenadores(void);
 void 		log_info(t_log* logger, const char* message, ...);
-double distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
+
+int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
+
+pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 
 #endif /* TEAM_UTILS_TEAMH */

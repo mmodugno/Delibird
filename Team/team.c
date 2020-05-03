@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
     config = leer_config();
 
 
-    t_log* logger;
+
 
 
     //conexion=crear_conexion(ipBroker,puertoBroker);
@@ -47,19 +47,21 @@ int main(int argc, char* argv[]){
 
 
 
-    printf("Recibi estos datos: %s, %d, %s, %d, %s",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion,archivo);
 
 
-    logger = iniciar_logger(archivo);
-    log_info( logger, "inicio de programa");
+      // t_log* logger;
+    //logger = iniciar_logger(archivo);
+    //log_info( logger, "inicio de programa");
 
 
 
     //Aca si van las colas de estado de procesos y el algoritmo de sincronizacion, creo
 
+    t_queue * cola_ready = queue_create();
+    t_queue* cola_block = queue_create();
 
 
-    ////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////LOGS OBLIGATORIOS//////////////////////////////
     /*Cambio de un entrenador de cola de planificación (indicando la razón del porqué).
     Movimiento de un entrenador (indicando la ubicación a la que se movió).
     Operación de atrapar (indicando la ubicación y el pokemon a atrapar).
@@ -71,11 +73,8 @@ int main(int argc, char* argv[]){
     Errores de comunicación con el Broker (indicando que se realizará la operación por default).
     Inicio de proceso de reintento de comunicación con el Broker.
     Resultado de proceso de reintento de comunicación con el Broker.*/
+  ////////////////////////////////////////////////////////////////
 
-///////////////////////////LOGS OBLIGATORIOS/////////////////////////////////////
-    //Poner nuestros logs aca:
-    //t_log* logConexion=iniciar_logger("Conexion");
-    ////////////////////////////////////////////////////////////////////////////////
 
 
 

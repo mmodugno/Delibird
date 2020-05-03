@@ -54,9 +54,9 @@
 	 entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
 	 entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
 
-	 char** posiciones = string_split(posicion,"|");
-	 entrenador->posX = atoi(posiciones[0]);
-	 entrenador->posY = atoi(posiciones[1]);
+	 t_list* posiciones = crear_lista(string_split(posicion,"|"));
+	 entrenador->posX = atoi(list_get(posiciones,0));
+	 entrenador->posY = atoi(list_get(posiciones,1));
 	 return entrenador;
  }
 
@@ -74,25 +74,35 @@
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i));
 		list_add(entrenadores,entrenador_listo);
 	 }
-
-
 	return entrenadores;
  }
+
+
+ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY){
+	 pokemon* poke = malloc(sizeof(pokemon));
+	 poke->nombre = nombre;
+	 poke->posX = posX;
+	 poke->posY = posY;
+	 poke->tamanio_nombre = sizeof(nombre);
+	 return poke;
+ }
+
+
+
 
  t_log* iniciar_logger(char* archivo){
    	return log_create(archivo,"iniciar logger",true,LOG_LEVEL_INFO);
    }
 
 //Arreglar:
- /*
- libm.a ?
- double distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
-	double x_final = entrenador.posX - pokemon.posX;
-	double y_final = entrenador.posY - pokemon.posY;
-	double variable = pow(x_final, 2) + pow(y_final, 2);
-	return sqrt(variable);
+
+ //libm.a ?
+ int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
+	int x_final = fabs(entrenador.posX - pokemon.posX);
+	int y_final = fabs(entrenador.posY - pokemon.posY);
+	return (x_final + y_final);
 }
-*/
+
 
 
 
