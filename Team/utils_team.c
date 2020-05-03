@@ -88,20 +88,18 @@
  }
 
 
-
-
- t_log* iniciar_logger(char* archivo){
-   	return log_create(archivo,"iniciar logger",true,LOG_LEVEL_INFO);
-   }
-
-//Arreglar:
-
- //libm.a ?
  int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
 	int x_final = fabs(entrenador.posX - pokemon.posX);
 	int y_final = fabs(entrenador.posY - pokemon.posY);
 	return (x_final + y_final);
 }
+
+
+void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
+	entrenador->estado = nuevo_estado;
+}
+
+
 
 
 
@@ -116,5 +114,11 @@
  	liberar_conexion(conexion);
  }
 */
+
+
+
+ t_log* iniciar_logger(char* archivo){
+   	return log_create(archivo,"iniciar logger",true,LOG_LEVEL_INFO);
+   }
 
 

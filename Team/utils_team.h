@@ -39,7 +39,6 @@ typedef struct{
     t_list* objetivos;
     uint32_t posX;
     uint32_t posY;
-    //hace falta agregar su maximo de pokemones o podria ser una funcion?
 }entrenador;
 
 typedef struct{
