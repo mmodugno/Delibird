@@ -52,21 +52,28 @@ typedef struct{
 int crear_conexion(char* ip, char* puerto);
 void enviar_mensaje(char mensaje, int socket_cliente);
 char* recibir_mensaje(int socket_cliente);
-//void eliminar_paquete(t_paquete* paquete);
 void liberar_conexion(int socket_cliente);
+
 t_config* leer_config(void);
 t_list* obtener_lista_posiciones(void);
 t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
 
-void imprimirElementosLista (t_list *a);
-entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 
+entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 t_list* hacer_entrenadores(void);
-void 		log_info(t_log* logger, const char* message, ...);
+
+void log_info(t_log* logger, const char* message, ...);
 
 int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
 
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
+
+void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
+
+int retardo_cpu(void);
+
+
+
 
 #endif /* TEAM_UTILS_TEAMH */
