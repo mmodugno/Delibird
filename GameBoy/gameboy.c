@@ -69,6 +69,13 @@ int main(int argc, char* argv[]){
 
 	if(!strcmp(argv[1],"BROKER")){
 		conexionBroker = crear_conexion(ipBroker,puertoBroker);
+		if(conexionBroker <= 0){
+			log_info(logConexion,"no me pude conectar a Broker");
+		}
+		else{
+			log_info(logConexion,"me conecte a Broker exitosamente");
+		}
+
 		if(!strcmp(*&argv[2],"NEW_POKEMON")){
 			if(argc == 7){
 				broker_new_pokemon *newPokemon = malloc(sizeof(broker_new_pokemon));
@@ -151,6 +158,13 @@ int main(int argc, char* argv[]){
 	if(!strcmp(*&argv[1],"TEAM")){
 
 		conexionTeam = crear_conexion(ipTeam,puertoTeam);
+		if(conexionTeam <= 0){
+			log_info(logConexion,"no me pude conectar a Team");
+		}
+		else{
+			log_info(logConexion,"me conecte a Team exitosamente");
+		}
+
 
 	    if(!strcmp(*&argv[2],"APPEARED_POKEMON")){
 	    	if(argc==6){
@@ -172,6 +186,12 @@ int main(int argc, char* argv[]){
 	if(!strcmp(*&argv[1],"GAMECARD")){
 
 		conexionGamecard = crear_conexion(ipGamecard,puertoGamecard);
+		if(conexionGamecard <= 0){
+			log_info(logConexion,"no me pude conectar a Gamecard");
+		}
+		else{
+			log_info(logConexion,"me conecte a Gamecard exitosamente");
+		}
 		if(!strcmp(*&argv[2],"NEW_POKEMON")){
 			if(argc==8){
 				gameCard_new_pokemon *newPokemon = malloc(sizeof(gameCard_new_pokemon));
@@ -241,24 +261,9 @@ int main(int argc, char* argv[]){
 
 
     //los sockets cuando no se pueden conectar no dan negativo 0 cero?
-	if(conexionBroker <= 0){
-		log_info(logConexion,"no me pude conectar a Broker");
-	}
-	else{
-		log_info(logConexion,"me conecte a Broker exitosamente");
-	}
-	if(conexionGamecard <= 0){
-		log_info(logConexion,"no me pude conectar a Gamecard");
-	}
-	else{
-		log_info(logConexion,"me conecte a Gamecard exitosamente");
-	}
-	if(conexionTeam <= 0){
-		log_info(logConexion,"no me pude conectar a Team");
-	}
-	else{
-		log_info(logConexion,"me conecte a Team exitosamente");
-	}
+
+
+
 
 
 	//respetar el orden de los parametros
