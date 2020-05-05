@@ -19,15 +19,7 @@ int main(int argc, char* argv[]){
 
     //conexion=crear_conexion(ipBroker,puertoBroker);
 
-
-    int retardo;
-    retardo = leer_retardo_cpu();
-
-
-    t_log* log_de_team = iniciar_log();
-
-    log_info(log_de_team ,"inicio de programa");
-
+   log_cambio_de_cola("esperando respuesta de broker");
 
 
     t_queue * cola_ready = queue_create();

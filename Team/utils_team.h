@@ -33,6 +33,7 @@ typedef enum{ //Para futura planificacion:
 }estadoEntrenador;
 
 typedef struct{
+	char* nombre;
     pthread_t hiloDeEntrenador;
     int estado;
     t_list* pokemones;
@@ -67,10 +68,10 @@ t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
 
 
-entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
+entrenador* configurar_entrenador(char* nombre,char* posicion,char* pokemonsconfig, char* objetivosconfig);
 t_list* hacer_entrenadores(void);
 
-t_log* iniciar_log(void);
+
 
 int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
 
@@ -80,5 +81,15 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
 int leer_retardo_cpu(void);
 char* leer_ip_broker(void);
+
+
+t_log* iniciar_log(char* proceso);
+void log_cambio_de_cola(char * razon);
+void log_movimiento_de_enntrenador(entrenador* entrenador);
+void log_atrapar_pokemon(pokemon* poke);
+void log_intercambio(entrenador* entrenador1,entrenador* entrenador2);
+void log_reintentar_comunicacion(void);
+void log_conexion_exitosa(void);
+void log_fallo_de_conexion(void);
 
 #endif /* TEAM_UTILS_TEAMH */

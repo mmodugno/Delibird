@@ -1,1 +1,4 @@
 [INFO] 16:11:43:429 iniciar logger/(7319:7319): inicio de programa
+[INFO] 16:40:34:313 iniciar logger/(7910:7910): inicio de programa
+[INFO] 16:40:34:344 iniciar logger/(7910:7910): pintó
+[INFO] 16:45:12:435 CAMBIO DE COLA/(8066:8066): pintó
