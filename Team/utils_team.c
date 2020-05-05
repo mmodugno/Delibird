@@ -94,6 +94,7 @@
  }
 
 
+
  int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
 	int x_final = fabs(entrenador.posX - pokemon.posX);
 	int y_final = fabs(entrenador.posY - pokemon.posY);
