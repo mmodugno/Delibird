@@ -10,6 +10,8 @@
 
 ///
 
+
+
  t_list* crear_lista(char** array){
      t_list* nuevaLista = list_create();
      int i = 0;
@@ -24,41 +26,72 @@
          return config_create("team1.config");
      }
 
- //OBTENER LISTAS DE LA CONFIG:
 
 
- t_config* config;
 
 
-  int retardo_cpu(void){
-	 return atoi(config_get_string_value(config,"RETARDO_CICLO_CPU"));
+//////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////77
+  int leer_retardo_cpu(void){
+	 t_config* config = leer_config();
+	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
+	  return retardo;
  }
 
 
 
  t_list* obtener_lista_posiciones(void){
+	 t_config* config = leer_config();
      char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
      return crear_lista(array_posiciones);
 
  }
 
  t_list* obtener_lista_objetivos(void){
+	 t_config* config = leer_config();
       char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
       return crear_lista(array_objetivos);
 
   }
 
- //LISTA POKEMONES
+
  t_list* obtener_lista_pokemones(void){
+	 t_config* config = leer_config();
       char** array_pokemones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
        return crear_lista(array_pokemones);
   }
+
+
+
+char* leer_ip_broker(void){
+	t_config* config = leer_config();
+	char* ipBroker=config_get_string_value(config,"IP_BROKER");
+     return ipBroker;
+}
+
+
+/*
+	int tiempo_de_reconexion;
+	int puertoBroker;
+    char* algoritmoPlanificacion;
+     puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
+     algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+     tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
+*/
+//uint32_t quantum; int
+  //uint32_t estimacion_inicial; int
+
+ /////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
  entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig){
 	 entrenador* entrenador = malloc(sizeof(entrenador));
 	 entrenador->estado = NEW;
 	 entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
 	 entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
+	 entrenador->cuantos_puede_cazar = list_size(entrenador->objetivos);
 
 	 t_list* posiciones = crear_lista(string_split(posicion,"|"));
 	 entrenador->posX = atoi(list_get(posiciones,0));
@@ -133,19 +166,16 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 }
 
 
+bool se_puede_planificar(entrenador* entrenador){
+
+if(entrenador->cuantos_puede_cazar == 0) return false;
+if(entrenador->cuantos_puede_cazar > 0){
+	return (entrenador->estado == NEW || entrenador->estado == READY);
+	}
+else return false;
+}
 
 
-
-
- /*
-  void terminar_programa(int conexion, t_log* logger, t_config* config)
- {
- 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
- 	log_destroy(logger);
- 	config_destroy(config);
- 	liberar_conexion(conexion);
- }
-*/
 
 
 
@@ -154,20 +184,20 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
- t_log* iniciar_logger(char* archivo){
+ t_log* iniciar_log(void){
+	t_config* config = leer_config();
+	char* archivo = config_get_string_value(config,"LOG_FILE");
    	return log_create(archivo,"iniciar logger",true,LOG_LEVEL_INFO);
    }
 
- //char* archivo = config_get_string_value(config,"LOG_FILE");
- //t_log* log = iniciar_logger(archivo);
 
 
- //void cambio_de_cola(char * razon){
+
+
+  //void cambio_de_cola(char * razon){
 //	 log_info(log,razon);
  //}
 
-
- //log_info(logger,"Comienzo");
  /////////////////////////LOGS OBLIGATORIOS//////////////////////////////
  /*Cambio de un entrenador de cola de planificación (indicando la razón del porqué).
  Movimiento de un entrenador (indicando la ubicación a la que se movió).
@@ -181,6 +211,20 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
  Inicio de proceso de reintento de comunicación con el Broker.
  Resultado de proceso de reintento de comunicación con el Broker.*/
 ////////////////////////////////////////////////////////////////
+
+
+
+
+
+ /*
+  void terminar_programa(int conexion, t_log* logger, t_config* config)
+ {
+ 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+ 	log_destroy(logger);
+ 	config_destroy(config);
+ 	liberar_conexion(conexion);
+ }
+*/
 
 
 

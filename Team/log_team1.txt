@@ -1,0 +1,1 @@
+[INFO] 16:11:43:429 iniciar logger/(7319:7319): inicio de programa

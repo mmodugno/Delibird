@@ -39,6 +39,7 @@ typedef struct{
     t_list* objetivos;
     uint32_t posX;
     uint32_t posY;
+    int cuantos_puede_cazar;
 }entrenador;
 
 typedef struct{
@@ -47,6 +48,12 @@ typedef struct{
     uint32_t posY;
     uint32_t  tamanio_nombre;
 }pokemon;
+
+t_config* config;
+
+void iniciar_config(void);
+t_config* get_config(void);
+void destruir_config(void);
 
 
 int crear_conexion(char* ip, char* puerto);
@@ -63,7 +70,7 @@ t_list* obtener_lista_pokemones(void);
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 t_list* hacer_entrenadores(void);
 
-void log_info(t_log* logger, const char* message, ...);
+t_log* iniciar_log(void);
 
 int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
 
@@ -71,9 +78,7 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
-int retardo_cpu(void);
-
-
-
+int leer_retardo_cpu(void);
+char* leer_ip_broker(void);
 
 #endif /* TEAM_UTILS_TEAMH */
