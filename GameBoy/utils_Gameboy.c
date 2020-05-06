@@ -5,8 +5,8 @@
  *      Author: utnso
  */
 
-
 #include "utils_Gameboy.h"
+#include "gameboy.c"
 
 
 //TODO
@@ -331,14 +331,12 @@ void enviar_Broker_New_Pokemon(broker_new_pokemon *brokerNewPokemon , int socket
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	serializar_broker_new_pokemon(brokerNewPokemon,buffer);
 
-
 	paquete_a_enviar->buffer= buffer;
 
 	int tamanio_buffer=0;
 
 	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
 	send(socket_cliente,bufferStream,tamanio_buffer,0);
-
 
 	free(bufferStream);
 
