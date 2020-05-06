@@ -33,7 +33,6 @@ typedef enum{ //Para futura planificacion:
 }estadoEntrenador;
 
 typedef struct{
-	char* nombre;
     pthread_t hiloDeEntrenador;
     int estado;
     t_list* pokemones;

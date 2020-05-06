@@ -193,6 +193,9 @@ else return false;
 
 
 
+
+
+
 void log_cambio_de_cola(char * razon){
 	t_log* log = iniciar_log("CAMBIO DE COLA");
 	log_info(log,"cambio de cola porque: %s ",razon);
@@ -244,9 +247,6 @@ t_log* log = iniciar_log("CONEXION"); //PONERLO COMO ERROR ASI SALE ROJITO
  PENDIENTE - Resultado de algoritmo de detección de deadlock.
  PENDIENTE - Llegada de un mensaje (indicando el tipo del mismo y sus datos).
  PENDIENTE - Resultado del Team (especificado anteriormente).
- Errores de comunicación con el Broker (indicando que se realizará la operación por default).
- Inicio de proceso de reintento de comunicación con el Broker.
- Resultado de proceso de reintento de comunicación con el Broker.*/
 ////////////////////////////////////////////////////////////////
 
 
