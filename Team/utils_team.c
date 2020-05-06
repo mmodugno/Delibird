@@ -8,8 +8,6 @@
 #include "utils_team.h"
 #include<commons/collections/list.h>
 
-///
-
 
 
  t_list* crear_lista(char** array){
@@ -38,7 +36,6 @@
  }
 
 
-
  t_list* obtener_lista_posiciones(void){
 	 t_config* config = leer_config();
      char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
@@ -62,23 +59,38 @@
 
 
 
-char* leer_ip_broker(void){
+int leer_tiempo_de_reconexion(void){
 	t_config* config = leer_config();
-	char* ipBroker=config_get_string_value(config,"IP_BROKER");
-     return ipBroker;
+	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
+     return tiempo_de_reconexion;
 }
 
+int leer_puerto_broker(void){
+	 t_config* config = leer_config();
+	 int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
+	  return puerto_broker;
+}
+char* leer_algoritmo_planificacion(void){
+	 t_config* config = leer_config();
+	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+	  return algoritmo_planificacion;
+}
+int leer_quantum(void){
+	 t_config* config = leer_config();
+	 int quantum = config_get_int_value(config,"QUANTUM");
+	  return quantum;
+}
+int leer_estimacion_inicial(void){
+	 t_config* config = leer_config();
+	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
+	  return estimacion_inicial;
+}
+char* leer_ip_broker(void){
+	 t_config* config = leer_config();
+	 char* ip = config_get_string_value(config,"IP_BROKER");
+	  return ip;
+}
 
-/*
-	int tiempo_de_reconexion;
-	int puertoBroker;
-    char* algoritmoPlanificacion;
-     puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
-     algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-     tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
-*/
-//uint32_t quantum; int
-  //uint32_t estimacion_inicial; int
 
  /////////////////////////////////////////////////////////////////////////////
 
@@ -125,6 +137,31 @@ char* leer_ip_broker(void){
 	 poke->tamanio_nombre = sizeof(nombre);
 	 return poke;
  }
+
+
+t_list* calcular_objetivo_global(void){
+	t_list* objetivos = list_create();
+	t_list* entrenadores = hacer_entrenadores();
+
+	for( int i = 0; i < list_size(entrenadores); i++){
+		entrenador* un_entrenador =  list_get(entrenadores,i);
+		t_list* objetivos_entrenador = un_entrenador->objetivos;
+		//list_add_all(objetivos, objetivos_entrenador);
+	}
+
+	/* CORREGIR ESTO:
+	for(int i = 0; i < list_size(objetivos);i++){
+		printf("objetivo global: %s, ",list_get(objetivos,i));
+	}
+
+	for(int i = 0; i< list_size(objetivos_entrenador); i++){
+			char* objetivo = list_get(objetivos_entrenador,i);
+			printf( "objetivo de entrenador: %s \n", objetivo);
+		}
+*/
+	return objetivos;
+}
+
 
 
 
@@ -181,7 +218,10 @@ else return false;
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////LOGS///////////////////////////////////////////////////////
 
 
  t_log* iniciar_log(char* proceso){
@@ -189,10 +229,6 @@ else return false;
 	char* archivo = config_get_string_value(config,"LOG_FILE");
    	return log_create(archivo,proceso,true,LOG_LEVEL_INFO);
    }
-
-
-
-
 
 
 
@@ -211,18 +247,17 @@ void log_atrapar_pokemon(pokemon* poke){
 	log_info(log,"pokemon: %s con posicion en x: %d y posicion en y: %d",poke->nombre,poke->posX,poke->posY);
 }
 
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2){ //Como muestro los entrenadores
+void log_intercambio(entrenador* entrenador1,entrenador* entrenador2){ //Como muestro los entrenadores?
 	t_log* log = iniciar_log("INTERCAMBIO");
 		log_info(log,"intercambio entre entrenadores");
 }
 
-/*void log_comunicacion_fallida(void){ NECESITO SABER EL TIEMPO DE RECONECCION
-
+void log_comunicacion_fallida(void){
 t_log* log = iniciar_log("NO SE PUDO COMUNICAR CON BROKER");
-int reconexion =
+int reconexion = leer_tiempo_de_reconexion();
 	log_info(log,"se reintentara de comunicar en %d",reconexion);
 }
-*/
+
 
 void log_reintentar_comunicacion(void){
 
@@ -250,11 +285,12 @@ t_log* log = iniciar_log("CONEXION"); //PONERLO COMO ERROR ASI SALE ROJITO
 ////////////////////////////////////////////////////////////////
 
 
+*/
 
 
 
  /*
-  void terminar_programa(int conexion, t_log* logger, t_config* config)
+    void terminar_programa(int conexion, t_log* logger, t_config* config)
  {
  	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
  	log_destroy(logger);

@@ -12,20 +12,14 @@
 
 int main(int argc, char* argv[]){
 
-    //POR AHORA DEJAMOS SOLO LA CONEXION CON BROKER PORQUE NO ESTAMOS SEGUROS SI HAY QUE CONECTAR CON GAMEBOY
-
-
 
 
     //conexion=crear_conexion(ipBroker,puertoBroker);
 
-   log_cambio_de_cola("esperando respuesta de broker");
-
+	 calcular_objetivo_global();
 
     t_queue * cola_ready = queue_create();
     t_queue* cola_block = queue_create();
-
-
 
 
 

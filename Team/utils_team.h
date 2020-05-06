@@ -51,25 +51,24 @@ typedef struct{
 
 t_config* config;
 
-void iniciar_config(void);
-t_config* get_config(void);
-void destruir_config(void);
 
-
-int crear_conexion(char* ip, char* puerto);
-void enviar_mensaje(char mensaje, int socket_cliente);
-char* recibir_mensaje(int socket_cliente);
-void liberar_conexion(int socket_cliente);
-
+// FUNCIONES DE LA CONFIG //
 t_config* leer_config(void);
 t_list* obtener_lista_posiciones(void);
 t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
+int leer_puerto_broker(void);
+char* leer_ip_broker(void);
+char* leer_algoritmo_planificacion(void);
+int leer_quantum(void);
+int leer_estimacion_inicial(void);
 
 
-entrenador* configurar_entrenador(char* nombre,char* posicion,char* pokemonsconfig, char* objetivosconfig);
+
+
+
+entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
 t_list* hacer_entrenadores(void);
-
 
 
 int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
@@ -78,10 +77,10 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
-int leer_retardo_cpu(void);
-char* leer_ip_broker(void);
+t_list* calcular_objetivo_global(void);
 
 
+// FUNCIONES DE LOGS //
 t_log* iniciar_log(char* proceso);
 void log_cambio_de_cola(char * razon);
 void log_movimiento_de_enntrenador(entrenador* entrenador);
@@ -90,5 +89,8 @@ void log_intercambio(entrenador* entrenador1,entrenador* entrenador2);
 void log_reintentar_comunicacion(void);
 void log_conexion_exitosa(void);
 void log_fallo_de_conexion(void);
+
+
+
 
 #endif /* TEAM_UTILS_TEAMH */
