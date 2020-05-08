@@ -14,14 +14,12 @@ int main(int argc, char* argv[]){
 
 
 
-//	free(luqui);
-
-
-    t_queue * cola_ready = queue_create();
-    t_queue* cola_block = queue_create();
+	log_algoritmo_de_planificacion();
 
 
 
+    //t_queue * cola_ready = queue_create();
+   // t_queue* cola_block = queue_create();
 
 
 }

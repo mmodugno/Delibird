@@ -57,8 +57,6 @@
        return crear_lista(array_pokemones);
   }
 
-
-
 int leer_tiempo_de_reconexion(void){
 	t_config* config = leer_config();
 	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
@@ -96,14 +94,17 @@ char* leer_ip_broker(void){
 
 
 
-
-
  entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig){
 	 entrenador* un_entrenador = malloc(sizeof(entrenador));
+
 	 un_entrenador->estado = NEW;
 	 un_entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
 	 un_entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
 	 un_entrenador->cuantos_puede_cazar = list_size(un_entrenador->objetivos);
+
+
+	 //pthread_t hiloEntrenador;
+	 //un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,planificarEntrenador,un_entrenador);
 
 	 t_list* posiciones = crear_lista(string_split(posicion,"|"));
 	 un_entrenador->posX = atoi(list_get(posiciones,0));
@@ -168,34 +169,34 @@ void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
 
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
-	//int tiempo = retardo_cpu();
+	int tiempo = leer_retardo_cpu();
 	while(entrenador->posX != pokemon->posX){
 		if(entrenador->posX < pokemon->posX){
 			entrenador->posX = entrenador->posX + 1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 		else {
 			entrenador->posX = entrenador->posX -1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 	}
 	while(entrenador->posY != pokemon->posY){
 		if(entrenador->posY < pokemon->posX){
 			entrenador->posY = entrenador->posY + 1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 		else {
 			entrenador->posY = entrenador->posY -1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 	}
-	printf("listo");
 }
+
 
 
 bool se_puede_planificar(entrenador* entrenador){
 
-if(entrenador->cuantos_puede_cazar == 0) return false;
+if(entrenador->cuantos_puede_cazar == 0) return false; //Cambiar a cuando el entrenador termine su exc
 if(entrenador->cuantos_puede_cazar > 0){
 	return (entrenador->estado == NEW || entrenador->estado == READY);
 	}
@@ -203,6 +204,10 @@ else return false;
 }
 
 
+//entrenador* entrenador_mas_cerca(,pokemon* poke){
+//	//ordenar la lista entrenadores segun la cercania, sacados de la cola ready?
+
+//}
 
 
 
@@ -220,14 +225,17 @@ else return false;
    	return log_create(archivo,proceso,true,LOG_LEVEL_INFO);
    }
 
-
+void log_algoritmo_de_planificacion(void){
+	t_log* log = iniciar_log("ALGORITMO");
+	log_info(log,"algoritmo de planificacion: %s",leer_algoritmo_planificacion());
+}
 
 void log_cambio_de_cola(char * razon){
 	t_log* log = iniciar_log("CAMBIO DE COLA");
 	log_info(log,"cambio de cola porque: %s ",razon);
 }
 
-void log_movimiento_de_enntrenador(entrenador* entrenador){
+void log_movimiento_de_entrenador(entrenador* entrenador){
 	t_log* log = iniciar_log("MOVIMIENTO DE ENTRENADOR");
 	log_info(log,"posicion en x: %d       posicion en y: %d",entrenador->posX,entrenador->posY);
 }

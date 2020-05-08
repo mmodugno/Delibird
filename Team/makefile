@@ -1,5 +1,5 @@
 TARGET = team
-LIBS = -lreadline -lcommons
+LIBS = -lreadline -lcommons -lpthread
 CC = gcc 
 CFLAGS = -g -Wall
 
