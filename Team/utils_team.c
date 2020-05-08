@@ -53,7 +53,7 @@
 
  t_list* obtener_lista_pokemones(void){
 	 t_config* config = leer_config();
-      char** array_pokemones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
+      char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
        return crear_lista(array_pokemones);
   }
 
@@ -99,22 +99,22 @@ char* leer_ip_broker(void){
 
 
  entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig){
-	 entrenador* entrenador = malloc(sizeof(entrenador));
-	 entrenador->estado = NEW;
-	 entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
-	 entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
-	 entrenador->cuantos_puede_cazar = list_size(entrenador->objetivos);
+	 entrenador* un_entrenador = malloc(sizeof(entrenador));
+	 un_entrenador->estado = NEW;
+	 un_entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
+	 un_entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
+	 un_entrenador->cuantos_puede_cazar = list_size(un_entrenador->objetivos);
 
 	 t_list* posiciones = crear_lista(string_split(posicion,"|"));
-	 entrenador->posX = atoi(list_get(posiciones,0));
-	 entrenador->posY = atoi(list_get(posiciones,1));
-	 return entrenador;
+	 un_entrenador->posX = atoi(list_get(posiciones,0));
+	 un_entrenador->posY = atoi(list_get(posiciones,1));
+	 return un_entrenador;
  }
 
 
  t_list* hacer_entrenadores(void){
 	 t_list* posiciones = obtener_lista_posiciones();
-	 t_list* pokemones= obtener_lista_pokemones();
+	 t_list* pokemones = obtener_lista_pokemones();
 	 t_list* objetivos = obtener_lista_objetivos();
 
 	 t_list* entrenadores = list_create();
@@ -146,19 +146,9 @@ t_list* calcular_objetivo_global(void){
 	for( int i = 0; i < list_size(entrenadores); i++){
 		entrenador* un_entrenador =  list_get(entrenadores,i);
 		t_list* objetivos_entrenador = un_entrenador->objetivos;
-		//list_add_all(objetivos, objetivos_entrenador);
+		list_add_all(objetivos, objetivos_entrenador);
 	}
 
-	/* CORREGIR ESTO:
-	for(int i = 0; i < list_size(objetivos);i++){
-		printf("objetivo global: %s, ",list_get(objetivos,i));
-	}
-
-	for(int i = 0; i< list_size(objetivos_entrenador); i++){
-			char* objetivo = list_get(objetivos_entrenador,i);
-			printf( "objetivo de entrenador: %s \n", objetivo);
-		}
-*/
 	return objetivos;
 }
 

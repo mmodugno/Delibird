@@ -24,7 +24,7 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 
-typedef enum{ //Para futura planificacion:
+typedef enum{
     NEW=0,
     READY=1,
     EXEC=2,
@@ -78,7 +78,6 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
 t_list* calcular_objetivo_global(void);
-
 
 // FUNCIONES DE LOGS //
 t_log* iniciar_log(char* proceso);

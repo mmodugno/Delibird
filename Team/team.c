@@ -14,9 +14,8 @@ int main(int argc, char* argv[]){
 
 
 
-    //conexion=crear_conexion(ipBroker,puertoBroker);
+//	free(luqui);
 
-	 calcular_objetivo_global();
 
     t_queue * cola_ready = queue_create();
     t_queue* cola_block = queue_create();
