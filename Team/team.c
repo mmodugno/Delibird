@@ -15,6 +15,7 @@ int main(int argc, char* argv[]){
 
 
 
+
     //t_queue * cola_ready = queue_create();
    // t_queue* cola_block = queue_create();
 

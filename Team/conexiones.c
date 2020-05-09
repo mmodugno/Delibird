@@ -39,6 +39,7 @@ char* recibir_mensaje(int socket_cliente)
 
 	char* mensaje;
 
+//TEAM__APPEARED_POKEMON
 
 	recv(socket_cliente,&(paquete_recibido->codigo_operacion),sizeof(op_code),0);
 	recv(socket_cliente,&(paquete_recibido->buffer->size),sizeof(int),0);

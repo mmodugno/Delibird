@@ -10,6 +10,7 @@
 
 
 
+
  t_list* crear_lista(char** array){
      t_list* nuevaLista = list_create();
      int i = 0;
@@ -28,7 +29,7 @@
 
 
 
-//////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////77
+//////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
   int leer_retardo_cpu(void){
 	 t_config* config = leer_config();
 	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
@@ -91,6 +92,10 @@ char* leer_ip_broker(void){
 
 
  /////////////////////////////////////////////////////////////////////////////
+
+int conexion;
+char* ip = leer_ip_broker();
+char* puerto = leer_puerto_broker();
 
 
 
