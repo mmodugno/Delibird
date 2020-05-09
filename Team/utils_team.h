@@ -40,6 +40,7 @@ typedef struct{
     uint32_t posX;
     uint32_t posY;
     int cuantos_puede_cazar;
+    int id;
 }entrenador;
 
 typedef struct{
@@ -48,6 +49,17 @@ typedef struct{
     uint32_t posY;
     uint32_t  tamanio_nombre;
 }pokemon;
+
+
+typedef struct{
+	char* especie;
+	int cantidad;
+}pokemon_objetivo;
+
+
+
+
+
 
 t_config* config;
 
@@ -67,7 +79,7 @@ int leer_estimacion_inicial(void);
 
 
 
-entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig);
+entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 t_list* hacer_entrenadores(void);
 
 

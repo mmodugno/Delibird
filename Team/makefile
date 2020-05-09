@@ -1,7 +1,7 @@
 TARGET = team
-LIBS = -lreadline -lcommons -lpthread
+LIBS = -lreadline -lcommons -lpthread #-lutils
 CC = gcc 
-CFLAGS = -g -Wall
+CFLAGS = -I ../utils -g -Wall 
 
 # Ahora creemos las tareas del makefile
 # Cuando hagamos make sin argumentos, se ejecutará la tarea por default

@@ -94,14 +94,14 @@ char* leer_ip_broker(void){
 
 
 
- entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig){
+ entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig, int id_creada){
 	 entrenador* un_entrenador = malloc(sizeof(entrenador));
 
 	 un_entrenador->estado = NEW;
 	 un_entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
 	 un_entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
 	 un_entrenador->cuantos_puede_cazar = list_size(un_entrenador->objetivos);
-
+	 un_entrenador->id = id_creada;
 
 	 //pthread_t hiloEntrenador;
 	 //un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,planificarEntrenador,un_entrenador);
@@ -120,10 +120,8 @@ char* leer_ip_broker(void){
 
 	 t_list* entrenadores = list_create();
 
-	 int i;
-	 for(i=0 ; i< list_size(posiciones) ; i++){
-
-		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i));
+	 for(int i=0 ; i< list_size(posiciones) ; i++){
+		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i),i);
 		list_add(entrenadores,entrenador_listo);
 	 }
 	return entrenadores;
@@ -146,15 +144,35 @@ t_list* calcular_objetivo_global(void){
 
 	for( int i = 0; i < list_size(entrenadores); i++){
 		entrenador* un_entrenador =  list_get(entrenadores,i);
-		t_list* objetivos_entrenador = un_entrenador->objetivos;
-		list_add_all(objetivos, objetivos_entrenador);
-	}
 
+		t_list* objetivos_entrenador = un_entrenador->objetivos;
+
+	 //ACA AGREGAR OTRA F DE LISTA DE STRUCTS y esa pasarla abajo
+
+		list_add_all(objetivos, objetivos_entrenador);
+
+	}
 	return objetivos;
 }
 
+/*t_list* objetivos_de_entrenador(entrenador* entrenador){
+	t_list* objetivos_personales = list_create();
 
+	for(int i = 0; i< list_size(entrenador->objetivos);i++){
 
+	}
+}
+
+int cantidad_especie(entrenador* entrenador, pokemon* poke, char* especie){
+
+	 t_list* nueva_lista = list_filter(entrenador->objetivos, es_de_especie(poke,especie));
+	 return list_size(nueva_lista);
+}
+
+bool es_de_especie(pokemon* poke,char* nombre){
+	return poke->nombre == nombre;
+}
+*/
 
  int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
 	int x_final = fabs(entrenador.posX - pokemon.posX);
@@ -195,14 +213,14 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 
 
 bool se_puede_planificar(entrenador* entrenador){
-
-if(entrenador->cuantos_puede_cazar == 0) return false; //Cambiar a cuando el entrenador termine su exc
-if(entrenador->cuantos_puede_cazar > 0){
-	return (entrenador->estado == NEW || entrenador->estado == READY);
-	}
-else return false;
+return (entrenador->estado == NEW || entrenador->estado == READY);
 }
 
+
+
+bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
+	return entrenador->cuantos_puede_cazar > 0;
+}
 
 //entrenador* entrenador_mas_cerca(,pokemon* poke){
 //	//ordenar la lista entrenadores segun la cercania, sacados de la cola ready?
