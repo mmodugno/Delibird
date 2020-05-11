@@ -24,6 +24,7 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 
+
 typedef enum{
     NEW=0,
     READY=1,
@@ -48,15 +49,18 @@ typedef struct{
     uint32_t posX;
     uint32_t posY;
     uint32_t  tamanio_nombre;
+    uint32_t cantidad;
 }pokemon;
 
 
+/* BORRAR?
+ *
 typedef struct{
 	char* especie;
 	int cantidad;
 }pokemon_objetivo;
 
-
+*/
 
 
 
@@ -74,7 +78,7 @@ char* leer_ip_broker(void);
 char* leer_algoritmo_planificacion(void);
 int leer_quantum(void);
 int leer_estimacion_inicial(void);
-
+int leer_tiempo_de_reconexion(void);
 
 
 
@@ -90,19 +94,9 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
 t_list* calcular_objetivo_global(void);
+bool se_puede_planificar(entrenador* entrenador);
 
-// FUNCIONES DE LOGS //
-t_log* iniciar_log(char* proceso);
-void log_algoritmo_de_planificacion(void);
-void log_cambio_de_cola(char * razon);
-void log_movimiento_de_entrenador(entrenador* entrenador);
-void log_atrapar_pokemon(pokemon* poke);
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2);
-void log_reintentar_comunicacion(void);
-void log_conexion_exitosa(void);
-void log_fallo_de_conexion(void);
-
-
+void planificar_entrenador(t_list* entrenadores);
 
 
 #endif /* TEAM_UTILS_TEAMH */

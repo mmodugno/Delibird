@@ -5,9 +5,8 @@
  *      Author: utnso
  */
 
-#include "utils_team.h"
+#include"utils_team.h"
 #include<commons/collections/list.h>
-
 
 
 
@@ -47,7 +46,7 @@
  t_list* obtener_lista_objetivos(void){
 	 t_config* config = leer_config();
       char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
-      return crear_lista(array_objetivos);
+     return crear_lista(array_objetivos);
 
   }
 
@@ -94,8 +93,8 @@ char* leer_ip_broker(void){
  /////////////////////////////////////////////////////////////////////////////
 
 int conexion;
-char* ip = leer_ip_broker();
-char* puerto = leer_puerto_broker();
+char* ip; //= leer_ip_broker();
+char* puerto; //= leer_puerto_broker();
 
 
 
@@ -125,6 +124,7 @@ char* puerto = leer_puerto_broker();
 
 	 t_list* entrenadores = list_create();
 
+
 	 for(int i=0 ; i< list_size(posiciones) ; i++){
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i),i);
 		list_add(entrenadores,entrenador_listo);
@@ -139,6 +139,7 @@ char* puerto = leer_puerto_broker();
 	 poke->posX = posX;
 	 poke->posY = posY;
 	 poke->tamanio_nombre = sizeof(nombre);
+	 poke->cantidad = 1;
 	 return poke;
  }
 
@@ -160,24 +161,12 @@ t_list* calcular_objetivo_global(void){
 	return objetivos;
 }
 
-/*t_list* objetivos_de_entrenador(entrenador* entrenador){
-	t_list* objetivos_personales = list_create();
-
-	for(int i = 0; i< list_size(entrenador->objetivos);i++){
-
-	}
-}
-
-int cantidad_especie(entrenador* entrenador, pokemon* poke, char* especie){
-
-	 t_list* nueva_lista = list_filter(entrenador->objetivos, es_de_especie(poke,especie));
-	 return list_size(nueva_lista);
-}
 
 bool es_de_especie(pokemon* poke,char* nombre){
 	return poke->nombre == nombre;
 }
-*/
+
+
 
  int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
 	int x_final = fabs(entrenador.posX - pokemon.posX);
@@ -185,11 +174,9 @@ bool es_de_especie(pokemon* poke,char* nombre){
 	return (x_final + y_final);
 }
 
-
 void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
 	entrenador->estado = nuevo_estado;
 }
-
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 	int tiempo = leer_retardo_cpu();
@@ -218,6 +205,7 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 
 
 bool se_puede_planificar(entrenador* entrenador){
+
 return (entrenador->estado == NEW || entrenador->estado == READY);
 }
 
@@ -234,79 +222,23 @@ bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenado
 
 
 
+void planificar_entrenador(t_list* entrenadores){ //entrenadores de la cola de ready
+	//t_list* list_filter(t_list*, bool(*condition)(void*));
 
+	//list_filter(entrenadores, se_puede_planificar());
 
-
-
-
-////////////////////////////////////////////LOGS///////////////////////////////////////////////////////
-
-
- t_log* iniciar_log(char* proceso){
-	t_config* config = leer_config();
-	char* archivo = config_get_string_value(config,"LOG_FILE");
-   	return log_create(archivo,proceso,true,LOG_LEVEL_INFO);
-   }
-
-void log_algoritmo_de_planificacion(void){
-	t_log* log = iniciar_log("ALGORITMO");
-	log_info(log,"algoritmo de planificacion: %s",leer_algoritmo_planificacion());
-}
-
-void log_cambio_de_cola(char * razon){
-	t_log* log = iniciar_log("CAMBIO DE COLA");
-	log_info(log,"cambio de cola porque: %s ",razon);
-}
-
-void log_movimiento_de_entrenador(entrenador* entrenador){
-	t_log* log = iniciar_log("MOVIMIENTO DE ENTRENADOR");
-	log_info(log,"posicion en x: %d       posicion en y: %d",entrenador->posX,entrenador->posY);
-}
-
-void log_atrapar_pokemon(pokemon* poke){
-	t_log* log = iniciar_log("ATRAPAR POKEMON");
-	log_info(log,"pokemon: %s con posicion en x: %d y posicion en y: %d",poke->nombre,poke->posX,poke->posY);
-}
-
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2){ //Como muestro los entrenadores?
-	t_log* log = iniciar_log("INTERCAMBIO");
-		log_info(log,"intercambio entre entrenadores");
-}
-
-void log_comunicacion_fallida(void){
-t_log* log = iniciar_log("NO SE PUDO COMUNICAR CON BROKER");
-int reconexion = leer_tiempo_de_reconexion();
-	log_info(log,"se reintentara de comunicar en %d",reconexion);
-}
-
-
-void log_reintentar_comunicacion(void){
-
-t_log* log = iniciar_log("REINTENTANDO CONEXION");
-	log_info(log,"conectando con broker ...");
-}
-
-void log_conexion_exitosa(void){
- t_log* log = iniciar_log("CONEXION");
-	log_info(log,"conexion exitosa");
-}
-void log_fallo_de_conexion(void){
-t_log* log = iniciar_log("CONEXION"); //PONERLO COMO ERROR ASI SALE ROJITO
-	log_info(log,"fallo de conexion");
 }
 
 
 
- /////////////////////////LOGS OBLIGATORIOS//////////////////////////////
- /*
- PENDIENTE - Inicio de algoritmo de detección de deadlock.
- PENDIENTE - Resultado de algoritmo de detección de deadlock.
- PENDIENTE - Llegada de un mensaje (indicando el tipo del mismo y sus datos).
- PENDIENTE - Resultado del Team (especificado anteriormente).
-////////////////////////////////////////////////////////////////
 
 
-*/
+
+
+
+
+
+
 
 
 
