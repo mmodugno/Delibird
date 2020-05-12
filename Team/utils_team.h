@@ -24,6 +24,14 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 
+t_list* pokemones_sueltos;
+t_config* config;
+t_config* leer_config(void);
+
+
+
+t_list* entrenadores;
+t_dictionary* objetivo_global;
 
 typedef enum{
     NEW=0,
@@ -65,11 +73,10 @@ typedef struct{
 
 
 
-t_config* config;
 
 
 // FUNCIONES DE LA CONFIG //
-t_config* leer_config(void);
+
 t_list* obtener_lista_posiciones(void);
 t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
@@ -83,8 +90,14 @@ int leer_tiempo_de_reconexion(void);
 
 
 
+
+void variables_globales();
+
+
+
+
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
-t_list* hacer_entrenadores(void);
+void hacer_entrenadores(void);
 
 
 int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
@@ -93,7 +106,9 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
-t_list* calcular_objetivo_global(void);
+void calcular_objetivo_global(void);
+void agregar_un_objetivo(char * pokemon_a_agregar);
+
 bool se_puede_planificar(entrenador* entrenador);
 
 void planificar_entrenador(t_list* entrenadores);

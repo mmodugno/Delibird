@@ -6,7 +6,6 @@
  */
 
 #include"utils_team.h"
-#include<commons/collections/list.h>
 
 
 
@@ -25,66 +24,61 @@
      }
 
 
+void variables_globales(){
+	hacer_entrenadores();
+	calcular_objetivo_global();
+	pokemones_sueltos = list_create();
+	config = leer_config();
+
+}
 
 
 
 //////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
   int leer_retardo_cpu(void){
-	 t_config* config = leer_config();
 	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
 	  return retardo;
  }
 
 
  t_list* obtener_lista_posiciones(void){
-	 t_config* config = leer_config();
      char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
      return crear_lista(array_posiciones);
-
  }
 
  t_list* obtener_lista_objetivos(void){
-	 t_config* config = leer_config();
       char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
      return crear_lista(array_objetivos);
 
   }
 
-
  t_list* obtener_lista_pokemones(void){
-	 t_config* config = leer_config();
       char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
        return crear_lista(array_pokemones);
   }
 
 int leer_tiempo_de_reconexion(void){
-	t_config* config = leer_config();
 	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
      return tiempo_de_reconexion;
 }
 
 int leer_puerto_broker(void){
-	 t_config* config = leer_config();
 	 int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
 	  return puerto_broker;
 }
 char* leer_algoritmo_planificacion(void){
-	 t_config* config = leer_config();
 	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	  return algoritmo_planificacion;
 }
 int leer_quantum(void){
-	 t_config* config = leer_config();
 	 int quantum = config_get_int_value(config,"QUANTUM");
 	  return quantum;
 }
 int leer_estimacion_inicial(void){
-	 t_config* config = leer_config();
 	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
 	  return estimacion_inicial;
 }
 char* leer_ip_broker(void){
-	 t_config* config = leer_config();
 	 char* ip = config_get_string_value(config,"IP_BROKER");
 	  return ip;
 }
@@ -95,6 +89,9 @@ char* leer_ip_broker(void){
 int conexion;
 char* ip; //= leer_ip_broker();
 char* puerto; //= leer_puerto_broker();
+
+
+
 
 
 
@@ -117,19 +114,19 @@ char* puerto; //= leer_puerto_broker();
  }
 
 
- t_list* hacer_entrenadores(void){
+void hacer_entrenadores(void){
 	 t_list* posiciones = obtener_lista_posiciones();
 	 t_list* pokemones = obtener_lista_pokemones();
 	 t_list* objetivos = obtener_lista_objetivos();
 
-	 t_list* entrenadores = list_create();
+	 entrenadores = list_create();
 
 
 	 for(int i=0 ; i< list_size(posiciones) ; i++){
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i),i);
 		list_add(entrenadores,entrenador_listo);
 	 }
-	return entrenadores;
+
  }
 
 
@@ -144,22 +141,34 @@ char* puerto; //= leer_puerto_broker();
  }
 
 
-t_list* calcular_objetivo_global(void){
-	t_list* objetivos = list_create();
-	t_list* entrenadores = hacer_entrenadores();
 
-	for( int i = 0; i < list_size(entrenadores); i++){
-		entrenador* un_entrenador =  list_get(entrenadores,i);
 
-		t_list* objetivos_entrenador = un_entrenador->objetivos;
+void calcular_objetivo_global(void){
 
-	 //ACA AGREGAR OTRA F DE LISTA DE STRUCTS y esa pasarla abajo
+	objetivo_global = dictionary_create();
 
-		list_add_all(objetivos, objetivos_entrenador);
+	//agrego todos los objetivos particulares:
+	for(int i = 0; list_size(entrenadores);i++){
+		entrenador* un_entrenador = list_get(entrenadores,i);
 
+		for(int j = 0; j< list_size(un_entrenador->objetivos);j++){
+			agregar_un_objetivo(list_get(un_entrenador->objetivos,j));
+		}
 	}
-	return objetivos;
 }
+
+
+
+void agregar_un_objetivo(char* pokemon_a_agregar){
+
+	if(dictionary_has_key(objetivo_global, pokemon_a_agregar)){ //si el pokemon ya estaba en el diccionario, le sumo 1 a su cantidad
+		dictionary_put(objetivo_global,pokemon_a_agregar, dictionary_get(objetivo_global,pokemon_a_agregar)+1);
+	}
+	else{
+		dictionary_put(objetivo_global, pokemon_a_agregar,1);
+	}
+}
+
 
 
 bool es_de_especie(pokemon* poke,char* nombre){
