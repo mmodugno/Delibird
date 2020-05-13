@@ -73,8 +73,6 @@ typedef struct{
 
 
 
-
-
 // FUNCIONES DE LA CONFIG //
 
 t_list* obtener_lista_posiciones(void);
@@ -91,7 +89,7 @@ int leer_tiempo_de_reconexion(void);
 
 
 
-void variables_globales();
+//void variables_globales();
 
 
 
