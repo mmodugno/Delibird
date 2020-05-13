@@ -28,9 +28,18 @@ typedef enum
 	GAMECARD__NEW_POKEMON = 8,
 	GAMECARD__CATCH_POKEMON = 9,
 	GAMECARD__GET_POKEMON = 10,
-	SUBCRIPCION = 11
+	SUSCRIPCION = 11
 
 }op_code;
+
+typedef enum{
+	NEW_POKEMON=1,
+	APPEARED_POKEMON=2,
+	CATCH_POKEMON=3,
+	CAUGHT_POKEMON=4,
+	GET_POKEMON=5,
+	LOCALIZED_POKEMON=6
+}tipoDeCola;
 
 typedef struct {
 	uint32_t tamanioNombre;
@@ -84,6 +93,12 @@ typedef struct
 	op_code codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
+
+typedef struct{
+	uint32_t tamanioNombreSucriptor;
+	char* nombreDeSuscriptor;
+	tipoDeCola tipoDeCola;
+}suscriptor;
 //////////////////////////////////////////////////
 
 void* serializar_paquete(t_paquete* paquete, int *bytes);

@@ -33,4 +33,6 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		/*t_log* compactacionMemoria= iniciar_logger("");
 		t_log* dumpCache= iniciar_logger("");*/
 
+
+
 }
