@@ -262,22 +262,22 @@ int main(int argc, char* argv[]){
 		if(argc==3){
 
 
-			if(*&argv[2]=="NEW_POKEMON"){
+			if(!strcmp(*&argv[2],"NEW_POKEMON")){
 				log_info(logSuscipcion,"me conecto como modo suscriptor a New_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="APPEARED_POKEMON"){
+			if(!strcmp(*&argv[2],"APPEARED_POKEMON")){
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Appeared_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="CATCH_POKEMON"){
+			if(!strcmp(*&argv[2],"CATCH_POKEMON")){
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Catch_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="CAUGHT_POKEMON"){
+			if(!strcmp(*&argv[2],"CAUGHT_POKEMON")){
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Caught_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="GET_POKEMON"){
+			if(!strcmp(*&argv[2],"GET_POKEMON")){
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Get_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="LOCALIZED_POKEMON"){
+			if(!strcmp(*&argv[2],"LOCALIZED_POKEMON")){
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Localized_Pokemon exitosamente");
 			}
 

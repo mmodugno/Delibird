@@ -1,5 +1,5 @@
 TARGET = gameboy 
-LIBS = -lreadline -lcommons -lutils 
+LIBS = -lreadline -lcommons 
 CC = gcc 
 CFLAGS = -I ../utils -g -Wall 
 
