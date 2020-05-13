@@ -22,10 +22,6 @@ int main(int argc, char* argv[]){
 
 
 
-	int cant = dictionary_size(objetivo_global);
-	printf("asd: %d" , cant);
-
-
 
 
 
