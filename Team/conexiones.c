@@ -80,6 +80,9 @@ void* recibir_mensaje(int socket_cliente){
 }
 
 
+
+
+
 /*
 
 void iniciar_conexion_gameboy(void)
@@ -175,10 +178,6 @@ void liberar_conexion(int socket_cliente)
    	return log_create(archivo,proceso,true,LOG_LEVEL_INFO);
    }
 
-void log_algoritmo_de_planificacion(void){
-	t_log* log = iniciar_log("ALGORITMO");
-	log_info(log,"algoritmo de planificacion: %s",leer_algoritmo_planificacion());
-}
 
 void log_cambio_de_cola(char * razon){
 	t_log* log = iniciar_log("CAMBIO DE COLA");
@@ -187,32 +186,36 @@ void log_cambio_de_cola(char * razon){
 
 void log_movimiento_de_entrenador(entrenador* entrenador){
 	t_log* log = iniciar_log("MOVIMIENTO DE ENTRENADOR");
-	log_info(log,"posicion en x: %d       posicion en y: %d",entrenador->posX,entrenador->posY);
+	log_info(log,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 }
 
 void log_atrapar_pokemon(pokemon* poke){
 	t_log* log = iniciar_log("ATRAPAR POKEMON");
-	log_info(log,"pokemon: %s con posicion en x: %d y posicion en y: %d",poke->nombre,poke->posX,poke->posY);
+	log_info(log,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);
 }
 
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2){ //Como muestro los entrenadores?
+void log_intercambio(entrenador* entrenador1,entrenador* entrenador2){
 	t_log* log = iniciar_log("INTERCAMBIO");
-		log_info(log,"intercambio entre entrenadores");
+		log_info(log,"intercambio entre entrenadores %d y %d",entrenador1->id,entrenador2->id);
 }
 
+
+
+//Error de comunicacion con el broker
 void log_comunicacion_fallida(void){
 t_log* log = iniciar_log("NO SE PUDO COMUNICAR CON BROKER");
 int reconexion = leer_tiempo_de_reconexion();
-	log_info(log,"se reintentara de comunicar en %d",reconexion);
+log_info(log,"se reintentara de comunicar en %d",reconexion);
 }
 
 
 void log_reintentar_comunicacion(void){
-
 t_log* log = iniciar_log("REINTENTANDO CONEXION");
 	log_info(log,"conectando con broker ...");
 }
 
+
+//Resultado de reintento de comunicacion con el broker
 void log_conexion_exitosa(void){
  t_log* log = iniciar_log("CONEXION");
 	log_info(log,"conexion exitosa");
@@ -221,7 +224,6 @@ void log_fallo_de_conexion(void){
 t_log* log = iniciar_log("CONEXION"); //PONERLO COMO ERROR ASI SALE ROJITO
 	log_info(log,"fallo de conexion");
 }
-
 
 
  /////////////////////////LOGS OBLIGATORIOS//////////////////////////////

@@ -27,72 +27,60 @@
 void variables_globales(){
 	config = leer_config();
 	hacer_entrenadores();
-	//calcular_objetivo_global();
-	//pokemones_sueltos = list_create();
-	//config = leer_config();
+	calcular_objetivo_global();
 
+	//pokemones_sueltos = list_create();
 
 }
 
 
 
 //////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
-  int leer_retardo_cpu(void){
 
+  int leer_retardo_cpu(void){
 	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
 	  return retardo;
  }
 
-
  t_list* obtener_lista_posiciones(void){
-
      char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
      return crear_lista(array_posiciones);
  }
 
  t_list* obtener_lista_objetivos(void){
-
       char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
      return crear_lista(array_objetivos);
-
   }
 
  t_list* obtener_lista_pokemones(void){
-
       char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
        return crear_lista(array_pokemones);
   }
 
 int leer_tiempo_de_reconexion(void){
-
 	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
      return tiempo_de_reconexion;
 }
 
 int leer_puerto_broker(void){
-
 	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
 	  return puerto_broker;
 }
 char* leer_algoritmo_planificacion(void){
-
 	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	  return algoritmo_planificacion;
 }
 int leer_quantum(void){
-
 	 int quantum = config_get_int_value(config,"QUANTUM");
 	  return quantum;
 }
 int leer_estimacion_inicial(void){
-
 	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
 	  return estimacion_inicial;
 }
 char* leer_ip_broker(void){
-
 	 char* ip = config_get_string_value(config,"IP_BROKER");
-	  return ip;
+	 return ip;
 }
 
 
@@ -162,14 +150,19 @@ void calcular_objetivo_global(void){
 
 	objetivo_global = dictionary_create();
 
-	//agrego todos los objetivos particulares:
-	for(int i = 0; list_size(entrenadores);i++){
+	for(int i = 0; i < list_size(entrenadores);i++){
+		//agarro el primer entrenador:
 		entrenador* un_entrenador = list_get(entrenadores,i);
+		printf("entrenador n: %d: \n",un_entrenador->id);
 
 		for(int j = 0; j< list_size(un_entrenador->objetivos);j++){
-			agregar_un_objetivo(list_get(un_entrenador->objetivos,j));
+
+			//pongo sus objetivos en el dictionary:
+			char* pokemon_a_agregar = list_get(un_entrenador->objetivos,j);
+			agregar_un_objetivo(pokemon_a_agregar);
 		}
 	}
+
 }
 
 
@@ -178,10 +171,13 @@ void agregar_un_objetivo(char* pokemon_a_agregar){
 
 	if(dictionary_has_key(objetivo_global, pokemon_a_agregar)){ //si el pokemon ya estaba en el diccionario, le sumo 1 a su cantidad
 		dictionary_put(objetivo_global,pokemon_a_agregar, dictionary_get(objetivo_global,pokemon_a_agregar)+1);
+		printf("agrego como repetido a: %s \n",pokemon_a_agregar);
 	}
+
 	else{
-		int value = 1;
-		dictionary_put(objetivo_global, pokemon_a_agregar,value);
+
+		dictionary_put(objetivo_global, pokemon_a_agregar,1); // 1 o puntero??
+		printf("agrego como nuevo a: %s \n",pokemon_a_agregar);
 	}
 }
 
@@ -199,11 +195,13 @@ bool es_de_especie(pokemon* poke,char* nombre){
 	return (x_final + y_final);
 }
 
+
 void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
 	entrenador->estado = nuevo_estado;
 }
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
+
 	int tiempo = leer_retardo_cpu();
 	while(entrenador->posX != pokemon->posX){
 		if(entrenador->posX < pokemon->posX){
@@ -225,6 +223,8 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 			sleep(tiempo);
 		}
 	}
+
+	//log_movimiento_de_entrenador(entrenador); (mostraria la posicion despues de moverse)
 }
 
 

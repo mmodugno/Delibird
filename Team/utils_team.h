@@ -8,6 +8,8 @@
 
 #ifndef TEAM_UTILS_TEAMH
 #define TEAM_UTILS_TEAMH
+
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<signal.h>
@@ -84,12 +86,21 @@ char* leer_algoritmo_planificacion(void);
 int leer_quantum(void);
 int leer_estimacion_inicial(void);
 int leer_tiempo_de_reconexion(void);
+int leer_retardo_cpu(void);
+
+// FUNCIONES DE LOS LOGS //
+t_log* iniciar_log(char* proceso);
+void log_algoritmo_de_planificacion(void);
+void log_cambio_de_cola(char * razon);
+void log_movimiento_de_entrenador(entrenador* entrenador);
+void log_atrapar_pokemon(pokemon* poke);
+void log_intercambio(entrenador* entrenador1,entrenador* entrenador2);
+void log_reintentar_comunicacion(void);
+void log_conexion_exitosa(void);
+void log_fallo_de_conexion(void);
 
 
-
-
-
-//void variables_globales();
+void variables_globales();
 
 
 
@@ -105,6 +116,7 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
 void calcular_objetivo_global(void);
+
 void agregar_un_objetivo(char * pokemon_a_agregar);
 
 bool se_puede_planificar(entrenador* entrenador);

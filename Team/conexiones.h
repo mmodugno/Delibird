@@ -32,6 +32,7 @@ void* recibir_mensaje(int socket_cliente);
 
 
 // FUNCIONES DE LOGS //
+
 t_log* iniciar_log(char* proceso);
 void log_algoritmo_de_planificacion(void);
 void log_cambio_de_cola(char * razon);
