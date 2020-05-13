@@ -26,21 +26,28 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 
-t_list* pokemones_sueltos;
+
 t_config* config;
+
+
 t_config* leer_config(void);
-
-
-
 t_list* entrenadores;
 t_dictionary* objetivo_global;
+
+t_list* pokemones_en_el_mapa;
+t_list* pokemones_atrapados;
+
+t_list* entrenadores_en_ready;
+
 
 typedef enum{
     NEW=0,
     READY=1,
     EXEC=2,
-    BLOCK=3,
-    EXIT=4,
+	BLOCK_READY=3,
+    BLOCK_ESPERANDO=4,
+	BLOCK_DEADLOCK=5,
+    EXIT=6
 }estadoEntrenador;
 
 typedef struct{
@@ -59,21 +66,9 @@ typedef struct{
     uint32_t posX;
     uint32_t posY;
     uint32_t  tamanio_nombre;
-    uint32_t cantidad;
 }pokemon;
 
-
-/* BORRAR?
- *
-typedef struct{
-	char* especie;
-	int cantidad;
-}pokemon_objetivo;
-
-*/
-
-
-
+pokemon* proximo_objetivo;
 
 // FUNCIONES DE LA CONFIG //
 
@@ -88,6 +83,7 @@ int leer_estimacion_inicial(void);
 int leer_tiempo_de_reconexion(void);
 int leer_retardo_cpu(void);
 
+
 // FUNCIONES DE LOS LOGS //
 t_log* iniciar_log(char* proceso);
 void log_algoritmo_de_planificacion(void);
@@ -100,16 +96,15 @@ void log_conexion_exitosa(void);
 void log_fallo_de_conexion(void);
 
 
+
+
 void variables_globales();
-
-
 
 
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 void hacer_entrenadores(void);
 
-
-int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon);
+int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);
 
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 
@@ -121,7 +116,8 @@ void agregar_un_objetivo(char * pokemon_a_agregar);
 
 bool se_puede_planificar(entrenador* entrenador);
 
-void planificar_entrenador(t_list* entrenadores);
+void planificar_entrenador(pokemon* pokemon);
 
+bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2);
 
 #endif /* TEAM_UTILS_TEAMH */

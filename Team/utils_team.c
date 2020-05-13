@@ -29,7 +29,12 @@ void variables_globales(){
 	hacer_entrenadores();
 	calcular_objetivo_global();
 
-	//pokemones_sueltos = list_create();
+	pokemones_en_el_mapa = list_create();
+	pokemones_atrapados= list_create();
+
+	entrenadores_en_ready= list_create();
+
+
 
 }
 
@@ -139,7 +144,6 @@ void hacer_entrenadores(void){
 	 poke->posX = posX;
 	 poke->posY = posY;
 	 poke->tamanio_nombre = sizeof(nombre);
-	 poke->cantidad = 1;
 	 return poke;
  }
 
@@ -153,16 +157,14 @@ void calcular_objetivo_global(void){
 	for(int i = 0; i < list_size(entrenadores);i++){
 		//agarro el primer entrenador:
 		entrenador* un_entrenador = list_get(entrenadores,i);
-		printf("entrenador n: %d: \n",un_entrenador->id);
+
 
 		for(int j = 0; j< list_size(un_entrenador->objetivos);j++){
-
 			//pongo sus objetivos en el dictionary:
 			char* pokemon_a_agregar = list_get(un_entrenador->objetivos,j);
 			agregar_un_objetivo(pokemon_a_agregar);
 		}
 	}
-
 }
 
 
@@ -171,13 +173,10 @@ void agregar_un_objetivo(char* pokemon_a_agregar){
 
 	if(dictionary_has_key(objetivo_global, pokemon_a_agregar)){ //si el pokemon ya estaba en el diccionario, le sumo 1 a su cantidad
 		dictionary_put(objetivo_global,pokemon_a_agregar, dictionary_get(objetivo_global,pokemon_a_agregar)+1);
-		printf("agrego como repetido a: %s \n",pokemon_a_agregar);
 	}
-
 	else{
-
 		dictionary_put(objetivo_global, pokemon_a_agregar,1); // 1 o puntero??
-		printf("agrego como nuevo a: %s \n",pokemon_a_agregar);
+
 	}
 }
 
@@ -187,13 +186,6 @@ bool es_de_especie(pokemon* poke,char* nombre){
 	return poke->nombre == nombre;
 }
 
-
-
- int distancia_entrenador_pokemon(entrenador entrenador, pokemon pokemon){
-	int x_final = fabs(entrenador.posX - pokemon.posX);
-	int y_final = fabs(entrenador.posY - pokemon.posY);
-	return (x_final + y_final);
-}
 
 
 void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
@@ -228,31 +220,55 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 }
 
 
+void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY){
+	pokemon* nuevo_pokemon = malloc(sizeof(pokemon));
+	nuevo_pokemon = hacer_pokemon(nombre,posicionX,posicionY);
 
-bool se_puede_planificar(entrenador* entrenador){
+	list_add(pokemones_en_el_mapa,nuevo_pokemon);
 
-return (entrenador->estado == NEW || entrenador->estado == READY);
+	//planificar a un entrenador con este pokemon nuevo
+	//planificar_entrenador(nuevo_pokemon);
+
+
+}
+//TODO
+void planificar_entrenador(pokemon* pokemon){
+entrenador* entrenador_ready = list_get( list_sorted(list_filter(entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
+list_add(entrenadores_en_ready,entrenador_ready);
+
 }
 
 
-
-bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
+/* bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
 	return entrenador->cuantos_puede_cazar > 0;
 }
+*/
 
-//entrenador* entrenador_mas_cerca(,pokemon* poke){
-//	//ordenar la lista entrenadores segun la cercania, sacados de la cola ready?
+
+
+bool se_puede_planificar(entrenador* entrenador){
+return (entrenador->estado == NEW || entrenador->estado == BLOCK_READY);
+}
+
+
+
+bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2){
+	return distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
+}
+
+
+
+
+int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon){
+	int x_final = fabs(entrenador->posX - pokemon->posX);
+	int y_final = fabs(entrenador->posY - pokemon->posY);
+	return (x_final + y_final);
+}
+
+//void planificar_entrenador(void){ //entrenadores de la cola de ready
+
 
 //}
-
-
-
-void planificar_entrenador(t_list* entrenadores){ //entrenadores de la cola de ready
-	//t_list* list_filter(t_list*, bool(*condition)(void*));
-
-	//list_filter(entrenadores, se_puede_planificar());
-
-}
 
 
 
