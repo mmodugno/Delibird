@@ -68,6 +68,16 @@ typedef struct{
     uint32_t  tamanio_nombre;
 }pokemon;
 
+
+typedef enum{
+	FIFO=0,
+	RR=1,
+	SJFCD=2,
+	SJFSD=3
+};
+
+
+
 pokemon* proximo_objetivo;
 
 // FUNCIONES DE LA CONFIG //
@@ -77,7 +87,7 @@ t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
 int leer_puerto_broker(void);
 char* leer_ip_broker(void);
-char* leer_algoritmo_planificacion(void);
+int leer_algoritmo_planificacion(void);
 int leer_quantum(void);
 int leer_estimacion_inicial(void);
 int leer_tiempo_de_reconexion(void);
@@ -113,11 +123,20 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 void calcular_objetivo_global(void);
 
 void agregar_un_objetivo(char * pokemon_a_agregar);
+void quitar_un_objetivo(char* pokemon_a_quitar);
+
 
 bool se_puede_planificar(entrenador* entrenador);
 
 void planificar_entrenador(pokemon* pokemon);
 
 bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2);
+
+
+void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY);
+
+void procedimiento_de_caza(entrenador* un_entrenador);
+
+void algoritmo_aplicado(void);
 
 #endif /* TEAM_UTILS_TEAMH */

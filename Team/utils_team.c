@@ -71,9 +71,15 @@ int leer_puerto_broker(void){
 	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
 	  return puerto_broker;
 }
-char* leer_algoritmo_planificacion(void){
+int leer_algoritmo_planificacion(void){
 	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-	  return algoritmo_planificacion;
+
+	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
+	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+
+	 return algoritmo_planificacion;
+
 }
 int leer_quantum(void){
 	 int quantum = config_get_int_value(config,"QUANTUM");
@@ -88,15 +94,7 @@ char* leer_ip_broker(void){
 	 return ip;
 }
 
-
  /////////////////////////////////////////////////////////////////////////////
-
-int conexion;
-char* ip; //= leer_ip_broker();
-char* puerto; //= leer_puerto_broker();
-
-
-
 
 
 
@@ -148,8 +146,6 @@ void hacer_entrenadores(void){
  }
 
 
-
-
 void calcular_objetivo_global(void){
 
 	objetivo_global = dictionary_create();
@@ -165,8 +161,23 @@ void calcular_objetivo_global(void){
 			agregar_un_objetivo(pokemon_a_agregar);
 		}
 	}
+
+	//LE SACO LOS POKEMONES QUE YA TENIAN
+	for(int i = 0; i < list_size(entrenadores);i++){
+		//agarro el primer entrenador:
+		entrenador* un_entrenador = list_get(entrenadores,i);
+
+
+
+		for(int j = 0; j< list_size(un_entrenador->pokemones);j++){
+		//saco los pokemons que tenia del dictionary:
+		char* pokemon_a_quitar = list_get(un_entrenador->pokemones,j);
+		quitar_un_objetivo(pokemon_a_quitar);
+
+	}
 }
 
+}
 
 
 void agregar_un_objetivo(char* pokemon_a_agregar){
@@ -181,10 +192,10 @@ void agregar_un_objetivo(char* pokemon_a_agregar){
 }
 
 
-
-bool es_de_especie(pokemon* poke,char* nombre){
-	return poke->nombre == nombre;
+void quitar_un_objetivo(char* pokemon_a_quitar){
+	dictionary_put(objetivo_global, pokemon_a_quitar,dictionary_get(objetivo_global,pokemon_a_quitar)-1);
 }
+
 
 
 
@@ -227,15 +238,15 @@ void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY){
 	list_add(pokemones_en_el_mapa,nuevo_pokemon);
 
 	//planificar a un entrenador con este pokemon nuevo
-	//planificar_entrenador(nuevo_pokemon);
-
-
+	planificar_entrenador(nuevo_pokemon);
 }
-//TODO
-void planificar_entrenador(pokemon* pokemon){
-entrenador* entrenador_ready = list_get( list_sorted(list_filter(entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
-list_add(entrenadores_en_ready,entrenador_ready);
 
+
+void planificar_entrenador(pokemon* un_pokemon){
+	proximo_objetivo = un_pokemon;
+	entrenador* entrenador_ready = list_get( list_sorted(list_filter( entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
+	cambiar_estado_entrenador(entrenador_ready,READY);
+	list_add(entrenadores_en_ready,entrenador_ready);
 }
 
 
@@ -257,24 +268,58 @@ bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador*
 }
 
 
-
-
-int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon){
-	int x_final = fabs(entrenador->posX - pokemon->posX);
-	int y_final = fabs(entrenador->posY - pokemon->posY);
+int distancia_entrenador_pokemon(entrenador* un_entrenador, pokemon* un_pokemon){
+	int x_final = fabs(un_entrenador->posX - un_pokemon->posX);
+	int y_final = fabs(un_entrenador->posY - un_pokemon->posY);
 	return (x_final + y_final);
 }
 
-//void planificar_entrenador(void){ //entrenadores de la cola de ready
 
 
-//}
+void algoritmo_aplicado(void){
+	switch (leer_algoritmo_planificacion()){
+	case FIFO:
+		printf("\n Algoritmo de planificacion = FIFO");
+		//planifico_con_fifo();
+		break;
+
+	case RR:
+		printf("\n Algoritmo de planificacion = RR");
+		//planifico_con_RR();
+		break;
+
+	 default:
+	       printf("\n Algoritmo no reconocido \n");
+	       break;
+	}
+}
+
+
+
+//FUNCION DEL HILO DEL ENTRENADOR
+void procedimiento_de_caza(entrenador* un_entrenador){
+	//semaforo
+	cambiar_estado_entrenador(un_entrenador,EXEC);
+	mover_entrenador(un_entrenador,proximo_objetivo);
+	//pedir un catch
+
+	cambiar_estado_entrenador(un_entrenador,BLOCK_ESPERANDO);
+
+	//wait(respuesta de catch)
+	//cosas
+
+	cambiar_estado_entrenador(un_entrenador,BLOCK_READY);
+
+	//se vuelve a bloquear
+}
 
 
 
 
 
+void planifico_con_fifo(void){
 
+}
 
 
 
