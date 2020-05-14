@@ -267,7 +267,7 @@ int main(int argc, char* argv[]){
 			log_info(logConexion,"me conecte a Broker exitosamente");
 		}
 		if(argc==3){
-			suscriptor* meSuscribo;
+			suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 			meSuscribo->nombreDeSuscriptor="GAMEBOY";
 			meSuscribo->tamanioNombreSucriptor= strlen(meSuscribo->nombreDeSuscriptor)+1;
 

@@ -29,6 +29,7 @@ typedef enum
 	GAMECARD__CATCH_POKEMON = 9,
 	GAMECARD__GET_POKEMON = 10,
 	SUSCRIPCION = 11
+	//despues vamos a tener un tipo de mensaje de Gamecard del tipo BROKER_LOCALIZED_POKEMON
 
 }op_code;
 
@@ -102,5 +103,8 @@ typedef struct{
 //////////////////////////////////////////////////
 
 void* serializar_paquete(t_paquete* paquete, int *bytes);
+void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer);
+void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker);
+suscriptor* deserializar_suscripcion(int socket_cliente, int* size);
 
 #endif /* UTILS_EN_COMUN_H_ */

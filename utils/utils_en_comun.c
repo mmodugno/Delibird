@@ -59,10 +59,10 @@ void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer)
 	// serializacion
 	//1. uint32_t tamanioNombre;
 	//2. char* nombreDeSUSCRIPTOR;
-	//3. uint32_t colaASuscribirse;
+	//3. tipoDeCola colaASuscribirse;
 
 	buffer->size=strlen(suscriptor->nombreDeSuscriptor)+1 //longitud de string pokemon + 1 del centinela "/0"
-				+sizeof(uint32_t)*2; //tamanioNombre, enum de la cola a suscribirse
+				+sizeof(uint32_t)+sizeof(tipoDeCola); //tamanioNombre, enum de la cola a suscribirse
 
 	buffer->stream = malloc(buffer->size);
 	int offset = 0;
@@ -74,8 +74,29 @@ void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer)
 	memcpy(buffer->stream+offset,(suscriptor->nombreDeSuscriptor),suscriptor->tamanioNombreSucriptor);
 	offset+=sizeof(suscriptor->tamanioNombreSucriptor);
 
-	memcpy(buffer->stream+offset,&(suscriptor->tipoDeCola),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(buffer->stream+offset,&(suscriptor->tipoDeCola),sizeof(tipoDeCola));
+	offset+=sizeof(tipoDeCola);
+
+}
+
+
+suscriptor* deserializar_suscripcion(int socket_cliente, int* size){
+	// deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombreDeSUSCRIPTOR;
+	//3. uint32_t colaASuscribirse;
+	suscriptor* suscriptor = malloc(sizeof(suscriptor));
+	void* nombre;
+
+	recv(socket_cliente,&(suscriptor->tamanioNombreSucriptor),sizeof(uint32_t),0);
+	recv(socket_cliente , nombre , suscriptor->tamanioNombreSucriptor,0);
+	recv(socket_cliente , &(suscriptor->tipoDeCola) , sizeof(tipoDeCola),0);
+
+	memcpy(suscriptor->nombreDeSuscriptor,nombre,suscriptor->tamanioNombreSucriptor);
+
+
+	return suscriptor;
+
 
 }
 

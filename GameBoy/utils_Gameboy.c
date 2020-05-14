@@ -48,7 +48,7 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 
 }
 
-//CONSULTAR CHARLY EN UNA COSA DE MEMCPY y corregir los mios si esta mal
+
 void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer)
 {
 	// serializacion

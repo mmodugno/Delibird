@@ -20,19 +20,73 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 
 	 *
 	 */
+		leer_config();
+
+
+		logConexion = iniciar_logger("Conexion",log_file);//ver bien donde va
+		logSuscipcion = iniciar_logger("Suscripcion",log_file);
+		logMensajeNuevo = iniciar_logger("Mensaje Nuevo",log_file);
+		logEnviarNuevo = iniciar_logger("Enviar Mensaje",log_file);
+		confirmacionRecepcion = iniciar_logger("Recepcion Mensaje",log_file); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
+		almacenadoMemoria = iniciar_logger("Almacenado Memoria",log_file); //debe indicar posicion de inicio de particion
+		eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
+		/*compactacionMemoria= iniciar_logger("",log_file);
+		dumpCache= iniciar_logger("",log_file);*/
+
+
+		colaNewPokemon = queue_create();
+		colaAppearedPokemon = queue_create();
+		/*
+		colaCatchPokemon;
+		colaCaughtPokemon;
+		colaGetPokemon;
+		colaLocalizedPokemon;*/
+
+		iniciar_servidor();
 
 
 
-		t_log* logConexion=iniciar_logger("Conexion");//ver bien donde va
-		t_log* logSuscipcion=iniciar_logger("Suscripcion");
-		t_log* logMensajeNuevo=iniciar_logger("Mensaje Nuevo");
-		t_log* logEnviarNuevo= iniciar_logger("Enviar Mensaje");
-		t_log* confirmacionRecepcion= iniciar_logger("Recepcion Mensaje"); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
-		t_log* almacenadoMemoria= iniciar_logger("Almacenado Memoria"); //debe indicar posicion de inicio de particion
-		t_log* eliminacionMemoria= iniciar_logger("Eliminacion Pariticion Memoria"); //debe indicar posicion de inicio
-		/*t_log* compactacionMemoria= iniciar_logger("");
-		t_log* dumpCache= iniciar_logger("");*/
 
+		//terminar conexiones logs y config
 
 
 }
+
+
+t_log* iniciar_logger(char* tipoDeProceso,char* archivoLog){
+
+	//preguntar por el tipo de LOG_LEVEL
+	return log_create(archivoLog,tipoDeProceso,0,LOG_LEVEL_INFO);
+}
+
+
+void leer_config(void){
+
+	config = config_create("broker.config");
+
+	ip_broker = config_get_string_value(config,"IP_BROKER");
+	puerto_broker = config_get_string_value(config,"PUERTO_BROKER");
+	tamanio_memoria = config_get_int_value(config,"TAMANO_MEMORIA");
+	tamanio_minimo_particion = config_get_int_value(config,"TAMANO_MINIMO_PARTICION");
+	algoritmo_memoria = config_get_string_value(config,"ALGORITMO_MEMORIA");
+	algoritmo_particion_libre = config_get_string_value(config, "ALGORITMO_PARTICION_LIBRE");
+	algoritmo_reemplazo = config_get_string_value(config, "ALGORITMO_REEMPLAZO");
+	frecuencia_compactacion = config_get_int_value(config,"FRECUENCIA_COMPACTACION");
+	log_file = config_get_string_value(config,"LOG_FILE");
+
+
+}
+
+/*
+void terminar_programa(int conexBroker,int conexTeam,int conexGamecard, t_log* logConexion,t_log* logSuscripcion,t_log* logMensajeNuevo,t_log* logEnviarMensaje, t_config* config){
+
+	log_destroy(logConexion);
+
+	config_destroy(config);
+
+	liberar_conexion(conexBroker);
+	liberar_conexion(conexGamecard);
+	liberar_conexion(conexTeam);
+
+
+}*/
