@@ -77,11 +77,16 @@ void serve_client(int* socket)
 */
 void process_request(int cod_op, int cliente_fd) {
 	int size;
-	void* msg;
+	suscriptor* suscriptor;
+	broker_new_pokemon* newRecibido;
+	broker_appeared_pokemon* appearedRecibido;
+	broker_get_pokemon* getRecibido;
+	broker_catch_pokemon* catchRecibido;
+	broker_caught_pokemon* caughtRecibido;
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
 		case SUSCRIPCION:
-			suscriptor* suscriptor = deserializar_suscripcion(cliente_fd,&size);
+			suscriptor = deserializar_suscripcion(cliente_fd,&size);
 
 			log_info(logSuscipcion,"recibi mensaje de suscripcion de %s",suscriptor->nombreDeSuscriptor);
 
@@ -90,7 +95,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__NEW_POKEMON:
-			new_pokemon* newRecibido = deserializar_new_pokemon(cliente_fd,&size);
+			newRecibido = deserializar_new_pokemon(cliente_fd,&size);
 
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON");
 
@@ -99,7 +104,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__APPEARED_POKEMON:
-			appeared_pokemon* appearedRecibido = deserializar_appeared_pokemon(cliente_fd,&size);
+			appearedRecibido = deserializar_appeared_pokemon(cliente_fd,&size);
 
 			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON");
 
@@ -108,7 +113,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__GET_POKEMON:
-			get_pokemon* getRecibido = deserializar_get_pokemon(cliente_fd,&size);
+			getRecibido = deserializar_get_pokemon(cliente_fd,&size);
 
 			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON");
 
@@ -117,7 +122,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__CATCH_POKEMON:
-			catch_pokemon* catchRecibido = deserializar_catch_pokemon(cliente_fd,&size);
+			catchRecibido = deserializar_catch_pokemon(cliente_fd,&size);
 
 			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON");
 
@@ -126,7 +131,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__CAUGHT_POKEMON:
-			caught_pokemon* caughtRecibido = deserializar_caught_pokemon(cliente_fd,&size);
+			caughtRecibido = deserializar_caught_pokemon(cliente_fd,&size);
 
 			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON");
 
@@ -154,22 +159,23 @@ void* recibir_mensaje(int socket_cliente, int* size)
 	return buffer;
 }
 
+//por ahora usamos tipos de dato de broker que van a tener el id_relativo, pero quizas en la cola no lo necesita y sino en la memoria
 void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
 	switch(tipo_de_Cola){
 		case NEW_POKEMON:
-			queue_push(colaNewPokemon,(new_pokemon*)mensaje);
+			queue_push(colaNewPokemon,(broker_new_pokemon*)mensaje);
 			break;
 		case APPEARED_POKEMON:
-			queue_push(colaAppearedPokemon,(appeared_pokemon*)mensaje);
+			queue_push(colaAppearedPokemon,(broker_appeared_pokemon*)mensaje);
 			break;
 		case CATCH_POKEMON:
-			queue_push(colaCatchPokemon,(catch_pokemon*)mensaje);
+			queue_push(colaCatchPokemon,(broker_catch_pokemon*)mensaje);
 			break;
 		case CAUGHT_POKEMON:
-			queue_push(colaCaughtPokemon,(caught_pokemon*)mensaje);
+			queue_push(colaCaughtPokemon,(broker_caught_pokemon*)mensaje);
 			break;
 		case GET_POKEMON:
-			queue_push(colaGetPokemon,(get_pokemon*)mensaje);
+			queue_push(colaGetPokemon,(broker_get_pokemon*)mensaje);
 			break;
 		case LOCALIZED_POKEMON:
 			queue_push(colaLocalizedPokemon,(localize_pokemon*)mensaje);

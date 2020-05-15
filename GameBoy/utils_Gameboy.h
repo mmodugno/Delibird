@@ -15,48 +15,13 @@
 #include<sys/socket.h>
 #include<netdb.h>
 #include<string.h>
-#include "utils_en_comun.h"
+#include "datos_broker.h"
+#include "datos_gamecard.h"
+#include "datos_team.h"
 
 
-typedef struct {
-	new_pokemon* datos;
-} broker_new_pokemon;
 
-typedef struct {
-	uint32_t id_relativo;
-	appeared_pokemon* datos;
-} broker_appeared_pokemon;
 
-typedef struct {
-	catch_pokemon* datos;
-} broker_catch_pokemon;
-
-typedef struct {
-	uint32_t id_relativo;
-	caught_pokemon* datos;
-} broker_caught_pokemon;
-
-typedef struct {
-	get_pokemon* datos;
-} broker_get_pokemon;
-
-typedef struct {
-	appeared_pokemon* datos;
-} team_appeared_pokemon;
-
-typedef struct {
-	uint32_t id_relativo;
-	new_pokemon* datos;
-} gameCard_new_pokemon;
-
-typedef struct {
-	uint32_t id_relativo;
-	catch_pokemon* datos;
-} gameCard_catch_pokemon;
-
-typedef struct {
-	get_pokemon* datos;
-} gameCard_get_pokemon;
 
 
 

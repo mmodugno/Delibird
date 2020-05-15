@@ -9,7 +9,6 @@
 #define UTILS_BROKER_H_
 
 
-#include<readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -24,10 +23,8 @@
 #include<commons/log.h>
 #include<commons/string.h>
 #include<commons/config.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
 #include<pthread.h>
-#include "utils_en_comun.h"
+#include "datos_broker.h"
 #include<commons/collections/list.h>
 
 
