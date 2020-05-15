@@ -107,36 +107,36 @@ void log_fallo_de_conexion(void);
 
 
 
-
+//globales
 void variables_globales();
 
+//entrenador
 
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 void hacer_entrenadores(void);
-
-int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);
-
-pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
-
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
-void calcular_objetivo_global(void);
+//pokemon
+pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
+void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY);
 
+//objetivo
+void calcular_objetivo_global(void);
 void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
 
-
-bool se_puede_planificar(entrenador* entrenador);
-
-void planificar_entrenador(pokemon* pokemon);
-
+//distancias entre pokemon y entrenador
+int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);
 bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2);
 
-
-void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY);
-
+//planificacion
+bool se_puede_planificar(entrenador* entrenador);
+void planificar_entrenador(pokemon* pokemon);
 void procedimiento_de_caza(entrenador* un_entrenador);
-
 void algoritmo_aplicado(void);
+
+
+
+
 
 #endif /* TEAM_UTILS_TEAMH */
