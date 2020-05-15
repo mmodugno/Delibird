@@ -1,7 +1,7 @@
 TARGET = gameboy 
-LIBS = -lreadline -lcommons 
+LIBS = -lreadline -lcommons
 CC = gcc 
-CFLAGS = -I ../utils -g -Wall 
+CFLAGS = -g -Wall -I ../utils
 
 .PHONY: default all clean
 

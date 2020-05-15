@@ -5,6 +5,8 @@
  *      Author: utnso
  */
 #include <stdlib.h>
+#include <string.h>
+#include<sys/socket.h>
 #include "utils_en_comun.h"
 
 //TODO
@@ -89,13 +91,37 @@ suscriptor* deserializar_suscripcion(int socket_cliente, int* size){
 	void* nombre;
 
 	recv(socket_cliente,&(suscriptor->tamanioNombreSucriptor),sizeof(uint32_t),0);
+	nombre = malloc(suscriptor->tamanioNombreSucriptor);
 	recv(socket_cliente , nombre , suscriptor->tamanioNombreSucriptor,0);
 	recv(socket_cliente , &(suscriptor->tipoDeCola) , sizeof(tipoDeCola),0);
 
 	memcpy(suscriptor->nombreDeSuscriptor,nombre,suscriptor->tamanioNombreSucriptor);
 
+	free(nombre);
 
 	return suscriptor;
+
+
+}
+
+get_pokemon* deserializar_get_pokemon(int socket_cliente, int* size){
+	// deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon
+	get_pokemon* getPoke = malloc(sizeof(get_pokemon));
+	void* nombre;
+
+	recv(socket_cliente,&(getPoke->tamanioNombre),sizeof(uint32_t),0);
+
+	//faltaba pedir memoria para nombre y liberarla
+	nombre = malloc(getPoke->tamanioNombre);
+	recv(socket_cliente , nombre , getPoke->tamanioNombre,0);
+
+	memcpy(getPoke->nombrePokemon,nombre,getPoke->tamanioNombre);
+
+	free(nombre);
+
+	return getPoke;
 
 
 }

@@ -23,7 +23,7 @@ typedef struct {
 } broker_new_pokemon;
 
 typedef struct {
-	uint32_t id;
+	uint32_t id_relativo;
 	appeared_pokemon* datos;
 } broker_appeared_pokemon;
 
@@ -32,7 +32,7 @@ typedef struct {
 } broker_catch_pokemon;
 
 typedef struct {
-	uint32_t id;
+	uint32_t id_relativo;
 	caught_pokemon* datos;
 } broker_caught_pokemon;
 
@@ -45,12 +45,12 @@ typedef struct {
 } team_appeared_pokemon;
 
 typedef struct {
-	uint32_t id;
+	uint32_t id_relativo;
 	new_pokemon* datos;
 } gameCard_new_pokemon;
 
 typedef struct {
-	uint32_t id;
+	uint32_t id_relativo;
 	catch_pokemon* datos;
 } gameCard_catch_pokemon;
 

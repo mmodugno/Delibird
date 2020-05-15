@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
 				//estructuras estaticas
 				appPokemon->datos->posX = atoi(*&argv[4]);
 				appPokemon->datos->posY = atoi(*&argv[5]);
-				appPokemon->id = atoi(*&argv[6]);
+				appPokemon->id_relativo = atoi(*&argv[6]);
 
 				enviar_Broker_Appeared_Pokemon(appPokemon,conexionBroker);
 
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
 			if(argc == 5){
 				broker_caught_pokemon *caughtPoke = malloc(sizeof(broker_caught_pokemon));
 				//estaticas
-				caughtPoke->id = atoi(*&argv[3]);
+				caughtPoke->id_relativo = atoi(*&argv[3]);
 				caughtPoke->datos->puedoAtraparlo = atoi(*&argv[4]);
 
 				enviar_Broker_Caught_Pokemon(caughtPoke,conexionBroker);
@@ -207,7 +207,7 @@ int main(int argc, char* argv[]){
 				newPokemon->datos->posX = atoi(*&argv[4]);
 				newPokemon->datos->posY = atoi(*&argv[5]);
 				newPokemon->datos->cantidadPokemon = atoi(*&argv[6]);
-				newPokemon->id = atoi(*&argv[7]);
+				newPokemon->id_relativo = atoi(*&argv[7]);
 
 				enviar_GameCard_New_Pokemon(newPokemon,conexionGamecard);
 
@@ -226,7 +226,7 @@ int main(int argc, char* argv[]){
 
 				catchPokemon->datos->posX = atoi(*&argv[4]);
 				catchPokemon->datos->posY = atoi(*&argv[5]);
-				catchPokemon->id = atoi(*&argv[6]);
+				catchPokemon->id_relativo = atoi(*&argv[6]);
 
 				enviar_GameCard_Catch_Pokemon(catchPokemon,conexionGamecard);
 

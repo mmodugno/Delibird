@@ -82,5 +82,7 @@ int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
+void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
+void suscribirACola(suscriptor* suscriptor);
 
 #endif /* UTILS_BROKER_H_ */

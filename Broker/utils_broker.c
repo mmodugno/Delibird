@@ -107,6 +107,33 @@ void process_request(int cod_op, int cliente_fd) {
 			free(appearedRecibido);
 
 			break;
+		case BROKER__GET_POKEMON:
+			get_pokemon* getRecibido = deserializar_get_pokemon(cliente_fd,&size);
+
+			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON");
+
+			agregarACola(GET_POKEMON,getRecibido);
+			free(getRecibido);
+
+			break;
+		case BROKER__CATCH_POKEMON:
+			catch_pokemon* catchRecibido = deserializar_catch_pokemon(cliente_fd,&size);
+
+			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON");
+
+			agregarACola(CATCH_POKEMON,catchRecibido);
+			free(catchRecibido);
+
+			break;
+		case BROKER__CAUGHT_POKEMON:
+			caught_pokemon* caughtRecibido = deserializar_caught_pokemon(cliente_fd,&size);
+
+			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON");
+
+			agregarACola(CAUGHT_POKEMON,caughtRecibido);
+			free(caughtRecibido);
+
+			break;
 		case 0:
 			pthread_exit(NULL);
 		case -1:
