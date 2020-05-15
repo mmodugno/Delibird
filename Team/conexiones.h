@@ -25,9 +25,9 @@
 
 
 
-pokemon* deserializar_appeared_pokemon(void* stream);
+void deserializar_appeared_pokemon(void* stream);
 
-void* recibir_mensaje(int socket_cliente);
+void recibir_mensaje(int socket_cliente);
 
 
 

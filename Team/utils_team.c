@@ -231,14 +231,19 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 }
 
 
-void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY){
-	pokemon* nuevo_pokemon = malloc(sizeof(pokemon));
-	nuevo_pokemon = hacer_pokemon(nombre,posicionX,posicionY);
 
-	list_add(pokemones_en_el_mapa,nuevo_pokemon);
+//Se ejecuta cuando recibimos un mensaje de appeared_pokemon
+void aparece_nuevo_pokemon(pokemon* poke){
 
-	//planificar a un entrenador con este pokemon nuevo
-	planificar_entrenador(nuevo_pokemon);
+	 if (dictionary_has_key(objetivo_global, poke->nombre) && (dictionary_get(objetivo_global, poke->nombre) > 0) ){
+		 list_add(pokemones_en_el_mapa,poke);
+		 //planificar a un entrenador con este pokemon nuevo
+		 planificar_entrenador(poke);
+	 }
+
+	 else{
+		 printf("El pokemon no pertenece al objetivo global. Se descarta");
+	 }
 }
 
 
@@ -250,10 +255,10 @@ void planificar_entrenador(pokemon* un_pokemon){
 }
 
 
-/* bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
+ bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
 	return entrenador->cuantos_puede_cazar > 0;
 }
-*/
+
 
 
 
@@ -273,7 +278,6 @@ int distancia_entrenador_pokemon(entrenador* un_entrenador, pokemon* un_pokemon)
 	int y_final = fabs(un_entrenador->posY - un_pokemon->posY);
 	return (x_final + y_final);
 }
-
 
 
 void algoritmo_aplicado(void){
@@ -298,26 +302,83 @@ void algoritmo_aplicado(void){
 
 //FUNCION DEL HILO DEL ENTRENADOR
 void procedimiento_de_caza(entrenador* un_entrenador){
-	//semaforo
+
+	pthread_mutex_t semaforo_entrenador;
+	pthread_mutex_init(&semaforo_entrenador,NULL);
+
+	pthread_mutex_lock(&semaforo_entrenador);
+
+
 	cambiar_estado_entrenador(un_entrenador,EXEC);
 	mover_entrenador(un_entrenador,proximo_objetivo);
-	//pedir un catch
 
+	//wait pedir un catch
+
+	//log_atrapar_pokemon(proximo_objetivo);
 	cambiar_estado_entrenador(un_entrenador,BLOCK_ESPERANDO);
+	//signal (me llega un caught)
 
-	//wait(respuesta de catch)
+
+
 	//cosas
 
 	cambiar_estado_entrenador(un_entrenador,BLOCK_READY);
 
-	//se vuelve a bloquear
+	pthread_mutex_unlock(&semaforo_entrenador);
+}
+
+//RESPUESTAS DEL CAUGHT
+bool es_de_especie(char* nombre_poke){
+	return (nombre_poke == proximo_objetivo->nombre);
+}
+
+
+void confirmacion_de_catch(void){ //TODO
+
+	dictionary_put(objetivo_global,proximo_objetivo->nombre,dictionary_get(objetivo_global,proximo_objetivo->nombre)-1);
+
+	entrenador* un_entrenador = list_get(entrenadores_en_ready,0);
+	list_remove_by_condition(un_entrenador->objetivos , es_de_especie);
+	printf("Agarró al pokemon %s",proximo_objetivo->nombre);
 }
 
 
 
 
+void denegar_catch(void){
+	printf("No se agarró al pokemon %s",proximo_objetivo->nombre);
+}
+
+
+
+void analizar_proximo_estado(entrenador* un_entrenador){
+	if(puede_cazar(un_entrenador)){
+		//if(un_entrenador->objetivos )
+	}
+}
+
+
+
 
 void planifico_con_fifo(void){
+
+
+while(1){
+
+	//semaforo
+
+	entrenador* entrenador_a_ejecutar = list_remove(entrenadores_en_ready,0);
+
+	//entrenador_a_ejecutar activar hilo;
+
+	//entrenador_a_ejecutar->hiloDeEntrenador;
+
+
+
+
+
+}
+
 
 }
 

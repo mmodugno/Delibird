@@ -45,13 +45,12 @@ typedef enum{
     READY=1,
     EXEC=2,
 	BLOCK_READY=3,
-    BLOCK_ESPERANDO=4,
+    BLOCK_ESPERANDO=4, //no sería block_catching?
 	BLOCK_DEADLOCK=5,
     EXIT=6
 }estadoEntrenador;
 
 typedef struct{
-    pthread_t hiloDeEntrenador;
     int estado;
     t_list* pokemones;
     t_list* objetivos;
@@ -59,6 +58,7 @@ typedef struct{
     uint32_t posY;
     int cuantos_puede_cazar;
     int id;
+    pthread_t hiloDeEntrenador;
 }entrenador;
 
 typedef struct{
@@ -111,14 +111,14 @@ void log_fallo_de_conexion(void);
 void variables_globales();
 
 //entrenador
-
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 void hacer_entrenadores(void);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
-void aparece_nuevo_pokemon(char* nombre,int posicionX, int posicionY);
+void aparece_nuevo_pokemon(pokemon* poke);
+bool es_de_especie(char* nombre_poke);
 
 //objetivo
 void calcular_objetivo_global(void);

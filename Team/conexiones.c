@@ -33,7 +33,11 @@ int crear_conexion(char *ip, char* puerto)
 }
 
 
-pokemon* deserializar_appeared_pokemon(void* stream){
+
+
+
+
+void deserializar_appeared_pokemon(void* stream){
 	pokemon* poke = malloc(sizeof(pokemon));
 
 	memcpy(&(poke->tamanio_nombre),stream,sizeof(uint32_t));
@@ -48,11 +52,15 @@ pokemon* deserializar_appeared_pokemon(void* stream){
 	stream+=sizeof(uint32_t);
 	memcpy(&(poke->posY),stream,sizeof(uint32_t));
 
-return poke;
+	aparece_nuevo_pokemon(poke);
+
 }
 
 
-void* recibir_mensaje(int socket_cliente){
+
+
+
+void recibir_mensaje(int socket_cliente){
 	t_paquete* paquete_recibido=malloc(sizeof(t_paquete));
 	paquete_recibido->buffer= malloc(sizeof(t_buffer));
 
@@ -65,13 +73,14 @@ void* recibir_mensaje(int socket_cliente){
 
 	if(paquete_recibido->codigo_operacion == TEAM__APPEARED_POKEMON){
 
-		pokemon* nuevo_pokemon;
-		nuevo_pokemon = deserializar_appeared_pokemon(paquete_recibido->buffer->stream);
+
+		deserializar_appeared_pokemon(paquete_recibido->buffer->stream);
+
 
 		free(paquete_recibido->buffer);
 		free(paquete_recibido);
 
-		return (void*) nuevo_pokemon;
+
 	}
 
 	// if(paquete_recibido->codigo_operacion == )
