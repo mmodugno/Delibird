@@ -101,11 +101,15 @@ char* leer_ip_broker(void){
  entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig, int id_creada){
 	 entrenador* un_entrenador = malloc(sizeof(entrenador));
 
+	 pthread_mutex_init(&un_entrenador->sem_entrenador,NULL);
+
+
 	 un_entrenador->estado = NEW;
 	 un_entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
 	 un_entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
 	 un_entrenador->cuantos_puede_cazar = list_size(un_entrenador->objetivos);
 	 un_entrenador->id = id_creada;
+
 
 	 //pthread_t hiloEntrenador;
 	 //un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,planificarEntrenador,un_entrenador);
@@ -249,7 +253,7 @@ void aparece_nuevo_pokemon(pokemon* poke){
 
 void planificar_entrenador(pokemon* un_pokemon){
 	proximo_objetivo = un_pokemon;
-	entrenador* entrenador_ready = list_get( list_sorted(list_filter( entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
+	entrenador* entrenador_ready = list_get( list_sorted(list_filter(entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
 	cambiar_estado_entrenador(entrenador_ready,READY);
 	list_add(entrenadores_en_ready,entrenador_ready);
 }
@@ -269,14 +273,26 @@ return (entrenador->estado == NEW || entrenador->estado == BLOCK_READY);
 
 
 bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2){
-	return distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
+
+	bool resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
+	return resultado;
 }
 
 
 int distancia_entrenador_pokemon(entrenador* un_entrenador, pokemon* un_pokemon){
-	int x_final = fabs(un_entrenador->posX - un_pokemon->posX);
-	int y_final = fabs(un_entrenador->posY - un_pokemon->posY);
-	return (x_final + y_final);
+
+	int pos_entX =  (un_entrenador->posX);
+	int pos_pokX = (un_pokemon->posX);
+	int restaX = pos_entX - pos_pokX;
+
+	int pos_entY =  (un_entrenador->posX);
+	int pos_pokY = (un_pokemon->posX);
+	int restaY = pos_entY - pos_pokY;
+
+	double x_final = fabs(restaX);
+	double y_final = fabs(restaY);
+
+	return (int) (x_final + y_final);
 }
 
 
@@ -302,14 +318,15 @@ void algoritmo_aplicado(void){
 
 //FUNCION DEL HILO DEL ENTRENADOR
 void procedimiento_de_caza(entrenador* un_entrenador){
+while(1){
+	pthread_mutex_t semaforo_caza;
+	pthread_mutex_init(&semaforo_caza,NULL);
 
-	pthread_mutex_t semaforo_entrenador;
-	pthread_mutex_init(&semaforo_entrenador,NULL);
-
-	pthread_mutex_lock(&semaforo_entrenador);
+	pthread_mutex_lock(un_entrenador->sem_entrenador);
+	pthread_mutex_lock(&semaforo_caza);
 
 
-	cambiar_estado_entrenador(un_entrenador,EXEC);
+	cambiar_estado_entrenador(un_entrenador,EXEC); //NO VA ACA
 	mover_entrenador(un_entrenador,proximo_objetivo);
 
 	//wait pedir un catch
@@ -318,13 +335,15 @@ void procedimiento_de_caza(entrenador* un_entrenador){
 	cambiar_estado_entrenador(un_entrenador,BLOCK_ESPERANDO);
 	//signal (me llega un caught)
 
-
-
 	//cosas
 
 	cambiar_estado_entrenador(un_entrenador,BLOCK_READY);
 
-	pthread_mutex_unlock(&semaforo_entrenador);
+	pthread_mutex_unlock(&semaforo_caza);
+	pthread_mutex_unlock(un_entrenador->sem_entrenador);
+
+
+}
 }
 
 //RESPUESTAS DEL CAUGHT

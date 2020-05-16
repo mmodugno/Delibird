@@ -59,6 +59,7 @@ typedef struct{
     int cuantos_puede_cazar;
     int id;
     pthread_t hiloDeEntrenador;
+    pthread_mutex_t sem_entrenador;
 }entrenador;
 
 typedef struct{
