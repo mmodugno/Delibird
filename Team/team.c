@@ -12,48 +12,18 @@
 
 int main(int argc, char* argv[]){
 
-    //POR AHORA DEJAMOS SOLO LA CONEXION CON BROKER PORQUE NO ESTAMOS SEGUROS SI HAY QUE CONECTAR CON GAMEBOY
+	printf(" Arrancando \n \n");
 
-	int tiempo_de_reconexion;
-	char* ipBroker;
-    int puertoBroker;
-    char* algoritmoPlanificacion;
+
+ 	variables_globales();
 
 
 
-    //uint32_t quantum;
-    //uint32_t estimacion_inicial;
+ 	pthread_t hilo_principal;
+ 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
-    t_config* config;
-    config = leer_config();
-
-
-
-
-
-    //conexion=crear_conexion(ipBroker,puertoBroker);
-
-
-    //log_info(logger,"Comienzo");
-
-
-    ipBroker=config_get_string_value(config,"IP_BROKER");
-    puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
-    algoritmoPlanificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-    tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
-
-
-    printf("Recibi estos datos: %s, %d, %s, %d  \n",ipBroker,puertoBroker,algoritmoPlanificacion,tiempo_de_reconexion);
-
-
-
-
-
-    //log_info( logger, "inicio de programa");
-
-
-    t_queue * cola_ready = queue_create();
-    t_queue* cola_block = queue_create();
+ 	pthread_join(hilo_principal,NULL);
+	//Hacer hilo server que este esperando un appeared_pokemon, que despues si fije si nos sirve y meterlo en la lista de pokemones en mapa
 
 
 
@@ -61,6 +31,7 @@ int main(int argc, char* argv[]){
 
 
 
+printf(" \n \n Termino todo ok ");
 }
 
 
