@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
 				//estructuras estaticas
 				appPokemon->datos->posX = atoi(*&argv[4]);
 				appPokemon->datos->posY = atoi(*&argv[5]);
-				appPokemon->id = atoi(*&argv[6]);
+				appPokemon->id_relativo = atoi(*&argv[6]);
 
 				enviar_Broker_Appeared_Pokemon(appPokemon,conexionBroker);
 
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
 			if(argc == 5){
 				broker_caught_pokemon *caughtPoke = malloc(sizeof(broker_caught_pokemon));
 				//estaticas
-				caughtPoke->id = atoi(*&argv[3]);
+				caughtPoke->id_relativo = atoi(*&argv[3]);
 				caughtPoke->datos->puedoAtraparlo = atoi(*&argv[4]);
 
 				enviar_Broker_Caught_Pokemon(caughtPoke,conexionBroker);
@@ -185,7 +185,7 @@ int main(int argc, char* argv[]){
 	    	}
 	    }
 
-	    log_info(logMensajeNuevo,"Mnesaje enviado a Team");
+	    log_info(logMensajeNuevo,"Mensaje enviado a Team");
 	}
 
 	if(!strcmp(*&argv[1],"GAMECARD")){
@@ -207,7 +207,7 @@ int main(int argc, char* argv[]){
 				newPokemon->datos->posX = atoi(*&argv[4]);
 				newPokemon->datos->posY = atoi(*&argv[5]);
 				newPokemon->datos->cantidadPokemon = atoi(*&argv[6]);
-				newPokemon->id = atoi(*&argv[7]);
+				newPokemon->id_relativo = atoi(*&argv[7]);
 
 				enviar_GameCard_New_Pokemon(newPokemon,conexionGamecard);
 
@@ -226,7 +226,7 @@ int main(int argc, char* argv[]){
 
 				catchPokemon->datos->posX = atoi(*&argv[4]);
 				catchPokemon->datos->posY = atoi(*&argv[5]);
-				catchPokemon->id = atoi(*&argv[6]);
+				catchPokemon->id_relativo = atoi(*&argv[6]);
 
 				enviar_GameCard_Catch_Pokemon(catchPokemon,conexionGamecard);
 
@@ -259,27 +259,55 @@ int main(int argc, char* argv[]){
 	//TODO
 	//Ver el tipo de dato y la funcion enviar
 	if(!strcmp(*&argv[1],"SUSCRIPTOR")){
+		conexionBroker = crear_conexion(ipBroker,puertoBroker);
+		if(conexionBroker <= 0){
+			log_info(logConexion,"no me pude conectar a Broker");
+		}
+		else{
+			log_info(logConexion,"me conecte a Broker exitosamente");
+		}
 		if(argc==3){
+			suscriptor* meSuscribo = malloc(sizeof(suscriptor));
+			meSuscribo->nombreDeSuscriptor="GAMEBOY";
+			meSuscribo->tamanioNombreSucriptor= strlen(meSuscribo->nombreDeSuscriptor)+1;
 
+			if(!strcmp(*&argv[2],"NEW_POKEMON")){
+				meSuscribo->tipoDeCola = NEW_POKEMON;
 
-			if(*&argv[2]=="NEW_POKEMON"){
+				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
 				log_info(logSuscipcion,"me conecto como modo suscriptor a New_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="APPEARED_POKEMON"){
+			if(!strcmp(*&argv[2],"APPEARED_POKEMON")){
+				meSuscribo->tipoDeCola = APPEARED_POKEMON;
+
+				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Appeared_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="CATCH_POKEMON"){
+			if(!strcmp(*&argv[2],"CATCH_POKEMON")){
+				meSuscribo->tipoDeCola = CATCH_POKEMON;
+
+				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Catch_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="CAUGHT_POKEMON"){
+			if(!strcmp(*&argv[2],"CAUGHT_POKEMON")){
+				meSuscribo->tipoDeCola = CAUGHT_POKEMON;
+
+				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Caught_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="GET_POKEMON"){
+			if(!strcmp(*&argv[2],"GET_POKEMON")){
+				meSuscribo->tipoDeCola= GET_POKEMON;
+
+				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Get_Pokemon exitosamente");
 			}
-			if(*&argv[2]=="LOCALIZED_POKEMON"){
+			if(!strcmp(*&argv[2],"LOCALIZED_POKEMON")){
+				meSuscribo->tipoDeCola= LOCALIZED_POKEMON;
+
+				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
 				log_info(logSuscipcion,"me conecto como modo suscriptor a Localized_Pokemon exitosamente");
 			}
+			free(meSuscribo);
 
 		}
 	}

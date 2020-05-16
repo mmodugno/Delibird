@@ -8,46 +8,78 @@
 #ifndef UTILS_BROKER_H_
 #define UTILS_BROKER_H_
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<signal.h>
-#include<unistd.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <sys/types.h>
 #include<sys/socket.h>
 #include<netdb.h>
-#include<string.h>
+#include<commons/collections/queue.h>
+#include<commons/log.h>
+#include<commons/string.h>
+#include<commons/config.h>
+#include<pthread.h>
+#include "datos_broker.h"
+#include<commons/collections/list.h>
 
-typedef enum
-{
-	MENSAJE = 1,
-	BROKER__NEW_POKEMON = 2,
-	BROKER__APPEARED_POKEMON = 3,
-	BROKER__CATCH_POKEMON = 4,
-	BROKER__CAUGHT_POKEMON = 5,
-	BROKER__GET_POKEMON = 6,
-	TEAM__APPEARED_POKEMON = 7,
-	GAMECARD__NEW_POKEMON = 8,
-	GAMECARD__CATCH_POKEMON = 9,
-	GAMECARD__GET_POKEMON = 10,
-	SUBCRIPCION = 11
 
-}op_code;
+char* ip_broker;
+char* puerto_broker;
+uint32_t tamanio_memoria;
+uint32_t tamanio_minimo_particion;
+char* algoritmo_memoria;
+char* algoritmo_reemplazo;
+char* algoritmo_particion_libre;
+uint32_t frecuencia_compactacion;
+char* log_file;
 
-typedef struct
-{
-	int size;
-	void* stream;
-} t_buffer;
+t_config* config;
 
-typedef struct
-{
-	op_code codigo_operacion;
-	t_buffer* buffer;
-} t_paquete;
 
-int crear_conexion(char* ip, char* puerto);
-void enviar_mensaje(char* mensaje, int socket_cliente);
-char* recibir_mensaje(int socket_cliente);
-void eliminar_paquete(t_paquete* paquete);
-void liberar_conexion(int socket_cliente);
+pthread_t thread;
+
+t_queue* colaNewPokemon;
+t_queue* colaAppearedPokemon;
+
+t_queue* colaCatchPokemon;
+t_queue* colaCaughtPokemon;
+t_queue* colaGetPokemon;
+t_queue* colaLocalizedPokemon;
+
+t_queue* suscriptoresNewPokemon;
+t_queue* suscriptoresAppearedPokemon;
+
+t_queue* suscriptoresCatchPokemon;
+t_queue* suscriptoresCaughtPokemon;
+t_queue* suscriptoresGetPokemon;
+t_queue* suscriptoresLocalizedPokemon;
+
+t_log* logConexion;
+t_log* logSuscipcion;
+t_log* logMensajeNuevo;
+t_log* logEnviarNuevo;
+t_log* confirmacionRecepcion;
+t_log* almacenadoMemoria;
+t_log* eliminacionMemoria;
+t_log* compactacionMemoria;
+t_log* dumpCache;
+
+
+void* recibir_buffer(int*, int);
+
+void iniciar_servidor(void);
+void esperar_cliente(int);
+void* recibir_mensaje(int socket_cliente, int* size);
+int recibir_operacion(int);
+void process_request(int cod_op, int cliente_fd);
+void serve_client(int *socket);
+void devolver_mensaje(void* payload, int size, int socket_cliente);
+void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
+void suscribirACola(suscriptor* suscriptor);
 
 #endif /* UTILS_BROKER_H_ */
