@@ -25,7 +25,7 @@
 #include<commons/string.h>
 #include<math.h>
 #include<commons/collections/queue.h>
-
+#include<semaphore.h>
 
 t_config* config;
 
@@ -38,7 +38,7 @@ t_list* pokemones_en_el_mapa;
 t_list* pokemones_atrapados;
 
 t_list* entrenadores_en_ready;
-
+sem_t entrenador_listo;
 
 typedef enum{
     NEW=0,
@@ -59,7 +59,7 @@ typedef struct{
     int cuantos_puede_cazar;
     int id;
     pthread_t hiloDeEntrenador;
-    pthread_mutex_t sem_entrenador;
+    sem_t sem_entrenador;
 }entrenador;
 
 typedef struct{
@@ -75,7 +75,7 @@ typedef enum{
 	RR=1,
 	SJFCD=2,
 	SJFSD=3
-};
+}algoritmoPlanificacion;
 
 
 
@@ -115,6 +115,7 @@ void variables_globales();
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 void hacer_entrenadores(void);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
+void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
@@ -135,9 +136,11 @@ bool se_puede_planificar(entrenador* entrenador);
 void planificar_entrenador(pokemon* pokemon);
 void procedimiento_de_caza(entrenador* un_entrenador);
 void algoritmo_aplicado(void);
+void planifico_con_fifo(void);
 
-
-
+//Mensajes
+void denegar_catch(void);
+void confirmacion_de_catch(void);
 
 
 #endif /* TEAM_UTILS_TEAMH */
