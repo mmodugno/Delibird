@@ -39,6 +39,7 @@ t_list* pokemones_atrapados;
 
 t_list* entrenadores_en_ready;
 sem_t entrenador_listo;
+char* nobmre_objetivoconfig;
 
 typedef enum{
     NEW=0,
@@ -121,6 +122,8 @@ void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 void aparece_nuevo_pokemon(pokemon* poke);
 bool es_de_especie(char* nombre_poke);
+void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones);
+bool pokemon_repetido(char* nombre);
 
 //objetivo
 void calcular_objetivo_global(void);

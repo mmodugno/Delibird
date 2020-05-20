@@ -105,11 +105,16 @@ char* leer_ip_broker(void){
 	 sem_init(&(un_entrenador->sem_entrenador),0,0);
 
 	 un_entrenador->estado = NEW;
-	 un_entrenador->objetivos = crear_lista(string_split(objetivosconfig,"|"));
-	 un_entrenador->pokemones = crear_lista(string_split(pokemonsconfig,"|"));
+	// t_list* objetivos_config =
+	 //t_list* pokemones_config =
+
+	 un_entrenador->objetivos =crear_lista(string_split(objetivosconfig,"|"));
+	 un_entrenador->pokemones =crear_lista(string_split(pokemonsconfig,"|"));
+
 	 un_entrenador->cuantos_puede_cazar = list_size(un_entrenador->objetivos);
 	 un_entrenador->id = id_creada;
 
+	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
 	 pthread_t hiloEntrenador;
 	 un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,procedimiento_de_caza,un_entrenador);
@@ -118,7 +123,30 @@ char* leer_ip_broker(void){
 	 un_entrenador->posX = atoi(list_get(posiciones,0));
 	 un_entrenador->posY = atoi(list_get(posiciones,1));
 	 return un_entrenador;
+
+
  }
+
+
+void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
+	for(int i = 0; i < list_size(pokemones);i++){
+		nobmre_objetivoconfig = list_get(pokemones,i);
+		//printf("voy sacando a: %s       ",nobmre_objetivoconfig);
+
+		list_remove_by_condition(objetivos,pokemon_repetido);
+
+	}
+}
+
+bool pokemon_repetido(char* nombre){
+	return strcmp(nombre,nobmre_objetivoconfig);
+}
+//bool es_de_especie(char* nombre_poke){
+//	return strcmp(nombre_poke,proximo_objetivo->nombre);
+//}
+
+
+
 
 
 void hacer_entrenadores(void){
@@ -127,8 +155,6 @@ void hacer_entrenadores(void){
 	t_list* posiciones = obtener_lista_posiciones();
 	 t_list* pokemones = obtener_lista_pokemones();
 	 t_list* objetivos = obtener_lista_objetivos();
-
-
 
 
 	 for(int i=0 ; i< list_size(posiciones) ; i++){
@@ -163,10 +189,12 @@ void calcular_objetivo_global(void){
 			//pongo sus objetivos en el dictionary:
 			char* pokemon_a_agregar = list_get(un_entrenador->objetivos,j);
 			agregar_un_objetivo(pokemon_a_agregar);
+
 		}
 	}
 
 	//LE SACO LOS POKEMONES QUE YA TENIAN
+	/*
 	for(int i = 0; i < list_size(entrenadores);i++){
 		//agarro el primer entrenador:
 		entrenador* un_entrenador = list_get(entrenadores,i);
@@ -179,9 +207,10 @@ void calcular_objetivo_global(void){
 		quitar_un_objetivo(pokemon_a_quitar);
 
 	}
+	*/
 }
 
-}
+
 
 
 void agregar_un_objetivo(char* pokemon_a_agregar){
@@ -209,29 +238,29 @@ void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 
-	printf(" \n luqui es  \n");
+	printf(" \n inicio de movimiento ed entrenador  \n");
 	int tiempo = leer_retardo_cpu();
 	while(entrenador->posX != pokemon->posX){
 		if(entrenador->posX < pokemon->posX){
 			entrenador->posX = entrenador->posX + 1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 		else {
 			entrenador->posX = entrenador->posX -1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 	}
 	while(entrenador->posY != pokemon->posY){
 		if(entrenador->posY < pokemon->posX){
 			entrenador->posY = entrenador->posY + 1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 		else {
 			entrenador->posY = entrenador->posY -1;
-			//sleep(tiempo);
+			sleep(tiempo);
 		}
 	}
-	printf(" \n caca  \n");
+	printf(" \n fin de movimiento ed entrenador   \n");
 	//log_movimiento_de_entrenador(entrenador); (mostraria la posicion despues de moverse)
 }
 
@@ -305,7 +334,7 @@ void algoritmo_aplicado(void){
 	switch (leer_algoritmo_planificacion()){
 	case FIFO:
 		printf("\n Algoritmo de planificacion = FIFO \n ");
-		planifico_con_fifo();
+		//planifico_con_fifo();
 		break;
 
 	case RR:
