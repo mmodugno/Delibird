@@ -138,9 +138,7 @@ void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 	}
 }
 
-bool pokemon_repetido(char* nombre){
-	return strcmp(nombre,nobmre_objetivoconfig);
-}
+
 //bool es_de_especie(char* nombre_poke){
 //	return strcmp(nombre_poke,proximo_objetivo->nombre);
 //}
@@ -225,9 +223,7 @@ void agregar_un_objetivo(char* pokemon_a_agregar){
 }
 
 
-void quitar_un_objetivo(char* pokemon_a_quitar){
-	dictionary_put(objetivo_global, pokemon_a_quitar,dictionary_get(objetivo_global,pokemon_a_quitar)-1);
-}
+
 
 
 
@@ -296,38 +292,7 @@ void planificar_entrenador(pokemon* un_pokemon){
 }
 
 
- bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
-	return entrenador->cuantos_puede_cazar > 0;
-}
 
-
-bool se_puede_planificar(entrenador* entrenador){
-return (entrenador->estado == NEW || entrenador->estado == BLOCK_READY);
-}
-
-
-bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2){
-
-	bool resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
-	return resultado;
-}
-
-
-int distancia_entrenador_pokemon(entrenador* un_entrenador, pokemon* un_pokemon){
-
-	int pos_entX =  (un_entrenador->posX);
-	int pos_pokX = (un_pokemon->posX);
-	int restaX = pos_entX - pos_pokX;
-
-	int pos_entY =  (un_entrenador->posX);
-	int pos_pokY = (un_pokemon->posX);
-	int restaY = pos_entY - pos_pokY;
-
-	double x_final = fabs(restaX);
-	double y_final = fabs(restaY);
-
-	return (int) (x_final + y_final);
-}
 
 
 void algoritmo_aplicado(void){
@@ -390,9 +355,7 @@ while(1){
 
 
 //RESPUESTAS DEL CAUGHT
-bool es_de_especie(char* nombre_poke){
-	return strcmp(nombre_poke,proximo_objetivo->nombre);
-}
+
 
 
 void confirmacion_de_catch(void){
@@ -424,9 +387,7 @@ void denegar_catch(void){
 	printf("No se agarró al pokemon");
 }
 
-void disminuir_cuantos_puede_cazar(entrenador* un_entrenador){
-	un_entrenador->cuantos_puede_cazar -= 1;
-}
+
 
 
 void analizar_proximo_estado(entrenador* un_entrenador){
@@ -466,11 +427,54 @@ while(1){
 
 }
 
+//FUNCIONES AUX
+
+void disminuir_cuantos_puede_cazar(entrenador* un_entrenador){
+	un_entrenador->cuantos_puede_cazar -= 1;
+}
+
+bool es_de_especie(char* nombre_poke){
+	return strcmp(nombre_poke,proximo_objetivo->nombre);
+}
+
+bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
+	return entrenador->cuantos_puede_cazar > 0;
+}
 
 
+bool se_puede_planificar(entrenador* entrenador){
+return (entrenador->estado == NEW || entrenador->estado == BLOCK_READY);
+}
 
 
+bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2){
 
+	bool resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
+	return resultado;
+}
+
+int distancia_entrenador_pokemon(entrenador* un_entrenador, pokemon* un_pokemon){
+
+	int pos_entX =  (un_entrenador->posX);
+	int pos_pokX = (un_pokemon->posX);
+	int restaX = pos_entX - pos_pokX;
+
+	int pos_entY =  (un_entrenador->posX);
+	int pos_pokY = (un_pokemon->posX);
+	int restaY = pos_entY - pos_pokY;
+
+	double x_final = fabs(restaX);
+	double y_final = fabs(restaY);
+
+	return (int) (x_final + y_final);
+}
+
+void quitar_un_objetivo(char* pokemon_a_quitar){
+	bool pokemon_repetido(char* nombre){
+		return !strcmp(nombre,nobmre_objetivoconfig);
+	}
+	dictionary_put(objetivo_global, pokemon_a_quitar,dictionary_get(objetivo_global,pokemon_a_quitar)-1);
+}
 
 
  /*
