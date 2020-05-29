@@ -17,8 +17,11 @@ int main(int argc, char* argv[]){
 
  	variables_globales();
 
+sem_init(&entrenador_listo,0 ,0);
 
- 	//sem_init(&entrenador_listo,0 ,0);
+
+ 	sem_init(&(espera_de_movimiento),0,0);
+
 
  	//pthread_t hilo_principal;
  	//pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
@@ -26,30 +29,14 @@ int main(int argc, char* argv[]){
 
 
  	//PROBANDO TODA LA EJECUCION DE CAZA:
- 	//pokemon* pikapika = hacer_pokemon("Pikachu", 1, 3);
- 	//aparece_nuevo_pokemon(pikapika);
-
-
-
- 	entrenador* un_entrenador = list_get(entrenadores,0);
-
- 		  printf(" \n pokemones: \n  ");
-
- 		   for(int i =0; i< list_size(un_entrenador->pokemones);i++){
- 			   char * poke = list_get(un_entrenador->pokemones,i);
- 			  printf(" %s    " ,poke);
- 		   }
-
- 		  printf("\n Objetivos: \n  ");
-
- 		  for(int i =0; i< list_size(un_entrenador->objetivos);i++){
- 			  char * obj = list_get(un_entrenador->objetivos,i);
- 			  printf(" %s    " ,obj);
- 		 }
+ 	pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);
+ 	aparece_nuevo_pokemon(pikapika);
 
 
 
 
+
+ 	planifico_con_fifo();
 
 
 
