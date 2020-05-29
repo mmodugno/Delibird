@@ -18,9 +18,36 @@
 #include <datos_broker.h>
 #include "datos_gamecard.h"
 #include "datos_team.h"
+#include<commons/log.h>
+#include<commons/string.h>
+#include<commons/config.h>
+
+
+//ESTO ME PARECE QUE SE PUEDE DEJAR COMO INT PORQUE NO SE VA A PASAR POR SOCKET
+int conexionBroker;
+int conexionTeam;
+int conexionGamecard;
+
+char* ipBroker;
+char* puertoBroker;
+
+char* ipTeam;
+char* puertoTeam;
+
+char* ipGamecard;
+char* puertoGamecard;
+////////////////////////////////////////////////////////////////////////////////
 
 
 
+///////////////////////////LOGS OBLIGATRIOS/////////////////////////////////////
+t_log* logConexion;
+t_log* logSuscipcion;
+t_log* logMensajeNuevo; //falta el de recibir mensaje
+t_log* logEnviarNuevo;
+////////////////////////////////////////////////////////////////////////////////
+
+t_config* config;
 
 
 

@@ -47,7 +47,7 @@ void esperar_cliente(int socket_servidor)
 {
 	struct sockaddr_in dir_cliente;
 
-	int tam_direccion = sizeof(struct sockaddr_in);
+	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
@@ -97,7 +97,12 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__NEW_POKEMON:
 			newRecibido = deserializar_new_pokemon(cliente_fd,&size);
 
-			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON");
+			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON /n con tamanio: %d /n nombre: %s /n posX: %d /n posY: %d /n cantidad de pokemones: %d"
+					,newRecibido->datos->tamanioNombre,
+					newRecibido->datos->nombrePokemon,
+					newRecibido->datos->posX,
+					newRecibido->datos->posY,
+					newRecibido->datos->cantidadPokemon);
 
 			agregarACola(NEW_POKEMON,newRecibido);
 			free(newRecibido);

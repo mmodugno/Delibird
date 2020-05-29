@@ -10,16 +10,12 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<commons/log.h>
-#include<commons/string.h>
-#include<commons/config.h>
-#include<readline/readline.h>
 
 #include "utils_Gameboy.h"
 
 
 t_log* iniciar_logger(char*);
-t_config* leer_config(void);
-void terminar_programa(int,int,int, t_log*,t_log*,t_log*,t_log*, t_config*);
+void leer_config();
+void terminar_programa();
 
 #endif /* GAMEBOY_H_ */

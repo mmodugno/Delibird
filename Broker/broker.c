@@ -50,7 +50,8 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 
 
 		//terminar conexiones logs y config
-
+		terminar_programa();
+		return EXIT_SUCCESS;
 
 }
 
@@ -80,15 +81,31 @@ void leer_config(void){
 }
 
 /*
-void terminar_programa(int conexBroker,int conexTeam,int conexGamecard, t_log* logConexion,t_log* logSuscripcion,t_log* logMensajeNuevo,t_log* logEnviarMensaje, t_config* config){
+ * t_log* logConexion;
+t_log* logSuscipcion;
+t_log* logMensajeNuevo;
+t_log* logEnviarNuevo;
+t_log* confirmacionRecepcion;
+t_log* almacenadoMemoria;
+t_log* eliminacionMemoria;
+t_log* compactacionMemoria;
+t_log* dumpCache;
+ */
+
+void terminar_programa(){
 
 	log_destroy(logConexion);
+	log_destroy(logSuscipcion);
+	log_destroy(logMensajeNuevo);
+	log_destroy(logEnviarNuevo);
+	log_destroy(confirmacionRecepcion);
+	log_destroy(almacenadoMemoria);
+	log_destroy(eliminacionMemoria);
+	log_destroy(compactacionMemoria);
+	log_destroy(dumpCache);
+
 
 	config_destroy(config);
 
-	liberar_conexion(conexBroker);
-	liberar_conexion(conexGamecard);
-	liberar_conexion(conexTeam);
 
-
-}*/
+}

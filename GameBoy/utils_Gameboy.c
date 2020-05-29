@@ -34,8 +34,7 @@ int crear_conexion(char *ip, char* puerto)
 	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
 
 	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) != 0){
-		printf("error");
-		fflush(stdout);
+		//printf("error");
 		freeaddrinfo(server_info);
 		return -1;
 	}

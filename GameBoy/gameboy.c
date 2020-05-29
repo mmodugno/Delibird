@@ -22,60 +22,29 @@ int main(int argc, char* argv[]){
 		return 2;
 	}
 
-	//ESTO ME PARECE QUE SE PUEDE DEJAR COMO INT PORQUE NO SE VA A PASAR POR SOCKET
-	int conexionBroker;
-	int conexionTeam;
-	int conexionGamecard;
-
-	char* ipBroker;
-	char* puertoBroker;
-
-	char* ipTeam;
-	char* puertoTeam;
-
-	char* ipGamecard;
-	char* puertoGamecard;
-	////////////////////////////////////////////////////////////////////////////////
+	logConexion=iniciar_logger("Conexion");
+	logSuscipcion=iniciar_logger("Suscripcion");
+	logMensajeNuevo=iniciar_logger("Mensaje Nuevo"); //falta el de recibir mensaje
+	logEnviarNuevo= iniciar_logger("Enviar Mensaje");
 
 
-
-	///////////////////////////LOGS OBLIGATRIOS/////////////////////////////////////
-	t_log* logConexion=iniciar_logger("Conexion");
-	t_log* logSuscipcion=iniciar_logger("Suscripcion");
-	t_log* logMensajeNuevo=iniciar_logger("Mensaje Nuevo"); //falta el de recibir mensaje
-	t_log* logEnviarNuevo= iniciar_logger("Enviar Mensaje");
-	////////////////////////////////////////////////////////////////////////////////
-
-	t_config* config = leer_config();
-
-	ipBroker = config_get_string_value(config,"IP_BROKER");
-	ipGamecard = config_get_string_value(config,"IP_GAMECARD");
-	ipTeam = config_get_string_value(config,"IP_TEAM");
-
-	puertoBroker = config_get_string_value(config,"PUERTO_BROKER");
-	puertoGamecard = config_get_string_value(config,"PUERTO_GAMECARD");
-	puertoTeam = config_get_string_value(config,"PUERTO_TEAM");
-
-	//conexiones
-
-	//estas conexiones las tenemos que hacer en los if's
-	//conexionBroker = crear_conexion(ipBroker,puertoBroker);
-	//conexionGamecard = crear_conexion(ipGamecard,puertoGamecard);
-	//conexionTeam = crear_conexion(ipTeam,puertoTeam);
+	//leemos todo el archivo de config
+	leer_config();
 
 
 	//////////////HACER CONEXION DEPENDIENDO QUE NOS PASEN POR PARAMETRO////////////
 
+	//printf("%s",argv[1]);
 
 	if(!strcmp(argv[1],"BROKER")){
 		conexionBroker = crear_conexion(ipBroker,puertoBroker);
 		if(conexionBroker <= 0){
 			log_info(logConexion,"no me pude conectar a Broker");
+			return 0;
 		}
 		else{
 			log_info(logConexion,"me conecte a Broker exitosamente");
 		}
-
 		if(!strcmp(*&argv[2],"NEW_POKEMON")){
 			if(argc == 7){
 				broker_new_pokemon *newPokemon = malloc(sizeof(broker_new_pokemon));
@@ -90,6 +59,8 @@ int main(int argc, char* argv[]){
 
 
 				enviar_Broker_New_Pokemon(newPokemon,conexionBroker);
+
+				log_info(logMensajeNuevo,"Mensaje New Pokemon a Broker");
 
 				free(newPokemon);
 			}
@@ -108,6 +79,9 @@ int main(int argc, char* argv[]){
 
 				enviar_Broker_Appeared_Pokemon(appPokemon,conexionBroker);
 
+				log_info(logMensajeNuevo,"Mensaje Appeared Pokemon a Broker");
+
+
 				free(appPokemon);
 			}
 		}
@@ -124,6 +98,7 @@ int main(int argc, char* argv[]){
 
 				enviar_Broker_Catch_Pokemon(catchPoke,conexionBroker);
 
+				log_info(logMensajeNuevo,"Mensaje Catch Pokemon a Broker");
 				free(catchPoke);
 			}
 		}
@@ -136,6 +111,7 @@ int main(int argc, char* argv[]){
 
 				enviar_Broker_Caught_Pokemon(caughtPoke,conexionBroker);
 
+				log_info(logMensajeNuevo,"Mensaje Caught Pokemon a Broker");
 				free(caughtPoke);
 			}
 		}
@@ -149,13 +125,13 @@ int main(int argc, char* argv[]){
 				getPoke->datos->tamanioNombre = strlen(getPoke->datos->nombrePokemon)+1;
 
 				enviar_Broker_Get_Pokemon(getPoke,conexionBroker);
+				log_info(logMensajeNuevo,"Mensaje Get Pokemon a Broker");
 
 				free(getPoke);
 			}
 
 		}
 
-		log_info(logMensajeNuevo,"Mnesaje enviado a Broker");
 
 	}
 	if(!strcmp(*&argv[1],"TEAM")){
@@ -163,6 +139,7 @@ int main(int argc, char* argv[]){
 		conexionTeam = crear_conexion(ipTeam,puertoTeam);
 		if(conexionTeam <= 0){
 			log_info(logConexion,"no me pude conectar a Team");
+			return 0;
 		}
 		else{
 			log_info(logConexion,"me conecte a Team exitosamente");
@@ -181,11 +158,12 @@ int main(int argc, char* argv[]){
 		        appearedPokemon->datos->posY = atoi(*&argv[5]);
 
 		        enviar_Team_Appeared_Pokemon(appearedPokemon,conexionTeam);
+		        log_info(logMensajeNuevo,"Mensaje Appeared Pokemon a Team");
 		        free(appearedPokemon);
 	    	}
 	    }
 
-	    log_info(logMensajeNuevo,"Mensaje enviado a Team");
+
 	}
 
 	if(!strcmp(*&argv[1],"GAMECARD")){
@@ -193,6 +171,7 @@ int main(int argc, char* argv[]){
 		conexionGamecard = crear_conexion(ipGamecard,puertoGamecard);
 		if(conexionGamecard <= 0){
 			log_info(logConexion,"no me pude conectar a Gamecard");
+			return 0;
 		}
 		else{
 			log_info(logConexion,"me conecte a Gamecard exitosamente");
@@ -211,6 +190,7 @@ int main(int argc, char* argv[]){
 
 				enviar_GameCard_New_Pokemon(newPokemon,conexionGamecard);
 
+				log_info(logMensajeNuevo,"Mensaje New Pokemon a GameCard");
 				free(newPokemon);
 			}
 
@@ -229,6 +209,7 @@ int main(int argc, char* argv[]){
 				catchPokemon->id_relativo = atoi(*&argv[6]);
 
 				enviar_GameCard_Catch_Pokemon(catchPokemon,conexionGamecard);
+				log_info(logMensajeNuevo,"Mensaje Catch Pokemon a GameCard");
 
 				free(catchPokemon);
 			}
@@ -247,12 +228,13 @@ int main(int argc, char* argv[]){
 
 				enviar_GameCard_Get_Pokemon(getPokemon,conexionGamecard);
 
+				log_info(logMensajeNuevo,"Mensaje Get Pokemon a GameCard");
 				free(getPokemon);
 			}
 
 		}
 
-		log_info(logMensajeNuevo,"Mnesaje enviado a GameCard");
+
 
 	}
 
@@ -262,6 +244,7 @@ int main(int argc, char* argv[]){
 		conexionBroker = crear_conexion(ipBroker,puertoBroker);
 		if(conexionBroker <= 0){
 			log_info(logConexion,"no me pude conectar a Broker");
+			return 0;
 		}
 		else{
 			log_info(logConexion,"me conecte a Broker exitosamente");
@@ -315,14 +298,9 @@ int main(int argc, char* argv[]){
 	////////////////////////////////////////////////////////////////////////////////
 
 
-    //los sockets cuando no se pueden conectar no dan negativo 0 cero?
 
-
-
-
-
-	//respetar el orden de los parametros
-	terminar_programa(conexionBroker,conexionTeam,conexionGamecard,logConexion,logSuscipcion,logMensajeNuevo,logEnviarNuevo,config);
+	//terminamos los logs, config y conexiones
+	terminar_programa();
 
 	return 1;
 }
@@ -335,26 +313,34 @@ t_log* iniciar_logger(char* tipoDeProceso){
 }
 
 
-t_config* leer_config(void){
+void leer_config(void){
 
-	return config_create("gameboy.config");
+	config = config_create("gameboy.config");
+
+	ipBroker = config_get_string_value(config,"IP_BROKER");
+	ipGamecard = config_get_string_value(config,"IP_GAMECARD");
+	ipTeam = config_get_string_value(config,"IP_TEAM");
+
+	puertoBroker = config_get_string_value(config,"PUERTO_BROKER");
+	puertoGamecard = config_get_string_value(config,"PUERTO_GAMECARD");
+	puertoTeam = config_get_string_value(config,"PUERTO_TEAM");
 
 }
 
 //termino todas las conexiones, logs y archivo de config
 //si se agregan mas logs, conexiones o archivos de config, agregar
-void terminar_programa(int conexBroker,int conexTeam,int conexGamecard, t_log* logConexion,t_log* logSuscripcion,t_log* logMensajeNuevo,t_log* logEnviarMensaje, t_config* config){
+void terminar_programa(){
 
 	log_destroy(logConexion);
-	log_destroy(logSuscripcion);
+	log_destroy(logSuscipcion);
 	log_destroy(logMensajeNuevo);
-	log_destroy(logEnviarMensaje);
+	log_destroy(logEnviarNuevo);
 
 	config_destroy(config);
 
-	liberar_conexion(conexBroker);
-	liberar_conexion(conexGamecard);
-	liberar_conexion(conexTeam);
+	liberar_conexion(conexionBroker);
+	liberar_conexion(conexionGamecard);
+	liberar_conexion(conexionTeam);
 
 
 }
