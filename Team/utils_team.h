@@ -117,6 +117,7 @@ entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* obj
 void hacer_entrenadores(void);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
+bool puede_cazar(entrenador* entrenador);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);

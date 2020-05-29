@@ -9,7 +9,7 @@
 #define CONEXIONES_H_
 
 #include"utils_team.h"
-#include"utils_en_comun.h"
+#include"datos_team.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<signal.h>
