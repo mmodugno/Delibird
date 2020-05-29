@@ -437,6 +437,10 @@ bool es_de_especie(char* nombre_poke){
 	return strcmp(nombre_poke,proximo_objetivo->nombre);
 }
 
+bool pokemon_repetido(char* nombre){
+	return !strcmp(nombre,nobmre_objetivoconfig);
+}
+
 bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
 	return entrenador->cuantos_puede_cazar > 0;
 }
