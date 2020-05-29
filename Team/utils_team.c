@@ -98,11 +98,14 @@ char* leer_ip_broker(void){
 
 
 
+
  entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig, int id_creada){
 	 entrenador* un_entrenador = malloc(sizeof(entrenador));
 
 
 	 sem_init(&(un_entrenador->sem_entrenador),0,0);
+	 pthread_t hiloEntrenador;
+
 
 	 un_entrenador->estado = NEW;
 	// t_list* objetivos_config =
@@ -116,15 +119,16 @@ char* leer_ip_broker(void){
 
 	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
-	 pthread_t hiloEntrenador;
-	 un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,procedimiento_de_caza,un_entrenador);
+
+
 
 	 t_list* posiciones = crear_lista(string_split(posicion,"|"));
 	 un_entrenador->posX = atoi(list_get(posiciones,0));
 	 un_entrenador->posY = atoi(list_get(posiciones,1));
+
+	 un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,procedimiento_de_caza,un_entrenador);
+
 	 return un_entrenador;
-
-
  }
 
 
@@ -139,9 +143,6 @@ void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 }
 
 
-//bool es_de_especie(char* nombre_poke){
-//	return strcmp(nombre_poke,proximo_objetivo->nombre);
-//}
 
 
 
@@ -191,23 +192,7 @@ void calcular_objetivo_global(void){
 		}
 	}
 
-	//LE SACO LOS POKEMONES QUE YA TENIAN
-	/*
-	for(int i = 0; i < list_size(entrenadores);i++){
-		//agarro el primer entrenador:
-		entrenador* un_entrenador = list_get(entrenadores,i);
-
-
-
-		for(int j = 0; j< list_size(un_entrenador->pokemones);j++){
-		//saco los pokemons que tenia del dictionary:
-		char* pokemon_a_quitar = list_get(un_entrenador->pokemones,j);
-		quitar_un_objetivo(pokemon_a_quitar);
-
-	}
-	*/
 }
-
 
 
 
@@ -234,6 +219,7 @@ void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 
+
 	printf(" \n inicio de movimiento ed entrenador  \n");
 	int tiempo = leer_retardo_cpu();
 	while(entrenador->posX != pokemon->posX){
@@ -257,6 +243,9 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 		}
 	}
 	printf(" \n fin de movimiento ed entrenador   \n");
+
+	sem_post(&(espera_de_movimiento));
+
 	//log_movimiento_de_entrenador(entrenador); (mostraria la posicion despues de moverse)
 }
 
@@ -266,6 +255,7 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 void aparece_nuevo_pokemon(pokemon* poke){
 
 	 if (dictionary_has_key(objetivo_global, poke->nombre) && (dictionary_get(objetivo_global, poke->nombre) > 0) ){
+		 //ME SIRVE EL POKEMON
 		 list_add(pokemones_en_el_mapa,poke);
 
 		 //planificar a un entrenador con este pokemon nuevo
@@ -282,11 +272,14 @@ void aparece_nuevo_pokemon(pokemon* poke){
 
 void planificar_entrenador(pokemon* un_pokemon){
 	proximo_objetivo = un_pokemon;
+
+	//pokemon* proximo_objetivo = list_get(pokemones_en_el_mapa,0); ??
+
 	entrenador* entrenador_ready = list_get( list_sorted(list_filter(entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
 	cambiar_estado_entrenador(entrenador_ready,READY);
 	list_add(entrenadores_en_ready,entrenador_ready);
 
-	sem_post(&entrenador_listo);
+	sem_post(&entrenador_listo); //signal
 
 	//log_atrapar_pokemon(proximo_objetivo);
 }
@@ -299,7 +292,7 @@ void algoritmo_aplicado(void){
 	switch (leer_algoritmo_planificacion()){
 	case FIFO:
 		printf("\n Algoritmo de planificacion = FIFO \n ");
-		//planifico_con_fifo();
+		planifico_con_fifo();
 		break;
 
 	case RR:
@@ -318,20 +311,24 @@ void algoritmo_aplicado(void){
 
 //FUNCION DEL HILO DEL ENTRENADOR
 void procedimiento_de_caza(entrenador* un_entrenador){
-while(1){
-	pthread_mutex_t semaforo_caza;
-	pthread_mutex_init(&semaforo_caza,NULL);
+//while(1){
+	//pthread_mutex_t semaforo_caza;
+	//pthread_mutex_init(&semaforo_caza,NULL);
 
 	sem_wait(&(un_entrenador->sem_entrenador));
 
-	printf(" \n Se activa a entrenador para la caza \n");
-
-	pthread_mutex_lock(&semaforo_caza);
 
 	printf(" \n Se activa a entrenador para la caza \n");
+
+	//pthread_mutex_lock(&semaforo_caza);
+
+	printf(" \n Moviendo entrenador \n");
 
 	//Aca iria otro semaforo para que el catch espere que el entrenador se mueva
 	mover_entrenador(un_entrenador,proximo_objetivo);
+
+	sem_wait(&(espera_de_movimiento));
+
 
 	//wait pedir un catch  	  ->    cambiar_estado_entrenador(un_entrenador,BLOCK_ESPERANDO);
 	denegar_catch();
@@ -344,13 +341,12 @@ while(1){
 
 
 
-	pthread_mutex_unlock(&semaforo_caza);
+	//pthread_mutex_unlock(&semaforo_caza);
 
 	//analizar_proximo_estado(un_entrenador);  ESTO IRIA DESPUES DEL CAUGHT
 
+//}
 
-
-}
 }
 
 
@@ -407,7 +403,7 @@ void analizar_proximo_estado(entrenador* un_entrenador){
 void planifico_con_fifo(void){
 
 
-while(1){
+//while(1){
 
 
 	sem_wait(&entrenador_listo);
@@ -415,17 +411,23 @@ while(1){
 
 	entrenador* entrenador_a_ejecutar = list_remove(entrenadores_en_ready,0);
 
+	printf("Se activa a entrenador n°: %d",entrenador_a_ejecutar->id);
 
-	sem_post(&(entrenador_a_ejecutar->sem_entrenador));
 	cambiar_estado_entrenador(entrenador_a_ejecutar,EXEC);
 
-	printf("Se activo a entrenador");
+
+	sem_post(&(entrenador_a_ejecutar->sem_entrenador));
+
+	procedimiento_de_caza(entrenador_a_ejecutar);
+
+//}
 
 
 }
 
 
-}
+
+
 
 //FUNCIONES AUX
 
