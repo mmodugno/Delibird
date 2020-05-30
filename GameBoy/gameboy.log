@@ -1,3 +1,32 @@
-[INFO] 21:30:23:452 Conexion/(6717:6717): no me pude conectar a Broker
-[INFO] 21:44:23:248 Conexion/(7566:7566): no me pude conectar a Broker
-[INFO] 21:44:41:758 Conexion/(7612:7612): no me pude conectar a Broker
+[INFO] 18:24:55:187 Conexion/(8897:8897): me conecte a Broker exitosamente
+[INFO] 18:26:20:498 Conexion/(8970:8970): no me pude conectar a Broker
+[INFO] 18:27:47:712 Conexion/(9036:9036): me conecte a Broker exitosamente
+[INFO] 18:29:21:956 Conexion/(9129:9129): me conecte a Broker exitosamente
+[INFO] 14:26:25:768 Conexion/(4298:4298): me conecte a Broker exitosamente
+[INFO] 14:29:28:109 Conexion/(4460:4460): me conecte a Broker exitosamente
+[INFO] 14:30:27:743 Conexion/(4513:4513): me conecte a Broker exitosamente
+[INFO] 14:32:00:463 Conexion/(4596:4596): me conecte a Broker exitosamente
+[INFO] 14:44:48:161 Conexion/(5312:5312): me conecte a Broker exitosamente
+[INFO] 14:45:21:84 Conexion/(5394:5394): me conecte a Broker exitosamente
+[INFO] 14:54:39:186 Conexion/(5710:5710): me conecte a Broker exitosamente
+[INFO] 15:01:17:479 Mensaje Nuevo/(5710:5710): Mensaje New Pokemon a Broker
+[INFO] 15:03:52:151 Conexion/(6377:6377): me conecte a Broker exitosamente
+[INFO] 15:03:52:156 Mensaje Nuevo/(6377:6377): Mensaje New Pokemon a Broker
+[INFO] 15:07:16:701 Conexion/(6589:6589): me conecte a Broker exitosamente
+[INFO] 15:07:16:704 Mensaje Nuevo/(6589:6589): Mensaje New Pokemon a Broker
+[INFO] 15:10:04:323 Conexion/(6755:6755): me conecte a Broker exitosamente
+[INFO] 15:10:04:338 Mensaje Nuevo/(6755:6755): Mensaje New Pokemon a Broker
+[INFO] 15:12:40:716 Conexion/(6937:6937): me conecte a Broker exitosamente
+[INFO] 15:12:40:716 Mensaje Nuevo/(6937:6937): Mensaje New Pokemon a Broker
+[INFO] 15:14:43:183 Conexion/(7076:7076): me conecte a Broker exitosamente
+[INFO] 15:14:43:183 Mensaje Nuevo/(7076:7076): Mensaje New Pokemon a Broker
+[INFO] 15:15:43:132 Conexion/(7156:7156): me conecte a Broker exitosamente
+[INFO] 15:15:43:132 Mensaje Nuevo/(7156:7156): Mensaje New Pokemon a Broker
+[INFO] 15:21:52:940 Conexion/(7496:7496): me conecte a Broker exitosamente
+[INFO] 15:21:52:942 Mensaje Nuevo/(7496:7496): Mensaje New Pokemon a Broker
+[INFO] 15:24:03:60 Conexion/(7629:7629): me conecte a Broker exitosamente
+[INFO] 15:24:03:61 Mensaje Nuevo/(7629:7629): Mensaje New Pokemon a Broker
+[INFO] 15:29:52:20 Conexion/(8027:8027): me conecte a Broker exitosamente
+[INFO] 15:29:53:21 Mensaje Nuevo/(8027:8027): Mensaje New Pokemon a Broker
+[INFO] 15:37:33:548 Conexion/(8486:8486): me conecte a Broker exitosamente
+[INFO] 15:37:33:549 Mensaje Nuevo/(8486:8486): Mensaje New Pokemon a Broker

@@ -39,17 +39,20 @@ broker_new_pokemon* deserializar_new_pokemon(int socket_cliente, int* size){
     //uint32_t posX;
     //uint32_t posY;
     //uint32_t cantidadPokemon;
-
+	new_pokemon  *datos2= malloc(sizeof(new_pokemon));
     broker_new_pokemon* newPoke = malloc(sizeof(broker_new_pokemon));
-    void* nombre;
+    newPoke->datos = datos2 ;
+
+    //void* nombre;
 
     recv(socket_cliente,&(newPoke->datos->tamanioNombre),sizeof(uint32_t),0);
 
-    nombre = malloc(newPoke->datos->tamanioNombre);
+    //nombre = malloc(newPoke->datos->tamanioNombre);
+    newPoke->datos->nombrePokemon = malloc(newPoke->datos->tamanioNombre);
 
-    recv(socket_cliente,nombre,newPoke->datos->tamanioNombre,0);
+    recv(socket_cliente,newPoke->datos->nombrePokemon,newPoke->datos->tamanioNombre,0);
 
-    memcpy(newPoke->datos->nombrePokemon,nombre,newPoke->datos->tamanioNombre);
+    //memcpy(newPoke->datos->nombrePokemon,nombre,newPoke->datos->tamanioNombre);
 
     recv(socket_cliente,&(newPoke->datos->posX),sizeof(uint32_t),0);
 
@@ -57,7 +60,7 @@ broker_new_pokemon* deserializar_new_pokemon(int socket_cliente, int* size){
 
     recv(socket_cliente,&(newPoke->datos->cantidadPokemon),sizeof(uint32_t),0);
 
-    free(nombre);
+    //free(nombre);
 
     return newPoke;
 

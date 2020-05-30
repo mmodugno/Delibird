@@ -62,6 +62,7 @@ void enviar_Broker_New_Pokemon(broker_new_pokemon *brokerNewPokemon , int socket
 
 
 	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+
 	send(socket_cliente,bufferStream,tamanio_buffer,0);
 
 	free(bufferStream);

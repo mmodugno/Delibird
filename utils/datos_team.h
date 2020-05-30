@@ -10,9 +10,12 @@
 
 #include "utils_en_comun.h"
 
+//tipo de dato de Gameboy
 typedef struct {
 	appeared_pokemon* datos;
 } team_appeared_pokemon;
+
+
 
 void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon, t_buffer* buffer);
 

@@ -36,3 +36,5 @@ void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon
 	memcpy(buffer->stream+offset,&(teamAppearedPokemon->datos->posY),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 }
+
+

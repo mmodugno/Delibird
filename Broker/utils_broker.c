@@ -51,7 +51,7 @@ void esperar_cliente(int socket_servidor)
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
-	log_info(logConexion," se conectaron a broker");
+	//log_info(logConexion," se conectaron a broker");
 
 	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
 	pthread_detach(thread);
@@ -61,7 +61,9 @@ void esperar_cliente(int socket_servidor)
 void serve_client(int* socket)
 {
 	int cod_op;
-	if(recv(*socket, &cod_op, sizeof(int), MSG_WAITALL) != 0)
+	int i = recv(*socket, &cod_op, sizeof(int), MSG_WAITALL);
+
+	if(i <= 0)
 		cod_op = -1;
 	process_request(cod_op, *socket);
 }
