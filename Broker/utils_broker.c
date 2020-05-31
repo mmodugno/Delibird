@@ -61,8 +61,7 @@ void esperar_cliente(int socket_servidor)
 void serve_client(int* socket)
 {
 	int cod_op;
-	int i = recv(*socket, &cod_op, sizeof(int), MSG_WAITALL);
-
+	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
 	process_request(cod_op, *socket);
@@ -78,17 +77,18 @@ void serve_client(int* socket)
 	SUSCRIPCION = 11
 */
 void process_request(int cod_op, int cliente_fd) {
-	int size;
+	uint32_t tamanio_buffer;
 	suscriptor* suscriptor;
 	broker_new_pokemon* newRecibido;
 	broker_appeared_pokemon* appearedRecibido;
 	broker_get_pokemon* getRecibido;
 	broker_catch_pokemon* catchRecibido;
 	broker_caught_pokemon* caughtRecibido;
+	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
 		case SUSCRIPCION:
-			suscriptor = deserializar_suscripcion(cliente_fd,&size);
+			suscriptor = deserializar_suscripcion(cliente_fd);
 
 			log_info(logSuscipcion,"recibi mensaje de suscripcion de %s",suscriptor->nombreDeSuscriptor);
 
@@ -97,7 +97,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__NEW_POKEMON:
-			newRecibido = deserializar_new_pokemon(cliente_fd,&size);
+			newRecibido = deserializar_new_pokemon(cliente_fd);
 
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON /n con tamanio: %d /n nombre: %s /n posX: %d /n posY: %d /n cantidad de pokemones: %d"
 					,newRecibido->datos->tamanioNombre,
@@ -111,7 +111,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__APPEARED_POKEMON:
-			appearedRecibido = deserializar_appeared_pokemon(cliente_fd,&size);
+			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
 			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON");
 
@@ -120,7 +120,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__GET_POKEMON:
-			getRecibido = deserializar_get_pokemon(cliente_fd,&size);
+			getRecibido = deserializar_get_pokemon(cliente_fd);
 
 			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON");
 
@@ -129,7 +129,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__CATCH_POKEMON:
-			catchRecibido = deserializar_catch_pokemon(cliente_fd,&size);
+			catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
 			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON");
 
@@ -138,7 +138,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__CAUGHT_POKEMON:
-			caughtRecibido = deserializar_caught_pokemon(cliente_fd,&size);
+			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
 			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON");
 

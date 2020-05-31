@@ -34,11 +34,11 @@ typedef struct {
 } broker_get_pokemon;
 
 
-broker_get_pokemon* deserializar_get_pokemon(int socket_cliente, int* size);
-broker_new_pokemon* deserializar_new_pokemon(int socket_cliente, int* size);
-broker_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente, int* size);
-broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente, int* size);
-broker_caught_pokemon* deserializar_caught_pokemon(int socket_cliente, int* size);
+broker_get_pokemon* deserializar_get_pokemon(int socket_cliente);
+broker_new_pokemon* deserializar_new_pokemon(int socket_cliente);
+broker_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente);
+broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente);
+broker_caught_pokemon* deserializar_caught_pokemon(int socket_cliente);
 void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffer* buffer);
 void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer);
 void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t_buffer* buffer);

@@ -82,13 +82,14 @@ void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer)
 }
 
 
-suscriptor* deserializar_suscripcion(int socket_cliente, int* size){
+suscriptor* deserializar_suscripcion(int socket_cliente){
 	// deserializacion
 	//1. uint32_t tamanioNombre;
 	//2. char* nombreDeSUSCRIPTOR;
 	//3. uint32_t colaASuscribirse;
 	suscriptor* suscriptor = malloc(sizeof(suscriptor));
 	void* nombre;
+	/////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
 	recv(socket_cliente,&(suscriptor->tamanioNombreSucriptor),sizeof(uint32_t),0);
 	nombre = malloc(suscriptor->tamanioNombreSucriptor);

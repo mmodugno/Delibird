@@ -10,12 +10,13 @@
 #include <string.h>
 #include<sys/socket.h>
 
-broker_get_pokemon* deserializar_get_pokemon(int socket_cliente, int* size){
+broker_get_pokemon* deserializar_get_pokemon(int socket_cliente){
 	// deserializacion
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon
 	broker_get_pokemon* getPoke = malloc(sizeof(broker_get_pokemon));
 	void* nombre;
+	/////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
 	recv(socket_cliente,&(getPoke->datos->tamanioNombre),sizeof(uint32_t),0);
 
@@ -32,7 +33,7 @@ broker_get_pokemon* deserializar_get_pokemon(int socket_cliente, int* size){
 
 }
 
-broker_new_pokemon* deserializar_new_pokemon(int socket_cliente, int* size){
+broker_new_pokemon* deserializar_new_pokemon(int socket_cliente){
 
     //uint32_t tamanioNombre;
     //char* nombrePokemon;
@@ -44,13 +45,14 @@ broker_new_pokemon* deserializar_new_pokemon(int socket_cliente, int* size){
     newPoke->datos = datos2 ;
 
     //void* nombre;
+    /////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
     recv(socket_cliente,&(newPoke->datos->tamanioNombre),sizeof(uint32_t),0);
 
     //nombre = malloc(newPoke->datos->tamanioNombre);
     newPoke->datos->nombrePokemon = malloc(newPoke->datos->tamanioNombre);
 
-    recv(socket_cliente,newPoke->datos->nombrePokemon,newPoke->datos->tamanioNombre,0);
+    recv(socket_cliente,newPoke->datos->nombrePokemon,(newPoke->datos->tamanioNombre),0);
 
     //memcpy(newPoke->datos->nombrePokemon,nombre,newPoke->datos->tamanioNombre);
 
@@ -66,7 +68,7 @@ broker_new_pokemon* deserializar_new_pokemon(int socket_cliente, int* size){
 
 }
 
-broker_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente, int* size){
+broker_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente){
 
 	//uint32_t id_relativo;
     //uint32_t tamanioNombre;
@@ -76,6 +78,7 @@ broker_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente, int* 
 
     broker_appeared_pokemon* appearedPoke = malloc(sizeof(broker_appeared_pokemon));
     void* nombre;
+    /////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
     recv(socket_cliente,&(appearedPoke->id_relativo),sizeof(uint32_t),0);
 
@@ -97,7 +100,7 @@ broker_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente, int* 
 
 }
 
-broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente, int* size){
+broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente){
 	// deserializacion
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;
@@ -106,6 +109,7 @@ broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente, int* size){
 
 	broker_catch_pokemon* catchPokemon = malloc(sizeof(broker_catch_pokemon));
 	void* nombre;
+	/////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
 	recv(socket_cliente, &(catchPokemon->datos->tamanioNombre),sizeof(uint32_t),0);
 	nombre = malloc(catchPokemon->datos->tamanioNombre);
@@ -118,7 +122,7 @@ broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente, int* size){
 	return catchPokemon;
 }
 
-broker_caught_pokemon* deserializar_caught_pokemon(int socket_cliente, int* size){
+broker_caught_pokemon* deserializar_caught_pokemon(int socket_cliente){
 	// deserializacion
 	//1. uint32_t id_relativo;
 	//2. uint32_t puedoAtraparlo;

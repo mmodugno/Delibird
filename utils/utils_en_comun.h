@@ -104,6 +104,6 @@ typedef struct{
 void* serializar_paquete(t_paquete* paquete, int *bytes);
 void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer);
 void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker);
-suscriptor* deserializar_suscripcion(int socket_cliente, int* size);
+suscriptor* deserializar_suscripcion(int socket_cliente);
 
 #endif /* UTILS_EN_COMUN_H_ */
