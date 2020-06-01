@@ -9,6 +9,7 @@
 #define DATOS_TEAM_H_
 
 #include "utils_en_comun.h"
+#include<sys/socket.h>
 
 //tipo de dato de Gameboy
 typedef struct {
@@ -18,6 +19,6 @@ typedef struct {
 
 
 void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon, t_buffer* buffer);
-team_appeared_pokemon* deserealizar_appeared_pokemon(int cliente);
+team_appeared_pokemon* deserealizar_team_appeared_pokemon(int cliente);
 
 #endif /* DATOS_TEAM_H_ */

@@ -38,7 +38,7 @@ void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon
 	offset+=sizeof(uint32_t);
 }
 
-team_appeared_pokemon* deserializar_appeared_pokemon(int socket_cliente){
+team_appeared_pokemon* deserializar_team_appeared_pokemon(int socket_cliente){
 
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;

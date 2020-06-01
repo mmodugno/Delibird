@@ -244,7 +244,7 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 	}
 	printf(" \n fin de movimiento ed entrenador   \n");
 
-	sem_post(&(espera_de_movimiento));
+	//sem_post(&(espera_de_movimiento));
 
 	//log_movimiento_de_entrenador(entrenador); (mostraria la posicion despues de moverse)
 }
@@ -327,7 +327,7 @@ void procedimiento_de_caza(entrenador* un_entrenador){
 	//Aca iria otro semaforo para que el catch espere que el entrenador se mueva
 	mover_entrenador(un_entrenador,proximo_objetivo);
 
-	sem_wait(&(espera_de_movimiento));
+	//sem_wait(&(espera_de_movimiento));
 
 
 	//wait pedir un catch  	  ->    cambiar_estado_entrenador(un_entrenador,BLOCK_ESPERANDO);

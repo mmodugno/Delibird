@@ -15,9 +15,8 @@
 #include<commons/config.h>
 #include<readline/readline.h>
 #include"conexiones.h"
-#include"utils_team.h"
 
-t_config leer_config(void);
+
 
 //void terminar_programa(int,int,int, t_log,t_log,t_log,t_log, t_config);
 //t_log         log_create(char* file, char program_name, bool is_active_console, t_log_level level);

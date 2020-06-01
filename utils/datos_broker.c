@@ -198,7 +198,7 @@ void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedP
 
 	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon), brokerAppearedPokemon->datos->tamanioNombre);
 	//ESTO ESTA MAL, NO ES SIZEOF
-	offset+=sizeof(brokerAppearedPokemon->datos->tamanioNombre);
+	offset+=brokerAppearedPokemon->datos->tamanioNombre;
 
 	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);

@@ -8,7 +8,7 @@
 #ifndef CONEXIONES_H_
 #define CONEXIONES_H_
 
-#include"utils_team.h"
+
 #include"datos_team.h"
 #include<stdio.h>
 #include<stdlib.h>
@@ -42,6 +42,12 @@ void log_reintentar_comunicacion(void);
 void log_conexion_exitosa(void);
 void log_fallo_de_conexion(void);
 
+void iniciar_servidor(void);
+void esperar_cliente(int);
+//void* recibir_mensaje(int socket_cliente, int* size);
+int recibir_operacion(int);
+void process_request(int cod_op, int cliente_fd);
+void serve_client(int *socket);
 
 
 #endif /* CONEXIONES_H_ */

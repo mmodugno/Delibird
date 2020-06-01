@@ -6,13 +6,14 @@
  */
 
 
-#include "utils_team.h"
-
+#include "team.h"
 
 
 int main(int argc, char* argv[]){
 
 	printf(" Arrancando \n \n");
+
+	iniciar_servidor();
 
 
  	variables_globales();
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]){
 sem_init(&entrenador_listo,0 ,0);
 
 
- 	sem_init(&(espera_de_movimiento),0,0);
+ 	//sem_init(&(espera_de_movimiento),0,0);
 
 
  	//pthread_t hilo_principal;

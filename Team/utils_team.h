@@ -26,6 +26,7 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 #include<semaphore.h>
+#include "conexiones.h"
 
 t_config* config;
 

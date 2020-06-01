@@ -19,3 +19,10 @@
  posX: 121231436 
  posY: 11 
  cantidad de pokemones: 31123
+[INFO] 14:19:28:100 Conexion/(3680:3680): me conecte a Broker exitosamente
+[INFO] 14:19:28:100 Mensaje Nuevo/(3680:3680): envie mensaje de NEW_POKEMON 
+ con tamanio: 6 
+ nombre: messi 
+ posX: 131 
+ posY: 2 
+ cantidad de pokemones: 14123
