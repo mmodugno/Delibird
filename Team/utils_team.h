@@ -29,6 +29,10 @@
 
 t_config* config;
 
+#define IP_TEAM "127.0.0.2"
+#define PUERTO_TEAM "5002"
+
+
 
 t_config* leer_config(void);
 t_list* entrenadores;

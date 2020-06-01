@@ -18,5 +18,6 @@ typedef struct {
 
 
 void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon, t_buffer* buffer);
+team_appeared_pokemon* deserealizar_appeared_pokemon(int cliente);
 
 #endif /* DATOS_TEAM_H_ */
