@@ -28,7 +28,7 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.exe.debug.option.optimization.level.430537526" name="Optimization Level" superClass="gnu.c.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option id="gnu.c.compiler.exe.debug.option.debugging.level.710478658" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1004721956" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/utils}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/utnso/tp-2020-1c-The-X-Team/utils"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1773034655" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -38,7 +38,7 @@
 									<listOptionValue builtIn="false" value="commons"/>
 								</option>
 								<option id="gnu.c.link.option.paths.431786695" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/utils/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/utnso/tp-2020-1c-The-X-Team/utils/Debug"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.573317126" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

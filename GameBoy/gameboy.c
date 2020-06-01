@@ -60,7 +60,13 @@ int main(int argc, char* argv[]){
 
 				enviar_Broker_New_Pokemon(newPokemon,conexionBroker);
 
-				log_info(logMensajeNuevo,"Mensaje New Pokemon a Broker");
+				//log_info(logMensajeNuevo,"Mensaje New Pokemon a Broker");
+				log_info(logMensajeNuevo,"envie mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
+									,newPokemon->datos->tamanioNombre,
+									newPokemon->datos->nombrePokemon,
+									newPokemon->datos->posX,
+									newPokemon->datos->posY,
+									newPokemon->datos->cantidadPokemon);
 
 				free(newPokemon);
 			}

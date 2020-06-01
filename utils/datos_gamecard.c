@@ -31,6 +31,7 @@ void serializar_gameCard_new_pokemon(gameCard_new_pokemon* gameCardNewPokemon, t
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(gameCardNewPokemon->datos->nombrePokemon),gameCardNewPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(gameCardNewPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(gameCardNewPokemon->datos->posX),sizeof(uint32_t));
@@ -65,6 +66,7 @@ void serializar_gameCard_catch_pokemon(gameCard_catch_pokemon* gameCardCatchPoke
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(gameCardCatchPokemon->datos->nombrePokemon), gameCardCatchPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(gameCardCatchPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(gameCardCatchPokemon->datos->posX),sizeof(uint32_t));
@@ -95,5 +97,6 @@ void serializar_gameCard_get_pokemon(gameCard_get_pokemon* gameCardGetPokemon, t
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(gameCardGetPokemon->datos->nombrePokemon),gameCardGetPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(gameCardGetPokemon->datos->tamanioNombre);
 }

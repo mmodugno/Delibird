@@ -8,6 +8,7 @@
 #include "datos_broker.h"
 #include <stdlib.h>
 #include <string.h>
+#include <commons/log.h>
 #include<sys/socket.h>
 
 broker_get_pokemon* deserializar_get_pokemon(int socket_cliente){
@@ -52,8 +53,7 @@ broker_new_pokemon* deserializar_new_pokemon(int socket_cliente){
     //nombre = malloc(newPoke->datos->tamanioNombre);
     newPoke->datos->nombrePokemon = malloc(newPoke->datos->tamanioNombre);
 
-    recv(socket_cliente,newPoke->datos->nombrePokemon,(newPoke->datos->tamanioNombre),0);
-
+    recv(socket_cliente,newPoke->datos->nombrePokemon,newPoke->datos->tamanioNombre,0);
     //memcpy(newPoke->datos->nombrePokemon,nombre,newPoke->datos->tamanioNombre);
 
     recv(socket_cliente,&(newPoke->datos->posX),sizeof(uint32_t),0);
@@ -157,7 +157,9 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(brokerNewPokemon->datos->nombrePokemon),brokerNewPokemon->datos->tamanioNombre);
-	offset+=sizeof(brokerNewPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
+	//offset+=sizeof(brokerNewPokemon->datos->tamanioNombre);
+	offset+=brokerNewPokemon->datos->tamanioNombre;
 
 	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->posX),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -195,6 +197,7 @@ void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedP
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon), brokerAppearedPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(brokerAppearedPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
@@ -224,6 +227,7 @@ void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(brokerCatchPokemon->datos->nombrePokemon),brokerCatchPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(brokerCatchPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(brokerCatchPokemon->datos->posX),sizeof(uint32_t));
@@ -269,6 +273,7 @@ void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffe
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(brokerGetPokemon->datos->nombrePokemon),brokerGetPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(brokerGetPokemon->datos->tamanioNombre);
 
 }

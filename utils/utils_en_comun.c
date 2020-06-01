@@ -74,6 +74,7 @@ void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer)
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(suscriptor->nombreDeSuscriptor),suscriptor->tamanioNombreSucriptor);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(suscriptor->tamanioNombreSucriptor);
 
 	memcpy(buffer->stream+offset,&(suscriptor->tipoDeCola),sizeof(tipoDeCola));

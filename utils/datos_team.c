@@ -28,6 +28,7 @@ void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(teamAppearedPokemon->datos->nombrePokemon),teamAppearedPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=sizeof(teamAppearedPokemon->datos->tamanioNombre);
 
 	memcpy(buffer->stream+offset,&(teamAppearedPokemon->datos->posX),sizeof(uint32_t));

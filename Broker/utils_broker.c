@@ -99,7 +99,7 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__NEW_POKEMON:
 			newRecibido = deserializar_new_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON /n con tamanio: %d /n nombre: %s /n posX: %d /n posY: %d /n cantidad de pokemones: %d"
+			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
 					,newRecibido->datos->tamanioNombre,
 					newRecibido->datos->nombrePokemon,
 					newRecibido->datos->posX,
