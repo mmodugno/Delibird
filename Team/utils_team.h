@@ -26,7 +26,11 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 #include<semaphore.h>
-#include "conexiones.h"
+
+#include"datos_team.h"
+
+//LOGS:
+t_log* llegadaDeMensaje;
 
 t_config* config;
 
@@ -112,6 +116,14 @@ void log_reintentar_comunicacion(void);
 void log_conexion_exitosa(void);
 void log_fallo_de_conexion(void);
 
+
+// FUNCIONES DE CONEXIONES //
+void iniciar_servidor(void);
+void esperar_cliente(int);
+//void* recibir_mensaje(int socket_cliente, int* size);
+int recibir_operacion(int);
+void process_request(int cod_op, int cliente_fd);
+void serve_client(int *socket);
 
 
 //globales

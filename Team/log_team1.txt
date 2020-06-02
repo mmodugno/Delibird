@@ -18,3 +18,5 @@
 [INFO] 12:06:34:252 MOVIMIENTO DE ENTRENADOR/(6882:6882): entrenador 0: se movio a (1,2)
 [INFO] 12:07:11:774 MOVIMIENTO DE ENTRENADOR/(6928:6928): entrenador 0: se movio a (1,1)
 [INFO] 12:08:01:853 MOVIMIENTO DE ENTRENADOR/(6972:6972): entrenador 0: se movio a (1,1)
+[INFO] 16:07:54:740 movimiento de entrenador/(5269:5269): me conecte a Broker exitosamente
+[INFO] 16:24:18:264 movimiento de entrenador/(5571:5571): se mueve entrenador

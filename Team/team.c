@@ -13,12 +13,18 @@ int main(int argc, char* argv[]){
 
 	printf(" Arrancando \n \n");
 
+	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");
+
+	variables_globales();
+
+
+
 	iniciar_servidor();
 
 
- 	variables_globales();
 
-sem_init(&entrenador_listo,0 ,0);
+
+	//sem_init(&entrenador_listo,0 ,0);
 
 
  	//sem_init(&(espera_de_movimiento),0,0);
@@ -30,14 +36,15 @@ sem_init(&entrenador_listo,0 ,0);
 
 
  	//PROBANDO TODA LA EJECUCION DE CAZA:
- 	pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);
- 	aparece_nuevo_pokemon(pikapika);
+ 	//pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);
+ 	//aparece_nuevo_pokemon(pikapika);
 
 
 
 
 
- 	planifico_con_fifo();
+
+ 	//planifico_con_fifo();
 
 
 
