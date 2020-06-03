@@ -44,6 +44,13 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		colaGetPokemon;
 		colaLocalizedPokemon;*/
 
+		suscriptoresAppearedPokemon = queue_create();
+		suscriptoresCatchPokemon = queue_create();
+		suscriptoresCaughtPokemon = queue_create();
+		suscriptoresGetPokemon = queue_create();
+		suscriptoresLocalizedPokemon = queue_create();
+		suscriptoresNewPokemon = queue_create();
+
 		iniciar_servidor();
 
 

@@ -70,6 +70,10 @@ t_log* compactacionMemoria;
 t_log* dumpCache;
 
 
+static const char *colasDeEnum[] = {
+		"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON",
+};
+
 void* recibir_buffer(int*, int);
 
 void iniciar_servidor(void);

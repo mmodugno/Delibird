@@ -1,34 +1,7 @@
-[INFO] 03:05:03:470 Conexion/(5294:5294): me conecte a Broker exitosamente
-[INFO] 03:05:03:470 Mensaje Nuevo/(5294:5294): envie mensaje de NEW_POKEMON 
- con tamanio: 8 
- nombre: pikachu 
- posX: 3 
- posY: 4 
- cantidad de pokemones: 2
-[INFO] 03:07:21:513 Conexion/(7115:7115): me conecte a Broker exitosamente
-[INFO] 03:07:21:557 Mensaje Nuevo/(7115:7115): envie mensaje de NEW_POKEMON 
- con tamanio: 6 
- nombre: messi 
- posX: 33 
- posY: 42 
- cantidad de pokemones: 21
-[INFO] 03:09:46:701 Conexion/(7430:7430): me conecte a Broker exitosamente
-[INFO] 03:09:46:720 Mensaje Nuevo/(7430:7430): envie mensaje de NEW_POKEMON 
- con tamanio: 8 
- nombre: ronald0 
- posX: 121231436 
- posY: 11 
- cantidad de pokemones: 31123
-[INFO] 14:19:28:100 Conexion/(3680:3680): me conecte a Broker exitosamente
-[INFO] 14:19:28:100 Mensaje Nuevo/(3680:3680): envie mensaje de NEW_POKEMON 
- con tamanio: 6 
- nombre: messi 
- posX: 131 
- posY: 2 
- cantidad de pokemones: 14123
-[INFO] 16:45:41:747 Conexion/(6157:6157): me conecte a Team exitosamente
-[INFO] 16:46:56:900 Conexion/(6216:6216): no me pude conectar a Team
-[INFO] 16:49:04:496 Conexion/(6339:6339): me conecte a Team exitosamente
-[INFO] 16:50:56:202 Conexion/(6442:6442): me conecte a Team exitosamente
-[INFO] 16:57:46:589 Conexion/(6628:6628): me conecte a Team exitosamente
-[INFO] 17:01:38:318 Conexion/(19561:19561): me conecte a Team exitosamente
+
+[INFO] 23:44:28:728 Conexion/(10284:10284): me conecte a Broker exitosamente
+[INFO] 23:44:28:730 Suscripcion/(10284:10284): me conecto como modo suscriptor por 235 segundos a Get_Pokemon exitosamente
+[INFO] 23:45:10:780 Conexion/(10339:10339): me conecte a Broker exitosamente
+[INFO] 23:45:10:780 Suscripcion/(10339:10339): me conecto como modo suscriptor por 235 segundos a Localized_Pokemon exitosamente
+[INFO] 23:45:37:876 Conexion/(10383:10383): me conecte a Broker exitosamente
+[INFO] 23:45:37:877 Suscripcion/(10383:10383): me conecto como modo suscriptor por 235 segundos a Appeared_Pokemon exitosamente

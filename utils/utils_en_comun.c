@@ -11,7 +11,7 @@
 
 //TODO
 void* serializar_paquete(t_paquete* paquete, int *bytes){
-	(*bytes) = sizeof(op_code)+sizeof(int)+(paquete->buffer->size);
+	(*bytes) = sizeof(op_code)+sizeof(uint32_t)+(paquete->buffer->size);
 	int offset = 0;
 	void* stream_a_enviar=malloc(*bytes);
 
@@ -19,7 +19,7 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 	offset+=sizeof(op_code);
 
 	memcpy(stream_a_enviar+offset,&(paquete->buffer->size),sizeof(int));
-	offset+=sizeof(int);
+	offset+=sizeof(uint32_t);
 
 
 	memcpy(stream_a_enviar+offset,(paquete->buffer->stream),paquete->buffer->size);
@@ -74,8 +74,7 @@ void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer)
 	offset+=sizeof(uint32_t);
 
 	memcpy(buffer->stream+offset,(suscriptor->nombreDeSuscriptor),suscriptor->tamanioNombreSucriptor);
-	//ESTO ESTA MAL, NO ES SIZEOF
-	offset+=sizeof(suscriptor->tamanioNombreSucriptor);
+	offset+=(suscriptor->tamanioNombreSucriptor);
 
 	memcpy(buffer->stream+offset,&(suscriptor->tipoDeCola),sizeof(tipoDeCola));
 	offset+=sizeof(tipoDeCola);
@@ -89,17 +88,16 @@ suscriptor* deserializar_suscripcion(int socket_cliente){
 	//2. char* nombreDeSUSCRIPTOR;
 	//3. uint32_t colaASuscribirse;
 	suscriptor* suscriptor = malloc(sizeof(suscriptor));
-	void* nombre;
+	//void* nombre;
 	/////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
 	recv(socket_cliente,&(suscriptor->tamanioNombreSucriptor),sizeof(uint32_t),0);
-	nombre = malloc(suscriptor->tamanioNombreSucriptor);
-	recv(socket_cliente , nombre , suscriptor->tamanioNombreSucriptor,0);
+
+	suscriptor->nombreDeSuscriptor = malloc(suscriptor->tamanioNombreSucriptor);
+	recv(socket_cliente , suscriptor->nombreDeSuscriptor , suscriptor->tamanioNombreSucriptor,0);
+
 	recv(socket_cliente , &(suscriptor->tipoDeCola) , sizeof(tipoDeCola),0);
 
-	memcpy(suscriptor->nombreDeSuscriptor,nombre,suscriptor->tamanioNombreSucriptor);
-
-	free(nombre);
 
 	return suscriptor;
 

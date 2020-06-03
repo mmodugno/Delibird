@@ -225,7 +225,7 @@ int main(int argc, char* argv[]){
 
 
 		if(!strcmp(argv[2],"GET_POKEMON")){
-			if(argc==4){
+			if(argc==5){
 
 				gameCard_get_pokemon *getPokemon = malloc(sizeof(gameCard_get_pokemon));
 
@@ -255,7 +255,7 @@ int main(int argc, char* argv[]){
 		else{
 			log_info(logConexion,"me conecte a Broker exitosamente");
 		}
-		if(argc==3){
+		if(argc==4){
 			suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 			meSuscribo->nombreDeSuscriptor="GAMEBOY";
 			meSuscribo->tamanioNombreSucriptor= strlen(meSuscribo->nombreDeSuscriptor)+1;
@@ -264,37 +264,37 @@ int main(int argc, char* argv[]){
 				meSuscribo->tipoDeCola = NEW_POKEMON;
 
 				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
-				log_info(logSuscipcion,"me conecto como modo suscriptor a New_Pokemon exitosamente");
+				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a New_Pokemon exitosamente",atoi(argv[3]));
 			}
 			if(!strcmp(argv[2],"APPEARED_POKEMON")){
 				meSuscribo->tipoDeCola = APPEARED_POKEMON;
 
 				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
-				log_info(logSuscipcion,"me conecto como modo suscriptor a Appeared_Pokemon exitosamente");
+				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Appeared_Pokemon exitosamente",atoi(argv[3]));
 			}
 			if(!strcmp(argv[2],"CATCH_POKEMON")){
 				meSuscribo->tipoDeCola = CATCH_POKEMON;
 
 				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
-				log_info(logSuscipcion,"me conecto como modo suscriptor a Catch_Pokemon exitosamente");
+				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Catch_Pokemon exitosamente",atoi(argv[3]));
 			}
 			if(!strcmp(argv[2],"CAUGHT_POKEMON")){
 				meSuscribo->tipoDeCola = CAUGHT_POKEMON;
 
 				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
-				log_info(logSuscipcion,"me conecto como modo suscriptor a Caught_Pokemon exitosamente");
+				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Caught_Pokemon exitosamente",atoi(argv[3]));
 			}
 			if(!strcmp(argv[2],"GET_POKEMON")){
 				meSuscribo->tipoDeCola= GET_POKEMON;
 
 				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
-				log_info(logSuscipcion,"me conecto como modo suscriptor a Get_Pokemon exitosamente");
+				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Get_Pokemon exitosamente",atoi(argv[3]));
 			}
 			if(!strcmp(argv[2],"LOCALIZED_POKEMON")){
 				meSuscribo->tipoDeCola= LOCALIZED_POKEMON;
 
 				enviar_pedido_suscripcion(meSuscribo,conexionBroker);
-				log_info(logSuscipcion,"me conecto como modo suscriptor a Localized_Pokemon exitosamente");
+				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Localized_Pokemon exitosamente",atoi(argv[3]));
 			}
 			free(meSuscribo);
 

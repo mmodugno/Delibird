@@ -90,7 +90,7 @@ void process_request(int cod_op, int cliente_fd) {
 		case SUSCRIPCION:
 			suscriptor = deserializar_suscripcion(cliente_fd);
 
-			log_info(logSuscipcion,"recibi mensaje de suscripcion de %s",suscriptor->nombreDeSuscriptor);
+			log_info(logSuscipcion,"recibi mensaje de suscripcion de %s a la cola %s",suscriptor->nombreDeSuscriptor,colasDeEnum[(suscriptor->tipoDeCola)-1]);
 
 			suscribirACola(suscriptor);
 			free(suscriptor);
