@@ -16,6 +16,7 @@ broker_get_pokemon* deserializar_get_pokemon(int socket_cliente){
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon
 	broker_get_pokemon* getPoke = malloc(sizeof(broker_get_pokemon));
+	getPoke->datos = malloc(sizeof(get_pokemon));
 	void* nombre;
 	/////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
 
@@ -129,6 +130,7 @@ broker_caught_pokemon* deserializar_caught_pokemon(int socket_cliente){
 
 
 	broker_caught_pokemon* caughtPokemon = malloc(sizeof(broker_caught_pokemon));
+	caughtPokemon->datos = malloc(sizeof(caught_pokemon));
 
 	recv(socket_cliente, &(caughtPokemon->id_relativo),sizeof(uint32_t),0);
 	recv(socket_cliente, &(caughtPokemon->datos->puedoAtraparlo),sizeof(uint32_t),0);
@@ -274,7 +276,7 @@ void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffe
 
 	memcpy(buffer->stream+offset,(brokerGetPokemon->datos->nombrePokemon),brokerGetPokemon->datos->tamanioNombre);
 	//ESTO ESTA MAL, NO ES SIZEOF
-	offset+=sizeof(brokerGetPokemon->datos->tamanioNombre);
+	offset+=brokerGetPokemon->datos->tamanioNombre;
 
 }
 
