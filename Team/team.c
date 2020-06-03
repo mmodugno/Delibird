@@ -16,11 +16,13 @@ int main(int argc, char* argv[]){
 	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");
 	cambioDeCola = iniciar_log("CAMBIO DE COLA");
 
+
+
 	variables_globales();
 
 
 
-	iniciar_servidor();
+	//iniciar_servidor();
 
 
 
@@ -34,7 +36,7 @@ int main(int argc, char* argv[]){
  	//pthread_t hilo_principal;
  	//pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
-
+	//algoritmo_aplicado();
 
  	//PROBANDO TODA LA EJECUCION DE CAZA:
  	//pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);

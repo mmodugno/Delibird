@@ -26,6 +26,8 @@
 
 void variables_globales(){
 	config = leer_config();
+	sem_init(hay_entrenador,0,0);
+
 	hacer_entrenadores();
 	calcular_objetivo_global();
 
@@ -33,6 +35,8 @@ void variables_globales(){
 	pokemones_atrapados= list_create();
 
 	entrenadores_en_ready= list_create();
+
+
 
 
 
@@ -104,6 +108,7 @@ char* leer_ip_broker(void){
 
 
 	 sem_init(&(un_entrenador->sem_entrenador),0,0);
+
 	 pthread_t hiloEntrenador;
 
 
@@ -161,6 +166,17 @@ void hacer_entrenadores(void){
 		list_add(entrenadores,entrenador_listo);
 
 	 }
+
+
+
+
+	 //Cuando se crean estan en ready
+	 for(int i=0; i < list_size(entrenadores);i++ ){
+		 list_add(entrenadores_en_ready,list_get(entrenadores,i));
+		 sem_post(hay_entrenador);
+	 }
+
+
 
  }
 
@@ -249,6 +265,7 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 	//log_movimiento_de_entrenador(entrenador); (mostraria la posicion despues de moverse)
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //Se ejecuta cuando recibimos un mensaje de appeared_pokemon
@@ -260,6 +277,8 @@ void aparece_nuevo_pokemon(pokemon* poke){
 
 		 //planificar a un entrenador con este pokemon nuevo
 		 printf("Se planifica entrenador para la caza");
+
+
 		 planificar_entrenador(poke);
 
 	 }
@@ -271,15 +290,16 @@ void aparece_nuevo_pokemon(pokemon* poke){
 
 
 void planificar_entrenador(pokemon* un_pokemon){
+
+	sem_wait(hay_entrenador);
 	proximo_objetivo = un_pokemon;
 
 	//pokemon* proximo_objetivo = list_get(pokemones_en_el_mapa,0); ??
 
-	entrenador* entrenador_ready = list_get( list_sorted(list_filter(entrenadores,se_puede_planificar),primer_entrenador_mas_cerca_de_pokemon) ,0);
-	cambiar_estado_entrenador(entrenador_ready,READY);
-	list_add(entrenadores_en_ready,entrenador_ready);
+	entrenador_exec = list_get(list_sorted(entrenadores_en_ready,primer_entrenador_mas_cerca_de_pokemon) ,0);
+	//cambiar_estado_entrenador(entrenador_ready,READY);
 
-	sem_post(&entrenador_listo); //signal
+	sem_post(entrenador_listo); //signal
 
 	//log_atrapar_pokemon(proximo_objetivo);
 }
@@ -378,13 +398,9 @@ printf("Agarró al pokemon %s",proximo_objetivo->nombre);
 
 }
 
-
 void denegar_catch(void){
 	printf("No se agarró al pokemon");
 }
-
-
-
 
 void analizar_proximo_estado(entrenador* un_entrenador){
 	if(puede_cazar(un_entrenador)){
@@ -401,24 +417,33 @@ void analizar_proximo_estado(entrenador* un_entrenador){
 
 
 void planifico_con_fifo(void){
-
+sem_t* en_ejecucion;
+	sem_init(en_ejecucion,0,1);
 
 //while(1){
 
+	sem_wait(entrenador_listo);
 
-	sem_wait(&entrenador_listo);
+
+
+	sem_wait(en_ejecucion);
+	//Seccion critica
 	printf("Comienzo ejecucion \n");
 
-	entrenador* entrenador_a_ejecutar = list_remove(entrenadores_en_ready,0);
-
+	entrenador* entrenador_a_ejecutar = entrenador_exec;
+	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d",entrenador_a_ejecutar);
 	printf("Se activa a entrenador n°: %d",entrenador_a_ejecutar->id);
 
-	cambiar_estado_entrenador(entrenador_a_ejecutar,EXEC);
-
+	//cambiar_estado_entrenador(entrenador_a_ejecutar,EXEC);
 
 	sem_post(&(entrenador_a_ejecutar->sem_entrenador));
 
-	procedimiento_de_caza(entrenador_a_ejecutar);
+	//Fin de seccion critica
+	sem_post(en_ejecucion);
+
+
+
+	//procedimiento_de_caza(entrenador_a_ejecutar);
 
 //}
 
