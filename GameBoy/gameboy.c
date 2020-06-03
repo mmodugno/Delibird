@@ -156,6 +156,7 @@ int main(int argc, char* argv[]){
 	    	if(argc==6){
 
 		        team_appeared_pokemon *appearedPokemon = malloc(sizeof(team_appeared_pokemon));
+		        appearedPokemon->datos = malloc(sizeof(appeared_pokemon));
 
 		        appearedPokemon->datos->nombrePokemon = argv[3];
 		        appearedPokemon->datos->tamanioNombre = strlen(appearedPokemon->datos->nombrePokemon)+1;

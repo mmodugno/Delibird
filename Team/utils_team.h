@@ -31,6 +31,7 @@
 
 //LOGS:
 t_log* llegadaDeMensaje;
+t_log* cambioDeCola;
 
 t_config* config;
 

@@ -14,6 +14,7 @@ int main(int argc, char* argv[]){
 	printf(" Arrancando \n \n");
 
 	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");
+	cambioDeCola = iniciar_log("CAMBIO DE COLA");
 
 	variables_globales();
 

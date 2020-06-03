@@ -20,3 +20,15 @@
 [INFO] 12:08:01:853 MOVIMIENTO DE ENTRENADOR/(6972:6972): entrenador 0: se movio a (1,1)
 [INFO] 16:07:54:740 movimiento de entrenador/(5269:5269): me conecte a Broker exitosamente
 [INFO] 16:24:18:264 movimiento de entrenador/(5571:5571): se mueve entrenador
+[INFO] 15:52:02:259 NUEVO MENSAJE/(4345:4389): recibi mensaje appeared pokemon:  
+ con tamanio: 3 
+ nombre: as 
+ posX: 2 
+ posY: 2 
+
+[INFO] 15:52:34:827 NUEVO MENSAJE/(4345:4426): recibi mensaje appeared pokemon:  
+ con tamanio: 8 
+ nombre: pikachu 
+ posX: 12 
+ posY: 2 
+
