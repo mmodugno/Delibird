@@ -26,7 +26,7 @@
 
 void variables_globales(){
 	config = leer_config();
-	sem_init(hay_entrenador,0,0);
+
 
 	hacer_entrenadores();
 	calcular_objetivo_global();
@@ -82,8 +82,7 @@ int leer_algoritmo_planificacion(void){
 	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
 	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
 
-	 return algoritmo_planificacion;
-
+return 0;
 }
 int leer_quantum(void){
 	 int quantum = config_get_int_value(config,"QUANTUM");
@@ -113,8 +112,7 @@ char* leer_ip_broker(void){
 
 
 	 un_entrenador->estado = NEW;
-	// t_list* objetivos_config =
-	 //t_list* pokemones_config =
+
 
 	 un_entrenador->objetivos =crear_lista(string_split(objetivosconfig,"|"));
 	 un_entrenador->pokemones =crear_lista(string_split(pokemonsconfig,"|"));
@@ -125,13 +123,11 @@ char* leer_ip_broker(void){
 	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
 
-
-
 	 t_list* posiciones = crear_lista(string_split(posicion,"|"));
 	 un_entrenador->posX = atoi(list_get(posiciones,0));
 	 un_entrenador->posY = atoi(list_get(posiciones,1));
 
-	 un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,procedimiento_de_caza,un_entrenador);
+	 un_entrenador->hiloDeEntrenador = pthread_create(&hiloEntrenador,NULL,(void*) procedimiento_de_caza,un_entrenador);
 
 	 return un_entrenador;
  }
@@ -142,7 +138,7 @@ void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 		nobmre_objetivoconfig = list_get(pokemones,i);
 		//printf("voy sacando a: %s       ",nobmre_objetivoconfig);
 
-		list_remove_by_condition(objetivos,pokemon_repetido);
+		list_remove_by_condition(objetivos,(void*) pokemon_repetido);
 
 	}
 }
@@ -166,7 +162,6 @@ void hacer_entrenadores(void){
 		list_add(entrenadores,entrenador_listo);
 
 	 }
-
 
 
 
@@ -296,7 +291,7 @@ void planificar_entrenador(pokemon* un_pokemon){
 
 	//pokemon* proximo_objetivo = list_get(pokemones_en_el_mapa,0); ??
 
-	entrenador_exec = list_get(list_sorted(entrenadores_en_ready,primer_entrenador_mas_cerca_de_pokemon) ,0);
+	entrenador_exec = list_get(list_sorted(entrenadores_en_ready,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
 	//cambiar_estado_entrenador(entrenador_ready,READY);
 
 	sem_post(entrenador_listo); //signal
@@ -385,8 +380,8 @@ void confirmacion_de_catch(void){
 
 	entrenador* un_entrenador = list_get(entrenadores_en_ready,0);
 
- if(list_any_satisfy(un_entrenador->objetivos , es_de_especie)){
-	list_remove_by_condition(un_entrenador->objetivos , es_de_especie);
+ if(list_any_satisfy(un_entrenador->objetivos , (void*) es_de_especie)){
+	list_remove_by_condition(un_entrenador->objetivos , (void*) es_de_especie);
  }
 
  list_add(pokemones_atrapados,proximo_objetivo);
@@ -668,86 +663,9 @@ void liberar_conexion(int socket_cliente)
 
 
 ///////////////////////////////////////LOGS///////////////////////////////////////
-/*
-t_log* iniciar_logger(char* tipoDeProceso){
-
-	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
-}
-
-esto iria en c:
-logConexion=iniciar_logger("Conexion");
-log_info(logConexion,"me conecte a Broker exitosamente");
-
-*/
-
-
-
 
  t_log* iniciar_log(char* proceso){
 	t_config* config = leer_config();
 	char* archivo = config_get_string_value(config,"LOG_FILE");
    	return log_create(archivo,proceso,true,LOG_LEVEL_INFO);
    }
-
-
-
-
-
-void log_cambio_de_cola(char * razon){
-	t_log* log = iniciar_log("CAMBIO DE COLA");
-	log_info(log,"cambio de cola porque: %s ",razon);
-}
-
-void log_movimiento_de_entrenador(entrenador* entrenador){
-	t_log* log = iniciar_log("MOVIMIENTO DE ENTRENADOR");
-	log_info(log,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
-}
-
-void log_atrapar_pokemon(pokemon* poke){
-	t_log* log = iniciar_log("ATRAPAR POKEMON");
-	log_info(log,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);
-}
-
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2){
-	t_log* log = iniciar_log("INTERCAMBIO");
-		log_info(log,"intercambio entre entrenadores %d y %d",entrenador1->id,entrenador2->id);
-}
-
-
-//Error de comunicacion con el broker
-void log_comunicacion_fallida(void){
-t_log* log = iniciar_log("NO SE PUDO COMUNICAR CON BROKER");
-int reconexion = leer_tiempo_de_reconexion();
-log_info(log,"se reintentara de comunicar en %d",reconexion);
-}
-
-
-void log_reintentar_comunicacion(void){
-t_log* log = iniciar_log("REINTENTANDO CONEXION");
-	log_info(log,"conectando con broker ...");
-}
-
-
-//Resultado de reintento de comunicacion con el broker
-void log_conexion_exitosa(void){
- t_log* log = iniciar_log("CONEXION");
-	log_info(log,"conexion exitosa");
-}
-void log_fallo_de_conexion(void){
-t_log* log = iniciar_log("CONEXION"); //PONERLO COMO ERROR ASI SALE ROJITO
-	log_info(log,"fallo de conexion");
-}
-
-
-
- /////////////////////////LOGS OBLIGATORIOS//////////////////////////////
- /*
- PENDIENTE - Inicio de algoritmo de detección de deadlock.
- PENDIENT E - Resultado de algoritmo de detección de deadlock.
- PENDIENTE - Llegada de un mensaje (indicando el tipo del mismo y sus datos).
- PENDIENTE - Resultado del Team (especificado anteriormente).
-////////////////////////////////////////////////////////////////
-
-
-*/
-

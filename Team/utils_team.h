@@ -30,8 +30,15 @@
 #include"datos_team.h"
 
 //LOGS:
-t_log* llegadaDeMensaje;
+
 t_log* cambioDeCola;
+t_log* movimiento_entrenador;
+t_log* operacion;
+t_log* deadlock;
+t_log* llegadaDeMensaje;
+t_log* resultado;
+t_log* comunicacion_broker;
+
 
 t_config* config;
 
@@ -66,6 +73,7 @@ typedef enum{
 	BLOCK_DEADLOCK=5,
     EXIT=6
 }estadoEntrenador;
+
 
 typedef struct{
     int estado;
@@ -114,14 +122,6 @@ int leer_retardo_cpu(void);
 
 // FUNCIONES DE LOS LOGS //
 t_log* iniciar_log(char* proceso);
-void log_algoritmo_de_planificacion(void);
-void log_cambio_de_cola(char * razon);
-void log_movimiento_de_entrenador(entrenador* entrenador);
-void log_atrapar_pokemon(pokemon* poke);
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2);
-void log_reintentar_comunicacion(void);
-void log_conexion_exitosa(void);
-void log_fallo_de_conexion(void);
 
 
 // FUNCIONES DE CONEXIONES //
