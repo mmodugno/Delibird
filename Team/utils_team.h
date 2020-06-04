@@ -56,10 +56,13 @@ t_list* pokemones_atrapados;
 
 t_list* entrenadores_en_ready;
 
-sem_t* entrenador_listo;
 char* nobmre_objetivoconfig;
 
-sem_t* hay_entrenador;
+
+sem_t entrenador_listo;
+sem_t en_ejecucion;
+sem_t hay_entrenador;
+sem_t planificando;
 
 
 
@@ -84,7 +87,7 @@ typedef struct{
     int cuantos_puede_cazar;
     int id;
     pthread_t hiloDeEntrenador;
-    sem_t* sem_entrenador;
+    sem_t sem_entrenador;
 }entrenador;
 
 typedef struct{

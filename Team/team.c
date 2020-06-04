@@ -13,9 +13,6 @@ int main(int argc, char* argv[]){
 
 	printf(" Arrancando \n \n");
 
-
-
-
 	cambioDeCola = iniciar_log("CAMBIO DE COLA");
 	//log_info(log,"cambio de cola porque: %s ",razon);
 
@@ -51,7 +48,8 @@ int main(int argc, char* argv[]){
 
 
 
-
+	sem_init(&hay_entrenador,0,0);
+	sem_init(&planificando,0,1);
 	///////////////////////////////////////////
 	variables_globales();
 
@@ -59,26 +57,24 @@ int main(int argc, char* argv[]){
 
 	//iniciar_servidor();
 
-
-
-
-	//sem_init(&entrenador_listo,0 ,0);
-
-
  	//sem_init(&(espera_de_movimiento),0,0);
 
 
- 	//pthread_t hilo_principal;
- 	//pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
+
+
+ 	pthread_t hilo_principal;
+	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
+
 
 	//algoritmo_aplicado();
 
- 	//PROBANDO TODA LA EJECUCION DE CAZA:
- 	//pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);
- 	//aparece_nuevo_pokemon(pikapika);
+ 	//PROBANDO TODA LA EJECUCION DE CAZA cdeo este el hilo:
 
+	pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);
+	aparece_nuevo_pokemon(pikapika);
 
-
+	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
+	aparece_nuevo_pokemon(charmander);
 
 
 
@@ -89,7 +85,7 @@ int main(int argc, char* argv[]){
 
 
 
- 	//pthread_join(hilo_principal,NULL);
+ 	pthread_join(hilo_principal,NULL);
 	//Hacer hilo server que este esperando un appeared_pokemon, que despues si fije si nos sirve y meterlo en la lista de pokemones en mapa
 
 
