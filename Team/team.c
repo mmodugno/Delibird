@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
 
 	operacion = iniciar_log("OPERACION");
 	//ATRAPAR POKEMON
-	//log_info(log,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);
+	//log_info(operacion,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);
 
 	//INTERCAMBIO
 	//log_info(log,"intercambio entre entrenadores %d y %d",entrenador1->id,entrenador2->id);
@@ -42,8 +42,6 @@ int main(int argc, char* argv[]){
 	//inicio de proceso de reconexion
 	//resultado de reconexion
 
-
-	//sem_init(hay_entrenador,0,0);
 
 
 
@@ -70,17 +68,15 @@ int main(int argc, char* argv[]){
 
  	//PROBANDO TODA LA EJECUCION DE CAZA cdeo este el hilo:
 
-	pokemon* pikapika = hacer_pokemon("Pikachu", 10, 30);
-	aparece_nuevo_pokemon(pikapika);
+	pokemon* pikachu = hacer_pokemon("Pikachu", 10, 30);
+	aparece_nuevo_pokemon(pikachu);
 
-	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
-	aparece_nuevo_pokemon(charmander);
-
-
-
- 	//planifico_con_fifo();
+	//pokemon* charmander = hacer_pokemon("Charmander", 0,0);
+	//aparece_nuevo_pokemon(charmander);
 
 
+	//aparece_nuevo_pokemon(pikachu);
+	//aparece_nuevo_pokemon(pikachu);
 
 
 
@@ -96,4 +92,15 @@ printf(" \n \n Termino todo ok ");
 
 
     //aca deberiamos poner terminar_programa
-
+void terminar_programa(void){
+	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+	log_destroy(cambioDeCola);
+	log_destroy(llegadaDeMensaje);
+	log_destroy(movimiento_entrenador);
+	log_destroy(operacion);
+	log_destroy(deadlock);
+	log_destroy(resultado);
+	log_destroy(comunicacion_broker);
+	config_destroy(config);
+	//liberar_conexion(conexion);
+}

@@ -55,6 +55,8 @@ t_list* pokemones_en_el_mapa;
 t_list* pokemones_atrapados;
 
 t_list* entrenadores_en_ready;
+t_list* entrenadores_finalizados;
+t_list* entrenadores_en_deadlock;
 
 char* nobmre_objetivoconfig;
 
@@ -145,6 +147,8 @@ void hacer_entrenadores(void);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 bool puede_cazar(entrenador* entrenador);
+bool entrenador_en_exec(entrenador* un_entrenador);
+bool cumplio_objetivo(entrenador* un_entrenador);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
@@ -157,6 +161,8 @@ bool pokemon_repetido(char* nombre);
 void calcular_objetivo_global(void);
 void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
+void mostrar_objetivo_global(char* key, void*value);
+void mostrar(void);
 
 //distancias entre pokemon y entrenador
 int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);
