@@ -36,6 +36,8 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		dumpCache= iniciar_logger("",log_file);*/
 
 
+		idGlobales = 0;
+
 		colaNewPokemon = queue_create();
 		colaAppearedPokemon = queue_create();
 		/*

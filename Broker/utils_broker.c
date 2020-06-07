@@ -97,7 +97,14 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 		case BROKER__NEW_POKEMON:
+
+
 			newRecibido = deserializar_new_pokemon(cliente_fd);
+
+			//mutexlock -> ver donde poner
+			//agregarAMemoria(newRecibido) -> agrega id y agrega a memoria;
+			//mutexUnlock
+
 
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
 					,newRecibido->datos->tamanioNombre,
@@ -107,6 +114,9 @@ void process_request(int cod_op, int cliente_fd) {
 					newRecibido->datos->cantidadPokemon);
 
 			agregarACola(NEW_POKEMON,newRecibido);
+
+
+
 			free(newRecibido);
 
 			break;
@@ -185,7 +195,11 @@ void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
 			queue_push(colaGetPokemon,(broker_get_pokemon*)mensaje);
 			break;
 		case LOCALIZED_POKEMON:
-			queue_push(colaLocalizedPokemon,(localize_pokemon*)mensaje);
+
+			//queue_push(colaLocalizedPokemon,(broker_localize_pokemon*) mensaje);
+
+			queue_push(colaLocalizedPokemon,(localize_pokemon*) mensaje);
+
 			break;
 
 
