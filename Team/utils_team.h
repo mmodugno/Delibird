@@ -33,11 +33,15 @@
 
 t_log* cambioDeCola;
 t_log* movimiento_entrenador;
-t_log* operacion;
-t_log* deadlock;
 t_log* llegadaDeMensaje;
 t_log* resultado;
-t_log* comunicacion_broker;
+t_log* comunicacion_broker_error;
+t_log* operacion_de_atrapar;
+t_log* operacion_de_intercambio;
+t_log* inicio_deadlock;
+t_log* resultado_deadlock;
+t_log* comunicacion_broker_reintento;
+t_log* comunicacion_broker_resultado;
 
 
 t_config* config;
@@ -45,7 +49,8 @@ t_config* config;
 #define IP_TEAM "127.0.0.2"
 #define PUERTO_TEAM "5002"
 
-
+#define IP_BROKER "127.0.0.1"
+#define PUERTO_BROKER "5003"
 
 t_config* leer_config(void);
 t_list* entrenadores;
@@ -65,6 +70,7 @@ sem_t entrenador_listo;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
 sem_t planificando;
+sem_t respuesta_catch;
 
 
 
@@ -136,6 +142,9 @@ void esperar_cliente(int);
 int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
+int crear_conexion(char *ip, char* puerto);
+bool conectarse_con_broker(void);
+
 
 
 //globales
@@ -149,6 +158,8 @@ void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 bool puede_cazar(entrenador* entrenador);
 bool entrenador_en_exec(entrenador* un_entrenador);
 bool cumplio_objetivo(entrenador* un_entrenador);
+void analizar_proxima_cola(entrenador* un_entrenador);
+void printear_lista_entrenadores(t_list* lista);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
@@ -161,8 +172,7 @@ bool pokemon_repetido(char* nombre);
 void calcular_objetivo_global(void);
 void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
-void mostrar_objetivo_global(char* key, void*value);
-void mostrar(void);
+
 
 //distancias entre pokemon y entrenador
 int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);

@@ -148,8 +148,6 @@ void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 
 
 
-
-
 void hacer_entrenadores(void){
 
 	entrenadores = list_create();
@@ -178,13 +176,13 @@ void hacer_entrenadores(void){
 	 poke->posY = posY;
 	 poke->tamanio_nombre = sizeof(nombre);
 	 return poke;
- }
+ }//tenemos que poner un free
 
 
 void calcular_objetivo_global(void){
 
 	objetivo_global = dictionary_create();
-	printf("Objetivo Global:  ");
+	printf("Objetivo Global Inicial:  ");
 	for(int i = 0; i < list_size(entrenadores);i++){
 		//agarro el primer entrenador:
 		entrenador* un_entrenador = list_get(entrenadores,i);
@@ -199,19 +197,10 @@ void calcular_objetivo_global(void){
 
 		}
 	}
+	printf(" \n");
+
 
 }
-
-void mostrar_objetivo_global(char* key, void*value){
-	//SACAR ESTO
-	log_info(resultado,"necesito %d del pokemon %s",value, key);
-}
-
-void mostrar(void){
-	dictionary_iterator(objetivo_global,mostrar_objetivo_global);
-}
-
-
 
 
 
@@ -224,7 +213,7 @@ void agregar_un_objetivo(char* pokemon_a_agregar){
 		dictionary_put(objetivo_global,pokemon_a_agregar, dictionary_get(objetivo_global,pokemon_a_agregar)+1);
 	}
 	else{
-		dictionary_put(objetivo_global, pokemon_a_agregar,(void*) 1); // 1 o puntero??
+		dictionary_put(objetivo_global, pokemon_a_agregar,(void*)1); // 1 o puntero??
 
 	}
 }
@@ -234,7 +223,6 @@ void cambiar_estado_entrenador(entrenador* entrenador,int nuevo_estado){
 }
 
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
-
 
 	int tiempo = leer_retardo_cpu();
 	while(entrenador->posX != pokemon->posX){
@@ -247,10 +235,7 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 
 			//sleep(tiempo);
 		}
-
-
 	}
-
 
 	while(entrenador->posY != pokemon->posY){
 		if(entrenador->posY < pokemon->posY){
@@ -261,7 +246,6 @@ void mover_entrenador(entrenador* entrenador,pokemon* pokemon){
 			entrenador->posY = entrenador->posY -1;
 			//sleep(tiempo);
 		}
-
 	}
 
 
@@ -290,20 +274,16 @@ void aparece_nuevo_pokemon(pokemon* poke){
 	 }
 
 	 else{
-		 printf("El pokemon no pertenece al objetivo global. Se descarta");
+		 printf("\n El pokemon no pertenece al objetivo global. Se descarta \n");
 	 }
 }
 
 
 void planificar_entrenador(pokemon* un_pokemon){
 
-
 	proximo_objetivo = un_pokemon;
 
 	entrenador_exec = list_get(list_sorted(entrenadores_en_ready,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
-
-
-	//cambiar_estado_entrenador(entrenador_ready,READY);
 
 	sem_post(&entrenador_listo); //signal
 
@@ -312,17 +292,13 @@ void planificar_entrenador(pokemon* un_pokemon){
 
 
 
-
-
 void algoritmo_aplicado(void){
 	switch (leer_algoritmo_planificacion()){
 	case FIFO:
-		printf("\n Algoritmo de planificacion = FIFO \n");
 		planifico_con_fifo();
 		break;
 
 	case RR:
-		printf("\n Algoritmo de planificacion = RR");
 		//planifico_con_RR();
 		break;
 
@@ -332,7 +308,6 @@ void algoritmo_aplicado(void){
 	}
 
 }
-
 
 
 //FUNCION DEL HILO DEL ENTRENADOR
@@ -348,36 +323,50 @@ while(1){
 	mover_entrenador(un_entrenador,objetivo_propio);
 
 
-
-	log_info(operacion,"ATRAPAR POKEMON: %s con posicion (%d, %d)",objetivo_propio->nombre,objetivo_propio->posX,objetivo_propio->posY);
+	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",objetivo_propio->nombre,objetivo_propio->posX,objetivo_propio->posY);
 
 	/* PEDIR UN CATCH
 	enviar un mensaje catch al broker, si no se esta conectado efectua el default (podria ser una funcion que se ocupe de eso)
 	wait(respuesta de mensaje id)
 	cuando se recibe el mensaje CAUGHT se manda un signal y la respuesta
-
 	*/
-	confirmacion_de_catch();
-
-
-//ANALIZAR A QUE COLA O LISTA SE MUEVE
+	sem_post(&en_ejecucion); //libera la ejecucion mientras espera el catch
 
 
 
 
-	sem_post(&en_ejecucion);
+	if(!conectarse_con_broker()) confirmacion_de_catch();
+	else{
+		//si el broker esta conectado, depende de el la respuesta
+	}
+	sem_wait(&respuesta_catch);
+
+	analizar_proxima_cola(un_entrenador); //ANALIZA A QUE COLA O LISTA SE MUEVE
+
+	//sem_post(&en_ejecucion);
+
+
+	printf(" \n Termino de ejecucion entrenador %d: \n",un_entrenador->id);
+
+
 }
 
 }
 
+void printear_lista_entrenadores(t_list* lista){
 
+	for (int i = 0; i < list_size(lista);i++){
+		entrenador* entrenador = list_get(lista,i);
+		printf("  entrenador: %d ",entrenador->id);
+	}
+
+}
 
 
 
 void planifico_con_fifo(void){
 
 
-	sem_init(&en_ejecucion,0,1);
 
 while(1){
 
@@ -388,42 +377,41 @@ while(1){
 	printf("\n \n Comienzo ejecucion \n \n");
 
 
-
-
 	entrenador* entrenador_a_ejecutar = entrenador_exec;
 	list_remove_by_condition(entrenadores_en_ready,(void*)entrenador_en_exec);
 
 
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_a_ejecutar->id);
-	//SACAR DE READY
-
-	//cambiar_estado_entrenador(entrenador_a_ejecutar,EXEC);
 
 	sem_post(&(entrenador_a_ejecutar->sem_entrenador));
-
+	sleep(2);
+	//analizar_proxima_cola();
 	sem_post(&planificando);
 	//Fin de seccion critica
 
-	if(entrenador_exec->cuantos_puede_cazar >0){
-	list_add(entrenadores_en_ready,entrenador_exec);
 
-	if(entrenador_exec->cuantos_puede_cazar == 0){
-		if(cumplio_objetivo(entrenador_exec)){
-			list_add(entrenadores_finalizados,entrenador_exec);
-		}
 
-		else{
-			list_add(entrenadores_en_deadlock,entrenador_exec);
+}
+}
+
+void analizar_proxima_cola(entrenador* un_entrenador){
+	if(un_entrenador->cuantos_puede_cazar >0){
+		list_add(entrenadores_en_ready,un_entrenador);
+
+		if(un_entrenador->cuantos_puede_cazar == 0){
+			if(cumplio_objetivo(entrenador_exec)){
+				list_add(entrenadores_finalizados,un_entrenador);
+			}
+
+			else{
+				list_add(entrenadores_en_deadlock,un_entrenador);
+			}
 		}
 	}
 }
-}
-}
-
 
 
 //RESPUESTAS DEL CAUGHT
-
 
 
 void confirmacion_de_catch(void){
@@ -444,16 +432,17 @@ void confirmacion_de_catch(void){
  list_add(entrenador_exec->pokemones,proximo_objetivo);
 
  disminuir_cuantos_puede_cazar(entrenador_exec);
- if(entrenador_exec->cuantos_puede_cazar == 0){
-	 // SE MUEVE A LA LISTA DE BLOQUEADOS
- }
 
 printf("Agarró al pokemon %s",proximo_objetivo->nombre);
 
+
+sem_post(&respuesta_catch);
 }
+
 
 void denegar_catch(void){
 	log_info(llegadaDeMensaje,"No se agarró al pokemon");
+	sem_post(&respuesta_catch);
 }
 
 void analizar_proximo_estado(entrenador* un_entrenador){
@@ -466,7 +455,7 @@ void analizar_proximo_estado(entrenador* un_entrenador){
 		else{
 			cambiar_estado_entrenador(un_entrenador,BLOCK_DEADLOCK);
 		}
-}
+	}
 }
 
 
@@ -579,6 +568,46 @@ void iniciar_servidor(void)
     }
 
 }
+//TODO
+bool conectarse_con_broker(void){
+	int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+		if(conexionBroker <= 0){
+			log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+			//broker_default();
+			return false;
+		}
+		else{
+			log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+			return true;
+		}
+}
+
+/*
+void catch_pokemon(void){
+broker_catch_pokemon *catchPoke = malloc(sizeof(broker_catch_pokemon));
+				catchPoke->datos = malloc(sizeof(catch_pokemon));
+				//dinamicas
+				catchPoke->datos->nombrePokemon = argv[3];
+				catchPoke->datos->tamanioNombre = strlen(catchPoke->datos->nombrePokemon)+1;
+
+				//estaticas
+				catchPoke->datos->posX = atoi(argv[4]);
+				catchPoke->datos->posY = atoi(argv[5]);
+
+				enviar_Broker_Catch_Pokemon(catchPoke,"GAMEBOY",conexionBroker);
+
+				//log_info(logEnviarNuevo,"Mensaje Catch Pokemon \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
+									,catchPoke->datos->tamanioNombre,
+									catchPoke->datos->nombrePokemon,
+									catchPoke->datos->posX,
+									catchPoke->datos->posY);
+				free(catchPoke);
+	}
+*/
+
+
+
+
 
 void esperar_cliente(int socket_servidor)
 {
@@ -678,8 +707,12 @@ int crear_conexion(char *ip, char* puerto)
 
 	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
 
-	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1)
-		printf("error");
+	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) != 0){
+		//printf("error");
+		freeaddrinfo(server_info);
+		return -1;
+	}
+
 
 	freeaddrinfo(server_info);
 
@@ -692,6 +725,8 @@ void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
 }
+
+
 
 
 
