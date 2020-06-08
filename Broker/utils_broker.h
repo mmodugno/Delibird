@@ -26,6 +26,18 @@
 #include<pthread.h>
 #include "datos_broker.h"
 #include<commons/collections/list.h>
+#include<commons/temporal.h>
+
+//ID	Base	tamaño de mensaje	Mensaje	Fecha(creacion/uso)
+typedef struct {
+	uint32_t idMensaje;
+	uint32_t base;
+	uint32_t tamanioMensaje;
+	void* mensaje;
+	char* tiempo;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
+}particiones;
+
+t_list tablaDePArticiones;
 
 uint32_t idGlobales;
 
@@ -46,13 +58,6 @@ t_config* config;
 void *memoria;
 
 pthread_t thread;
-
-typedef struct {
-	uint32_t id;
-	uint32_t base;
-	uint32_t tamanioMensaje;
-	void* mensaje;
-} particiones;
 
 t_list* tablaAcknowledged;
 
@@ -89,7 +94,7 @@ static const char *colasDeEnum[] = {
 
 
 
-
+void agregarAMemoria(void * dato);
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
 void esperar_cliente(int);

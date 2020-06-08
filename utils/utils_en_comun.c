@@ -12,25 +12,34 @@
 
 /*
  * 1. op_code CodigoDeOperacion
- * 2. uint32_t tamanio_username
- * 3.
+ * 2. uint32_t tamanio_usernamer
+ * 3. char*
+ * 4. uint32_t size de buffer
+ * 5. void* buffer
  * */
 void* serializar_paquete(t_paquete* paquete, int *bytes){
-	(*bytes) = sizeof(op_code)+sizeof(uint32_t)+(paquete->buffer->size);
+	(*bytes) = sizeof(op_code)+sizeof(uint32_t)+ paquete->tamanio_username +sizeof(uint32_t)+(paquete->buffer->size);
 	int offset = 0;
 	void* stream_a_enviar=malloc(*bytes);
 
 	memcpy(stream_a_enviar+offset,&(paquete->codigo_operacion),sizeof(op_code));
 	offset+=sizeof(op_code);
 
-	memcpy(stream_a_enviar+offset,&(paquete->buffer->size),sizeof(int));
+	memcpy(stream_a_enviar+offset,&(paquete->tamanio_username),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
+	memcpy(stream_a_enviar+offset,paquete->username,paquete->tamanio_username);
+	offset+=paquete->tamanio_username;
+
+	memcpy(stream_a_enviar+offset,&(paquete->buffer->size),sizeof(int));
+	offset+=sizeof(uint32_t);
 
 	memcpy(stream_a_enviar+offset,(paquete->buffer->stream),paquete->buffer->size);
 
 	return stream_a_enviar;
 }
+
+
 //TODO
 void* enviarACK(uint32_t acknowledged){
 
@@ -39,7 +48,8 @@ void* enviarACK(uint32_t acknowledged){
 void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker){
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = SUSCRIPCION;
-
+	paquete_a_enviar->tamanio_username= strlen(suscriptor->nombreDeSuscriptor)+1;
+	paquete_a_enviar->username = suscriptor->nombreDeSuscriptor;
 
 	//serializacion de suscriptor
 	t_buffer* buffer = malloc(sizeof(t_buffer));

@@ -78,12 +78,17 @@ void serve_client(int* socket)
 */
 void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
+	uint32_t tamanio_username;
 	suscriptor* suscriptor;
 	broker_new_pokemon* newRecibido;
 	broker_appeared_pokemon* appearedRecibido;
 	broker_get_pokemon* getRecibido;
 	broker_catch_pokemon* catchRecibido;
 	broker_caught_pokemon* caughtRecibido;
+	char* username;
+	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
+	username = malloc(tamanio_username);
+	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
@@ -106,8 +111,8 @@ void process_request(int cod_op, int cliente_fd) {
 			//mutexUnlock
 
 
-			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
-					,newRecibido->datos->tamanioNombre,
+			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
+					,username,newRecibido->datos->tamanioNombre,
 					newRecibido->datos->nombrePokemon,
 					newRecibido->datos->posX,
 					newRecibido->datos->posY,
@@ -123,8 +128,8 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__APPEARED_POKEMON:
 			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d"
-					,appearedRecibido->datos->tamanioNombre,
+			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d"
+					,username,appearedRecibido->datos->tamanioNombre,
 					appearedRecibido->datos->nombrePokemon,
 					appearedRecibido->datos->posX,
 					appearedRecibido->datos->posY,appearedRecibido->id_relativo);
@@ -136,8 +141,8 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__GET_POKEMON:
 			getRecibido = deserializar_get_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON\n con tamanio: %d \n nombre: %s "
-									,getRecibido->datos->tamanioNombre,
+			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON%s\n con tamanio: %d \n nombre: %s "
+									,username,getRecibido->datos->tamanioNombre,
 									getRecibido->datos->nombrePokemon);
 
 			agregarACola(GET_POKEMON,getRecibido);
@@ -147,8 +152,8 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__CATCH_POKEMON:
 			catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
-									,catchRecibido->datos->tamanioNombre,
+			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
+									,username,catchRecibido->datos->tamanioNombre,
 									catchRecibido->datos->nombrePokemon,
 									catchRecibido->datos->posX,
 									catchRecibido->datos->posY);
@@ -160,8 +165,8 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__CAUGHT_POKEMON:
 			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON\n con ID_relativo: %d \n puedoAtraparlo: %d "
-									,caughtRecibido->id_relativo,
+			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON de %s\n con ID_relativo: %d \n puedoAtraparlo: %d "
+									,username,caughtRecibido->id_relativo,
 									caughtRecibido->datos->puedoAtraparlo);
 			agregarACola(CAUGHT_POKEMON,caughtRecibido);
 			free(caughtRecibido);

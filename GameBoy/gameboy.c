@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
 				newPokemon->datos->cantidadPokemon = atoi(argv[6]);
 
 
-				enviar_Broker_New_Pokemon(newPokemon,conexionBroker);
+				enviar_Broker_New_Pokemon(newPokemon,"GAMEBOY",conexionBroker);
 
 				//log_info(logEnviarNuevo,"Mensaje New Pokemon a Broker");
 				/*log_info(logEnviarNuevo,"envie mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
 				appPokemon->datos->posY = atoi(argv[5]);
 				appPokemon->id_relativo = atoi(argv[6]);
 
-				enviar_Broker_Appeared_Pokemon(appPokemon,conexionBroker);
+				enviar_Broker_Appeared_Pokemon(appPokemon,"GAMEBOY",conexionBroker);
 
 				/*log_info(logEnviarNuevo,"Mensaje Appeared Pokemon \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d y ID_realativo: %d"
 									,appPokemon->datos->tamanioNombre,
@@ -108,7 +108,7 @@ int main(int argc, char* argv[]){
 				catchPoke->datos->posX = atoi(argv[4]);
 				catchPoke->datos->posY = atoi(argv[5]);
 
-				enviar_Broker_Catch_Pokemon(catchPoke,conexionBroker);
+				enviar_Broker_Catch_Pokemon(catchPoke,"GAMEBOY",conexionBroker);
 
 				/*log_info(logEnviarNuevo,"Mensaje Catch Pokemon \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
 									,catchPoke->datos->tamanioNombre,
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
 				caughtPoke->id_relativo = atoi(argv[3]);
 				caughtPoke->datos->puedoAtraparlo = atoi(argv[4]);
 
-				enviar_Broker_Caught_Pokemon(caughtPoke,conexionBroker);
+				enviar_Broker_Caught_Pokemon(caughtPoke,"GAMEBOY",conexionBroker);
 
 				/*log_info(logEnviarNuevo,"Mensaje Caught Pokemon \n con ID_relativo: %d \n puedoAtraparlo: %d "
 									,caughtPoke->id_relativo,
@@ -144,7 +144,7 @@ int main(int argc, char* argv[]){
 				getPoke->datos->nombrePokemon = argv[3];
 				getPoke->datos->tamanioNombre = strlen(getPoke->datos->nombrePokemon)+1;
 
-				enviar_Broker_Get_Pokemon(getPoke,conexionBroker);
+				enviar_Broker_Get_Pokemon(getPoke,"GAMEBOY",conexionBroker);
 				/*log_info(logEnviarNuevo,"Mensaje Get Pokemon \n con tamanio: %d \n nombre: %s \n"
 									,getPoke->datos->tamanioNombre,
 									getPoke->datos->nombrePokemon);*/
@@ -180,7 +180,7 @@ int main(int argc, char* argv[]){
 		        appearedPokemon->datos->posX = atoi(argv[4]);
 		        appearedPokemon->datos->posY = atoi(argv[5]);
 
-		        enviar_Team_Appeared_Pokemon(appearedPokemon,conexionTeam);
+		        enviar_Team_Appeared_Pokemon(appearedPokemon,"GAMEBOY",conexionTeam);
 		        //log_info(logEnviarNuevo,"Mensaje Appeared Pokemon a Team");
 		        free(appearedPokemon);
 	    	}
@@ -212,7 +212,7 @@ int main(int argc, char* argv[]){
 				newPokemon->datos->cantidadPokemon = atoi(argv[6]);
 				newPokemon->id_relativo = atoi(argv[7]);
 
-				enviar_GameCard_New_Pokemon(newPokemon,conexionGamecard);
+				enviar_GameCard_New_Pokemon(newPokemon,"GAMEBOY",conexionGamecard);
 
 				//log_info(logEnviarNuevo,"Mensaje New Pokemon a GameCard");
 				free(newPokemon);
@@ -233,7 +233,7 @@ int main(int argc, char* argv[]){
 				catchPokemon->datos->posY = atoi(argv[5]);
 				catchPokemon->id_relativo = atoi(argv[6]);
 
-				enviar_GameCard_Catch_Pokemon(catchPokemon,conexionGamecard);
+				enviar_GameCard_Catch_Pokemon(catchPokemon,"GAMEBOY",conexionGamecard);
 				//log_info(logEnviarNuevo,"Mensaje Catch Pokemon a GameCard");
 
 				free(catchPokemon);
@@ -252,7 +252,7 @@ int main(int argc, char* argv[]){
 				getPokemon->datos->nombrePokemon = argv[3];
 				getPokemon->datos->tamanioNombre = strlen(getPokemon->datos->nombrePokemon)+1;
 
-				enviar_GameCard_Get_Pokemon(getPokemon,conexionGamecard);
+				enviar_GameCard_Get_Pokemon(getPokemon,"GAMEBOY",conexionGamecard);
 
 				//log_info(logEnviarNuevo,"Mensaje Get Pokemon a GameCard");
 				free(getPokemon);

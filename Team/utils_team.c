@@ -616,7 +616,14 @@ void serve_client(int* socket)
 
 void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
+	uint32_t tamanio_username;
 	team_appeared_pokemon* appearedRecibido;
+	char* username;
+
+	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
+
+	username = malloc(tamanio_username);
+	recv(cliente_fd,username,tamanio_username,MSG_WAITALL);
 
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
@@ -626,7 +633,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			appearedRecibido = deserializar_team_appeared_pokemon(cliente_fd);
 
-			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n", appearedRecibido->datos->tamanioNombre, appearedRecibido->datos->nombrePokemon, appearedRecibido->datos->posX, appearedRecibido->datos->posY);
+			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de %s:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n",username, appearedRecibido->datos->tamanioNombre, appearedRecibido->datos->nombrePokemon, appearedRecibido->datos->posX, appearedRecibido->datos->posY);
 
 			//printf("recibi mensaje appeared pokemon:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n", appearedRecibido->datos->tamanioNombre, appearedRecibido->datos->nombrePokemon, appearedRecibido->datos->posX, appearedRecibido->datos->posY);
 
