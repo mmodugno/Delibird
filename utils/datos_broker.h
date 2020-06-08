@@ -10,27 +10,42 @@
 
 #include "utils_en_comun.h"
 
+typedef struct {
+	uint32_t id;
+	localize_pokemon* datos;
+	t_queue* suscriptoresQueRespondieron;
+} broker_localized_pokemon;
 
 typedef struct {
+	uint32_t id;
 	new_pokemon* datos;
+	t_queue* suscriptoresQueRespondieron;
 } broker_new_pokemon;
 
 typedef struct {
+	uint32_t id;
 	uint32_t id_relativo;
 	appeared_pokemon* datos;
+	t_queue* suscriptoresQueRespondieron;
 } broker_appeared_pokemon;
 
 typedef struct {
+	uint32_t id;
 	catch_pokemon* datos;
+	t_queue* suscriptoresQueRespondieron;
 } broker_catch_pokemon;
 
 typedef struct {
+	uint32_t id;
 	uint32_t id_relativo;
 	caught_pokemon* datos;
+	t_queue* suscriptoresQueRespondieron;
 } broker_caught_pokemon;
 
 typedef struct {
+	uint32_t id;
 	get_pokemon* datos;
+	t_queue* suscriptoresQueRespondieron;
 } broker_get_pokemon;
 
 

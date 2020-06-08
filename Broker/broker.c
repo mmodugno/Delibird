@@ -38,6 +38,8 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		iniciarMemoria();
 
 
+		idGlobales = 0;
+
 		colaNewPokemon = queue_create();
 		colaAppearedPokemon = queue_create();
 		colaCatchPokemon= queue_create();

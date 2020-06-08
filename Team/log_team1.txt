@@ -38,3 +38,171 @@
  posX: 12 
  posY: 2 
 
+[INFO] 11:40:49:888 CAMBIO DE COLA/(6062:6070): cambio a EXEC de entrenador: 2
+[INFO] 11:40:49:898 MOVIMIENTO DE ENTRENADOR/(6062:6069): entrenador 2: se movio a (10,30)
+[INFO] 11:40:49:898 NUEVO MENSAJE/(6062:6069): No se agarró al pokemon
+[INFO] 11:40:49:898 CAMBIO DE COLA/(6062:6070): cambio a EXEC de entrenador: 0
+[INFO] 11:40:49:898 MOVIMIENTO DE ENTRENADOR/(6062:6067): entrenador 0: se movio a (0,0)
+[INFO] 11:40:49:899 NUEVO MENSAJE/(6062:6067): No se agarró al pokemon
+[INFO] 11:46:16:645 CAMBIO DE COLA/(6195:6203): cambio a EXEC de entrenador: 2
+[INFO] 11:46:16:645 CAMBIO DE COLA/(6195:6203): cambio a EXEC de entrenador: 0
+[INFO] 11:46:22:656 MOVIMIENTO DE ENTRENADOR/(6195:6200): entrenador 0: se movio a (0,0)
+[INFO] 11:46:22:656 NUEVO MENSAJE/(6195:6200): No se agarró al pokemon
+[INFO] 11:46:36:648 MOVIMIENTO DE ENTRENADOR/(6195:6202): entrenador 2: se movio a (0,0)
+[INFO] 11:46:36:648 NUEVO MENSAJE/(6195:6202): No se agarró al pokemon
+[INFO] 11:48:58:541 CAMBIO DE COLA/(6262:6272): cambio a EXEC de entrenador: 2
+[INFO] 11:48:58:542 CAMBIO DE COLA/(6262:6272): cambio a EXEC de entrenador: 0
+[INFO] 11:49:04:544 MOVIMIENTO DE ENTRENADOR/(6262:6269): entrenador 0: se movio a (0,0)
+[INFO] 11:49:04:544 NUEVO MENSAJE/(6262:6269): No se agarró al pokemon
+[INFO] 11:49:18:547 MOVIMIENTO DE ENTRENADOR/(6262:6271): entrenador 2: se movio a (0,0)
+[INFO] 11:49:18:547 NUEVO MENSAJE/(6262:6271): No se agarró al pokemon
+[INFO] 11:51:12:489 CAMBIO DE COLA/(6324:6332): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 11:51:32:496 MOVIMIENTO DE ENTRENADOR/(6324:6331): entrenador 2: se movio a (0,0)
+[INFO] 11:51:32:496 NUEVO MENSAJE/(6324:6331): No se agarró al pokemon
+[INFO] 11:51:32:496 CAMBIO DE COLA/(6324:6332): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 11:51:38:496 MOVIMIENTO DE ENTRENADOR/(6324:6329): entrenador 0: se movio a (0,0)
+[INFO] 11:51:38:496 NUEVO MENSAJE/(6324:6329): No se agarró al pokemon
+[INFO] 11:57:08:836 CAMBIO DE COLA/(6439:6447): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 11:57:28:839 MOVIMIENTO DE ENTRENADOR/(6439:6446): entrenador 2: se movio a (0,0)
+[INFO] 11:57:28:839 OPERACION/(6439:6446): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 11:57:28:839 NUEVO MENSAJE/(6439:6446): No se agarró al pokemon
+[INFO] 11:57:28:839 CAMBIO DE COLA/(6439:6447): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 11:57:34:841 MOVIMIENTO DE ENTRENADOR/(6439:6444): entrenador 0: se movio a (0,0)
+[INFO] 11:57:34:841 OPERACION/(6439:6444): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 11:57:34:841 NUEVO MENSAJE/(6439:6444): No se agarró al pokemon
+[INFO] 12:00:55:521 CAMBIO DE COLA/(6518:6527): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:00:57:525 MOVIMIENTO DE ENTRENADOR/(6518:6526): entrenador 2: se movio a (0,0)
+[INFO] 12:00:57:526 OPERACION/(6518:6526): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:00:57:526 NUEVO MENSAJE/(6518:6526): No se agarró al pokemon
+[INFO] 12:00:57:526 CAMBIO DE COLA/(6518:6527): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:00:59:526 MOVIMIENTO DE ENTRENADOR/(6518:6524): entrenador 0: se movio a (0,0)
+[INFO] 12:00:59:527 OPERACION/(6518:6524): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:00:59:527 NUEVO MENSAJE/(6518:6524): No se agarró al pokemon
+[INFO] 12:01:38:561 CAMBIO DE COLA/(6567:6575): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:01:40:562 MOVIMIENTO DE ENTRENADOR/(6567:6574): entrenador 2: se movio a (0,0)
+[INFO] 12:01:40:562 OPERACION/(6567:6574): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:01:40:562 NUEVO MENSAJE/(6567:6574): No se agarró al pokemon
+[INFO] 12:01:40:562 CAMBIO DE COLA/(6567:6575): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:01:42:562 MOVIMIENTO DE ENTRENADOR/(6567:6572): entrenador 0: se movio a (0,0)
+[INFO] 12:01:42:563 OPERACION/(6567:6572): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:01:42:563 NUEVO MENSAJE/(6567:6572): No se agarró al pokemon
+[INFO] 12:03:02:453 CAMBIO DE COLA/(6621:6629): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:03:04:453 MOVIMIENTO DE ENTRENADOR/(6621:6628): entrenador 2: se movio a (0,0)
+[INFO] 12:03:04:453 OPERACION/(6621:6628): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:03:04:453 NUEVO MENSAJE/(6621:6628): No se agarró al pokemon
+[INFO] 12:03:04:453 CAMBIO DE COLA/(6621:6629): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:03:06:453 MOVIMIENTO DE ENTRENADOR/(6621:6626): entrenador 0: se movio a (0,0)
+[INFO] 12:03:06:454 OPERACION/(6621:6626): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:03:06:454 NUEVO MENSAJE/(6621:6626): No se agarró al pokemon
+[INFO] 12:03:54:137 CAMBIO DE COLA/(6666:6674): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:03:56:138 MOVIMIENTO DE ENTRENADOR/(6666:6673): entrenador 2: se movio a (0,0)
+[INFO] 12:03:56:138 OPERACION/(6666:6673): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:03:56:138 NUEVO MENSAJE/(6666:6673): No se agarró al pokemon
+[INFO] 12:03:56:138 CAMBIO DE COLA/(6666:6674): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:03:58:138 MOVIMIENTO DE ENTRENADOR/(6666:6671): entrenador 0: se movio a (0,0)
+[INFO] 12:03:58:138 OPERACION/(6666:6671): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:03:58:138 NUEVO MENSAJE/(6666:6671): No se agarró al pokemon
+[INFO] 12:04:16:927 CAMBIO DE COLA/(6712:6720): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:04:18:928 MOVIMIENTO DE ENTRENADOR/(6712:6719): entrenador 2: se movio a (0,0)
+[INFO] 12:04:18:928 OPERACION/(6712:6719): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:04:18:928 NUEVO MENSAJE/(6712:6719): No se agarró al pokemon
+[INFO] 12:04:18:928 CAMBIO DE COLA/(6712:6720): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:04:20:928 MOVIMIENTO DE ENTRENADOR/(6712:6717): entrenador 0: se movio a (0,0)
+[INFO] 12:04:20:929 OPERACION/(6712:6717): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 12:04:20:929 NUEVO MENSAJE/(6712:6717): No se agarró al pokemon
+[INFO] 12:35:21:465 CAMBIO DE COLA/(7588:7596): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:35:23:499 MOVIMIENTO DE ENTRENADOR/(7588:7595): entrenador 2: se movio a (10,30)
+[INFO] 12:35:23:499 OPERACION/(7588:7595): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:35:23:499 NUEVO MENSAJE/(7588:7595): No se agarró al pokemon
+[INFO] 12:35:23:499 CAMBIO DE COLA/(7588:7596): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:35:25:500 MOVIMIENTO DE ENTRENADOR/(7588:7595): entrenador 2: se movio a (10,30)
+[INFO] 12:35:25:500 OPERACION/(7588:7595): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:35:25:500 NUEVO MENSAJE/(7588:7595): No se agarró al pokemon
+[INFO] 12:35:25:500 CAMBIO DE COLA/(7588:7596): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:35:27:500 MOVIMIENTO DE ENTRENADOR/(7588:7595): entrenador 2: se movio a (10,30)
+[INFO] 12:35:27:500 OPERACION/(7588:7595): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:35:27:500 NUEVO MENSAJE/(7588:7595): No se agarró al pokemon
+[INFO] 12:37:37:180 CAMBIO DE COLA/(7645:7653): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:37:40:207 MOVIMIENTO DE ENTRENADOR/(7645:7652): entrenador 2: se movio a (10,30)
+[INFO] 12:37:40:208 OPERACION/(7645:7652): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:37:40:208 CAMBIO DE COLA/(7645:7653): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:37:42:209 MOVIMIENTO DE ENTRENADOR/(7645:7652): entrenador 2: se movio a (10,30)
+[INFO] 12:37:42:209 OPERACION/(7645:7652): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:37:42:209 CAMBIO DE COLA/(7645:7653): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:37:44:209 MOVIMIENTO DE ENTRENADOR/(7645:7652): entrenador 2: se movio a (10,30)
+[INFO] 12:37:44:209 OPERACION/(7645:7652): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:39:34:670 CAMBIO DE COLA/(7712:7720): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:39:36:700 MOVIMIENTO DE ENTRENADOR/(7712:7719): entrenador 2: se movio a (10,30)
+[INFO] 12:39:36:700 OPERACION/(7712:7719): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:39:36:700 CAMBIO DE COLA/(7712:7720): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:39:38:700 MOVIMIENTO DE ENTRENADOR/(7712:7719): entrenador 2: se movio a (10,30)
+[INFO] 12:39:38:700 OPERACION/(7712:7719): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:39:38:701 CAMBIO DE COLA/(7712:7720): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:39:40:701 MOVIMIENTO DE ENTRENADOR/(7712:7719): entrenador 2: se movio a (10,30)
+[INFO] 12:39:40:701 OPERACION/(7712:7719): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:49:21:649 CAMBIO DE COLA/(7974:7982): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:49:23:677 MOVIMIENTO DE ENTRENADOR/(7974:7981): entrenador 2: se movio a (10,30)
+[INFO] 12:49:23:678 OPERACION/(7974:7981): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:49:23:678 CAMBIO DE COLA/(7974:7982): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:49:25:678 MOVIMIENTO DE ENTRENADOR/(7974:7980): entrenador 1: se movio a (10,30)
+[INFO] 12:49:25:678 OPERACION/(7974:7980): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:49:25:678 CAMBIO DE COLA/(7974:7982): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:49:27:679 MOVIMIENTO DE ENTRENADOR/(7974:7979): entrenador 0: se movio a (10,30)
+[INFO] 12:49:27:679 OPERACION/(7974:7979): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:02:03:192 CAMBIO DE COLA/(8266:8274): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:02:05:211 MOVIMIENTO DE ENTRENADOR/(8266:8273): entrenador 2: se movio a (10,30)
+[INFO] 13:02:05:211 OPERACION/(8266:8273): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:02:05:212 CAMBIO DE COLA/(8266:8274): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:02:07:212 MOVIMIENTO DE ENTRENADOR/(8266:8273): entrenador 2: se movio a (10,30)
+[INFO] 13:02:07:212 OPERACION/(8266:8273): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:02:07:213 CAMBIO DE COLA/(8266:8274): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:02:09:213 MOVIMIENTO DE ENTRENADOR/(8266:8273): entrenador 2: se movio a (10,30)
+[INFO] 13:02:09:213 OPERACION/(8266:8273): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:04:20:556 CAMBIO DE COLA/(8336:8344): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:04:22:661 MOVIMIENTO DE ENTRENADOR/(8336:8343): entrenador 2: se movio a (10,30)
+[INFO] 13:04:22:661 OPERACION/(8336:8343): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:04:22:661 CAMBIO DE COLA/(8336:8344): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:04:24:662 MOVIMIENTO DE ENTRENADOR/(8336:8343): entrenador 2: se movio a (10,30)
+[INFO] 13:04:24:663 OPERACION/(8336:8343): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:04:24:663 CAMBIO DE COLA/(8336:8344): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:04:26:663 MOVIMIENTO DE ENTRENADOR/(8336:8343): entrenador 2: se movio a (10,30)
+[INFO] 13:04:26:663 OPERACION/(8336:8343): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:12:54:105 CAMBIO DE COLA/(8536:8544): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:12:54:106 RESULTADO TEAM/(8536:8536): necesito 1 del pokemon Squirtle
+[INFO] 13:12:55:152 RESULTADO TEAM/(8536:8536): necesito 2 del pokemon Pikachu
+[INFO] 13:12:55:152 RESULTADO TEAM/(8536:8536): necesito 1 del pokemon Charmander
+[INFO] 13:12:57:152 MOVIMIENTO DE ENTRENADOR/(8536:8543): entrenador 2: se movio a (10,30)
+[INFO] 13:12:57:152 OPERACION/(8536:8543): ATRAPAR POKEMON: Pikachu con posicion (10, 30)

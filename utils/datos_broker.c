@@ -122,6 +122,7 @@ broker_catch_pokemon* deserializar_catch_pokemon(int socket_cliente){
 }
 
 broker_caught_pokemon* deserializar_caught_pokemon(int socket_cliente){
+
 	// deserializacion
 	//1. uint32_t id_relativo;
 	//2. uint32_t puedoAtraparlo;

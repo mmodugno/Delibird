@@ -30,8 +30,15 @@
 #include"datos_team.h"
 
 //LOGS:
-t_log* llegadaDeMensaje;
+
 t_log* cambioDeCola;
+t_log* movimiento_entrenador;
+t_log* operacion;
+t_log* deadlock;
+t_log* llegadaDeMensaje;
+t_log* resultado;
+t_log* comunicacion_broker;
+
 
 t_config* config;
 
@@ -48,11 +55,16 @@ t_list* pokemones_en_el_mapa;
 t_list* pokemones_atrapados;
 
 t_list* entrenadores_en_ready;
+t_list* entrenadores_finalizados;
+t_list* entrenadores_en_deadlock;
 
-sem_t* entrenador_listo;
 char* nobmre_objetivoconfig;
 
-sem_t* hay_entrenador;
+
+sem_t entrenador_listo;
+sem_t en_ejecucion;
+sem_t hay_entrenador;
+sem_t planificando;
 
 
 
@@ -67,6 +79,7 @@ typedef enum{
     EXIT=6
 }estadoEntrenador;
 
+
 typedef struct{
     int estado;
     t_list* pokemones;
@@ -76,7 +89,7 @@ typedef struct{
     int cuantos_puede_cazar;
     int id;
     pthread_t hiloDeEntrenador;
-    sem_t* sem_entrenador;
+    sem_t sem_entrenador;
 }entrenador;
 
 typedef struct{
@@ -114,14 +127,6 @@ int leer_retardo_cpu(void);
 
 // FUNCIONES DE LOS LOGS //
 t_log* iniciar_log(char* proceso);
-void log_algoritmo_de_planificacion(void);
-void log_cambio_de_cola(char * razon);
-void log_movimiento_de_entrenador(entrenador* entrenador);
-void log_atrapar_pokemon(pokemon* poke);
-void log_intercambio(entrenador* entrenador1,entrenador* entrenador2);
-void log_reintentar_comunicacion(void);
-void log_conexion_exitosa(void);
-void log_fallo_de_conexion(void);
 
 
 // FUNCIONES DE CONEXIONES //
@@ -142,6 +147,8 @@ void hacer_entrenadores(void);
 void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
 void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 bool puede_cazar(entrenador* entrenador);
+bool entrenador_en_exec(entrenador* un_entrenador);
+bool cumplio_objetivo(entrenador* un_entrenador);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
@@ -154,6 +161,8 @@ bool pokemon_repetido(char* nombre);
 void calcular_objetivo_global(void);
 void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
+void mostrar_objetivo_global(char* key, void*value);
+void mostrar(void);
 
 //distancias entre pokemon y entrenador
 int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);

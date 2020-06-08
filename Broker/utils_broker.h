@@ -27,6 +27,7 @@
 #include "datos_broker.h"
 #include<commons/collections/list.h>
 
+uint32_t idGlobales;
 
 char* ip_broker;
 char* puerto_broker;
@@ -45,6 +46,15 @@ t_config* config;
 void *memoria;
 
 pthread_t thread;
+
+typedef struct {
+	uint32_t id;
+	uint32_t base;
+	uint32_t tamanioMensaje;
+	void* mensaje;
+} particiones;
+
+t_list* tablaAcknowledged;
 
 t_queue* colaNewPokemon;
 t_queue* colaAppearedPokemon;
@@ -77,8 +87,10 @@ static const char *colasDeEnum[] = {
 		"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON",
 };
 
-void* recibir_buffer(int*, int);
 
+
+
+void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
 void esperar_cliente(int);
 void* recibir_mensaje(int socket_cliente, int* size);

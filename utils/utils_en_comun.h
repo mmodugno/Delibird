@@ -9,6 +9,7 @@
 #define UTILS_EN_COMUN_H_
 
 #include <stdio.h>
+#include<commons/collections/queue.h>
 
 #include "stdint.h"
 
