@@ -27,7 +27,8 @@ typedef enum
 	GAMECARD__NEW_POKEMON = 8,
 	GAMECARD__CATCH_POKEMON = 9,
 	GAMECARD__GET_POKEMON = 10,
-	SUSCRIPCION = 11
+	SUSCRIPCION = 11,
+	ACKNOWLEDGED = 12
 	//despues vamos a tener un tipo de mensaje de Gamecard del tipo BROKER_LOCALIZED_POKEMON
 
 }op_code;
@@ -90,9 +91,13 @@ typedef struct
 
 typedef struct
 {
+	uint32_t tamanio_username;
+	char* username;
 	op_code codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
+
+
 
 typedef struct{
 	uint32_t tamanioNombreSucriptor;

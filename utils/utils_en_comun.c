@@ -9,7 +9,12 @@
 #include<sys/socket.h>
 #include "utils_en_comun.h"
 
-//TODO
+
+/*
+ * 1. op_code CodigoDeOperacion
+ * 2. uint32_t tamanio_username
+ * 3.
+ * */
 void* serializar_paquete(t_paquete* paquete, int *bytes){
 	(*bytes) = sizeof(op_code)+sizeof(uint32_t)+(paquete->buffer->size);
 	int offset = 0;
@@ -26,7 +31,10 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 
 	return stream_a_enviar;
 }
+//TODO
+void* enviarACK(uint32_t acknowledged){
 
+}
 
 void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker){
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));

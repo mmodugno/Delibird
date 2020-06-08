@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
 	logConexion=iniciar_logger("Conexion");
 	logSuscipcion=iniciar_logger("Suscripcion");
 	logMensajeNuevo=iniciar_logger("Mensaje Nuevo"); //falta el de recibir mensaje
-	logEnviarNuevo= iniciar_logger("Enviar Mensaje");
+	//logEnviarNuevo= iniciar_logger("Enviar Mensaje");
 
 
 	//leemos todo el archivo de config
@@ -60,13 +60,13 @@ int main(int argc, char* argv[]){
 
 				enviar_Broker_New_Pokemon(newPokemon,conexionBroker);
 
-				//log_info(logMensajeNuevo,"Mensaje New Pokemon a Broker");
-				log_info(logMensajeNuevo,"envie mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
+				//log_info(logEnviarNuevo,"Mensaje New Pokemon a Broker");
+				/*log_info(logEnviarNuevo,"envie mensaje de NEW_POKEMON \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
 									,newPokemon->datos->tamanioNombre,
 									newPokemon->datos->nombrePokemon,
 									newPokemon->datos->posX,
 									newPokemon->datos->posY,
-									newPokemon->datos->cantidadPokemon);
+									newPokemon->datos->cantidadPokemon);*/
 
 				free(newPokemon);
 			}
@@ -74,9 +74,10 @@ int main(int argc, char* argv[]){
 		if(!strcmp(argv[2],"APPEARED_POKEMON")){
 			if(argc == 7){
 				broker_appeared_pokemon *appPokemon = malloc(sizeof(broker_appeared_pokemon));
+				appPokemon->datos = malloc(sizeof(appeared_pokemon));
 				//estructuras dinamicas
 				appPokemon->datos->nombrePokemon = argv[3];
-				appPokemon->datos->tamanioNombre = atoi(appPokemon->datos->nombrePokemon)+1;
+				appPokemon->datos->tamanioNombre = strlen(appPokemon->datos->nombrePokemon)+1;
 
 				//estructuras estaticas
 				appPokemon->datos->posX = atoi(argv[4]);
@@ -85,7 +86,11 @@ int main(int argc, char* argv[]){
 
 				enviar_Broker_Appeared_Pokemon(appPokemon,conexionBroker);
 
-				log_info(logMensajeNuevo,"Mensaje Appeared Pokemon a Broker");
+				/*log_info(logEnviarNuevo,"Mensaje Appeared Pokemon \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d y ID_realativo: %d"
+									,appPokemon->datos->tamanioNombre,
+									appPokemon->datos->nombrePokemon,
+									appPokemon->datos->posX,
+									appPokemon->datos->posY,appPokemon->id_relativo);*/
 
 
 				free(appPokemon);
@@ -94,30 +99,38 @@ int main(int argc, char* argv[]){
 		if(!strcmp(argv[2],"CATCH_POKEMON")){
 			if(argc == 6){
 				broker_catch_pokemon *catchPoke = malloc(sizeof(broker_catch_pokemon));
+				catchPoke->datos = malloc(sizeof(catch_pokemon));
 				//dinamicas
 				catchPoke->datos->nombrePokemon = argv[3];
-				catchPoke->datos->tamanioNombre = strlen(catchPoke->datos->nombrePokemon);
+				catchPoke->datos->tamanioNombre = strlen(catchPoke->datos->nombrePokemon)+1;
 
 				//estaticas
 				catchPoke->datos->posX = atoi(argv[4]);
-				catchPoke->datos->posX = atoi(argv[5]);
+				catchPoke->datos->posY = atoi(argv[5]);
 
 				enviar_Broker_Catch_Pokemon(catchPoke,conexionBroker);
 
-				log_info(logMensajeNuevo,"Mensaje Catch Pokemon a Broker");
+				/*log_info(logEnviarNuevo,"Mensaje Catch Pokemon \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
+									,catchPoke->datos->tamanioNombre,
+									catchPoke->datos->nombrePokemon,
+									catchPoke->datos->posX,
+									catchPoke->datos->posY);*/
 				free(catchPoke);
 			}
 		}
 		if(!strcmp(argv[2],"CAUGHT_POKEMON")){
 			if(argc == 5){
 				broker_caught_pokemon *caughtPoke = malloc(sizeof(broker_caught_pokemon));
+				caughtPoke->datos = malloc(sizeof(caughtPoke));
 				//estaticas
 				caughtPoke->id_relativo = atoi(argv[3]);
 				caughtPoke->datos->puedoAtraparlo = atoi(argv[4]);
 
 				enviar_Broker_Caught_Pokemon(caughtPoke,conexionBroker);
 
-				log_info(logMensajeNuevo,"Mensaje Caught Pokemon a Broker");
+				/*log_info(logEnviarNuevo,"Mensaje Caught Pokemon \n con ID_relativo: %d \n puedoAtraparlo: %d "
+									,caughtPoke->id_relativo,
+									caughtPoke->datos->puedoAtraparlo);*/
 				free(caughtPoke);
 			}
 		}
@@ -126,12 +139,15 @@ int main(int argc, char* argv[]){
 			if(argc==4){
 
 				broker_get_pokemon *getPoke= malloc(sizeof(broker_get_pokemon));
+				getPoke->datos = malloc(sizeof(get_pokemon));
 				//dinamica
 				getPoke->datos->nombrePokemon = argv[3];
 				getPoke->datos->tamanioNombre = strlen(getPoke->datos->nombrePokemon)+1;
 
 				enviar_Broker_Get_Pokemon(getPoke,conexionBroker);
-				log_info(logMensajeNuevo,"Mensaje Get Pokemon a Broker");
+				/*log_info(logEnviarNuevo,"Mensaje Get Pokemon \n con tamanio: %d \n nombre: %s \n"
+									,getPoke->datos->tamanioNombre,
+									getPoke->datos->nombrePokemon);*/
 
 				free(getPoke);
 			}
@@ -165,7 +181,7 @@ int main(int argc, char* argv[]){
 		        appearedPokemon->datos->posY = atoi(argv[5]);
 
 		        enviar_Team_Appeared_Pokemon(appearedPokemon,conexionTeam);
-		        log_info(logMensajeNuevo,"Mensaje Appeared Pokemon a Team");
+		        //log_info(logEnviarNuevo,"Mensaje Appeared Pokemon a Team");
 		        free(appearedPokemon);
 	    	}
 	    }
@@ -186,6 +202,7 @@ int main(int argc, char* argv[]){
 		if(!strcmp(argv[2],"NEW_POKEMON")){
 			if(argc==8){
 				gameCard_new_pokemon *newPokemon = malloc(sizeof(gameCard_new_pokemon));
+				newPokemon->datos = malloc(sizeof(newPokemon));
 
 				newPokemon->datos->nombrePokemon = argv[3];
 				newPokemon->datos->tamanioNombre = strlen(newPokemon->datos->nombrePokemon)+1;
@@ -197,7 +214,7 @@ int main(int argc, char* argv[]){
 
 				enviar_GameCard_New_Pokemon(newPokemon,conexionGamecard);
 
-				log_info(logMensajeNuevo,"Mensaje New Pokemon a GameCard");
+				//log_info(logEnviarNuevo,"Mensaje New Pokemon a GameCard");
 				free(newPokemon);
 			}
 
@@ -207,6 +224,7 @@ int main(int argc, char* argv[]){
 
 			if(argc==7){
 				gameCard_catch_pokemon *catchPokemon = malloc(sizeof(gameCard_catch_pokemon));
+				catchPokemon->datos = malloc(sizeof(catch_pokemon));
 
 				catchPokemon->datos->nombrePokemon = argv[3];
 				catchPokemon->datos->tamanioNombre = strlen(catchPokemon->datos->nombrePokemon)+1;
@@ -216,7 +234,7 @@ int main(int argc, char* argv[]){
 				catchPokemon->id_relativo = atoi(argv[6]);
 
 				enviar_GameCard_Catch_Pokemon(catchPokemon,conexionGamecard);
-				log_info(logMensajeNuevo,"Mensaje Catch Pokemon a GameCard");
+				//log_info(logEnviarNuevo,"Mensaje Catch Pokemon a GameCard");
 
 				free(catchPokemon);
 			}
@@ -229,13 +247,14 @@ int main(int argc, char* argv[]){
 			if(argc==5){
 
 				gameCard_get_pokemon *getPokemon = malloc(sizeof(gameCard_get_pokemon));
+				getPokemon->datos = malloc(sizeof(get_pokemon));
 
 				getPokemon->datos->nombrePokemon = argv[3];
 				getPokemon->datos->tamanioNombre = strlen(getPokemon->datos->nombrePokemon)+1;
 
 				enviar_GameCard_Get_Pokemon(getPokemon,conexionGamecard);
 
-				log_info(logMensajeNuevo,"Mensaje Get Pokemon a GameCard");
+				//log_info(logEnviarNuevo,"Mensaje Get Pokemon a GameCard");
 				free(getPokemon);
 			}
 
@@ -341,7 +360,7 @@ void terminar_programa(){
 	log_destroy(logConexion);
 	log_destroy(logSuscipcion);
 	log_destroy(logMensajeNuevo);
-	log_destroy(logEnviarNuevo);
+	//log_destroy(logEnviarNuevo);
 
 	config_destroy(config);
 

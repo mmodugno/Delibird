@@ -45,7 +45,7 @@ t_log* logConexion;
 t_log* logSuscipcion;
 t_log* logMensajeNuevo; //falta el de recibir mensaje
 //CON LA SEGUNDA REVISION DEL TP NO HACE FALTA EL LOG DE ENVIARNUEVO
-t_log* logEnviarNuevo;
+//t_log* logEnviarNuevo;
 ////////////////////////////////////////////////////////////////////////////////
 
 t_config* config;

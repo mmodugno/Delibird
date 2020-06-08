@@ -113,7 +113,11 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__APPEARED_POKEMON:
 			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON");
+			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d"
+					,appearedRecibido->datos->tamanioNombre,
+					appearedRecibido->datos->nombrePokemon,
+					appearedRecibido->datos->posX,
+					appearedRecibido->datos->posY,appearedRecibido->id_relativo);
 
 			agregarACola(APPEARED_POKEMON,appearedRecibido);
 			free(appearedRecibido);
@@ -122,7 +126,9 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__GET_POKEMON:
 			getRecibido = deserializar_get_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON");
+			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON\n con tamanio: %d \n nombre: %s "
+									,getRecibido->datos->tamanioNombre,
+									getRecibido->datos->nombrePokemon);
 
 			agregarACola(GET_POKEMON,getRecibido);
 			free(getRecibido);
@@ -131,7 +137,11 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__CATCH_POKEMON:
 			catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON");
+			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
+									,catchRecibido->datos->tamanioNombre,
+									catchRecibido->datos->nombrePokemon,
+									catchRecibido->datos->posX,
+									catchRecibido->datos->posY);
 
 			agregarACola(CATCH_POKEMON,catchRecibido);
 			free(catchRecibido);
@@ -140,8 +150,9 @@ void process_request(int cod_op, int cliente_fd) {
 		case BROKER__CAUGHT_POKEMON:
 			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON");
-
+			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON\n con ID_relativo: %d \n puedoAtraparlo: %d "
+									,caughtRecibido->id_relativo,
+									caughtRecibido->datos->puedoAtraparlo);
 			agregarACola(CAUGHT_POKEMON,caughtRecibido);
 			free(caughtRecibido);
 
@@ -170,21 +181,27 @@ void* recibir_mensaje(int socket_cliente, int* size)
 void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
 	switch(tipo_de_Cola){
 		case NEW_POKEMON:
+			agregarAMemoria((broker_new_pokemon*)mensaje);
 			queue_push(colaNewPokemon,(broker_new_pokemon*)mensaje);
 			break;
 		case APPEARED_POKEMON:
+			agregarAMemoria((broker_appeared_pokemon*)mensaje);
 			queue_push(colaAppearedPokemon,(broker_appeared_pokemon*)mensaje);
 			break;
 		case CATCH_POKEMON:
+			agregarAMemoria((broker_catch_pokemon*)mensaje);
 			queue_push(colaCatchPokemon,(broker_catch_pokemon*)mensaje);
 			break;
 		case CAUGHT_POKEMON:
+			agregarAMemoria((broker_caught_pokemon*)mensaje);
 			queue_push(colaCaughtPokemon,(broker_caught_pokemon*)mensaje);
 			break;
 		case GET_POKEMON:
+			agregarAMemoria((broker_get_pokemon*)mensaje);
 			queue_push(colaGetPokemon,(broker_get_pokemon*)mensaje);
 			break;
 		case LOCALIZED_POKEMON:
+			agregarAMemoria((localize_pokemon*)mensaje);
 			queue_push(colaLocalizedPokemon,(localize_pokemon*)mensaje);
 			break;
 
@@ -217,6 +234,23 @@ void suscribirACola(suscriptor* suscriptor){
 	}
 }
 
+void agregarAMemoria(void * dato){
+
+	if(!strcmp(algoritmo_particion_libre,"FF")){
+
+	}
+	if(!strcmp(algoritmo_particion_libre,"BF")){
+
+	}
+
+}
+
+void iniciarMemoria(){
+
+	memoria = malloc(tamanio_memoria);
+
+
+}
 
 
 

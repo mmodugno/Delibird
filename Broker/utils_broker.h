@@ -38,8 +38,11 @@ char* algoritmo_particion_libre;
 uint32_t frecuencia_compactacion;
 char* log_file;
 
+
+
 t_config* config;
 
+void *memoria;
 
 pthread_t thread;
 
