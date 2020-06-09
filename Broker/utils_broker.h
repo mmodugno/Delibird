@@ -35,9 +35,9 @@ typedef struct {
 	uint32_t tamanioMensaje;
 	void* mensaje;
 	char* tiempo;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
-}particiones;
+}particion;
 
-t_list tablaDePArticiones;
+t_list *tablaDeParticiones;
 
 uint32_t idGlobales;
 
@@ -88,13 +88,13 @@ t_log* compactacionMemoria;
 t_log* dumpCache;
 
 
-static const char *colasDeEnum[] = {
-		"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON",
-};
+static const char *colasDeEnum[] = {"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON"};
 
 
-
-void agregarAMemoria(void * dato);
+void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada);
+void algoritmoBestFit(particion *datoAAgregar,uint32_t idMensaje);
+void agregarAMemoria(void * dato, uint32_t idMensaje);
+void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
 void esperar_cliente(int);
@@ -105,5 +105,6 @@ void serve_client(int *socket);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
 void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
 void suscribirACola(suscriptor* suscriptor);
+particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje);
 
 #endif /* UTILS_BROKER_H_ */

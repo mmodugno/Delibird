@@ -39,11 +39,15 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 	return stream_a_enviar;
 }
 
+//TODO
+//cuando recibamos un mensaje catch de team tenemos que devolverle el id y el mensaje completo
+
 
 //TODO
+/*
 void* enviarACK(uint32_t acknowledged){
 
-}
+}*/
 
 void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker){
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));

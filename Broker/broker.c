@@ -35,10 +35,9 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		/*compactacionMemoria= iniciar_logger("",log_file);
 		dumpCache= iniciar_logger("",log_file);*/
 
-		//iniciarMemoria();
+		iniciarMemoria();
 
 
-		idGlobales = 0;
 
 		colaNewPokemon = queue_create();
 		colaAppearedPokemon = queue_create();

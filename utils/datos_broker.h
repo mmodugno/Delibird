@@ -59,5 +59,10 @@ void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedP
 void serializar_broker_catch_pokemon(broker_catch_pokemon* brokerCatchPokemon, t_buffer* buffer);
 void serializar_broker_caught_pokemon(broker_caught_pokemon* brokerCaughtPokemon, t_buffer* buffer);
 void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffer* buffer);
+new_pokemon* transformarBrokerNewPokemon(broker_new_pokemon *newRecibido);
+appeared_pokemon* transformarBrokerAppearedPokemon(broker_appeared_pokemon *appRecibido);
+get_pokemon* transformarBrokerGetPokemon(broker_get_pokemon *getRecibido);
+catch_pokemon* transformarBrokerCatchPokemon(broker_catch_pokemon *catchRecibido);
+caught_pokemon* transformarBrokerCaughtPokemon(broker_caught_pokemon *caughtRecibido);
 
 #endif /* DATOS_BROKER_H_ */

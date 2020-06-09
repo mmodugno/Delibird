@@ -173,7 +173,6 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 
 }
 
-
 void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer)
 {
 	// serializacion
@@ -277,5 +276,60 @@ void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffe
 	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=brokerGetPokemon->datos->tamanioNombre;
 
+}
+
+new_pokemon* transformarBrokerNewPokemon(broker_new_pokemon *newRecibido){
+	new_pokemon *pokeTransformado = malloc(sizeof(new_pokemon));
+
+	pokeTransformado->tamanioNombre = newRecibido->datos->tamanioNombre;
+	pokeTransformado->nombrePokemon = malloc(sizeof(pokeTransformado-> tamanioNombre));
+	pokeTransformado->nombrePokemon = newRecibido->datos->nombrePokemon;
+	pokeTransformado->posX = newRecibido->datos->posX;
+	pokeTransformado->posY = newRecibido->datos->posY;
+	pokeTransformado->cantidadPokemon = newRecibido->datos->cantidadPokemon;
+
+	return pokeTransformado;
+}
+
+appeared_pokemon* transformarBrokerAppearedPokemon(broker_appeared_pokemon *appRecibido){
+	appeared_pokemon *pokeTransformado = malloc(sizeof(appeared_pokemon));
+
+	pokeTransformado->tamanioNombre = appRecibido->datos->tamanioNombre;
+	pokeTransformado->nombrePokemon = malloc(sizeof(pokeTransformado-> tamanioNombre));
+	pokeTransformado->nombrePokemon = appRecibido->datos->nombrePokemon;
+	pokeTransformado->posX = appRecibido->datos->posX;
+	pokeTransformado->posY = appRecibido->datos->posY;
+
+	return pokeTransformado;
+}
+
+get_pokemon* transformarBrokerGetPokemon(broker_get_pokemon *getRecibido){
+	get_pokemon *pokeTransformado = malloc(sizeof(get_pokemon));
+
+	pokeTransformado->tamanioNombre = getRecibido->datos->tamanioNombre;
+	pokeTransformado->nombrePokemon = malloc(sizeof(pokeTransformado-> tamanioNombre));
+	pokeTransformado->nombrePokemon = getRecibido->datos->nombrePokemon;
+
+	return pokeTransformado;
+}
+
+catch_pokemon* transformarBrokerCatchPokemon(broker_catch_pokemon *catchRecibido){
+	catch_pokemon *pokeTransformado = malloc(sizeof(catchRecibido));
+
+	pokeTransformado->tamanioNombre = catchRecibido->datos->tamanioNombre;
+	pokeTransformado->nombrePokemon = malloc(sizeof(pokeTransformado-> tamanioNombre));
+	pokeTransformado->nombrePokemon = catchRecibido->datos->nombrePokemon;
+	pokeTransformado->posX = catchRecibido->datos->posX;
+	pokeTransformado->posY = catchRecibido->datos->posY;
+
+	return pokeTransformado;
+}
+
+caught_pokemon* transformarBrokerCaughtPokemon(broker_caught_pokemon *caughtRecibido){
+	caught_pokemon *pokeTransformado = malloc(sizeof(caught_pokemon));
+
+	pokeTransformado->puedoAtraparlo = caughtRecibido->datos->puedoAtraparlo;
+
+	return pokeTransformado;
 }
 
