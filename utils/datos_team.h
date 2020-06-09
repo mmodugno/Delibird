@@ -16,7 +16,10 @@ typedef struct {
 	appeared_pokemon* datos;
 } team_appeared_pokemon;
 
-
+typedef struct {
+	uint32_t id;
+	catch_pokemon* datos;
+} team_catch_pokemon;
 
 void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon, t_buffer* buffer);
 team_appeared_pokemon* deserializar_team_appeared_pokemon(int socket_cliente);

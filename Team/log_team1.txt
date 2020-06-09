@@ -206,3 +206,197 @@
 [INFO] 13:12:55:152 RESULTADO TEAM/(8536:8536): necesito 1 del pokemon Charmander
 [INFO] 13:12:57:152 MOVIMIENTO DE ENTRENADOR/(8536:8543): entrenador 2: se movio a (10,30)
 [INFO] 13:12:57:152 OPERACION/(8536:8543): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 11:57:08:451 CAMBIO DE COLA/(5755:5763): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 11:58:07:757 CAMBIO DE COLA/(5812:5820): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 11:58:09:757 MOVIMIENTO DE ENTRENADOR/(5812:5819): entrenador 2: se movio a (10,30)
+[INFO] 11:58:09:757 OPERACION ATRAPAR/(5812:5819): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:20:23:901 RESULTADO DE COMUNICACION/(6421:6421): me conecte a Broker exitosamente
+[INFO] 12:20:23:919 CAMBIO DE COLA/(6421:6429): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:20:25:920 MOVIMIENTO DE ENTRENADOR/(6421:6428): entrenador 2: se movio a (10,30)
+[INFO] 12:20:25:920 OPERACION ATRAPAR/(6421:6428): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:22:25:420 RESULTADO DE COMUNICACION/(6501:6501): me conecte a Broker exitosamente
+[INFO] 12:22:25:423 CAMBIO DE COLA/(6501:6510): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:22:27:423 MOVIMIENTO DE ENTRENADOR/(6501:6509): entrenador 2: se movio a (10,30)
+[INFO] 12:22:27:423 OPERACION ATRAPAR/(6501:6509): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 12:25:02:268 ERROR EN COMUNICACION/(6589:6589): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:25:02:269 CAMBIO DE COLA/(6589:6597): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:25:04:269 MOVIMIENTO DE ENTRENADOR/(6589:6596): entrenador 2: se movio a (10,30)
+[INFO] 12:25:04:270 OPERACION ATRAPAR/(6589:6596): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:12:07:595 ERROR EN COMUNICACION/(7364:7364): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:12:07:610 CAMBIO DE COLA/(7364:7369): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:12:09:610 MOVIMIENTO DE ENTRENADOR/(7364:7368): entrenador 2: se movio a (10,30)
+[INFO] 13:12:09:610 OPERACION ATRAPAR/(7364:7368): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:37:46:952 ERROR EN COMUNICACION/(7947:7947): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:37:46:969 CAMBIO DE COLA/(7947:7956): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:37:48:970 MOVIMIENTO DE ENTRENADOR/(7947:7954): entrenador 2: se movio a (10,30)
+[INFO] 13:37:48:970 OPERACION ATRAPAR/(7947:7954): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:41:27:903 ERROR EN COMUNICACION/(8052:8052): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:41:27:904 CAMBIO DE COLA/(8052:8060): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:41:29:904 MOVIMIENTO DE ENTRENADOR/(8052:8059): entrenador 2: se movio a (10,30)
+[INFO] 13:41:29:904 OPERACION ATRAPAR/(8052:8059): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:42:10:69 ERROR EN COMUNICACION/(8133:8133): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:42:10:81 CAMBIO DE COLA/(8133:8141): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:42:12:81 MOVIMIENTO DE ENTRENADOR/(8133:8140): entrenador 2: se movio a (10,30)
+[INFO] 13:42:12:81 OPERACION ATRAPAR/(8133:8140): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:44:50:938 ERROR EN COMUNICACION/(8242:8242): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:44:50:956 CAMBIO DE COLA/(8242:8250): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:44:52:956 MOVIMIENTO DE ENTRENADOR/(8242:8249): entrenador 2: se movio a (10,30)
+[INFO] 13:44:52:957 OPERACION ATRAPAR/(8242:8249): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:57:03:213 ERROR EN COMUNICACION/(8510:8510): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:57:03:252 CAMBIO DE COLA/(8510:8519): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:57:05:253 MOVIMIENTO DE ENTRENADOR/(8510:8518): entrenador 2: se movio a (10,30)
+[INFO] 13:57:05:253 OPERACION ATRAPAR/(8510:8518): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:57:05:253 CAMBIO DE COLA/(8510:8519): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 13:57:07:253 MOVIMIENTO DE ENTRENADOR/(8510:8517): entrenador 1: se movio a (10,30)
+[INFO] 13:57:07:253 OPERACION ATRAPAR/(8510:8517): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:57:07:253 CAMBIO DE COLA/(8510:8519): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 13:57:09:254 MOVIMIENTO DE ENTRENADOR/(8510:8516): entrenador 0: se movio a (10,30)
+[INFO] 13:57:09:254 OPERACION ATRAPAR/(8510:8516): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:58:50:676 ERROR EN COMUNICACION/(8587:8587): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 13:58:50:709 CAMBIO DE COLA/(8587:8595): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 13:58:52:710 MOVIMIENTO DE ENTRENADOR/(8587:8594): entrenador 2: se movio a (10,30)
+[INFO] 13:58:52:710 OPERACION ATRAPAR/(8587:8594): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:58:52:710 CAMBIO DE COLA/(8587:8595): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 13:58:54:711 MOVIMIENTO DE ENTRENADOR/(8587:8593): entrenador 1: se movio a (10,30)
+[INFO] 13:58:54:711 OPERACION ATRAPAR/(8587:8593): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 13:58:54:711 CAMBIO DE COLA/(8587:8595): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 13:58:56:711 MOVIMIENTO DE ENTRENADOR/(8587:8592): entrenador 0: se movio a (10,30)
+[INFO] 13:58:56:712 OPERACION ATRAPAR/(8587:8592): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:07:02:117 ERROR EN COMUNICACION/(8708:8708): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 14:07:02:148 CAMBIO DE COLA/(8708:8721): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 14:07:04:148 MOVIMIENTO DE ENTRENADOR/(8708:8720): entrenador 2: se movio a (10,30)
+[INFO] 14:07:04:149 OPERACION ATRAPAR/(8708:8720): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:07:04:149 CAMBIO DE COLA/(8708:8721): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 14:07:06:149 MOVIMIENTO DE ENTRENADOR/(8708:8719): entrenador 1: se movio a (10,30)
+[INFO] 14:07:06:149 OPERACION ATRAPAR/(8708:8719): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:07:06:149 CAMBIO DE COLA/(8708:8721): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 14:07:08:149 MOVIMIENTO DE ENTRENADOR/(8708:8718): entrenador 0: se movio a (10,30)
+[INFO] 14:07:08:150 OPERACION ATRAPAR/(8708:8718): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:08:26:781 ERROR EN COMUNICACION/(8777:8777): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 14:08:26:806 CAMBIO DE COLA/(8777:8781): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 14:08:28:807 MOVIMIENTO DE ENTRENADOR/(8777:8780): entrenador 2: se movio a (10,30)
+[INFO] 14:08:28:807 OPERACION ATRAPAR/(8777:8780): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:08:28:807 CAMBIO DE COLA/(8777:8781): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 14:08:30:807 MOVIMIENTO DE ENTRENADOR/(8777:8779): entrenador 1: se movio a (10,30)
+[INFO] 14:08:30:808 OPERACION ATRAPAR/(8777:8779): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:08:30:808 CAMBIO DE COLA/(8777:8781): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 14:08:32:809 MOVIMIENTO DE ENTRENADOR/(8777:8778): entrenador 0: se movio a (10,30)
+[INFO] 14:08:32:809 OPERACION ATRAPAR/(8777:8778): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 14:15:14:402 ERROR EN COMUNICACION/(9001:9001): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 14:15:14:437 CAMBIO DE COLA/(9001:9005): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 14:15:16:437 MOVIMIENTO DE ENTRENADOR/(9001:9004): entrenador 2: se movio a (10,30)
+[INFO] 14:15:16:437 OPERACION ATRAPAR/(9001:9004): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 16:57:21:86 ERROR EN COMUNICACION/(10005:10005): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:57:22:187 CAMBIO DE COLA/(10005:10009): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:57:24:188 MOVIMIENTO DE ENTRENADOR/(10005:10008): entrenador 2: se movio a (10,30)
+[INFO] 16:57:24:188 OPERACION ATRAPAR/(10005:10008): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 16:58:19:151 ERROR EN COMUNICACION/(10059:10059): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:58:19:186 CAMBIO DE COLA/(10059:10067): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:58:21:187 MOVIMIENTO DE ENTRENADOR/(10059:10066): entrenador 2: se movio a (10,30)
+[INFO] 16:58:21:188 OPERACION ATRAPAR/(10059:10066): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 16:58:21:188 CAMBIO DE COLA/(10059:10067): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:58:23:188 MOVIMIENTO DE ENTRENADOR/(10059:10065): entrenador 1: se movio a (10,30)
+[INFO] 16:58:23:188 OPERACION ATRAPAR/(10059:10065): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 16:58:23:189 CAMBIO DE COLA/(10059:10067): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:58:25:189 MOVIMIENTO DE ENTRENADOR/(10059:10064): entrenador 0: se movio a (10,30)
+[INFO] 16:58:25:189 OPERACION ATRAPAR/(10059:10064): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:02:07:107 ERROR EN COMUNICACION/(10151:10151): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:02:08:154 CAMBIO DE COLA/(10151:10159): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:02:10:155 MOVIMIENTO DE ENTRENADOR/(10151:10158): entrenador 2: se movio a (10,30)
+[INFO] 17:02:10:155 OPERACION ATRAPAR/(10151:10158): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:02:10:155 CAMBIO DE COLA/(10151:10159): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:02:12:156 MOVIMIENTO DE ENTRENADOR/(10151:10157): entrenador 1: se movio a (10,30)
+[INFO] 17:02:12:156 OPERACION ATRAPAR/(10151:10157): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:02:12:156 CAMBIO DE COLA/(10151:10159): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:02:14:156 MOVIMIENTO DE ENTRENADOR/(10151:10156): entrenador 0: se movio a (10,30)
+[INFO] 17:02:14:156 OPERACION ATRAPAR/(10151:10156): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:04:05:922 ERROR EN COMUNICACION/(10231:10231): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:04:05:959 CAMBIO DE COLA/(10231:10239): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:04:07:960 MOVIMIENTO DE ENTRENADOR/(10231:10238): entrenador 2: se movio a (10,30)
+[INFO] 17:04:07:960 OPERACION ATRAPAR/(10231:10238): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:04:07:960 CAMBIO DE COLA/(10231:10239): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:04:09:961 MOVIMIENTO DE ENTRENADOR/(10231:10237): entrenador 1: se movio a (10,30)
+[INFO] 17:04:09:961 OPERACION ATRAPAR/(10231:10237): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:04:09:961 CAMBIO DE COLA/(10231:10239): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:04:11:961 MOVIMIENTO DE ENTRENADOR/(10231:10236): entrenador 0: se movio a (10,30)
+[INFO] 17:04:11:962 OPERACION ATRAPAR/(10231:10236): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:08:18:339 ERROR EN COMUNICACION/(10361:10361): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:08:18:349 CAMBIO DE COLA/(10361:10368): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:08:20:349 MOVIMIENTO DE ENTRENADOR/(10361:10367): entrenador 2: se movio a (10,30)
+[INFO] 17:08:20:350 OPERACION ATRAPAR/(10361:10367): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:08:20:350 CAMBIO DE COLA/(10361:10368): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:08:22:350 MOVIMIENTO DE ENTRENADOR/(10361:10366): entrenador 1: se movio a (10,30)
+[INFO] 17:08:22:350 OPERACION ATRAPAR/(10361:10366): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:08:22:350 CAMBIO DE COLA/(10361:10368): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:08:24:351 MOVIMIENTO DE ENTRENADOR/(10361:10365): entrenador 0: se movio a (10,30)
+[INFO] 17:08:24:351 OPERACION ATRAPAR/(10361:10365): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:09:53:244 ERROR EN COMUNICACION/(10423:10423): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:09:54:267 CAMBIO DE COLA/(10423:10433): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:09:56:268 MOVIMIENTO DE ENTRENADOR/(10423:10432): entrenador 2: se movio a (10,30)
+[INFO] 17:09:56:268 OPERACION ATRAPAR/(10423:10432): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:09:56:269 CAMBIO DE COLA/(10423:10433): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:09:58:269 MOVIMIENTO DE ENTRENADOR/(10423:10431): entrenador 1: se movio a (10,30)
+[INFO] 17:09:58:269 OPERACION ATRAPAR/(10423:10431): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:09:58:270 CAMBIO DE COLA/(10423:10433): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:10:00:270 MOVIMIENTO DE ENTRENADOR/(10423:10430): entrenador 0: se movio a (10,30)
+[INFO] 17:10:00:271 OPERACION ATRAPAR/(10423:10430): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:25:21:872 ERROR EN COMUNICACION/(10822:10822): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:25:21:978 CAMBIO DE COLA/(10822:10826): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:25:23:978 MOVIMIENTO DE ENTRENADOR/(10822:10825): entrenador 2: se movio a (10,30)
+[INFO] 17:25:23:979 OPERACION ATRAPAR/(10822:10825): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:27:23:585 ERROR EN COMUNICACION/(10889:10889): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:27:23:585 CAMBIO DE COLA/(10889:10897): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:27:25:586 MOVIMIENTO DE ENTRENADOR/(10889:10896): entrenador 2: se movio a (10,30)
+[INFO] 17:27:25:586 OPERACION ATRAPAR/(10889:10896): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:27:25:586 CAMBIO DE COLA/(10889:10897): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:27:25:586 ERROR EN COMUNICACION/(10889:10896): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:27:27:587 MOVIMIENTO DE ENTRENADOR/(10889:10895): entrenador 1: se movio a (10,30)
+[INFO] 17:27:27:587 OPERACION ATRAPAR/(10889:10895): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:27:27:587 CAMBIO DE COLA/(10889:10897): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:27:27:587 ERROR EN COMUNICACION/(10889:10895): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:27:29:587 MOVIMIENTO DE ENTRENADOR/(10889:10896): entrenador 2: se movio a (10,30)
+[INFO] 17:27:29:587 OPERACION ATRAPAR/(10889:10896): ATRAPAR POKEMON: Pikachu con posicion (10, 30)
+[INFO] 17:27:29:588 ERROR EN COMUNICACION/(10889:10896): No se pudo conectar con Broker,se realizará la operación por default

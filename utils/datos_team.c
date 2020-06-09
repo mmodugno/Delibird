@@ -72,3 +72,12 @@ team_appeared_pokemon* deserializar_team_appeared_pokemon(int socket_cliente){
 }
 
 
+/* todo
+void serializar_team_catch_pokemon(team_catch_pokemon* teamCatchPokemon, t_buffer* buffer){
+	buffer->size=
+				sizeof(uint32_t)*3 // posX, posY, tamanioNombre
+				+ strlen(teamCatchPokemon->datos->nombrePokemon)+1; //longitud del strind nombre de pokemon
+
+		buffer->stream = malloc(buffer->size);
+}
+*/
