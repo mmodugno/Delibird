@@ -28,12 +28,8 @@ int main(int argc, char* argv[]){
 printf(" Arrancando \n \n");
 
 	sem_init(&hay_entrenador,0,0);
-	sem_init(&hay_pokemon,0,0);
-	sem_init(&planificando,0,1);
-	sem_init(&respuesta_catch,0,0);
 	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
-	sem_init(&rta_broker_catch,0,0);
-	sem_init(&termino_catch,0,0);
+
 	///////////////////////////////////////////
 	variables_globales();
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
@@ -54,38 +50,23 @@ printf(" Arrancando \n \n");
 	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7);
 
 
-	//pokemon* charmander = hacer_pokemon("Charmander", 0,0);
 
-	//pokemon* squirte = hacer_pokemon("Squirtle", 3,4);
-
-
-
-	entrenador* entrenador2 = list_get(entrenadores_en_ready,2);
-	printf("Objetivos de entrenador 2 antes de ejecutar el mensaje:  ");
-	for(int i = 0; i<list_size(entrenador2->objetivos);i++){
-		char* poke = list_get(entrenador2->objetivos,i);
-		printf("   %s    ", poke);
-	}
 
 
 	aparece_nuevo_pokemon(pikachu);
 
-	printf(" \n Objetivos de entrenador 2 despues de ejecutar el mensaje:  ");
-	for(int i = 0; i<list_size(entrenador2->objetivos);i++){
-			char* poke = list_get(entrenador2->objetivos,i);
-			printf("   %s    ", poke);
-		}
-
-	//aparece_nuevo_pokemon(squirte);
-	//aparece_nuevo_pokemon(charmander);
-	//aparece_nuevo_pokemon(pikachu);
 
 
 
-/*
+
+ 	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
+
+	pokemon* squirte = hacer_pokemon("Squirtle", 3,4);
+
+ 	aparece_nuevo_pokemon(squirte);
 	aparece_nuevo_pokemon(charmander);
-	aparece_nuevo_pokemon(charmander);
-	*/
+	aparece_nuevo_pokemon(pikachu);
+
 
 
 
@@ -93,7 +74,7 @@ printf(" Arrancando \n \n");
 
  	pthread_join(hilo_principal,NULL);
 
-
+ 	terminar_programa();
 }
 
 

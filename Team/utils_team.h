@@ -67,17 +67,8 @@ t_queue* entrenadores_blocked;
 
 char* nobmre_objetivoconfig;
 
-
-
-sem_t entrenador_listo;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
-sem_t planificando;
-sem_t respuesta_catch;
-sem_t rta_broker_catch;
-sem_t termino_catch;
-sem_t hay_pokemon;
-
 
 bool broker_conectado;
 
