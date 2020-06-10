@@ -56,14 +56,17 @@ t_config* leer_config(void);
 t_list* entrenadores;
 t_dictionary* objetivo_global;
 
-t_list* pokemones_en_el_mapa;
+t_queue* pokemones_en_el_mapa;
 t_list* pokemones_atrapados;
 
 t_list* entrenadores_en_ready;
 t_list* entrenadores_finalizados;
 t_list* entrenadores_en_deadlock;
+t_queue* entrenadores_block_ready;
+t_queue* entrenadores_blocked;
 
 char* nobmre_objetivoconfig;
+
 
 
 sem_t entrenador_listo;
@@ -71,23 +74,24 @@ sem_t en_ejecucion;
 sem_t hay_entrenador;
 sem_t planificando;
 sem_t respuesta_catch;
+sem_t rta_broker_catch;
+sem_t termino_catch;
+sem_t hay_pokemon;
 
 
+bool broker_conectado;
 
-
-typedef enum{
-    NEW=0,
-    READY=1,
-    EXEC=2,
-	BLOCK_READY=3,
-    BLOCK_ESPERANDO=4, //no sería block_catching?
-	BLOCK_DEADLOCK=5,
-    EXIT=6
-}estadoEntrenador;
 
 
 typedef struct{
-    int estado;
+    char* nombre;
+    uint32_t posX;
+    uint32_t posY;
+    uint32_t  tamanio_nombre;
+}pokemon;
+
+
+typedef struct{
     t_list* pokemones;
     t_list* objetivos;
     uint32_t posX;
@@ -96,14 +100,10 @@ typedef struct{
     int id;
     pthread_t hiloDeEntrenador;
     sem_t sem_entrenador;
+    sem_t espera_de_catch;
+    pokemon* objetivo_proximo;
 }entrenador;
 
-typedef struct{
-    char* nombre;
-    uint32_t posX;
-    uint32_t posY;
-    uint32_t  tamanio_nombre;
-}pokemon;
 
 
 typedef enum{
@@ -160,6 +160,7 @@ bool entrenador_en_exec(entrenador* un_entrenador);
 bool cumplio_objetivo(entrenador* un_entrenador);
 void analizar_proxima_cola(entrenador* un_entrenador);
 void printear_lista_entrenadores(t_list* lista);
+void bloquear_entrenador(entrenador* un_entrenador);
 
 //pokemon
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
@@ -174,20 +175,23 @@ void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
 
 
+
 //distancias entre pokemon y entrenador
 int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);
 bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2);
 
 //planificacion
 bool se_puede_planificar(entrenador* entrenador);
-void planificar_entrenador(pokemon* pokemon);
+void planificar_entrenador(void);
 void procedimiento_de_caza(entrenador* un_entrenador);
 void algoritmo_aplicado(void);
 void planifico_con_fifo(void);
+void terminar_ejecucion_entrenador(void);
+bool validacion_nuevo_pokemon(void);
 
 //Mensajes
-void denegar_catch(void);
-void confirmacion_de_catch(void);
-
+void denegar_catch(entrenador* un_entrenador);
+void confirmacion_de_catch(entrenador* un_entrenador);
+void esperar_respuesta_catch(entrenador* un_entrenador);
 
 #endif /* TEAM_UTILS_TEAMH */

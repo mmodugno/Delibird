@@ -28,9 +28,12 @@ int main(int argc, char* argv[]){
 printf(" Arrancando \n \n");
 
 	sem_init(&hay_entrenador,0,0);
+	sem_init(&hay_pokemon,0,0);
 	sem_init(&planificando,0,1);
 	sem_init(&respuesta_catch,0,0);
 	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
+	sem_init(&rta_broker_catch,0,0);
+	sem_init(&termino_catch,0,0);
 	///////////////////////////////////////////
 	variables_globales();
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
@@ -47,35 +50,48 @@ printf(" Arrancando \n \n");
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
-	//algoritmo_aplicado();
 
- 	//PROBANDO TODA LA EJECUCION DE CAZA:
+	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7);
 
-	pokemon* pikachu = hacer_pokemon("Pikachu", 10, 30);
-	printf("\n LOG DE MENSAJE: appeared pokemon:   Pokemon: %s , Posicion: (%d,%d) \n",pikachu->nombre,pikachu->posX,pikachu->posY);
-	aparece_nuevo_pokemon(pikachu);
 
 	//pokemon* charmander = hacer_pokemon("Charmander", 0,0);
+
+	//pokemon* squirte = hacer_pokemon("Squirtle", 3,4);
+
+
+
+	entrenador* entrenador2 = list_get(entrenadores_en_ready,2);
+	printf("Objetivos de entrenador 2 antes de ejecutar el mensaje:  ");
+	for(int i = 0; i<list_size(entrenador2->objetivos);i++){
+		char* poke = list_get(entrenador2->objetivos,i);
+		printf("   %s    ", poke);
+	}
+
+
+	aparece_nuevo_pokemon(pikachu);
+
+	printf(" \n Objetivos de entrenador 2 despues de ejecutar el mensaje:  ");
+	for(int i = 0; i<list_size(entrenador2->objetivos);i++){
+			char* poke = list_get(entrenador2->objetivos,i);
+			printf("   %s    ", poke);
+		}
+
+	//aparece_nuevo_pokemon(squirte);
 	//aparece_nuevo_pokemon(charmander);
+	//aparece_nuevo_pokemon(pikachu);
 
 
 
- 	printf(" \n Lista de entrenadores listos:  ");
-	printear_lista_entrenadores(entrenadores_en_ready);
-	printf(" \n Lista de entrenadores en deadlock:  ");
-	printear_lista_entrenadores(entrenadores_en_deadlock);
-
-	aparece_nuevo_pokemon(pikachu);
-
-	aparece_nuevo_pokemon(pikachu);
+/*
+	aparece_nuevo_pokemon(charmander);
+	aparece_nuevo_pokemon(charmander);
+	*/
 
 
-	printf(" \n Lista de entrenadores listos:  ");
-		printear_lista_entrenadores(entrenadores_en_ready);
+
+
 
  	pthread_join(hilo_principal,NULL);
-	//Hacer hilo server que este esperando un appeared_pokemon, que despues si fije si nos sirve y meterlo en la lista de pokemones en mapa
-
 
 
 }
