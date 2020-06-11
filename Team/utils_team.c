@@ -310,19 +310,12 @@ while(1){
 
 
 
-	// se pone en exec
-
-
-
-
-
 	analizar_proxima_cola(un_entrenador); //ANALIZA A QUE COLA O LISTA SE MUEVE
 
 
 	printf(" \n Termino de ejecucion entrenador %d: , puede cazar:%d \n",un_entrenador->id, un_entrenador->cuantos_puede_cazar);
 
 
-	//sem_post(&rta_catch);  //TODO
 
 	sem_post(&en_ejecucion);
 	sem_post(&hay_entrenador);
@@ -472,7 +465,9 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 	dictionary_put(objetivo_global,proximo_objetivo->nombre,dictionary_get(objetivo_global,proximo_objetivo->nombre)-1);
 
-	if(list_any_satisfy(un_entrenador->objetivos , (void*) es_de_especie)){
+	bool tiene_objetivo = list_any_satisfy(un_entrenador->objetivos , (void*) es_de_especie); //TODO
+
+	if(tiene_objetivo){
 		list_remove_by_condition(un_entrenador->objetivos , (void*) es_de_especie);
 	}
 
@@ -506,7 +501,7 @@ void disminuir_cuantos_puede_cazar(entrenador* un_entrenador){
 }
 
 bool es_de_especie(char* nombre_poke){
-	return strcmp(nombre_poke,proximo_objetivo->nombre);
+	return !strcmp(nombre_poke,proximo_objetivo->nombre);
 }
 
 bool pokemon_repetido(char* nombre){
