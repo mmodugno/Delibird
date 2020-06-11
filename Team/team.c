@@ -46,28 +46,22 @@ printf(" Arrancando \n \n");
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
-
+	pokemon* squirte = hacer_pokemon("Squirtle", 0,0);
+	aparece_nuevo_pokemon(squirte);
 	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7);
+	aparece_nuevo_pokemon(pikachu);
 
+/*
 
+	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
 
 
 
 	aparece_nuevo_pokemon(pikachu);
 
-
-
-
-
- 	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
-
-	pokemon* squirte = hacer_pokemon("Squirtle", 3,4);
-
- 	aparece_nuevo_pokemon(squirte);
 	aparece_nuevo_pokemon(charmander);
-	aparece_nuevo_pokemon(pikachu);
 
-
+*/
 
 
 
