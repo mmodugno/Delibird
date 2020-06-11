@@ -59,15 +59,13 @@ void *memoria;
 
 pthread_t thread;
 
-t_list* tablaAcknowledged;
+t_list* colaNewPokemon;
+t_list* colaAppearedPokemon;
 
-t_queue* colaNewPokemon;
-t_queue* colaAppearedPokemon;
-
-t_queue* colaCatchPokemon;
-t_queue* colaCaughtPokemon;
-t_queue* colaGetPokemon;
-t_queue* colaLocalizedPokemon;
+t_list* colaCatchPokemon;
+t_list* colaCaughtPokemon;
+t_list* colaGetPokemon;
+t_list* colaLocalizedPokemon;
 
 t_queue* suscriptoresNewPokemon;
 t_queue* suscriptoresAppearedPokemon;

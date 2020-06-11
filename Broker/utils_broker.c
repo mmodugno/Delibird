@@ -114,6 +114,11 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			//mutex
 
+
+			// Inicializamos la cola de suscriptores ack para que se pueda agregar
+			newRecibido->suscriptoresQueRespondieron = queue_create();
+
+
 			new_pokemon *raiz = transformarBrokerNewPokemon(newRecibido);
 			agregarAMemoria(raiz,newRecibido->id);
 			agregarACola(NEW_POKEMON,newRecibido);
@@ -137,6 +142,9 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			//mutex
 
+			// Inicializamos la cola de suscriptores ack para que se pueda agregar
+			appearedRecibido->suscriptoresQueRespondieron = queue_create();
+
 			appeared_pokemon *raiz = transformarBrokerAppearedPokemon(appearedRecibido);
 			agregarAMemoria(raiz,appearedRecibido->id);
 			agregarACola(APPEARED_POKEMON,appearedRecibido);
@@ -158,6 +166,9 @@ void process_request(int cod_op, int cliente_fd) {
 			getRecibido->id = idGlobales;
 			idGlobales++;
 			//mutex
+
+			// Inicializamos la cola de suscriptores ack para que se pueda agregar
+			getRecibido->suscriptoresQueRespondieron = queue_create();
 
 			get_pokemon *raiz = transformarBrokerGetPokemon(getRecibido);
 			agregarAMemoria(raiz,getRecibido->id);
@@ -182,6 +193,9 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			//mutex
 
+			// Inicializamos la cola de suscriptores ack para que se pueda agregar
+			catchRecibido->suscriptoresQueRespondieron = queue_create();
+
 			catch_pokemon *raiz = transformarBrokerCatchPokemon(catchRecibido);
 			agregarAMemoria(raiz, catchRecibido->id);
 			agregarACola(CATCH_POKEMON,catchRecibido);
@@ -202,12 +216,82 @@ void process_request(int cod_op, int cliente_fd) {
 			caughtRecibido->id = idGlobales;
 			idGlobales++;
 			//mutex
+
+			// Inicializamos la cola de suscriptores ack para que se pueda agregar
+			caughtRecibido->suscriptoresQueRespondieron = queue_create();
+
+
 			caught_pokemon *raiz = transformarBrokerCaughtPokemon(caughtRecibido);
 			agregarAMemoria(raiz,caughtRecibido->id);
 			agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
 			free(raiz);
 			free(caughtRecibido);
+
+			break;
+		}
+		case ACKNOWLEDGED:{
+			uint32_t ackRecibido = deserializarAck(cliente_fd);
+
+			bool buscarIdNew(broker_new_pokemon* brokerNP){
+				return (brokerNP->id) == ackRecibido;
+			}
+			bool buscarIdAppeared(broker_appeared_pokemon* brokerAP){
+				return (brokerAP->id) == ackRecibido;
+			}
+			bool buscarIdCatch(broker_catch_pokemon* brokerCTP){
+				return (brokerCTP->id) == ackRecibido;
+			}
+			bool buscarIdCaught(broker_caught_pokemon* brokerCAP){
+				return (brokerCAP->id) == ackRecibido;
+			}
+			bool buscarIdGet(broker_get_pokemon* brokerGP){
+				return (brokerGP->id) == ackRecibido;
+			}
+			bool buscarIdLocalized(broker_localized_pokemon* brokerLP){
+				return (brokerLP->id) == ackRecibido;
+			}
+
+			broker_new_pokemon* brokerNP = malloc(sizeof(broker_new_pokemon));
+			broker_appeared_pokemon* brokerAP = malloc(sizeof(broker_appeared_pokemon));
+			broker_catch_pokemon* brokerCTP = malloc(sizeof(broker_catch_pokemon));
+			broker_caught_pokemon* brokerCAP = malloc(sizeof(broker_caught_pokemon));
+			broker_get_pokemon* brokerGP = malloc(sizeof(broker_get_pokemon));
+			broker_localized_pokemon* brokerLP = malloc(sizeof(broker_localized_pokemon));
+
+			brokerNP  = NULL;
+			brokerAP  = NULL;
+			brokerCTP = NULL;
+			brokerCAP = NULL;
+			brokerGP  = NULL;
+			brokerLP  = NULL;
+
+			brokerNP  = list_find(colaNewPokemon, buscarIdNew);
+			brokerAP  = list_find(colaAppearedPokemon, buscarIdAppeared);
+			brokerCTP = list_find(colaCatchPokemon, buscarIdCatch);
+			brokerCAP = list_find(colaCaughtPokemon, buscarIdCaught);
+			brokerGP  = list_find(colaGetPokemon, buscarIdGet);
+			brokerLP  = list_find(colaLocalizedPokemon, buscarIdLocalized);
+
+			if(brokerNP != NULL){
+				queue_push(brokerNP->suscriptoresQueRespondieron, username);
+			}
+			if(brokerAP != NULL){
+				queue_push(brokerAP->suscriptoresQueRespondieron, username);
+			}
+			if(brokerCTP != NULL){
+				queue_push(brokerCTP->suscriptoresQueRespondieron, username);
+			}
+			if(brokerCAP != NULL){
+				queue_push(brokerCAP->suscriptoresQueRespondieron, username);
+			}
+			if(brokerGP != NULL){
+				queue_push(brokerGP->suscriptoresQueRespondieron, username);
+			}
+			if(brokerLP != NULL){
+				queue_push(brokerLP->suscriptoresQueRespondieron, username);
+			}
+
 
 			break;
 		}
@@ -219,6 +303,9 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 }
+
+
+
 
 void* recibir_mensaje(int socket_cliente, int* size) {
 	void * buffer;
@@ -234,26 +321,24 @@ void* recibir_mensaje(int socket_cliente, int* size) {
 void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
 	switch(tipo_de_Cola){
 		case NEW_POKEMON:
-			queue_push(colaNewPokemon,(broker_new_pokemon*)mensaje);
+			list_add(colaNewPokemon,(broker_new_pokemon*)mensaje);
 			break;
 		case APPEARED_POKEMON:
-			queue_push(colaAppearedPokemon,(broker_appeared_pokemon*)mensaje);
+			list_add(colaAppearedPokemon,(broker_appeared_pokemon*)mensaje);
 			break;
 		case CATCH_POKEMON:
-			queue_push(colaCatchPokemon,(broker_catch_pokemon*)mensaje);
+			list_add(colaCatchPokemon,(broker_catch_pokemon*)mensaje);
 			break;
 		case CAUGHT_POKEMON:
-			queue_push(colaCaughtPokemon,(broker_caught_pokemon*)mensaje);
+			list_add(colaCaughtPokemon,(broker_caught_pokemon*)mensaje);
 			break;
 		case GET_POKEMON:
-			queue_push(colaGetPokemon,(broker_get_pokemon*)mensaje);
+			list_add(colaGetPokemon,(broker_get_pokemon*)mensaje);
 			break;
 		case LOCALIZED_POKEMON:
 			//queue_push(colaLocalizedPokemon,(broker_localize_pokemon*) mensaje);
-			queue_push(colaLocalizedPokemon,(localize_pokemon*) mensaje);
-
+			list_add(colaLocalizedPokemon,(broker_localized_pokemon*) mensaje);
 			break;
-
 
 	}
 }
@@ -365,37 +450,6 @@ void algoritmoBestFit(particion *datoAAgregar,uint32_t *desplazamiento,particion
 
 }
 
-void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* particionAAgregar, t_list tablaDeParticionesCopia){
-	//Al leer, voy a meter las particiones libres a la lista particionesLibres
-	/*
-	 * Primero ordenamos la lista de las particiones en memoria, para que luego podamos
-	 * comparar las bases respecto un pivote y así obtener los espacios libres
-	 *
-	 */
-
-	bool comparadorDeBases(particion* unaParticion, particion* otraParticion){
-		// Fijarse si ordena menor a mayor, o al reves!!!!!!!!!!!!!!!!!!!!!!!!!
-		return (unaParticion->base < otraParticion->base);
-	}
-
-	//mutex para sincronizar
-	list_sort(tablaDeParticionesCopia, comparadorDeBases);
-	//mutex para sincronizar
-
-	list_iterate(tablaDeParticionesCopia, mostrarParticiones); //Muestro la tabla de particiones para ver como quedo
-
-	//Empezamos a iterar
-	particion* particionPivActual = tablaDeParticionesCopia->head->data;
-	particion* particionLibreAAgregar = malloc(sizeof(particion));
-
-	if( (particionPivActual->base - *pivote) >= particionAAgregar->tamanioMensaje ){
-		particionLibreAAgregar->base = *pivote;
-		particionLibreAAgregar->tamanioMensaje = particionPivActual->base - *pivote;
-	}
-
-
-
-}
 
 void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
 	//Agrego la particionLibre a la lista
@@ -418,6 +472,10 @@ void iniciarMemoria(){
 }
 
 
+uint32_t deserializarAck(int socket_cliente){
+		//uint32_t idAck;
 
-
-
+	    uint32_t idAck;
+	    recv(socket_cliente,&idAck,sizeof(uint32_t),0);
+	    return idAck;
+}

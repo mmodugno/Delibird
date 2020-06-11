@@ -39,12 +39,12 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 
 
 
-		colaNewPokemon = queue_create();
-		colaAppearedPokemon = queue_create();
-		colaCatchPokemon= queue_create();
-		colaCaughtPokemon= queue_create();
-		colaGetPokemon= queue_create();
-		colaLocalizedPokemon= queue_create();
+		colaNewPokemon = list_create();
+		colaAppearedPokemon = list_create();
+		colaCatchPokemon= list_create();
+		colaCaughtPokemon= list_create();
+		colaGetPokemon= list_create();
+		colaLocalizedPokemon= list_create();
 
 		suscriptoresAppearedPokemon = queue_create();
 		suscriptoresCatchPokemon = queue_create();
