@@ -65,8 +65,8 @@ t_list* entrenadores_en_deadlock;
 t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
 
-char* nobmre_objetivoconfig;
-
+char* nombre_pokemon;
+char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
 
@@ -141,10 +141,10 @@ bool conectarse_con_broker(void);
 //globales
 void variables_globales();
 
-//entrenador
+//ENTRENADOR
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 void hacer_entrenadores(void);
-void mover_entrenador(entrenador* entrenador,pokemon* pokemon);
+void mover_entrenador(entrenador* entrenador,int x, int y);
 void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 bool puede_cazar(entrenador* entrenador);
 bool entrenador_en_exec(entrenador* un_entrenador);
@@ -153,25 +153,25 @@ void analizar_proxima_cola(entrenador* un_entrenador);
 void printear_lista_entrenadores(t_list* lista);
 void bloquear_entrenador(entrenador* un_entrenador);
 
-//pokemon
+//POKEMON
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
 void aparece_nuevo_pokemon(pokemon* poke);
 bool es_de_especie(char* nombre_poke);
 void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones);
 bool pokemon_repetido(char* nombre);
 
-//objetivo
+//OBJETIVO GLOBAL
 void calcular_objetivo_global(void);
 void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
 
 
 
-//distancias entre pokemon y entrenador
+//DISTANCIAS
 int distancia_entrenador_pokemon(entrenador* entrenador, pokemon* pokemon);
 bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2);
 
-//planificacion
+//PLANIFICACION
 bool se_puede_planificar(entrenador* entrenador);
 void planificar_entrenador(void);
 void procedimiento_de_caza(entrenador* un_entrenador);
@@ -180,9 +180,19 @@ void planifico_con_fifo(void);
 void terminar_ejecucion_entrenador(void);
 bool validacion_nuevo_pokemon(void);
 
+
+//DEADLOCK
+void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
+void manejar_deadlock(void);
+bool hay_deadlock(void);
+
 //Mensajes
 void denegar_catch(entrenador* un_entrenador);
 void confirmacion_de_catch(entrenador* un_entrenador);
 void esperar_respuesta_catch(entrenador* un_entrenador);
+
+
+
+
 
 #endif /* TEAM_UTILS_TEAMH */

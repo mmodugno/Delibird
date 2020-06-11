@@ -11,7 +11,13 @@
 
 int main(int argc, char* argv[]){
 
-
+	if(argc == 1){
+			printf("No hay parametros suficientes\n");
+			return 2;
+		}
+	if(argc == 2){
+			archivo_config = argv[1];
+			}
 
 	cambioDeCola = iniciar_log("CAMBIO DE COLA"); //Detallar razon
 	movimiento_entrenador = iniciar_log("MOVIMIENTO DE ENTRENADOR");//indicando la ubicación a la que se movió).
@@ -46,28 +52,22 @@ printf(" Arrancando \n \n");
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
-
+	pokemon* squirte = hacer_pokemon("Squirtle", 0,0);
+	aparece_nuevo_pokemon(squirte);
 	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7);
+	aparece_nuevo_pokemon(pikachu);
 
+/*
 
+	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
 
 
 
 	aparece_nuevo_pokemon(pikachu);
 
-
-
-
-
- 	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
-
-	pokemon* squirte = hacer_pokemon("Squirtle", 3,4);
-
- 	aparece_nuevo_pokemon(squirte);
 	aparece_nuevo_pokemon(charmander);
-	aparece_nuevo_pokemon(pikachu);
 
-
+*/
 
 
 
