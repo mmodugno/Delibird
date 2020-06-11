@@ -37,6 +37,14 @@ typedef struct {
 	char* tiempo;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
 }particion;
 
+typedef struct {
+
+    uint32_t base;
+    uint32_t limite;
+    uint32_t tamanio;
+
+} particionLibre;
+
 t_list *tablaDeParticiones;
 
 uint32_t idGlobales;
