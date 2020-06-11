@@ -20,7 +20,7 @@
  }
 
  t_config* leer_config(void){
-         return config_create("team1.config");
+         return config_create(archivo_config);
      }
 
 
@@ -370,6 +370,7 @@ void planificar_entrenador(void){
 
 
 
+
 }
 
 
@@ -435,12 +436,12 @@ void manejar_deadlock(void){
 }
 //TODO
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
-	printf("\n inicio operacion de deadlock \n ");
+	printf("\n Inicio operacion de deadlock \n ");
 
 	entrenador_exec = entrenador0;
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
 	//int retardo = leer_retardo_cpu() * 5;
-	sleep(3); //IRIA sleep(retardo)
+	sleep(5); //IRIA sleep(retardo)
 
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
@@ -456,14 +457,7 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	analizar_proxima_cola(entrenador1);
 }
 
-/*
-void terminar_ejecucion_entrenador(void){
-	entrenador_exec = queue_peek(entrenadores_blocked);
-	queue_pop(entrenadores_blocked);
-	proximo_objetivo = entrenador_exec->objetivo_proximo;
-	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-}
- *  */
+
 bool validacion_nuevo_pokemon(void){
 	return (!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(entrenadores_en_ready)) || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready));
 }

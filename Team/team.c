@@ -11,7 +11,13 @@
 
 int main(int argc, char* argv[]){
 
-
+	if(argc == 1){
+			printf("No hay parametros suficientes\n");
+			return 2;
+		}
+	if(argc == 2){
+			archivo_config = argv[1];
+			}
 
 	cambioDeCola = iniciar_log("CAMBIO DE COLA"); //Detallar razon
 	movimiento_entrenador = iniciar_log("MOVIMIENTO DE ENTRENADOR");//indicando la ubicación a la que se movió).

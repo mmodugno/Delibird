@@ -66,7 +66,7 @@ t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
 
 char* nombre_pokemon;
-
+char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
 
