@@ -287,11 +287,11 @@ void suscribirACola(suscriptor* suscriptor){
 void agregarAMemoria(void * dato, uint32_t idMensaje){
 	particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje);
 	uint32_t desplazamiento = 0;
-	particion *particionEncontrada = malloc(sizeof(particion));
+	particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
+	particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
 
 	if(!strcmp(algoritmo_particion_libre,"FF")){
 		algoritmoFirstFit(datoAAgregar,&desplazamiento,particionEncontrada);
-
 	}
 	if(!strcmp(algoritmo_particion_libre,"BF")){
 		algoritmoBestFit(dato,idMensaje);
@@ -299,8 +299,7 @@ void agregarAMemoria(void * dato, uint32_t idMensaje){
 
 	free(datoAAgregar);
 	free(particionEncontrada);
-
-
+	free(particionMasChica);
 }
 
 //TODO
@@ -355,6 +354,59 @@ void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particio
 }
 
 
+void algoritmoBestFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada, particion* particionMasChica){
+	//Leer memoria para buscar espacios libres
+	//Fijarse si los espacios libres entra el tipo de dato que queremos agregar
+	//Evaluar que sea el tamaño mas chico de esos espacios libres
+	//Meter en memoria con esa base del tamaño del espacio libre mas chico y ponerlo con el tamaño del dato a agregar
+
+	t_list* particionesLibres = t_list_create();
+
+
+
+}
+
+void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* particionAAgregar, t_list tablaDeParticionesCopia){
+	//Al leer, voy a meter las particiones libres a la lista particionesLibres
+	/*
+	 * Primero ordenamos la lista de las particiones en memoria, para que luego podamos
+	 * comparar las bases respecto un pivote y así obtener los espacios libres
+	 *
+	 */
+
+	bool comparadorDeBases(particion* unaParticion, particion* otraParticion){
+		// Fijarse si ordena menor a mayor, o al reves!!!!!!!!!!!!!!!!!!!!!!!!!
+		return (unaParticion->base < otraParticion->base);
+	}
+
+	//mutex para sincronizar
+	list_sort(tablaDeParticionesCopia, comparadorDeBases);
+	//mutex para sincronizar
+
+	list_iterate(tablaDeParticionesCopia, mostrarParticiones); //Muestro la tabla de particiones para ver como quedo
+
+	//Empezamos a iterar
+	particion* particionPivActual = tablaDeParticionesCopia->head->data;
+	particion* particionLibreAAgregar = malloc(sizeof(particion));
+
+	if( (particionPivActual->base - *pivote) >= particionAAgregar->tamanioMensaje ){
+		particionLibreAAgregar->base = *pivote;
+		particionLibreAAgregar->tamanioMensaje = particionPivActual->base - *pivote;
+	}
+
+
+
+}
+
+void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
+	//Agrego la particionLibre a la lista
+}
+
+void mostrarParticiones(particion* unaParticion){
+	if(unaParticion != NULL){
+		printf("base: %d, tamanio: %d, id: %d, tiempo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->tiempo);
+	}
+}
 
 void iniciarMemoria(){
 
