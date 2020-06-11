@@ -220,8 +220,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 }
 
-void* recibir_mensaje(int socket_cliente, int* size)
-{
+void* recibir_mensaje(int socket_cliente, int* size) {
 	void * buffer;
 
 	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
