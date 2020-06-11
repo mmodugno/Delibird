@@ -505,7 +505,6 @@ void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
 
 }
 
-<<<<<<< HEAD
 // 9 11 12
 void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLibres) {
 	particionLibre* pLibre = malloc(sizeof(particionLibre));
@@ -579,8 +578,6 @@ void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* partici
 
 
 }
-=======
->>>>>>> e9aa8943847dcfdb4db0386219300bee72177f26
 
 void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
 	//Agrego la particionLibre a la lista
