@@ -7,6 +7,181 @@
 
 #include "utils_broker.h"
 
+void mostrarParticiones(particion* unaParticion){
+	if(unaParticion != NULL){
+		printf("base: %d, tamanio: %d, id: %d, tiempo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->tiempo);
+	}
+}
+
+void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLibres) {
+	particionLibre* pLibre = malloc(sizeof(particionLibre));
+	uint32_t posibleLimite;
+
+	while(list_is_empty(listaPosicionesLibres) != 0) {   //
+	    pLibre->base = list_get(listaPosicionesLibres,0);
+
+	    list_remove(listaPosicionesLibres,0); //elimina primer elemento lista
+	   // 5 6
+	    posibleLimite = list_get(listaPosicionesLibres,0);
+	    if(posibleLimite != (pLibre->base+1)) {
+	        posibleLimite = pLibre->base;
+	    } else {
+			uint32_t i = 1;
+			uint32_t next = list_get(listaPosicionesLibres, i);
+			//*** ver si con un for se soluciona
+
+			for (i = 0; i < list_size(listaPosicionesLibres); i++) {
+				next = list_get(listaPosicionesLibres,i+1);
+				if (posibleLimite+1 == next) {
+					posibleLimite = next;
+				}
+			}
+			//
+			t_list* listaBasura = list_take_and_remove(listaPosicionesLibres,i);
+			list_destroy(listaBasura);
+	    }
+	    pLibre->limite = posibleLimite;
+
+		if(pLibre->limite == pLibre->base) {
+			pLibre->tamanio = 1;
+		} else {
+			pLibre->tamanio = pLibre->limite - pLibre->base;
+		}
+
+		list_add(listaParticionesLibres,pLibre);
+	}
+
+}
+
+
+
+void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
+	//Leer memoria para buscar espacios libres
+	//Fijarse si los espacios libres entra el tipo de dato que queremos agregar
+	//Evaluar que sea el tamaño mas chico de esos espacios libres
+	//Meter en memoria con esa base del tamaño del espacio libre mas chico y ponerlo con el tamaño del dato a agregar
+
+	t_list* particionesLibres = list_create();
+
+
+	t_list* listaPosicionesLibres = list_create();
+
+	uint32_t i;
+
+	/* recorrer memoria*/
+	for(i = 0; i < tamanio_memoria;i++) {
+	    void* prueba = malloc(1);
+	    memcpy(prueba,memoria+i,1);
+
+	    if(strcmp(prueba,"\0") == 0){
+	        /*listaPosicionesLibres.add(posicion)*/
+	    	list_add(listaPosicionesLibres,i);
+	        //printf("posicion libre en: %d \n",posicion);
+	    }
+	}
+	/* fin recorrer memoria */
+
+	/*armar particionesLibres*/
+	/*la listaPosicionesLibres siempre va a estar ordenada porque recorre la memoria en forma ascendente*/
+
+	//arma una lista de particiones libres
+	armarParticiones(listaPosicionesLibres,particionesLibres);
+
+	//filtra por las que entre el dato a agregar
+	bool entraEnParticion(particionLibre *pLibre){
+		return pLibre->tamanio>= datoAAgregar->tamanioMensaje;
+	}
+
+	particionesLibres = list_filter(particionesLibres,entraEnParticion);
+
+	//ordena por tamanio
+	bool ordenarPorTamanio(particionLibre *pLibre1,particionLibre *pLibre2){
+		return pLibre1->tamanio<pLibre2->tamanio;
+	}
+
+	list_sort(particionesLibres,ordenarPorTamanio);
+
+	particionLibre *pLibreParaAgregar = list_get(particionesLibres,0);
+
+
+	//mutex
+	datoAAgregar->base = pLibreParaAgregar->base;
+	list_add(tablaDeParticiones,datoAAgregar);
+	memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
+	//mutex
+
+	/* Para ver que particion asignar, osea que base, hago un map de listaParticionesLibres con una funcion "sacarTamanio"
+	para que todas me devuelvan el tamaño, hago un filter para que tenga el tamaño minimo para copiar mi dato y de
+	esas saco la minima
+	*/
+
+	free(pLibreParaAgregar);
+	//free();
+	list_destroy(listaPosicionesLibres);
+	list_destroy(particionesLibres);
+
+}
+
+// 9 11 12
+
+
+void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* particionAAgregar, t_list* tablaDeParticionesCopia){
+	//Al leer, voy a meter las particiones libres a la lista particionesLibres
+	/*
+	 * Primero ordenamos la lista de las particiones en memoria, para que luego podamos
+	 * comparar las bases respecto un pivote y así obtener los espacios libres
+	 *
+	 */
+
+	bool comparadorDeBases(particion* unaParticion, particion* otraParticion){
+		// Fijarse si ordena menor a mayor, o al reves!!!!!!!!!!!!!!!!!!!!!!!!!
+		return (unaParticion->base < otraParticion->base);
+	}
+
+	//mutex para sincronizar
+	list_sort(tablaDeParticionesCopia, comparadorDeBases);
+	//mutex para sincronizar
+
+	list_iterate(tablaDeParticionesCopia, mostrarParticiones); //Muestro la tabla de particiones para ver como quedo
+
+	//Empezamos a iterar
+	particion* particionPivActual = tablaDeParticionesCopia->head->data;
+	particion* particionLibreAAgregar = malloc(sizeof(particion));
+
+	if( (particionPivActual->base - *pivote) >= particionAAgregar->tamanioMensaje ){
+		particionLibreAAgregar->base = *pivote;
+		particionLibreAAgregar->tamanioMensaje = particionPivActual->base - *pivote;
+	}
+
+
+
+}
+
+void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
+	//Agrego la particionLibre a la lista
+}
+
+
+void iniciarMemoria(){
+
+	memoria = malloc(tamanio_memoria);
+
+	tablaDeParticiones = list_create();
+
+	idGlobales = 0;
+
+}
+
+
+uint32_t deserializarAck(int socket_cliente){
+		//uint32_t idAck;
+
+	    uint32_t idAck;
+	    recv(socket_cliente,&idAck,sizeof(uint32_t),0);
+	    return idAck;
+}
+
+
 void iniciar_servidor(void)
 {
 	int socket_servidor;
@@ -438,172 +613,3 @@ void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particio
 /*
  * */
 
-void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
-	//Leer memoria para buscar espacios libres
-	//Fijarse si los espacios libres entra el tipo de dato que queremos agregar
-	//Evaluar que sea el tamaño mas chico de esos espacios libres
-	//Meter en memoria con esa base del tamaño del espacio libre mas chico y ponerlo con el tamaño del dato a agregar
-
-	t_list* particionesLibres = list_create();
-
-
-	t_list* listaPosicionesLibres = list_create();
-
-	uint32_t i;
-
-	/* recorrer memoria*/
-	for(i = 0; i < tamanio_memoria;i++) {
-	    void* prueba = malloc(1);
-	    memcpy(prueba,memoria+i,1);
-
-	    if(strcmp(prueba,"\0") == 0){
-	        /*listaPosicionesLibres.add(posicion)*/
-	    	list_add(listaPosicionesLibres,i);
-	        //printf("posicion libre en: %d \n",posicion);
-	    }
-	}
-	/* fin recorrer memoria */
-
-	/*armar particionesLibres*/
-	/*la listaPosicionesLibres siempre va a estar ordenada porque recorre la memoria en forma ascendente*/
-
-	//arma una lista de particiones libres
-	armarParticiones(listaPosicionesLibres,particionesLibres);
-
-	//filtra por las que entre el dato a agregar
-	bool entraEnParticion(particionLibre *pLibre){
-		return pLibre->tamanio>= datoAAgregar->tamanioMensaje;
-	}
-
-	particionesLibres = list_filter(particionesLibres,entraEnParticion);
-
-	//ordena por tamanio
-	bool ordenarPorTamanio(particionLibre *pLibre1,particionLibre *pLibre2){
-		return pLibre1->tamanio<pLibre2->tamanio;
-	}
-
-	list_sort(particionesLibres,ordenarPorTamanio);
-
-	particionLibre *pLibreParaAgregar = list_get(particionesLibres,0);
-
-
-	//mutex
-	datoAAgregar->base = pLibreParaAgregar->base;
-	list_add(tablaDeParticiones,datoAAgregar);
-	memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
-	//mutex
-
-	/* Para ver que particion asignar, osea que base, hago un map de listaParticionesLibres con una funcion "sacarTamanio"
-	para que todas me devuelvan el tamaño, hago un filter para que tenga el tamaño minimo para copiar mi dato y de
-	esas saco la minima
-	*/
-
-	free(pLibreParaAgregar);
-	//free();
-	list_destroy(listaPosicionesLibres);
-	list_destroy(particionesLibres);
-
-}
-
-// 9 11 12
-void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLibres) {
-	particionLibre* pLibre = malloc(sizeof(particionLibre));
-	uint32_t posibleLimite;
-
-	while(list_is_empty(listaPosicionesLibres) != 0) {   //
-	    pLibre->base = list_get(listaPosicionesLibres,0);
-
-	    list_remove(listaPosicionesLibres,0); //elimina primer elemento lista
-	   // 5 6
-	    posibleLimite = list_get(listaPosicionesLibres,0);
-	    if(posibleLimite != (pLibre->base+1)) {
-	        posibleLimite = pLibre->base;
-	    } else {
-			uint32_t i = 1;
-			uint32_t next = list_get(listaPosicionesLibres, i);
-			//*** ver si con un for se soluciona
-
-			for (i = 0; i < list_size(listaPosicionesLibres); i++) {
-				next = lista_get(i+1);
-				if (posibleLimite+1 == next) {
-					posibleLimite = next;
-				}
-			}
-			//
-			t_list* listaBasura = list_take_and_remove(listaPosicionesLibres,i);
-			list_destroy(listaBasura);
-	    }
-	    pLibre->limite = posibleLimite;
-
-		if(pLibre->limite == pLibre->base) {
-			pLibre->tamanio = 1;
-		} else {
-			pLibre->tamanio = pLibre->limite - pLibre->base;
-		}
-
-		list_add(listaParticionesLibres,pLibre);
-	}
-
-}
-
-
-void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* particionAAgregar, t_list tablaDeParticionesCopia){
-	//Al leer, voy a meter las particiones libres a la lista particionesLibres
-	/*
-	 * Primero ordenamos la lista de las particiones en memoria, para que luego podamos
-	 * comparar las bases respecto un pivote y así obtener los espacios libres
-	 *
-	 */
-
-	bool comparadorDeBases(particion* unaParticion, particion* otraParticion){
-		// Fijarse si ordena menor a mayor, o al reves!!!!!!!!!!!!!!!!!!!!!!!!!
-		return (unaParticion->base < otraParticion->base);
-	}
-
-	//mutex para sincronizar
-	list_sort(tablaDeParticionesCopia, comparadorDeBases);
-	//mutex para sincronizar
-
-	list_iterate(tablaDeParticionesCopia, mostrarParticiones); //Muestro la tabla de particiones para ver como quedo
-
-	//Empezamos a iterar
-	particion* particionPivActual = tablaDeParticionesCopia->head->data;
-	particion* particionLibreAAgregar = malloc(sizeof(particion));
-
-	if( (particionPivActual->base - *pivote) >= particionAAgregar->tamanioMensaje ){
-		particionLibreAAgregar->base = *pivote;
-		particionLibreAAgregar->tamanioMensaje = particionPivActual->base - *pivote;
-	}
-
-
-
-}
-
-void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
-	//Agrego la particionLibre a la lista
-}
-
-void mostrarParticiones(particion* unaParticion){
-	if(unaParticion != NULL){
-		printf("base: %d, tamanio: %d, id: %d, tiempo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->tiempo);
-	}
-}
-
-void iniciarMemoria(){
-
-	memoria = malloc(tamanio_memoria);
-
-	tablaDeParticiones = list_create();
-
-	idGlobales = 0;
-
-}
-
-
-uint32_t deserializarAck(int socket_cliente){
-		//uint32_t idAck;
-
-	    uint32_t idAck;
-	    recv(socket_cliente,&idAck,sizeof(uint32_t),0);
-	    return idAck;
-}

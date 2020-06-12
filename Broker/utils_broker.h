@@ -97,9 +97,9 @@ t_log* dumpCache;
 static const char *colasDeEnum[] = {"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON"};
 
 
-void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada);
-void algoritmoBestFit(particion *datoAAgregar,uint32_t idMensaje);
-void agregarAMemoria(void * dato, uint32_t idMensaje);
+//void algoritmoFirstFit(particion* ,uint32_t ,particion* );
+//void algoritmoBestFit(particion* ,uint32_t );
+void agregarAMemoria(void* , uint32_t );
 void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
