@@ -54,20 +54,22 @@ printf(" Arrancando \n \n");
 
 	pokemon* squirte = hacer_pokemon("Squirtle", 0,0);
 	aparece_nuevo_pokemon(squirte);
+
 	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7);
 	aparece_nuevo_pokemon(pikachu);
 
-/*
+	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3);
+	aparece_nuevo_pokemon(pikachu2);
+
 
 	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
-
-
-
-	aparece_nuevo_pokemon(pikachu);
-
 	aparece_nuevo_pokemon(charmander);
 
-*/
+
+
+
+
+
 
 
 

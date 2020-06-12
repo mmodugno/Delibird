@@ -1782,3 +1782,630 @@
  
 [INFO] 15:45:09:299 CAMBIO DE COLA/(6827:6835): cambio a EXIT de entrenador: 2 
  
+[INFO] 22:51:19:926 ERROR EN COMUNICACION/(3801:3801): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:51:19:949 CAMBIO DE COLA/(3801:3806): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:51:21:949 MOVIMIENTO DE ENTRENADOR/(3801:3806): entrenador 0: se movio a (0,0)
+[INFO] 22:51:21:950 OPERACION ATRAPAR/(3801:3806): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 22:51:21:950 CAMBIO DE COLA/(3801:3806): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 22:51:21:950 CAMBIO DE COLA/(3801:3808): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:51:23:951 MOVIMIENTO DE ENTRENADOR/(3801:3808): entrenador 2: se movio a (6,7)
+[INFO] 22:51:23:951 OPERACION ATRAPAR/(3801:3808): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 22:51:23:952 CAMBIO DE COLA/(3801:3808): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 22:51:23:952 CAMBIO DE COLA/(3801:3807): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:51:25:952 MOVIMIENTO DE ENTRENADOR/(3801:3807): entrenador 1: se movio a (8,3)
+[INFO] 22:51:25:952 OPERACION ATRAPAR/(3801:3807): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 22:51:25:952 CAMBIO DE COLA/(3801:3807): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 22:51:25:953 CAMBIO DE COLA/(3801:3806): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:51:25:953 CAMBIO DE COLA/(3801:3806): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 22:51:25:953 CAMBIO DE COLA/(3801:3808): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:51:25:953 CAMBIO DE COLA/(3801:3808): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 22:51:25:953 CAMBIO DE COLA/(3801:3807): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:51:25:953 CAMBIO DE COLA/(3801:3807): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 22:51:27:953 MOVIMIENTO DE ENTRENADOR/(3801:3809): entrenador 0: se movio a (6,7)
+[INFO] 22:51:32:954 CAMBIO DE COLA/(3801:3809): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 22:51:32:957 CAMBIO DE COLA/(3801:3809): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 22:52:16:86 ERROR EN COMUNICACION/(3850:3850): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:52:16:86 CAMBIO DE COLA/(3850:3855): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:52:18:87 MOVIMIENTO DE ENTRENADOR/(3850:3855): entrenador 0: se movio a (0,0)
+[INFO] 22:52:18:88 OPERACION ATRAPAR/(3850:3855): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 22:52:18:88 CAMBIO DE COLA/(3850:3855): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 22:52:18:88 CAMBIO DE COLA/(3850:3857): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:52:20:89 MOVIMIENTO DE ENTRENADOR/(3850:3857): entrenador 2: se movio a (6,7)
+[INFO] 22:52:20:90 OPERACION ATRAPAR/(3850:3857): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 22:52:20:90 CAMBIO DE COLA/(3850:3857): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 22:52:20:90 CAMBIO DE COLA/(3850:3856): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:52:22:90 MOVIMIENTO DE ENTRENADOR/(3850:3856): entrenador 1: se movio a (8,3)
+[INFO] 22:52:22:91 OPERACION ATRAPAR/(3850:3856): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 22:52:22:91 CAMBIO DE COLA/(3850:3856): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 22:52:22:91 CAMBIO DE COLA/(3850:3855): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:52:22:91 CAMBIO DE COLA/(3850:3855): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 22:52:22:91 CAMBIO DE COLA/(3850:3857): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:52:22:91 CAMBIO DE COLA/(3850:3857): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 22:52:22:92 CAMBIO DE COLA/(3850:3856): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:52:22:92 CAMBIO DE COLA/(3850:3856): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 22:52:24:92 MOVIMIENTO DE ENTRENADOR/(3850:3858): entrenador 0: se movio a (6,7)
+[INFO] 22:52:29:93 CAMBIO DE COLA/(3850:3858): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 22:52:29:93 CAMBIO DE COLA/(3850:3858): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 22:53:42:369 ERROR EN COMUNICACION/(3909:3909): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:53:42:369 CAMBIO DE COLA/(3909:3914): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:53:44:369 MOVIMIENTO DE ENTRENADOR/(3909:3914): entrenador 0: se movio a (0,0)
+[INFO] 22:53:44:370 OPERACION ATRAPAR/(3909:3914): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 22:53:44:370 CAMBIO DE COLA/(3909:3914): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 22:53:44:370 CAMBIO DE COLA/(3909:3916): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:53:46:371 MOVIMIENTO DE ENTRENADOR/(3909:3916): entrenador 2: se movio a (6,7)
+[INFO] 22:53:46:371 OPERACION ATRAPAR/(3909:3916): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 22:53:46:371 CAMBIO DE COLA/(3909:3916): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 22:53:46:372 CAMBIO DE COLA/(3909:3915): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:53:48:372 MOVIMIENTO DE ENTRENADOR/(3909:3915): entrenador 1: se movio a (8,3)
+[INFO] 22:53:48:372 OPERACION ATRAPAR/(3909:3915): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 22:53:48:372 CAMBIO DE COLA/(3909:3915): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 22:53:48:373 CAMBIO DE COLA/(3909:3914): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:53:48:373 CAMBIO DE COLA/(3909:3914): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 22:53:48:373 CAMBIO DE COLA/(3909:3916): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:53:48:373 CAMBIO DE COLA/(3909:3916): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 22:53:48:379 CAMBIO DE COLA/(3909:3915): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:53:48:379 CAMBIO DE COLA/(3909:3915): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 22:53:48:379 CAMBIO DE COLA/(3909:3915): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:53:50:380 MOVIMIENTO DE ENTRENADOR/(3909:3915): entrenador 1: se movio a (0,0)
+[INFO] 22:53:50:382 OPERACION ATRAPAR/(3909:3915): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 22:53:50:382 CAMBIO DE COLA/(3909:3915): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 22:53:50:382 CAMBIO DE COLA/(3909:3915): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 22:53:50:383 CAMBIO DE COLA/(3909:3915): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 23:25:36:13 ERROR EN COMUNICACION/(4356:4356): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:25:37:90 CAMBIO DE COLA/(4356:4361): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:25:39:92 MOVIMIENTO DE ENTRENADOR/(4356:4361): entrenador 0: se movio a (0,0)
+[INFO] 23:25:39:92 OPERACION ATRAPAR/(4356:4361): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 23:25:39:93 CAMBIO DE COLA/(4356:4361): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 23:25:39:93 CAMBIO DE COLA/(4356:4363): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:25:41:93 MOVIMIENTO DE ENTRENADOR/(4356:4363): entrenador 2: se movio a (6,7)
+[INFO] 23:25:41:93 OPERACION ATRAPAR/(4356:4363): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 23:25:41:93 CAMBIO DE COLA/(4356:4363): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 23:25:41:93 CAMBIO DE COLA/(4356:4361): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:25:41:93 CAMBIO DE COLA/(4356:4361): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 23:25:41:95 CAMBIO DE COLA/(4356:4363): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:25:41:95 CAMBIO DE COLA/(4356:4363): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 23:26:19:328 ERROR EN COMUNICACION/(4410:4410): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:26:19:328 CAMBIO DE COLA/(4410:4415): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:26:21:329 MOVIMIENTO DE ENTRENADOR/(4410:4415): entrenador 0: se movio a (0,0)
+[INFO] 23:26:21:329 OPERACION ATRAPAR/(4410:4415): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 23:26:21:329 CAMBIO DE COLA/(4410:4415): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 23:26:21:329 CAMBIO DE COLA/(4410:4417): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:26:23:330 MOVIMIENTO DE ENTRENADOR/(4410:4417): entrenador 2: se movio a (6,7)
+[INFO] 23:26:23:330 OPERACION ATRAPAR/(4410:4417): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 23:26:23:330 CAMBIO DE COLA/(4410:4417): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 23:26:23:330 CAMBIO DE COLA/(4410:4415): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:26:23:331 CAMBIO DE COLA/(4410:4415): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 23:26:23:335 CAMBIO DE COLA/(4410:4417): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:26:23:335 CAMBIO DE COLA/(4410:4417): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 23:27:46:690 ERROR EN COMUNICACION/(4471:4471): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:27:46:691 CAMBIO DE COLA/(4471:4476): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:27:48:692 MOVIMIENTO DE ENTRENADOR/(4471:4476): entrenador 0: se movio a (0,0)
+[INFO] 23:27:48:692 OPERACION ATRAPAR/(4471:4476): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 23:27:48:692 CAMBIO DE COLA/(4471:4476): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 23:27:48:692 CAMBIO DE COLA/(4471:4478): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:27:50:692 MOVIMIENTO DE ENTRENADOR/(4471:4478): entrenador 2: se movio a (6,7)
+[INFO] 23:27:50:693 OPERACION ATRAPAR/(4471:4478): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 23:27:50:693 CAMBIO DE COLA/(4471:4478): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 23:27:50:693 CAMBIO DE COLA/(4471:4476): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:27:50:693 CAMBIO DE COLA/(4471:4476): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 23:27:50:694 CAMBIO DE COLA/(4471:4478): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:27:50:695 CAMBIO DE COLA/(4471:4478): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 23:27:52:696 MOVIMIENTO DE ENTRENADOR/(4471:4479): entrenador 0: se movio a (6,7)
+[INFO] 23:27:57:697 CAMBIO DE COLA/(4471:4479): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 23:27:57:697 CAMBIO DE COLA/(4471:4479): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 00:42:47:400 ERROR EN COMUNICACION/(5716:5716): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 00:42:47:425 CAMBIO DE COLA/(5716:5721): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:42:49:426 MOVIMIENTO DE ENTRENADOR/(5716:5721): entrenador 0: se movio a (0,0)
+[INFO] 00:42:49:426 OPERACION ATRAPAR/(5716:5721): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 00:42:49:426 CAMBIO DE COLA/(5716:5721): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 00:42:49:427 CAMBIO DE COLA/(5716:5723): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:42:51:427 MOVIMIENTO DE ENTRENADOR/(5716:5723): entrenador 2: se movio a (6,7)
+[INFO] 00:42:51:428 OPERACION ATRAPAR/(5716:5723): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 00:42:51:428 CAMBIO DE COLA/(5716:5723): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 00:42:51:428 CAMBIO DE COLA/(5716:5722): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:42:53:428 MOVIMIENTO DE ENTRENADOR/(5716:5722): entrenador 1: se movio a (8,3)
+[INFO] 00:42:53:429 OPERACION ATRAPAR/(5716:5722): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 00:42:53:429 CAMBIO DE COLA/(5716:5722): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 00:42:53:429 CAMBIO DE COLA/(5716:5721): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:42:53:429 CAMBIO DE COLA/(5716:5721): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 00:42:53:429 CAMBIO DE COLA/(5716:5723): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:42:53:429 CAMBIO DE COLA/(5716:5723): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 00:42:53:430 CAMBIO DE COLA/(5716:5722): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:42:53:430 CAMBIO DE COLA/(5716:5722): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 00:42:55:430 MOVIMIENTO DE ENTRENADOR/(5716:5724): entrenador 0: se movio a (6,7)
+[INFO] 00:43:00:431 CAMBIO DE COLA/(5716:5724): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 00:43:00:431 CAMBIO DE COLA/(5716:5724): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 00:45:20:955 ERROR EN COMUNICACION/(5777:5777): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 00:45:20:966 CAMBIO DE COLA/(5777:5782): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:45:22:970 MOVIMIENTO DE ENTRENADOR/(5777:5782): entrenador 0: se movio a (0,0)
+[INFO] 00:45:22:971 OPERACION ATRAPAR/(5777:5782): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 00:45:22:971 CAMBIO DE COLA/(5777:5782): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 00:45:22:971 CAMBIO DE COLA/(5777:5784): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:45:24:971 MOVIMIENTO DE ENTRENADOR/(5777:5784): entrenador 2: se movio a (6,7)
+[INFO] 00:45:24:972 OPERACION ATRAPAR/(5777:5784): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 00:45:24:972 CAMBIO DE COLA/(5777:5784): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 00:45:24:972 CAMBIO DE COLA/(5777:5783): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:45:26:972 MOVIMIENTO DE ENTRENADOR/(5777:5783): entrenador 1: se movio a (8,3)
+[INFO] 00:45:26:972 OPERACION ATRAPAR/(5777:5783): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5783): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5782): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5782): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5784): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5784): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5783): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:45:26:972 CAMBIO DE COLA/(5777:5783): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 00:45:28:972 MOVIMIENTO DE ENTRENADOR/(5777:5785): entrenador 0: se movio a (6,7)
+[INFO] 00:45:33:973 CAMBIO DE COLA/(5777:5785): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 00:45:33:974 CAMBIO DE COLA/(5777:5785): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 00:47:04:852 ERROR EN COMUNICACION/(5840:5840): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 00:48:24:751 CAMBIO DE COLA/(5840:5850): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:48:26:751 MOVIMIENTO DE ENTRENADOR/(5840:5850): entrenador 0: se movio a (0,0)
+[INFO] 00:48:26:752 OPERACION ATRAPAR/(5840:5850): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 00:48:26:752 CAMBIO DE COLA/(5840:5850): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 00:48:32:15 CAMBIO DE COLA/(5840:5852): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:48:34:16 MOVIMIENTO DE ENTRENADOR/(5840:5852): entrenador 2: se movio a (6,7)
+[INFO] 00:48:34:16 OPERACION ATRAPAR/(5840:5852): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 00:48:34:16 CAMBIO DE COLA/(5840:5852): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 00:48:36:744 CAMBIO DE COLA/(5840:5851): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:48:38:745 MOVIMIENTO DE ENTRENADOR/(5840:5851): entrenador 1: se movio a (8,3)
+[INFO] 00:48:38:746 OPERACION ATRAPAR/(5840:5851): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 00:48:38:746 CAMBIO DE COLA/(5840:5851): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 00:48:42:983 CAMBIO DE COLA/(5840:5850): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:48:42:984 CAMBIO DE COLA/(5840:5850): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 00:48:44:1 CAMBIO DE COLA/(5840:5852): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:48:44:1 CAMBIO DE COLA/(5840:5852): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 00:48:46:374 CAMBIO DE COLA/(5840:5851): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:48:46:375 CAMBIO DE COLA/(5840:5851): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 00:49:01:233 MOVIMIENTO DE ENTRENADOR/(5840:5853): entrenador 0: se movio a (6,7)
+[INFO] 00:49:06:233 CAMBIO DE COLA/(5840:5853): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 00:49:06:235 CAMBIO DE COLA/(5840:5853): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 00:53:43:132 ERROR EN COMUNICACION/(6016:6016): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 00:54:14:60 CAMBIO DE COLA/(6016:6031): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:54:16:62 MOVIMIENTO DE ENTRENADOR/(6016:6031): entrenador 0: se movio a (0,0)
+[INFO] 00:54:16:64 OPERACION ATRAPAR/(6016:6031): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 00:54:16:65 CAMBIO DE COLA/(6016:6031): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 00:54:21:443 CAMBIO DE COLA/(6016:6033): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:54:23:444 MOVIMIENTO DE ENTRENADOR/(6016:6033): entrenador 2: se movio a (6,7)
+[INFO] 00:54:23:444 OPERACION ATRAPAR/(6016:6033): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 00:54:23:444 CAMBIO DE COLA/(6016:6033): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 00:54:27:586 CAMBIO DE COLA/(6016:6032): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:54:29:586 MOVIMIENTO DE ENTRENADOR/(6016:6032): entrenador 1: se movio a (8,3)
+[INFO] 00:54:29:586 OPERACION ATRAPAR/(6016:6032): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 00:54:29:586 CAMBIO DE COLA/(6016:6032): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 00:54:35:589 CAMBIO DE COLA/(6016:6031): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 00:54:35:590 CAMBIO DE COLA/(6016:6031): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 00:54:37:862 CAMBIO DE COLA/(6016:6033): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 00:54:37:862 CAMBIO DE COLA/(6016:6033): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 00:54:39:620 CAMBIO DE COLA/(6016:6032): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 00:54:39:620 CAMBIO DE COLA/(6016:6032): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 00:54:47:464 MOVIMIENTO DE ENTRENADOR/(6016:6034): entrenador 0: se movio a (6,7)
+[INFO] 00:54:52:465 CAMBIO DE COLA/(6016:6034): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 00:54:52:466 CAMBIO DE COLA/(6016:6034): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:01:38:857 ERROR EN COMUNICACION/(6217:6217): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 01:01:38:927 CAMBIO DE COLA/(6217:6222): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:01:40:927 MOVIMIENTO DE ENTRENADOR/(6217:6222): entrenador 0: se movio a (0,0)
+[INFO] 01:01:40:928 OPERACION ATRAPAR/(6217:6222): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 01:01:40:929 CAMBIO DE COLA/(6217:6222): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 01:01:40:929 CAMBIO DE COLA/(6217:6224): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:01:42:929 MOVIMIENTO DE ENTRENADOR/(6217:6224): entrenador 2: se movio a (6,7)
+[INFO] 01:01:42:929 OPERACION ATRAPAR/(6217:6224): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 01:01:42:929 CAMBIO DE COLA/(6217:6224): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 01:01:42:930 CAMBIO DE COLA/(6217:6223): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:01:44:930 MOVIMIENTO DE ENTRENADOR/(6217:6223): entrenador 1: se movio a (8,3)
+[INFO] 01:01:44:931 OPERACION ATRAPAR/(6217:6223): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 01:01:44:931 CAMBIO DE COLA/(6217:6223): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:01:44:931 CAMBIO DE COLA/(6217:6222): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:01:44:931 CAMBIO DE COLA/(6217:6222): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 01:01:44:932 CAMBIO DE COLA/(6217:6224): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:01:44:932 CAMBIO DE COLA/(6217:6224): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 01:01:44:932 CAMBIO DE COLA/(6217:6223): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:01:44:933 CAMBIO DE COLA/(6217:6223): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 01:01:46:933 MOVIMIENTO DE ENTRENADOR/(6217:6225): entrenador 0: se movio a (6,7)
+[INFO] 01:01:51:934 CAMBIO DE COLA/(6217:6225): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 01:01:51:935 CAMBIO DE COLA/(6217:6225): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:02:44:892 ERROR EN COMUNICACION/(6284:6284): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 01:02:48:641 CAMBIO DE COLA/(6284:6293): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:02:50:641 MOVIMIENTO DE ENTRENADOR/(6284:6293): entrenador 0: se movio a (0,0)
+[INFO] 01:02:50:642 OPERACION ATRAPAR/(6284:6293): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 01:02:50:642 CAMBIO DE COLA/(6284:6293): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 01:02:54:69 CAMBIO DE COLA/(6284:6295): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:02:56:70 MOVIMIENTO DE ENTRENADOR/(6284:6295): entrenador 2: se movio a (6,7)
+[INFO] 01:02:56:70 OPERACION ATRAPAR/(6284:6295): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 01:02:56:70 CAMBIO DE COLA/(6284:6295): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 01:02:57:331 CAMBIO DE COLA/(6284:6294): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:02:59:332 MOVIMIENTO DE ENTRENADOR/(6284:6294): entrenador 1: se movio a (8,3)
+[INFO] 01:02:59:333 OPERACION ATRAPAR/(6284:6294): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 01:02:59:333 CAMBIO DE COLA/(6284:6294): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:03:02:235 CAMBIO DE COLA/(6284:6293): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:03:02:235 CAMBIO DE COLA/(6284:6293): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 01:03:03:571 CAMBIO DE COLA/(6284:6295): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:03:03:571 CAMBIO DE COLA/(6284:6295): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 01:03:05:81 CAMBIO DE COLA/(6284:6294): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:03:05:82 CAMBIO DE COLA/(6284:6294): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 01:03:12:998 MOVIMIENTO DE ENTRENADOR/(6284:6296): entrenador 0: se movio a (6,7)
+[INFO] 01:03:17:999 CAMBIO DE COLA/(6284:6296): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 01:03:17:1 CAMBIO DE COLA/(6284:6296): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:04:07:68 ERROR EN COMUNICACION/(6375:6375): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 01:04:08:110 CAMBIO DE COLA/(6375:6380): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:04:10:110 MOVIMIENTO DE ENTRENADOR/(6375:6380): entrenador 0: se movio a (0,0)
+[INFO] 01:04:10:111 OPERACION ATRAPAR/(6375:6380): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 01:04:10:111 CAMBIO DE COLA/(6375:6380): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 01:04:10:111 CAMBIO DE COLA/(6375:6382): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:04:12:111 MOVIMIENTO DE ENTRENADOR/(6375:6382): entrenador 2: se movio a (6,7)
+[INFO] 01:04:12:112 OPERACION ATRAPAR/(6375:6382): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 01:04:12:112 CAMBIO DE COLA/(6375:6382): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 01:04:12:112 CAMBIO DE COLA/(6375:6381): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:04:14:112 MOVIMIENTO DE ENTRENADOR/(6375:6381): entrenador 1: se movio a (8,3)
+[INFO] 01:04:14:112 OPERACION ATRAPAR/(6375:6381): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6381): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6380): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6380): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6382): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6382): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6381): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:04:14:113 CAMBIO DE COLA/(6375:6381): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 01:04:16:113 MOVIMIENTO DE ENTRENADOR/(6375:6383): entrenador 0: se movio a (6,7)
+[INFO] 01:04:21:114 CAMBIO DE COLA/(6375:6383): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 01:04:21:115 CAMBIO DE COLA/(6375:6383): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:04:21:115 CAMBIO DE COLA/(6375:6381): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:04:23:122 MOVIMIENTO DE ENTRENADOR/(6375:6381): entrenador 1: se movio a (0,0)
+[INFO] 01:04:23:123 OPERACION ATRAPAR/(6375:6381): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 01:04:23:123 CAMBIO DE COLA/(6375:6381): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:04:23:123 CAMBIO DE COLA/(6375:6381): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:04:23:123 CAMBIO DE COLA/(6375:6381): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 01:05:14:587 ERROR EN COMUNICACION/(6424:6424): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 01:05:14:600 CAMBIO DE COLA/(6424:6429): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:05:16:601 MOVIMIENTO DE ENTRENADOR/(6424:6429): entrenador 0: se movio a (0,0)
+[INFO] 01:05:16:602 OPERACION ATRAPAR/(6424:6429): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 01:05:16:602 CAMBIO DE COLA/(6424:6429): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 01:05:16:602 CAMBIO DE COLA/(6424:6431): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:05:18:602 MOVIMIENTO DE ENTRENADOR/(6424:6431): entrenador 2: se movio a (6,7)
+[INFO] 01:05:18:603 OPERACION ATRAPAR/(6424:6431): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 01:05:18:603 CAMBIO DE COLA/(6424:6431): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 01:05:18:603 CAMBIO DE COLA/(6424:6430): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:05:20:603 MOVIMIENTO DE ENTRENADOR/(6424:6430): entrenador 1: se movio a (8,3)
+[INFO] 01:05:20:604 OPERACION ATRAPAR/(6424:6430): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 01:05:20:604 CAMBIO DE COLA/(6424:6430): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:05:20:604 CAMBIO DE COLA/(6424:6429): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:05:20:604 CAMBIO DE COLA/(6424:6429): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 01:05:20:604 CAMBIO DE COLA/(6424:6431): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:05:20:604 CAMBIO DE COLA/(6424:6431): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 01:05:20:604 CAMBIO DE COLA/(6424:6430): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:05:20:605 CAMBIO DE COLA/(6424:6430): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 01:05:22:605 MOVIMIENTO DE ENTRENADOR/(6424:6432): entrenador 0: se movio a (6,7)
+[INFO] 01:05:27:606 CAMBIO DE COLA/(6424:6432): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 01:05:27:606 CAMBIO DE COLA/(6424:6432): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:05:27:606 CAMBIO DE COLA/(6424:6430): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:05:29:609 MOVIMIENTO DE ENTRENADOR/(6424:6430): entrenador 1: se movio a (0,0)
+[INFO] 01:05:29:609 OPERACION ATRAPAR/(6424:6430): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 01:05:29:609 CAMBIO DE COLA/(6424:6430): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:05:29:609 CAMBIO DE COLA/(6424:6430): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:05:29:609 CAMBIO DE COLA/(6424:6430): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 01:11:45:977 ERROR EN COMUNICACION/(6638:6638): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 01:11:46:15 CAMBIO DE COLA/(6638:6643): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:11:48:16 MOVIMIENTO DE ENTRENADOR/(6638:6643): entrenador 0: se movio a (0,0)
+[INFO] 01:11:48:16 OPERACION ATRAPAR/(6638:6643): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 01:11:48:16 CAMBIO DE COLA/(6638:6643): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 01:11:48:16 CAMBIO DE COLA/(6638:6645): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:11:50:17 MOVIMIENTO DE ENTRENADOR/(6638:6645): entrenador 2: se movio a (6,7)
+[INFO] 01:11:50:17 OPERACION ATRAPAR/(6638:6645): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 01:11:50:17 CAMBIO DE COLA/(6638:6645): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 01:11:50:17 CAMBIO DE COLA/(6638:6644): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:11:52:17 MOVIMIENTO DE ENTRENADOR/(6638:6644): entrenador 1: se movio a (8,3)
+[INFO] 01:11:52:18 OPERACION ATRAPAR/(6638:6644): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6644): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6643): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6643): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6645): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6645): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6644): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:11:52:18 CAMBIO DE COLA/(6638:6644): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 01:11:54:18 MOVIMIENTO DE ENTRENADOR/(6638:6646): entrenador 0: se movio a (6,7)
+[INFO] 01:11:59:19 CAMBIO DE COLA/(6638:6646): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 01:11:59:19 CAMBIO DE COLA/(6638:6646): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:11:59:19 CAMBIO DE COLA/(6638:6644): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:12:01:22 MOVIMIENTO DE ENTRENADOR/(6638:6644): entrenador 1: se movio a (0,0)
+[INFO] 01:12:01:22 OPERACION ATRAPAR/(6638:6644): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 01:12:01:22 CAMBIO DE COLA/(6638:6644): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:12:01:22 CAMBIO DE COLA/(6638:6644): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:12:01:22 CAMBIO DE COLA/(6638:6644): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 01:17:53:534 ERROR EN COMUNICACION/(6776:6776): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 01:17:53:564 CAMBIO DE COLA/(6776:6784): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:17:55:564 MOVIMIENTO DE ENTRENADOR/(6776:6784): entrenador 0: se movio a (0,0)
+[INFO] 01:17:55:565 OPERACION ATRAPAR/(6776:6784): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 01:17:55:565 CAMBIO DE COLA/(6776:6784): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 01:17:55:565 CAMBIO DE COLA/(6776:6786): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:17:57:566 MOVIMIENTO DE ENTRENADOR/(6776:6786): entrenador 2: se movio a (6,7)
+[INFO] 01:17:57:566 OPERACION ATRAPAR/(6776:6786): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 01:17:57:566 CAMBIO DE COLA/(6776:6786): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 01:17:57:566 CAMBIO DE COLA/(6776:6785): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:17:59:566 MOVIMIENTO DE ENTRENADOR/(6776:6785): entrenador 1: se movio a (8,3)
+[INFO] 01:17:59:567 OPERACION ATRAPAR/(6776:6785): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6785): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6784): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6784): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6786): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6786): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6785): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:17:59:567 CAMBIO DE COLA/(6776:6785): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 01:18:01:567 MOVIMIENTO DE ENTRENADOR/(6776:6787): entrenador 0: se movio a (6,7)
+[INFO] 01:18:06:568 CAMBIO DE COLA/(6776:6787): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 01:18:06:568 CAMBIO DE COLA/(6776:6787): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 01:18:06:568 CAMBIO DE COLA/(6776:6785): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:18:08:570 MOVIMIENTO DE ENTRENADOR/(6776:6785): entrenador 1: se movio a (0,0)
+[INFO] 01:18:08:571 OPERACION ATRAPAR/(6776:6785): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 01:18:08:571 CAMBIO DE COLA/(6776:6785): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 01:18:08:571 CAMBIO DE COLA/(6776:6785): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 01:18:08:571 CAMBIO DE COLA/(6776:6785): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 15:43:04:482 ERROR EN COMUNICACION/(4064:4064): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:43:04:536 CAMBIO DE COLA/(4064:4070): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:43:06:538 MOVIMIENTO DE ENTRENADOR/(4064:4070): entrenador 0: se movio a (0,0)
+[INFO] 15:43:06:539 OPERACION ATRAPAR/(4064:4070): ATRAPAR POKEMON: Squirtle con posicion (0, 0)
+[INFO] 15:43:06:539 CAMBIO DE COLA/(4064:4070): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 15:43:06:541 CAMBIO DE COLA/(4064:4072): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 15:43:08:541 MOVIMIENTO DE ENTRENADOR/(4064:4072): entrenador 2: se movio a (6,7)
+[INFO] 15:43:08:541 OPERACION ATRAPAR/(4064:4072): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 15:43:08:541 CAMBIO DE COLA/(4064:4072): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 15:43:08:541 CAMBIO DE COLA/(4064:4071): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:43:10:542 MOVIMIENTO DE ENTRENADOR/(4064:4071): entrenador 1: se movio a (8,3)
+[INFO] 15:43:10:542 OPERACION ATRAPAR/(4064:4071): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4071): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4070): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4070): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4072): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4072): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4071): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:43:10:542 CAMBIO DE COLA/(4064:4071): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 15:43:12:542 MOVIMIENTO DE ENTRENADOR/(4064:4073): entrenador 0: se movio a (6,7)
+[INFO] 15:43:17:544 CAMBIO DE COLA/(4064:4073): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 15:43:17:544 CAMBIO DE COLA/(4064:4073): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 15:43:17:544 CAMBIO DE COLA/(4064:4071): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:43:19:550 MOVIMIENTO DE ENTRENADOR/(4064:4071): entrenador 1: se movio a (0,0)
+[INFO] 15:43:19:550 OPERACION ATRAPAR/(4064:4071): ATRAPAR POKEMON: Charmander con posicion (0, 0)
+[INFO] 15:43:19:550 CAMBIO DE COLA/(4064:4071): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 15:43:19:551 CAMBIO DE COLA/(4064:4071): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:43:19:551 CAMBIO DE COLA/(4064:4071): cambio a EXIT de entrenador: 1 
+ 

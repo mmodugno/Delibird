@@ -402,8 +402,11 @@ sem_post(&(entrenador_exec->sem_entrenador));
 
 }
 
+
 while(hay_deadlock()){
+	sem_wait(&en_ejecucion);
 	manejar_deadlock();
+	sem_post(&en_ejecucion);
 }
 
 }
@@ -414,31 +417,37 @@ while(hay_deadlock()){
 void manejar_deadlock(void){
 
 	for(int i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
-	entrenador* entrenador0 = list_get(entrenadores_en_deadlock,i);
-	entrenador* entrenador1 = list_get(entrenadores_en_deadlock,i+1);
+		for(int j = 1; j < (list_size(entrenadores_en_deadlock)); j++){
+			entrenador* entrenador0 = list_get(entrenadores_en_deadlock,i); // otro for para comparar con el resto
+			entrenador* entrenador1 = list_get(entrenadores_en_deadlock,j);
 
-	nombre_pokemon = list_get(entrenador0->objetivos,0);
+			nombre_pokemon = list_get(entrenador0->objetivos,0);
 
-	//Si algun pokemon del 1 es el que 0 necesita y viceversa, se planifican:
-	if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
+			//Si algun pokemon del 1 es el que 0 necesita y viceversa, se planifican:
+			if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
 
-		nombre_pokemon = list_get(entrenador1->objetivos,0);
+				nombre_pokemon = list_get(entrenador1->objetivos,0);
 
-		if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
-			planificar_deadlock(entrenador0,entrenador1);
-			break;
-		}
-		printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
+				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
+					planificar_deadlock(entrenador0,entrenador1);
 
+
+					break;
+				}
+				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
+
+			}
 	}
-
 }
 }
 //TODO
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	printf("\n Inicio operacion de deadlock \n ");
 
+
 	entrenador_exec = entrenador0;
+	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
+
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
 	//int retardo = leer_retardo_cpu() * 5;
 	sleep(5); //IRIA sleep(retardo)
