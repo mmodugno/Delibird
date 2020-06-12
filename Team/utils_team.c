@@ -170,12 +170,12 @@ void hacer_entrenadores(void){
  }
 
 
- pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY){
+ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio){
 	 pokemon* poke = malloc(sizeof(pokemon));
 	 poke->nombre = nombre;
 	 poke->posX = posX;
 	 poke->posY = posY;
-	 poke->tamanio_nombre = sizeof(nombre);
+	 poke->tamanio_nombre = tamanio;
 	 return poke;
  }//tenemos que poner un free
 
@@ -761,7 +761,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de %s:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n",username, appearedRecibido->datos->tamanioNombre, appearedRecibido->datos->nombrePokemon, appearedRecibido->datos->posX, appearedRecibido->datos->posY);
 
-			//printf("recibi mensaje appeared pokemon:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n", appearedRecibido->datos->tamanioNombre, appearedRecibido->datos->nombrePokemon, appearedRecibido->datos->posX, appearedRecibido->datos->posY);
+			pokemon* nuevoPoke = hacer_pokemon(appearedRecibido->datos->nombrePokemon,appearedRecibido->datos->posX,appearedRecibido->datos->posY,appearedRecibido->datos->tamanioNombre);
+
+			aparece_nuevo_pokemon(nuevoPoke);
+
+			printf("nombre poke: %s",nuevoPoke->nombre);
 
 			free(appearedRecibido);
 			break;

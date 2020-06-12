@@ -154,7 +154,7 @@ void printear_lista_entrenadores(t_list* lista);
 void bloquear_entrenador(entrenador* un_entrenador);
 
 //POKEMON
-pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY);
+pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio);
 void aparece_nuevo_pokemon(pokemon* poke);
 bool es_de_especie(char* nombre_poke);
 void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones);

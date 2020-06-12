@@ -48,12 +48,13 @@ typedef struct {
 	t_queue* suscriptoresQueRespondieron;
 } broker_get_pokemon;
 
+/*
 typedef struct{
 	uint32_t id;
 	localize_pokemon* datos;
 	t_queue suscriptoresQueRespondieron;
 }broker_localized_pokemon;
-
+*/
 
 broker_get_pokemon* deserializar_get_pokemon(int socket_cliente);
 broker_new_pokemon* deserializar_new_pokemon(int socket_cliente);

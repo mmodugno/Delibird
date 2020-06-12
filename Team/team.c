@@ -44,14 +44,14 @@ printf(" Arrancando \n \n");
 	conectarse_con_broker();
 
 
-	//iniciar_servidor();
+	iniciar_servidor();
 
 
 
  	pthread_t hilo_principal;
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
-
+/*
 	pokemon* squirte = hacer_pokemon("Squirtle", 0,0);
 	aparece_nuevo_pokemon(squirte);
 
@@ -68,7 +68,7 @@ printf(" Arrancando \n \n");
 
 
 
-
+*/
 
 
 

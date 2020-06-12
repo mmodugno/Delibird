@@ -2409,3 +2409,67 @@
  
 [INFO] 15:43:19:551 CAMBIO DE COLA/(4064:4071): cambio a EXIT de entrenador: 1 
  
+[INFO] 16:08:07:588 ERROR EN COMUNICACION/(5589:5589): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:09:51:57 NUEVO MENSAJE/(5589:5679): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:13:49:232 NUEVO MENSAJE/(5589:5853): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:14:09:772 ERROR EN COMUNICACION/(5886:5886): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:14:16:437 NUEVO MENSAJE/(5886:5932): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:15:02:584 NUEVO MENSAJE/(5886:5985): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:16:41:845 ERROR EN COMUNICACION/(6052:6052): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:16:46:190 NUEVO MENSAJE/(6052:6096): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:18:44:516 ERROR EN COMUNICACION/(6193:6193): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:19:36:9 NUEVO MENSAJE/(6052:10127): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:20:45:255 ERROR EN COMUNICACION/(12277:12277): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:23:13:31 ERROR EN COMUNICACION/(12437:12437): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:23:49:137 ERROR EN COMUNICACION/(12574:12574): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:24:19:982 ERROR EN COMUNICACION/(12687:12687): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:24:35:876 NUEVO MENSAJE/(12687:12737): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:30:05:906 ERROR EN COMUNICACION/(12943:12943): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:30:12:786 NUEVO MENSAJE/(12943:12990): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 12 
+ posY: 2 
+
+[INFO] 16:32:44:218 ERROR EN COMUNICACION/(13098:13098): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:33:27:572 NUEVO MENSAJE/(12943:16576): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 12 
+ posY: 2 
+
