@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
 	comunicacion_broker_reintento = iniciar_log("REINTENTO DE COMUNICACION");
 	comunicacion_broker_resultado = iniciar_log("RESULTADO DE COMUNICACION");
 
-printf(" Arrancando \n \n");
+	printf(" Arrancando \n \n");
 
 	sem_init(&hay_entrenador,0,0);
 	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
@@ -43,13 +43,15 @@ printf(" Arrancando \n \n");
 
 	conectarse_con_broker();
 
+	pthread_t hilo_principal;
+	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
+
 
 	iniciar_servidor();
 
 
 
- 	pthread_t hilo_principal;
-	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
+
 
 /*
 	pokemon* squirte = hacer_pokemon("Squirtle", 0,0);
