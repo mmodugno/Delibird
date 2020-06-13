@@ -31,7 +31,7 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 	memcpy(stream_a_enviar+offset,paquete->username,paquete->tamanio_username);
 	offset+=paquete->tamanio_username;
 
-	memcpy(stream_a_enviar+offset,&(paquete->buffer->size),sizeof(int));
+	memcpy(stream_a_enviar+offset,&(paquete->buffer->size),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
 	memcpy(stream_a_enviar+offset,(paquete->buffer->stream),paquete->buffer->size);

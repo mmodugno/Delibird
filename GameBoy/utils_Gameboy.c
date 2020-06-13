@@ -205,6 +205,7 @@ void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon,cha
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = TEAM__APPEARED_POKEMON;
 	paquete_a_enviar->tamanio_username =strlen(username)+1;
+	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = username;
 
 	//serializacion de teamNewPokemon
@@ -215,7 +216,7 @@ void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon,cha
 
 	int tamanio_buffer=0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	void * bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
 	send(socket_cliente,bufferStream,tamanio_buffer,0);
 
 

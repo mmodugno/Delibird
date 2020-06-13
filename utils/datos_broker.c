@@ -171,6 +171,7 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 	memcpy(buffer->stream+offset,&(brokerNewPokemon->datos->cantidadPokemon),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
+
 }
 
 void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer)

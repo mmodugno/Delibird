@@ -12,7 +12,7 @@
 void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon, t_buffer* buffer)
 {
 
-	//1. uint32_t tamanioNombre;
+	//3. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;
 	//3. uint32_t posX;
 	//4. uint32_t posY;
@@ -40,6 +40,8 @@ void serializar_team_appeared_pokemon(team_appeared_pokemon* teamAppearedPokemon
 
 team_appeared_pokemon* deserializar_team_appeared_pokemon(int socket_cliente){
 
+	//1. uint32_t tamanioUsername;
+	//2. char* nombreUser;
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;
 	//3. uint32_t posX;
