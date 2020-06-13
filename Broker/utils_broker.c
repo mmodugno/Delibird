@@ -18,20 +18,20 @@ void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLib
 	uint32_t posibleLimite;
 
 	while(list_is_empty(listaPosicionesLibres) != 0) {   //
-	    pLibre->base = list_get(listaPosicionesLibres,0);
+	    pLibre->base = (uint32_t) list_get(listaPosicionesLibres,0);
 
 	    list_remove(listaPosicionesLibres,0); //elimina primer elemento lista
 	   // 5 6
-	    posibleLimite = list_get(listaPosicionesLibres,0);
+	    posibleLimite = (uint32_t)list_get(listaPosicionesLibres,0);
 	    if(posibleLimite != (pLibre->base+1)) {
 	        posibleLimite = pLibre->base;
 	    } else {
 			uint32_t i = 1;
-			uint32_t next = list_get(listaPosicionesLibres, i);
+			uint32_t next =(uint32_t) list_get(listaPosicionesLibres, i);
 			//*** ver si con un for se soluciona
 
 			for (i = 0; i < list_size(listaPosicionesLibres); i++) {
-				next = list_get(listaPosicionesLibres,i+1);
+				next =(uint32_t) list_get(listaPosicionesLibres,i+1);
 				if (posibleLimite+1 == next) {
 					posibleLimite = next;
 				}
@@ -75,7 +75,7 @@ void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
 
 	    if(strcmp(prueba,"\0") == 0){
 	        /*listaPosicionesLibres.add(posicion)*/
-	    	list_add(listaPosicionesLibres,i);
+	    	list_add(listaPosicionesLibres,(uint32_t)i);
 	        //printf("posicion libre en: %d \n",posicion);
 	    }
 	}
@@ -441,12 +441,12 @@ void process_request(int cod_op, int cliente_fd) {
 			brokerGP  = NULL;
 			brokerLP  = NULL;
 
-			brokerNP  = list_find(colaNewPokemon, buscarIdNew);
-			brokerAP  = list_find(colaAppearedPokemon, buscarIdAppeared);
-			brokerCTP = list_find(colaCatchPokemon, buscarIdCatch);
-			brokerCAP = list_find(colaCaughtPokemon, buscarIdCaught);
-			brokerGP  = list_find(colaGetPokemon, buscarIdGet);
-			brokerLP  = list_find(colaLocalizedPokemon, buscarIdLocalized);
+			brokerNP  = (broker_new_pokemon*)list_find(colaNewPokemon, buscarIdNew);
+			brokerAP  = (broker_appeared_pokemon*)list_find(colaAppearedPokemon, buscarIdAppeared);
+			brokerCTP = (broker_catch_pokemon*)list_find(colaCatchPokemon, buscarIdCatch);
+			brokerCAP = (broker_caught_pokemon*)list_find(colaCaughtPokemon, buscarIdCaught);
+			brokerGP  = (broker_get_pokemon*)list_find(colaGetPokemon, buscarIdGet);
+			brokerLP  = (broker_localized_pokemon*)list_find(colaLocalizedPokemon, buscarIdLocalized);
 
 			if(brokerNP != NULL){
 				queue_push(brokerNP->suscriptoresQueRespondieron, username);
@@ -553,7 +553,7 @@ void agregarAMemoria(void * dato, uint32_t idMensaje){
 		algoritmoFirstFit(datoAAgregar,&desplazamiento,particionEncontrada);
 	}
 	if(!strcmp(algoritmo_particion_libre,"BF")){
-		algoritmoBestFit(dato,idMensaje);
+		algoritmoBestFit(datoAAgregar,particionMasChica);
 	}
 
 	free(datoAAgregar);

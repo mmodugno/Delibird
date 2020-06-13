@@ -112,5 +112,7 @@ void devolver_mensaje(void* payload, int size, int socket_cliente);
 void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
 void suscribirACola(suscriptor* suscriptor);
 particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje);
+void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada);
+void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
 
 #endif /* UTILS_BROKER_H_ */

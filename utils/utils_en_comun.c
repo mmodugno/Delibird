@@ -45,7 +45,7 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 
 //TODO
 
-void* enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){
+void enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){
 	// Conectar al broker usando el socketDeBroker
 	// Hago un paquete como el pedido suscripcion
 	//
@@ -57,7 +57,7 @@ void* enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){
 
 	t_buffer *buffer = malloc(sizeof(t_buffer));
 	buffer->size = sizeof(uint32_t);
-	memcpy(buffer->stream, acknowledgedID, sizeof(uint32_t));
+	memcpy(buffer->stream, &acknowledgedID, sizeof(uint32_t));
 	paquete_a_enviar->buffer = buffer;
 	int tamanioBuffer = 0;
 	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanioBuffer);
