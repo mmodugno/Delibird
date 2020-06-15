@@ -264,7 +264,7 @@ int main(int argc, char* argv[]){
 
 	}
 
-	//TODO
+	//TODO recv con timeout
 	//Ver el tipo de dato y la funcion enviar
 	if(!strcmp(argv[1],"SUSCRIPTOR")){
 		conexionBroker = crear_conexion(ipBroker,puertoBroker);

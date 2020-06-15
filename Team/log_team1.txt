@@ -2473,3 +2473,60 @@
  posX: 12 
  posY: 2 
 
+[INFO] 16:32:18:958 ERROR EN COMUNICACION/(9845:9845): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:32:59:775 NUEVO MENSAJE/(9845:9901): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 3 
+ posY: 32 
+
+[INFO] 16:32:59:807 CAMBIO DE COLA/(9845:9856): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:33:01:807 MOVIMIENTO DE ENTRENADOR/(9845:9856): entrenador 1: se movio a (3,32)
+[INFO] 16:33:01:812 OPERACION ATRAPAR/(9845:9856): ATRAPAR POKEMON: Pikachu con posicion (3, 32)
+[INFO] 16:33:01:812 CAMBIO DE COLA/(9845:9856): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 16:33:01:819 CAMBIO DE COLA/(9845:9856): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:33:01:819 CAMBIO DE COLA/(9845:9856): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 16:38:29:322 NUEVO MENSAJE/(9845:10002): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 2 
+ posY: 3 
+
+[INFO] 16:38:29:326 CAMBIO DE COLA/(9845:9855): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:38:31:332 MOVIMIENTO DE ENTRENADOR/(9845:9855): entrenador 0: se movio a (2,3)
+[INFO] 16:38:31:332 OPERACION ATRAPAR/(9845:9855): ATRAPAR POKEMON: Pikachu con posicion (2, 3)
+[INFO] 16:38:31:332 CAMBIO DE COLA/(9845:9855): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 16:38:31:332 CAMBIO DE COLA/(9845:9855): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:38:31:332 CAMBIO DE COLA/(9845:9855): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 16:39:20:441 NUEVO MENSAJE/(9845:10021): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 7 
+ nombre: Raychu 
+ posX: 4 
+ posY: 312 
+
+[INFO] 18:01:58:854 RESULTADO DE COMUNICACION/(17522:17522): me conecte a Broker exitosamente
+[INFO] 18:02:43:876 NUEVO MENSAJE/(17522:17571): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 3 
+ posY: 32 
+
+[INFO] 18:02:43:887 CAMBIO DE COLA/(17522:17528): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 18:02:45:887 MOVIMIENTO DE ENTRENADOR/(17522:17528): entrenador 1: se movio a (3,32)
+[INFO] 18:02:45:888 OPERACION ATRAPAR/(17522:17528): ATRAPAR POKEMON: Pikachu con posicion (3, 32)
+[INFO] 18:02:45:892 RESULTADO DE COMUNICACION/(17522:17528): me conecte a Broker exitosamente
+[INFO] 18:02:47:648 CAMBIO DE COLA/(17522:17528): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 18:02:47:651 CAMBIO DE COLA/(17522:17528): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 18:02:47:651 CAMBIO DE COLA/(17522:17528): cambio a BLOCK-READY de entrenador: 1 
+ 

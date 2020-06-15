@@ -8,7 +8,7 @@
 #include "utils_Gameboy.h"
 
 
-//TODO
+
 /*
  * Recibe un paquete a serializar, y un puntero a un int en el que dejar
  * el tamaño del stream de bytes serializados que devuelve
@@ -17,8 +17,6 @@
 
 
 
-//TODO
-//usar este?
 int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;

@@ -19,6 +19,8 @@ int main(int argc, char* argv[]){
 			archivo_config = argv[1];
 			}
 
+	username = malloc(strlen("TEAM")+1);
+	username = "TEAM";
 	cambioDeCola = iniciar_log("CAMBIO DE COLA"); //Detallar razon
 	movimiento_entrenador = iniciar_log("MOVIMIENTO DE ENTRENADOR");//indicando la ubicación a la que se movió).
 	operacion_de_atrapar = iniciar_log("OPERACION ATRAPAR"); //log_info(operacion_de_atrapar,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);

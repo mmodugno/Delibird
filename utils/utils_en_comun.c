@@ -43,8 +43,6 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 //cuando recibamos un mensaje catch de team tenemos que devolverle el id y el mensaje completo
 
 
-//TODO
-
 void enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){
 	// Conectar al broker usando el socketDeBroker
 	// Hago un paquete como el pedido suscripcion

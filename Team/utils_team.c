@@ -275,6 +275,7 @@ void algoritmo_aplicado(void){
 
 //FUNCION DEL HILO DEL ENTRENADOR
 void procedimiento_de_caza(entrenador* un_entrenador){
+
 while(1){
 
 	sem_wait(&(un_entrenador->sem_entrenador));
@@ -285,17 +286,34 @@ while(1){
 
 	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
 
+	if(conectarse_con_broker()!=-1){
+		broker_catch_pokemon *catchAEnviar=malloc(sizeof(broker_catch_pokemon));
+		catchAEnviar->datos=malloc(sizeof(catch_pokemon));
 
-	//enviar_mensaje(broker, CATCH pokemon objetivo_propio
+		catchAEnviar->datos->tamanioNombre=un_entrenador->objetivo_proximo->tamanio_nombre;
+		catchAEnviar->datos->nombrePokemon = malloc(catchAEnviar->datos->tamanioNombre);
+		catchAEnviar->datos->nombrePokemon = un_entrenador->objetivo_proximo->nombre;
+		catchAEnviar->datos->posX = un_entrenador->objetivo_proximo->posX;
+		catchAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
+
+		enviar_catch(un_entrenador,catchAEnviar);
+
+
+		//TODO
+		//recibimos el caught del catch ese, esperar hasta que se terminen de codear los mensajes de las colas
+		//la funcion para recibir el caught tiene que ver que sea el mismo id del catch que enviaron
+
+		//libero la conexion con el broker
+		close(conexionBroker);
+	}
+
+
 
 
 	bloquear_entrenador(un_entrenador);
 
 	log_info(cambioDeCola,"Cambio a BLOCKED de entrenador: %d \n ",un_entrenador->id);
 
-
-
-	esperar_respuesta_catch(un_entrenador);
 
 	sem_post(&en_ejecucion);
 	//libera la ejecucion mientras espera el catch
@@ -476,14 +494,47 @@ bool validacion_nuevo_pokemon(void){
 
 //RESPUESTAS DEL CAUGHT
 
-void esperar_respuesta_catch(entrenador* un_entrenador){
+void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
+	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
-	if(!broker_conectado) {
-		printf("broker no conectado, realizamos operacion default: \n ");
-	}
-		else{
-			//si el broker esta conectado, depende de el la respuesta
-		}
+
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__CATCH_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen(username)+1;
+	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
+	paquete_a_enviar->username = username;
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_catch_pokemon(catchAEnviar,buffer);
+
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(conexionBroker,bufferStream,tamanio_buffer,0);
+	//llenamos el ID del catch que enviamos
+	recv(conexionBroker,&(catchAEnviar->id),sizeof(uint32_t),0);
+
+
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+
+
+
+
 
 }
 
@@ -664,19 +715,19 @@ void iniciar_servidor(void)
     }
 
 }
-//TODO
-bool conectarse_con_broker(void){
-	int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-		if(conexionBroker <= 0){
-			log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
-			//broker_default();
-			return false;
-		}
-		else{
-			broker_conectado = true;
-			log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
-			return true;
-		}
+
+int conectarse_con_broker(void){
+	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	if(conexionBroker <= 0){
+		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		//broker_default();
+		return -1;
+	}
+	else{
+		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+		return conexionBroker;
+	}
+
 }
 
 /*

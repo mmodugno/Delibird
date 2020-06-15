@@ -26,6 +26,7 @@
 #include<math.h>
 #include<commons/collections/queue.h>
 #include<semaphore.h>
+#include "datos_broker.h"
 
 #include"datos_team.h"
 
@@ -43,6 +44,7 @@ t_log* resultado_deadlock;
 t_log* comunicacion_broker_reintento;
 t_log* comunicacion_broker_resultado;
 
+char* username;
 
 t_config* config;
 
@@ -72,7 +74,7 @@ sem_t hay_entrenador;
 
 bool broker_conectado;
 
-
+int conexionBroker;
 
 typedef struct{
     char* nombre;
@@ -134,7 +136,7 @@ int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 int crear_conexion(char *ip, char* puerto);
-bool conectarse_con_broker(void);
+int conectarse_con_broker(void);
 
 
 
@@ -186,11 +188,12 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
 void manejar_deadlock(void);
 bool hay_deadlock(void);
 
+
 //Mensajes
 void denegar_catch(entrenador* un_entrenador);
 void confirmacion_de_catch(entrenador* un_entrenador);
 void esperar_respuesta_catch(entrenador* un_entrenador);
-
+void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar);
 
 
 
