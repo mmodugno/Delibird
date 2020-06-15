@@ -2530,3 +2530,5 @@
  
 [INFO] 18:02:47:651 CAMBIO DE COLA/(17522:17528): cambio a BLOCK-READY de entrenador: 1 
  
+[INFO] 19:55:29:198 ERROR EN COMUNICACION/(3799:3799): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 20:15:49:874 ERROR EN COMUNICACION/(4280:4280): No se pudo conectar con Broker,se realizará la operación por default

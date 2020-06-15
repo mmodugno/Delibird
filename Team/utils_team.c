@@ -6,6 +6,7 @@
  */
 
 #include"utils_team.h"
+#include"utils_en_comun.h"
 
 
 
@@ -495,8 +496,7 @@ bool validacion_nuevo_pokemon(void){
 //RESPUESTAS DEL CAUGHT
 
 void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
-	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
-
+	catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
@@ -533,12 +533,57 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 	free(paquete_a_enviar);
 
 
+}
 
+void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
+	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
+
+
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__GET_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen(username)+1;
+	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
+	paquete_a_enviar->username = username;
+
+
+
+	getAEnviar->datos->tamanioNombre=un_entrenador->objetivo_proximo->tamanio_nombre;
+	getAEnviar->datos->nombrePokemon = malloc(getAEnviar->datos->tamanioNombre);
+	getAEnviar->datos->nombrePokemon = un_entrenador->objetivo_proximo->nombre;
+	getAEnviar->datos->posX = un_entrenador->objetivo_proximo->posX;
+	getAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
+
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_broker_catch_pokemon(getAEnviar,buffer);
+
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(conexionBroker,bufferStream,tamanio_buffer,0);
+	//llenamos el ID del catch que enviamos
+	recv(conexionBroker,&(getAEnviar->id),sizeof(uint32_t),0);
+
+
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
 
 
 }
-
-
 
 
 void confirmacion_de_catch(entrenador* un_entrenador){
