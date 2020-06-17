@@ -20,6 +20,7 @@
 #include<commons/log.h>
 
 FILE* metadata;
+FILE* metadataFiles;
 
 t_bitarray* bitArray;
 
@@ -40,5 +41,8 @@ char* ipBroker;
 void crearDirectorio(char*  ,char* );
 void crearBitmap(void);
 void crearMetadata(void);
+void crearFilesAndBlocks(void);
+bool estaVacio(FILE* );
+void verificarExistenciaPokemon(char* );
 
 #endif /* UTILS_GAMECARD_H_ */

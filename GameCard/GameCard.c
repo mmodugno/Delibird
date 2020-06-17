@@ -24,17 +24,21 @@ int main(int argc, char* argv[]){
 			tamanioBloques = atoi(argv[2]);
 			cantidadBloques = atoi(argv[3]);
 
-				}
+		}
 
 		leer_config();
 
+		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
+
 		crearMetadata();
 
-		crearDirectorio(punto_montaje,"/Files");
+		crearDirectorio(punto_montaje,"/TallGrass");
+
+		crearFilesAndBlocks();
 
 		crearBitmap();
 
-		txt_close_file(metadata);
+		verificarAperturaArchivo("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
 
 		printf(" \n Terminado  \n" );
 
