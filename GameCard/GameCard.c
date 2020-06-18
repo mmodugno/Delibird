@@ -43,9 +43,9 @@ int main(int argc, char* argv[]){
 
 		verificarAperturaArchivo("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
 
-		char* launch = buscarPrimerBloqueLibre();
+		FILE* arch = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/1.bin");
 
-		printf("\n bloque libre en: %s", launch);
+		printf(" \n tamanio archivo: %d  \n",tamanioArchivo(arch));
 
 		printf(" \n Terminado  \n" );
 

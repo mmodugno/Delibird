@@ -50,7 +50,9 @@ char *nombreConfig;
 char* punto_montaje;
 char* ipBroker;
 
-
+void registrarPokemon(char* , registroDatos* );
+char* buscarPrimerBloqueLibre(void);
+bool estaVacioConRuta(char* );
 void crearDirectorio(char*  ,char* );
 void crearBitmap(void);
 void crearMetadata(void);
@@ -58,5 +60,6 @@ void crearFilesAndBlocks(void);
 bool estaVacio(FILE* );
 void verificarExistenciaPokemon(char* );
 t_log* iniciar_logger(char*);
+
 
 #endif /* UTILS_GAMECARD_H_ */

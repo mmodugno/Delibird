@@ -39,9 +39,13 @@ bool estaVacio(FILE* arch) {
 
 bool estaVacioConRuta(char* path) {
 
-	FILE* arch = fopen(path,"r");
+	FILE* arch = txt_open_for_append(path);
 
-	return estaVacio(arch);
+	bool vacio = estaVacio(arch);
+
+	txt_close_file(arch);
+
+	return vacio;
 
 }
 
@@ -110,26 +114,22 @@ void verificarAperturaArchivo(char* path) {
 	}
 }
 
-
-char* buscarPrimerBloqueLibre(){
+int buscarIndicePrimerBloqueLibre(){
 
 	int contador = 1;
 
 	char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador);
 
 	while(!estaVacioConRuta(path)){
-
 	contador++;
-	string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador);
-
-
+	memcpy(path,string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador),strlen(path));
 	}
 
 	FILE* crearArchivo = txt_open_for_append(path);
 
 	txt_close_file(crearArchivo);
 
-	return path;
+	return contador;
 }
 
 void registrarPokemon(char* nombrePoke, registroDatos* registro) {
@@ -146,9 +146,25 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	t_list* listaBloques = crear_lista(bloques);
 
-	if(list_is_empty(listaBloques)) {
+	if(list_is_empty(listaBloques)){
+		int indiceLibre = buscarPrimerBloqueLibre();
+		char* pathLibre = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceLibre);
+		//mutexLock
+		FILE* bloqueLibre = txt_open_for_append(pathLibre);
+		txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+		bitarray_set_bit(bitArray,indiceLibre-1);
+		//TODO agregar indiceLIbre a Metada de pokemon
+		txt_close_file(bloqueLibre);
+		//mutexUNlock
+	} else {
+
+
+
+
 
 	}
+
+
 }
 
 void crearMetadata(){
@@ -205,7 +221,6 @@ char* obtener_ruta_bloque(int nro_bloque) {
 	return string_from_format("%s%d.bin","/home/utnso/Escritorio/PuntoMontaje/Blocks/",nro_bloque);
 }
 
-
 void crearMetadataEspecie(char* nombreEspecie) {
 
 
@@ -243,6 +258,60 @@ void crearBitmap(){
 
 }
 
+int tamanioRegistro(registroDatos* registro) {
+
+	int tamanio = strlen(string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+
+	return tamanio;
+}
+
+registroDatos* hacerRegistro(uint32_t x,uint32_t y,uint32_t cant){
+
+	registroDatos* registro = malloc(sizeof(registroDatos));
+
+	registro->posX = x;
+	registro->posY = y;
+	registro->cantidad = cant;
+
+	return registro;
+
+}
+
+int tamanioArchivo(FILE* arch){
+
+	int tamanio;
+
+	fseek(arch,0,SEEK_END);
+
+	tamanio = ftell(arch);
+
+	return tamanio;
+
+}
+
+int tamanioArchivoDadoPath(char* path){
+
+	FILE* arch = txt_open_for_append(path);
+
+	int tamanio = tamanioArchivo(arch);
+
+	txt_close_file(arch);
+
+	return tamanio;
+
+}
+
+bool entraDAtoEnBloque(registroDatos* registro, int nroBloque) {
+
+	return tamanioArchivoDadoPath(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",nroBloque))+tamanioRegistro(registro) < tamanioBloques;
+
+}
+
+int buscarIndiceBloque(char* path){
+
+	string_reverse()
 
 
+
+}
 
