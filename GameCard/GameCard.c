@@ -27,6 +27,11 @@ int main(int argc, char* argv[]){
 		}
 
 		leer_config();
+		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
+		logFalloConexion = iniciar_logger("FALLO CONEXION");
+
+
+
 
 		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
 
@@ -63,7 +68,8 @@ void leer_config(void){
 }
 
 void terminar_programa(void){
-
+	log_destroy(logArchivoAbierto);
+	log_destroy(logFalloConexion);
 	config_destroy(config);
 
 	//liberar_conexion(conexionBroker);

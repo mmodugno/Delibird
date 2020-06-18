@@ -19,6 +19,10 @@
 #include<commons/bitarray.h>
 #include<commons/log.h>
 
+t_log* logArchivoAbierto;
+t_log* logFalloConexion;
+
+
 FILE* metadata;
 FILE* metadataFiles;
 

@@ -73,11 +73,12 @@ void verificarAperturaArchivo(char* path) {
 
 	if(aux == 'Y'){
 
-		printf("NoEntre");
+		printf("NoEntre"); //Deberia delegar un hilo que trate de entrar cada X segundos
 
 	} else {
 
-		printf("Entre");
+		printf("Entre"); //Deberia marcar OPEN=Y
+
 	}
 }
 
