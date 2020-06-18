@@ -7,6 +7,16 @@
 
 #include"utils_gamecard.h"
 
+t_list* crear_lista(char** array){
+    t_list* nuevaLista = list_create();
+    int i = 0;
+    while( array[i] != NULL ){
+        list_add(nuevaLista, array[i]);
+        i++;
+    }
+    return nuevaLista;
+}
+
 void crearDirectorio(char* path ,char* nombreCarpeta){
 
 	char* aux = malloc(strlen(path) + strlen(nombreCarpeta) + 2);
@@ -24,6 +34,14 @@ bool estaVacio(FILE* arch) {
 	fseek(arch,0,SEEK_END);
 
 	return ftell(arch) == 0;
+
+}
+
+bool estaVacioConRuta(char* path) {
+
+	FILE* arch = fopen(path,"r");
+
+	return estaVacio(arch);
 
 }
 
@@ -49,7 +67,7 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 	txt_write_in_file(metadata,"\n");
 	txt_write_in_file(metadataPoke,"SIZE=0");
 	txt_write_in_file(metadata,"\n");
-	txt_write_in_file(metadataPoke,"BLOCKS=()"); //CAMBIAR () a corchetes
+	txt_write_in_file(metadataPoke,"BLOCKS=[]"); //CAMBIAR () a corchetes
 	txt_write_in_file(metadata,"\n");
 	txt_write_in_file(metadataPoke,"OPEN=N");
 
@@ -62,26 +80,76 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 }
 
 void verificarAperturaArchivo(char* path) {
+//while(1)
 
-	FILE* archivoTemporal = fopen(path,"rb");
 
-	char aux;
+	char* aux;
 
-	fseek(archivoTemporal,-1,SEEK_END);
+	t_config* configAux = config_create(path);
 
-	fread(&aux,sizeof(char),1,archivoTemporal);
+	aux = config_get_string_value(configAux,"OPEN");
 
-	if(aux == 'Y'){
+	if(!strcmp(aux,"Y")){
 
 		printf("NoEntre"); //Deberia delegar un hilo que trate de entrar cada X segundos
 
 	} else {
 
-		printf("Entre"); //Deberia marcar OPEN=Y
+		FILE* archivoTemporal = fopen(path,"rb+");
+
+		char opened = 'Y';
+
+		fseek(archivoTemporal,-1,SEEK_END);
+
+		fwrite(&opened,sizeof(opened),1,archivoTemporal);
+
+		fclose(archivoTemporal);
+
+		printf("Entre");
 
 	}
 }
 
+
+char* buscarPrimerBloqueLibre(){
+
+	int contador = 1;
+
+	char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador);
+
+	while(!estaVacioConRuta(path)){
+
+	contador++;
+	string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador);
+
+
+	}
+
+	FILE* crearArchivo = txt_open_for_append(path);
+
+	txt_close_file(crearArchivo);
+
+	return path;
+}
+
+void registrarPokemon(char* nombrePoke, registroDatos* registro) {
+
+	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
+
+	//FILE* archivoTemporal = fopen(path,"rb+");
+
+	char** bloques;
+
+	t_config* configAux = config_create(path);
+
+	bloques = config_get_array_value(configAux,"BLOCKS");
+
+	t_list* listaBloques = crear_lista(bloques);
+
+	if(list_is_empty(listaBloques)) {
+
+	}
+}
 
 void crearMetadata(){
 
@@ -133,6 +201,11 @@ void crearFilesAndBlocks() {
 
 }
 
+char* obtener_ruta_bloque(int nro_bloque) {
+	return string_from_format("%s%d.bin","/home/utnso/Escritorio/PuntoMontaje/Blocks/",nro_bloque);
+}
+
+
 void crearMetadataEspecie(char* nombreEspecie) {
 
 
@@ -169,3 +242,7 @@ void crearBitmap(){
 	txt_close_file(metadata);
 
 }
+
+
+
+

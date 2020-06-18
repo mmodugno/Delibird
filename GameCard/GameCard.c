@@ -27,11 +27,9 @@ int main(int argc, char* argv[]){
 		}
 
 		leer_config();
+
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
-
-
-
 
 		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
 
@@ -44,6 +42,10 @@ int main(int argc, char* argv[]){
 		crearBitmap();
 
 		verificarAperturaArchivo("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
+
+		char* launch = buscarPrimerBloqueLibre();
+
+		printf("\n bloque libre en: %s", launch);
 
 		printf(" \n Terminado  \n" );
 
@@ -66,6 +68,14 @@ void leer_config(void){
 	ipBroker = config_get_string_value(config,"IP_BROKER");
 	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
 }
+
+
+t_log* iniciar_logger(char* tipoDeProceso){
+
+	//preguntar por el tipo de LOG_LEVEL
+	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
+}
+
 
 void terminar_programa(void){
 	log_destroy(logArchivoAbierto);
