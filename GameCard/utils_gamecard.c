@@ -79,6 +79,8 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 
 	}
 
+	fclose(metadataPoke);
+
 	free(aux);
 
 }
@@ -92,6 +94,8 @@ void verificarAperturaArchivo(char* path) {
 	t_config* configAux = config_create(path);
 
 	aux = config_get_string_value(configAux,"OPEN");
+
+	config_destroy(configAux);
 
 	if(!strcmp(aux,"Y")){
 
@@ -132,6 +136,19 @@ int buscarIndicePrimerBloqueLibre(){
 	return contador;
 }
 
+
+//TODO terminarAgregar
+/*void agregarBloqueALista(t_list* bloques, int nuevoBloque) {
+
+	char
+
+	list_add(bloques,nuevoBloque);
+
+
+
+
+}*/
+
 void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
@@ -147,22 +164,73 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 	t_list* listaBloques = crear_lista(bloques);
 
 	if(list_is_empty(listaBloques)){
-		int indiceLibre = buscarPrimerBloqueLibre();
+		int indiceLibre = buscarIndicePrimerBloqueLibre();
+
 		char* pathLibre = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceLibre);
+
 		//mutexLock
 		FILE* bloqueLibre = txt_open_for_append(pathLibre);
+
 		txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+
 		bitarray_set_bit(bitArray,indiceLibre-1);
-		//TODO agregar indiceLIbre a Metada de pokemon
+
+		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
+
 		txt_close_file(bloqueLibre);
 		//mutexUNlock
+
 	} else {
 
+		int escribio = 0;
 
+		for(int i = 0;i < list_size(listaBloques);i++){
 
+		int bloque = list_get(listaBloques);
 
+		if(entraDatoEnBloque(registro,bloque)){
 
+			char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",bloque);
+
+			FILE* archivoBloque = txt_open_for_append(path);
+
+			txt_write_in_file(archivoBloque,"\n");
+			txt_write_in_file(archivoBloque,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+
+			escribio = 1;
+
+			txt_close_file(archivoBloque);
+
+			break;
+
+			}
+
+		}
+
+		if(!escribio){
+
+			int indiceLibre = buscarIndicePrimerBloqueLibre();
+
+			char* pathLibre = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceLibre);
+
+			//mutexLock
+			FILE* bloqueLibre = txt_open_for_append(pathLibre);
+
+			txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+
+			bitarray_set_bit(bitArray,indiceLibre-1);
+
+			//TODO terminaragregarAListaBloques
+			char* nuevosBloques = agregarAListaBloques(listaBloques,indiceLibre);
+
+			config_set_value(configAux,"BLOCKS",nuevosBloques);
+
+			txt_close_file(bloqueLibre);
+
+		}
 	}
+
+	config_destroy(configAux);
 
 
 }
@@ -301,17 +369,62 @@ int tamanioArchivoDadoPath(char* path){
 
 }
 
-bool entraDAtoEnBloque(registroDatos* registro, int nroBloque) {
+bool entraDatoEnBloque(registroDatos* registro, int nroBloque) {
 
 	return tamanioArchivoDadoPath(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",nroBloque))+tamanioRegistro(registro) < tamanioBloques;
 
 }
 
-int buscarIndiceBloque(char* path){
 
-	string_reverse()
+void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
+	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+
+	t_config* configPath = config_create(path);
+
+	verificarExistenciaPokemon(nombrePoke);
+	verificarAperturaArchivo(path);
+	registrarPokemon(nombrePoke,registro);//poner los whiles despues
+
+	int cantidadPokemon = estaPosicionEnArchivo(registro->posX,registro->posY,path);
+
+	if(cantidadPokemon > 0){
+
+		config_set_value(configPath,string_from_format("%d-%d",registro->posX,registro->posY),string_itoa(cantidadPokemon+registro->cantidad));
+
+	} else{
+
+		config_set_value(configPath,string_from_format("%d-%d",registro->posX,registro->posY),string_itoa(registro->cantidad));
+	}
+
+	config_destroy(configPath);
+}
+
+int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
+
+	FILE* arch = txt_open_for_append(path);
+
+	t_config* configPath = config_create(path);
+
+	txt_close_file(arch);
+
+	char* cantidad = config_get_string_value(configPath,string_from_format("%d-%d",posX,posY));
+
+
+
+	if(cantidad != NULL){
+
+	int numero = config_get_int_value(configPath,string_from_format("%d-%d",posX,posY));
+
+	config_destroy(configPath);
+
+	return numero;
+
+
+	}
+
+	config_destroy(configPath);
+	return 0;
 
 
 }
-

@@ -41,11 +41,9 @@ int main(int argc, char* argv[]){
 
 		crearBitmap();
 
-		verificarAperturaArchivo("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
+		//registrarPokemon(nombrePoke,registro);
 
-		FILE* arch = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/1.bin");
-
-		printf(" \n tamanio archivo: %d  \n",tamanioArchivo(arch));
+		//procesarNewPokemon("Pikachu",hacerRegistro(10,10,2));
 
 		printf(" \n Terminado  \n" );
 
@@ -66,6 +64,7 @@ void leer_config(void){
 	punto_montaje = config_get_string_value(config,"PUNTO_MONTAJE_TALLGRASS");
 
 	ipBroker = config_get_string_value(config,"IP_BROKER");
+
 	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
 }
 
