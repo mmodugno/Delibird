@@ -280,13 +280,8 @@ int main(int argc, char* argv[]){
 			log_info(logConexion,"me conecte a Broker exitosamente");
 		}
 
-		//Abro el server de Gameboy para escuchar los msj q me manda Broker
-		flagTerminoSuscripcion = 0;
-		iniciar_servidor_gameboy();
-
-
-
 		if(argc==4){
+
 			suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 			meSuscribo->nombreDeSuscriptor="GAMEBOY";
 			meSuscribo->tamanioNombreSucriptor= strlen(meSuscribo->nombreDeSuscriptor)+1;
@@ -328,6 +323,13 @@ int main(int argc, char* argv[]){
 				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Localized_Pokemon exitosamente",atoi(argv[3]));
 			}
 			free(meSuscribo);
+
+			//Abro el server de Gameboy para escuchar los msj q me manda Broker
+
+			flagTerminoSuscripcion = 0;
+
+			iniciar_servidor_gameboy();
+
 		}
 
 

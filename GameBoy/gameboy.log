@@ -17,3 +17,10 @@
 [INFO] 16:32:59:767 Conexion/(9896:9896): me conecte a Team exitosamente
 [INFO] 18:02:43:871 Conexion/(17566:17566): me conecte a Team exitosamente
 [INFO] 18:06:30:378 Conexion/(17929:17929): me conecte a Broker exitosamente
+[INFO] 20:10:04:259 Conexion/(6005:6005): no me pude conectar a Broker
+[INFO] 20:10:26:196 Conexion/(6083:6083): me conecte a Broker exitosamente
+[INFO] 20:10:26:197 Suscripcion/(6083:6083): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 20:11:01:845 Conexion/(6132:6132): me conecte a Broker exitosamente
+[INFO] 20:11:01:846 Suscripcion/(6132:6132): me conecto como modo suscriptor por 1 segundos a New_Pokemon exitosamente
+[INFO] 20:11:42:876 Conexion/(6184:6184): me conecte a Broker exitosamente
+[INFO] 20:11:47:12 Suscripcion/(6184:6184): me conecto como modo suscriptor por 1 segundos a New_Pokemon exitosamente

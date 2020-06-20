@@ -397,8 +397,8 @@ void liberar_conexion(int socket_cliente)
 
 void iniciar_servidor_gameboy(){
 	int socket_servidor_gameboy;
-	int ip_gameboy = 127.0.0.9;
-	int puerto_gameboy = 5009;
+	char* ip_gameboy = "127.0.0.9";
+	char* puerto_gameboy = "5009";
 
     struct addrinfo hints, *servinfo, *p;
 
@@ -427,6 +427,8 @@ void iniciar_servidor_gameboy(){
     while(flagTerminoSuscripcion == 0){
     	esperar_cliente_gameboy(socket_servidor_gameboy);
     }
+
+    //TODO enviar pedido de Desuscripcion o como se escriba
 }
 
 void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Broker al Gameboy para enviarle los mensajes de las colas
@@ -434,15 +436,40 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 
 	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
 
-	int socket_cliente_gameboy = accept(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion);
 
-	pthread_create(&thread,NULL,(void*)serve_client_gameboy,&socket_cliente_gameboy); // EL hilo q procesa los mensajes
-	pthread_detach(thread);
+	int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion,segundosSuscripcion);
 
+	pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente_gameboy); // EL hilo q procesa los mensajes
+	pthread_detach(hiloConexion);
+
+	if(socket_cliente_gameboy < 0){
+
+		flagTerminoSuscripcion = 1;
+
+	}
 	// sem_init(&(semaforoTiempo),0,0);
 
 	//pthread_create(&threadTime,NULL,(void*)analizadorTime,&segundosSuscripcion); // El hilo que maneja el tiempo
 	//pthread_detach(threadTime);
+}
+
+int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, socklen_t *__restrict tam_direccion, int timeOut){
+
+	fd_set fds;
+	int n;
+	struct timeval tv;
+
+	FD_ZERO(&fds);
+	FD_SET(socket_servidor_gameboy, &fds);
+
+	tv.tv_sec = timeOut;
+	tv.tv_usec = 0;
+
+	n = select(socket_servidor_gameboy+1, &fds, NULL, NULL, &tv);
+	if(n == 0) return -2; //timeout
+	if(n == -1) return -1; // error
+
+	return accept(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion);
 }
 
 /*void analizadorTime(int* segundos){
@@ -454,23 +481,24 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 	pthread_exit(NULL);
 } */
 
-void serve_client_gameboy(int* socket){ // Se reciben los bytes enviados por el Broker
+void serve_client_gameboy(int socket){ // Se reciben los bytes enviados por el Broker
 	int cod_op;
 
 	// int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
-	int i = recvTimeout(socket, cod_op, sizeof(op_code), segundosSuscripcion);
+	int i = recv(socket, &cod_op, sizeof(op_code));
 
 	if(i <= 0) cod_op = -1;
 	if(i == -2) cod_op = -2;
 
-	process_request_gameboy(cod_op, *socket);
+	process_request_gameboy(cod_op, socket);
 }
 
 int recvTimeout(int socket, int *cod_op, int len, int timeOut){
 
 	fd_set fds;
 	int n;
-	timeval tv;
+	struct timeval tv;
+
 
 	FD_ZERO(&fds);
 	FD_SET(socket, &fds);
@@ -482,7 +510,7 @@ int recvTimeout(int socket, int *cod_op, int len, int timeOut){
 	if(n == 0) return -2; //timeout
 	if(n == -1) return -1; // error
 
-	return recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL)
+	return recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 }
 
 void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensajes enviados por el Broker y los logea
@@ -497,12 +525,12 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 	//Leo el ID
 	int ID;
-	recv(cliente_fd, ID, sizeof(uint32_t), MSG_WAITALL);
+	recv(cliente_fd, &ID, sizeof(uint32_t), MSG_WAITALL);
 
 	switch (cod_op) {
 		case BROKER__NEW_POKEMON:{
 			broker_new_pokemon* newRecibido;
-			newRecibido = deserializar_new_pokemon(cliente_fd, segundosTimeOut);
+			newRecibido = deserializar_new_pokemon(cliente_fd);
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
 					ID,
 					username,

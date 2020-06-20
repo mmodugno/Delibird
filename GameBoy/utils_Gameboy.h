@@ -10,9 +10,12 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<pthread.h>
 #include<signal.h>
 #include<unistd.h>
 #include<sys/socket.h>
+#include<sys/types.h>
+#include<sys/time.h>
 #include<netdb.h>
 #include<string.h>
 #include <datos_broker.h>
@@ -27,6 +30,9 @@
 int conexionBroker;
 int conexionTeam;
 int conexionGamecard;
+int segundosSuscripcion;
+int flagTerminoSuscripcion;
+
 
 char* ipBroker;
 char* puertoBroker;
@@ -51,7 +57,7 @@ t_log* logMensajeNuevo; //falta el de recibir mensaje
 t_config* config;
 
 
-
+pthread_t hiloConexion;
 
 
 int crear_conexion(char* ip, char* puerto);
@@ -68,6 +74,12 @@ void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon ,ch
 void enviar_GameCard_New_Pokemon(gameCard_new_pokemon *gameCardNewPokemon ,char* username, int socket_cliente);
 void enviar_GameCard_Catch_Pokemon(gameCard_catch_pokemon *gameCardCatchPokemon ,char* username, int socket_cliente);
 void enviar_GameCard_Get_Pokemon(gameCard_get_pokemon *gameCardGetPokemon ,char* username, int socket_cliente);
+void serve_client_gameboy(int);
+void iniciar_servidor_gameboy(void);
+void esperar_cliente_gameboy(int );
+int recvTimeout(int , int* , int , int );
+void process_request_gameboy(int , int );
+int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, socklen_t *__restrict tam_direccion, int timeOut);
 
 
 #endif /* UTILS_GAMEBOY_H_ */
