@@ -55,11 +55,15 @@ char* buscarPrimerBloqueLibre(void);
 bool estaVacioConRuta(char* );
 void crearDirectorio(char*  ,char* );
 void crearBitmap(void);
-void crearMetadata(void);
+void leerMetadata(void);
 void crearFilesAndBlocks(void);
 bool estaVacio(FILE* );
 void verificarExistenciaPokemon(char* );
+int tamanioRegistro(registroDatos* );
+int estaPosicionEnArchivo(uint32_t ,uint32_t ,char* );
+int tamanioArchivoDadoPath(char* );
 t_log* iniciar_logger(char*);
+void modificarArchivoComoConfig(t_config* ,char* ,char* );
 
 
 #endif /* UTILS_GAMECARD_H_ */

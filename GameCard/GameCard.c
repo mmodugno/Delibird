@@ -14,26 +14,25 @@
 
 int main(int argc, char* argv[]){
 
-	if(argc == 1){
-				printf("No hay parametros suficientes\n");
-				return 2;
-			}
-		if(argc == 4){
-
-			nombreConfig = argv[1];
-			tamanioBloques = atoi(argv[2]);
-			cantidadBloques = atoi(argv[3]);
-
+		if(argc == 1){
+			printf("No hay parametros suficientes");
+			return 2;
 		}
 
+		nombreConfig = argv[1];
+
 		leer_config();
+
+		t_config* configCerrar = config_create("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
+
+		modificarArchivoComoConfig(configCerrar,"OPEN","N");
 
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
 
 		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
 
-		crearMetadata();
+		leerMetadata();
 
 		crearDirectorio(punto_montaje,"/TallGrass");
 

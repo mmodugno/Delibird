@@ -17,6 +17,22 @@ t_list* crear_lista(char** array){
     return nuevaLista;
 }
 
+void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
+
+	config_set_value(configModif,key,valor);
+
+	config_save(configModif);
+
+	config_destroy(configModif);
+
+}
+
+bool entraDatoEnBloque(registroDatos* registro, int nroBloque) {
+
+	return tamanioArchivoDadoPath(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",nroBloque))+tamanioRegistro(registro) < tamanioBloques;
+
+}
+
 void crearDirectorio(char* path ,char* nombreCarpeta){
 
 	char* aux = malloc(strlen(path) + strlen(nombreCarpeta) + 2);
@@ -95,7 +111,7 @@ void verificarAperturaArchivo(char* path) {
 
 	aux = config_get_string_value(configAux,"OPEN");
 
-	config_destroy(configAux);
+
 
 	if(!strcmp(aux,"Y")){
 
@@ -103,19 +119,10 @@ void verificarAperturaArchivo(char* path) {
 
 	} else {
 
-		FILE* archivoTemporal = fopen(path,"rb+");
-
-		char opened = 'Y';
-
-		fseek(archivoTemporal,-1,SEEK_END);
-
-		fwrite(&opened,sizeof(opened),1,archivoTemporal);
-
-		fclose(archivoTemporal);
-
-		printf("Entre");
-
+		modificarArchivoComoConfig(configAux,"OPEN","Y");
 	}
+
+	config_destroy(configAux);
 }
 
 int buscarIndicePrimerBloqueLibre(){
@@ -136,18 +143,22 @@ int buscarIndicePrimerBloqueLibre(){
 	return contador;
 }
 
+char* agregarBloqueALista(t_list* bloques, int nuevoBloque) {
 
-//TODO terminarAgregar
-/*void agregarBloqueALista(t_list* bloques, int nuevoBloque) {
+	char* nuevosBloques = string_new();
 
-	char
+	string_append(&nuevosBloques,"[");
 
-	list_add(bloques,nuevoBloque);
+	for(int i = 0; i < list_size(bloques);i++){
 
+	string_append(&nuevosBloques,string_from_format("%d,",atoi(list_get(bloques,i))));
 
+	}
 
+	string_append(&nuevosBloques,string_from_format("%d]",atoi(string_itoa(nuevoBloque))));
 
-}*/
+	return nuevosBloques;
+}
 
 void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
@@ -186,7 +197,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		for(int i = 0;i < list_size(listaBloques);i++){
 
-		int bloque = list_get(listaBloques);
+		int bloque = atoi(list_get(listaBloques,i));
 
 		if(entraDatoEnBloque(registro,bloque)){
 
@@ -203,9 +214,9 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			break;
 
-			}
-
 		}
+
+	}
 
 		if(!escribio){
 
@@ -220,8 +231,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			bitarray_set_bit(bitArray,indiceLibre-1);
 
-			//TODO terminaragregarAListaBloques
-			char* nuevosBloques = agregarAListaBloques(listaBloques,indiceLibre);
+			char* nuevosBloques = agregarBloqueALista(listaBloques,indiceLibre);
 
 			config_set_value(configAux,"BLOCKS",nuevosBloques);
 
@@ -230,39 +240,24 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 		}
 	}
 
+
+	sleep(tiempo_retardo_operacion);
+	//marcar archivo como cerrado;
+
+	//conetar a broker y enviar a cola Appeared pokemon(datos = idRecibido, pokemon, posicionMapa);
 	config_destroy(configAux);
 
 
 }
 
-void crearMetadata(){
+void leerMetadata(){
 
-	crearDirectorio(punto_montaje,"/Metadata");
+	t_config* configAux = config_create("/home/utnso/Escritorio/PuntoMontaje/Metadata/Metadata.bin");
 
-	metadata = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/Metadata/Metadata.bin");
+	tamanioBloques =  config_get_int_value(configAux,"BLOCK_SIZE");
+	cantidadBloques = config_get_int_value(configAux,"BLOCKS");
 
-	if(estaVacio(metadata)){
-
-	char* aux = malloc(sizeof(10));
-	char* aux2 = malloc(sizeof(10));
-
-	sprintf(aux,"%d",tamanioBloques);
-	sprintf(aux2,"%d",cantidadBloques);
-
-	txt_write_in_file(metadata,"BLOCK_SIZE=");
-	txt_write_in_file(metadata,aux);
-	txt_write_in_file(metadata,"\n");
-	txt_write_in_file(metadata,"BLOCKS=");
-	txt_write_in_file(metadata,aux2);
-	txt_write_in_file(metadata,"\n");
-	txt_write_in_file(metadata,"MAGIC_NUMBER=TALL_GRASS");
-
-	free(aux);
-	free(aux2);
-
-	txt_close_file(metadata);
-
-	}
+	config_destroy(configAux);
 
 }
 
@@ -311,8 +306,7 @@ void crearBitmap(){
 
 	FILE* bitmap = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin");
 
-	fseek(metadata,0,SEEK_END);
-
+	fseek(bitmap,0,SEEK_END);
 
 	if(ftell(bitmap) == 0){
 
@@ -322,7 +316,7 @@ void crearBitmap(){
 
 	}
 
-	txt_close_file(metadata);
+	txt_close_file(bitmap);
 
 }
 
@@ -369,12 +363,6 @@ int tamanioArchivoDadoPath(char* path){
 
 }
 
-bool entraDatoEnBloque(registroDatos* registro, int nroBloque) {
-
-	return tamanioArchivoDadoPath(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",nroBloque))+tamanioRegistro(registro) < tamanioBloques;
-
-}
-
 
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
@@ -396,6 +384,8 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 		config_set_value(configPath,string_from_format("%d-%d",registro->posX,registro->posY),string_itoa(registro->cantidad));
 	}
+
+	//cerrarArchivoMetadataPokemonComoConfig(configPath);
 
 	config_destroy(configPath);
 }
