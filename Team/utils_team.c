@@ -36,6 +36,7 @@ void variables_globales(){
 
 	pokemones_atrapados= list_create();
 
+	entrenadores_ready = queue_create();
 	entrenadores_block_ready = queue_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
@@ -153,7 +154,7 @@ void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 void hacer_entrenadores(void){
 
 	entrenadores = list_create();
-	entrenadores_en_ready = list_create();
+	entrenadores_new = list_create();
 
 	t_list* posiciones = obtener_lista_posiciones();
 	 t_list* pokemones = obtener_lista_pokemones();
@@ -163,7 +164,7 @@ void hacer_entrenadores(void){
 	 for(int i=0 ; i< list_size(posiciones) ; i++){
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i),i);
 		list_add(entrenadores,entrenador_listo);
-		list_add(entrenadores_en_ready,entrenador_listo);
+		list_add(entrenadores_new,entrenador_listo);
 		sem_post(&hay_entrenador);
 	 }
 
@@ -228,10 +229,11 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 		if(entrenador->posX < x){
 			entrenador->posX = entrenador->posX + 1;
 			//sleep(tiempo);
+			//se mueve una poss, 1 ciclo de cpu
 		}
 		else {
 			entrenador->posX = entrenador->posX -1;
-
+			//se mueve una poss, 1 ciclo de cpu
 			//sleep(tiempo);
 		}
 	}
@@ -240,10 +242,12 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 		if(entrenador->posY < y){
 			entrenador->posY = entrenador->posY + 1;
 			//sleep(tiempo);
+			//se mueve una poss, 1 ciclo de cpu
 		}
 		else {
 			entrenador->posY = entrenador->posY -1;
 			//sleep(tiempo);
+			//se mueve una poss, 1 ciclo de cpu
 		}
 	}
 
@@ -254,6 +258,71 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void mover_entrenador_RR(entrenador* entrenador,int x, int y){
+
+	int tiempo = leer_retardo_cpu();
+
+	while(entrenador->posX != x){
+		while(quantum > 0 && entrenador->posX != x){
+
+		if(entrenador->posX < x){
+			entrenador->posX = entrenador->posX + 1;
+			sleep(tiempo);
+			quantum -=1;
+			printf("\n El entrenador se movio en X hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+		}
+		if(entrenador->posX > x){
+			entrenador->posX = entrenador->posX -1;
+			sleep(tiempo);
+			quantum -=1;
+			printf("\n El entrenador se movio en X hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+		}
+		}
+
+		//No tengo mas Quantum, pero mi posicion es distinta
+		if(quantum == 0){
+			queue_push(entrenadores_ready, entrenador);
+			log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+			sem_post(&en_ejecucion);
+			sem_wait(&(entrenador->sem_entrenador));
+	}
+
+	}
+	printf("\n El entrenador finalizo movimiento en X hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+		//Llegue a la posicion, pero no tengo mas Quantum
+		//if(quantum == 0){
+		//	queue_push(entrenadores_ready, entrenador);
+		//	log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+		//	sem_wait(&(entrenador->sem_entrenador));
+
+	while(entrenador->posY != y){
+			while(quantum > 0 && entrenador->posY != y){
+
+			if(entrenador->posY < y){
+				entrenador->posY = entrenador->posY + 1;
+				sleep(tiempo);
+				quantum -=1;
+				printf("\n El entrenador se movio en Y hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+			}
+			if(entrenador->posY > y){
+				entrenador->posY = entrenador->posY -1;
+				sleep(tiempo);
+				quantum -=1;
+				printf("\n El entrenador se movio en Y hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+			}
+			}
+
+			//No tengo mas Quantum, pero mi posicion es distinta
+			if(quantum == 0){
+				queue_push(entrenadores_ready, entrenador);
+				log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+				sem_post(&en_ejecucion);
+				sem_wait(&(entrenador->sem_entrenador));
+		}
+
+		}
+	log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
+}
 
 void algoritmo_aplicado(void){
 	switch (leer_algoritmo_planificacion()){
@@ -262,7 +331,7 @@ void algoritmo_aplicado(void){
 		break;
 
 	case RR:
-		//planifico_con_RR();
+		planifico_con_RR();
 		break;
 
 	 default:
@@ -280,10 +349,15 @@ void procedimiento_de_caza(entrenador* un_entrenador){
 while(1){
 
 	sem_wait(&(un_entrenador->sem_entrenador));
-	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
+	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
+	if(leer_algoritmo_planificacion() == FIFO){
 	mover_entrenador(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
-
+	}
+	else{
+		mover_entrenador_RR(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
+	}
 
 	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
 
@@ -355,9 +429,7 @@ void aparece_nuevo_pokemon(pokemon* poke){
 	 else{
 		 printf("\n El pokemon %s no pertenece al objetivo global. Se descarta \n", poke->nombre);
 
-
 	 }
-
 
 }
 
@@ -376,9 +448,9 @@ void planificar_entrenador(void){
 	proximo_objetivo = queue_peek(pokemones_en_el_mapa);
 	queue_pop(pokemones_en_el_mapa); //Si no lo atrapo se vuelve a poner
 
-	if(!list_is_empty(entrenadores_en_ready)){
-	entrenador_exec = list_get(list_sorted(entrenadores_en_ready,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
-	list_remove_by_condition(entrenadores_en_ready,(void*)entrenador_en_exec);
+	if(!list_is_empty(entrenadores_new)){
+	entrenador_exec = list_get(list_sorted(entrenadores_new,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
+	list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
 	}
 	else{
 		entrenador_exec = queue_peek(entrenadores_block_ready);
@@ -390,6 +462,56 @@ void planificar_entrenador(void){
 
 
 
+}
+
+void planifico_con_RR(void){
+
+
+while(1){
+	while(hay_pokemon_y_entrenador()){
+		quantum = leer_quantum();
+
+		planificar_entrenador(); //planifico uno en cada ciclo del fifo
+
+		//Seccion critica
+		sem_wait(&en_ejecucion);
+
+		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+		sem_post(&(entrenador_exec->sem_entrenador));
+		//Fin de seccion critica
+	}
+
+	while(!queue_is_empty(entrenadores_ready)){
+		quantum = leer_quantum();
+
+		entrenador_exec = queue_peek(entrenadores_ready);
+		queue_pop(entrenadores_ready);
+
+		proximo_objetivo = entrenador_exec->objetivo_proximo;//TODO why?
+
+		sem_wait(&en_ejecucion);
+
+		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
+		sem_post(&(entrenador_exec->sem_entrenador));
+	}
+
+	/*
+	while(hay_deadlock()){
+		sem_wait(&en_ejecucion);
+		manejar_deadlock();
+		sem_post(&en_ejecucion);
+	}
+	*/
+
+
+}
+}
+
+
+
+bool hay_pokemon_y_entrenador(){
+	return (!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(entrenadores_new));
 }
 
 
@@ -407,7 +529,6 @@ while(validacion_nuevo_pokemon()){
 
 	sem_post(&(entrenador_exec->sem_entrenador));
 
-	sleep(2);
 
 	//Fin de seccion critica
 
@@ -471,6 +592,7 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	//int retardo = leer_retardo_cpu() * 5;
 	sleep(5); //IRIA sleep(retardo)
 
+	//intercambio
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
@@ -478,6 +600,8 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	nombre_pokemon = list_get(entrenador1->objetivos,0);
 	list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
+
+	//aca debería sumar 5 ciclos de cpu
 
 
 	analizar_proxima_cola(entrenador0);
@@ -487,7 +611,7 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 
 
 bool validacion_nuevo_pokemon(void){
-	return (!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(entrenadores_en_ready)) || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready));
+	return (!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(entrenadores_new)) || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready));
 }
 
 
