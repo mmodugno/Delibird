@@ -6,15 +6,14 @@
  */
 
 #include "utils_Gameboy.h"
-
+#include <sys/time.h>
+#include <sys/types.h>
 
 
 /*
  * Recibe un paquete a serializar, y un puntero a un int en el que dejar
  * el tamaño del stream de bytes serializados que devuelve
  */
-
-
 
 
 int crear_conexion(char *ip, char* puerto)
@@ -386,4 +385,199 @@ char* recibir_mensaje(int socket_cliente)
 void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
+}
+
+
+
+
+
+
+
+
+
+void iniciar_servidor_gameboy(){
+	int socket_servidor_gameboy;
+	int ip_gameboy = 127.0.0.9;
+	int puerto_gameboy = 5009;
+
+    struct addrinfo hints, *servinfo, *p;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE;
+
+    getaddrinfo(ip_gameboy, puerto_gameboy, &hints, &servinfo);
+
+    for (p=servinfo; p != NULL; p = p->ai_next) {
+        if ((socket_servidor_gameboy = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
+            continue;
+
+        if (bind(socket_servidor_gameboy, p->ai_addr, p->ai_addrlen) == -1) {
+            close(socket_servidor_gameboy);
+            continue;
+        }
+        break;
+    }
+
+	listen(socket_servidor_gameboy, SOMAXCONN);
+
+    freeaddrinfo(servinfo);
+
+    while(flagTerminoSuscripcion == 0){
+    	esperar_cliente_gameboy(socket_servidor_gameboy);
+    }
+}
+
+void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Broker al Gameboy para enviarle los mensajes de las colas
+	struct sockaddr_in dir_cliente;
+
+	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
+
+	int socket_cliente_gameboy = accept(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion);
+
+	pthread_create(&thread,NULL,(void*)serve_client_gameboy,&socket_cliente_gameboy); // EL hilo q procesa los mensajes
+	pthread_detach(thread);
+
+	// sem_init(&(semaforoTiempo),0,0);
+
+	//pthread_create(&threadTime,NULL,(void*)analizadorTime,&segundosSuscripcion); // El hilo que maneja el tiempo
+	//pthread_detach(threadTime);
+}
+
+/*void analizadorTime(int* segundos){
+	// Semaforo de bloqueo, cuando se cnecta el broker, empiezo a contar los segundos.
+	sem_wait(&semaforoTiempo);
+	sleep(segundos * 1000);
+	// Enviar pedido de desuscripcion
+
+	pthread_exit(NULL);
+} */
+
+void serve_client_gameboy(int* socket){ // Se reciben los bytes enviados por el Broker
+	int cod_op;
+
+	// int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	int i = recvTimeout(socket, cod_op, sizeof(op_code), segundosSuscripcion);
+
+	if(i <= 0) cod_op = -1;
+	if(i == -2) cod_op = -2;
+
+	process_request_gameboy(cod_op, *socket);
+}
+
+int recvTimeout(int socket, int *cod_op, int len, int timeOut){
+
+	fd_set fds;
+	int n;
+	timeval tv;
+
+	FD_ZERO(&fds);
+	FD_SET(socket, &fds);
+
+	tv.tv_sec = timeOut;
+	tv.tv_usec = 0;
+
+	n = select(socket+1, &fds, NULL, NULL, &tv);
+	if(n == 0) return -2; //timeout
+	if(n == -1) return -1; // error
+
+	return recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL)
+}
+
+void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensajes enviados por el Broker y los logea
+	uint32_t tamanio_buffer;
+	uint32_t tamanio_username;
+	char* username;
+
+	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
+	username = malloc(tamanio_username);
+	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
+	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
+
+	//Leo el ID
+	int ID;
+	recv(cliente_fd, ID, sizeof(uint32_t), MSG_WAITALL);
+
+	switch (cod_op) {
+		case BROKER__NEW_POKEMON:{
+			broker_new_pokemon* newRecibido;
+			newRecibido = deserializar_new_pokemon(cliente_fd, segundosTimeOut);
+			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
+					ID,
+					username,
+					newRecibido->datos->tamanioNombre,
+					newRecibido->datos->nombrePokemon,
+					newRecibido->datos->posX,
+					newRecibido->datos->posY,
+					newRecibido->datos->cantidadPokemon);
+
+			free(newRecibido);
+			break;
+		}
+		case BROKER__APPEARED_POKEMON:{
+			broker_appeared_pokemon* appearedRecibido;
+			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
+
+			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d",
+					ID,
+					username,
+					appearedRecibido->datos->tamanioNombre,
+					appearedRecibido->datos->nombrePokemon,
+					appearedRecibido->datos->posX,
+					appearedRecibido->datos->posY,appearedRecibido->id_relativo);
+
+			free(appearedRecibido);
+			break;
+		}
+		case BROKER__GET_POKEMON:{
+			broker_get_pokemon* getRecibido;
+			getRecibido = deserializar_get_pokemon(cliente_fd);
+
+			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s ",
+					ID,
+					username,
+					getRecibido->datos->tamanioNombre,
+					getRecibido->datos->nombrePokemon);
+
+			free(getRecibido);
+			break;
+		}
+		case BROKER__CATCH_POKEMON:{
+			broker_catch_pokemon* catchRecibido;
+			catchRecibido = deserializar_catch_pokemon(cliente_fd);
+
+			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d ",
+					ID,
+					username,
+					catchRecibido->datos->tamanioNombre,
+					catchRecibido->datos->nombrePokemon,
+					catchRecibido->datos->posX,
+					catchRecibido->datos->posY);
+
+			free(catchRecibido);
+			break;
+		}
+		case BROKER__CAUGHT_POKEMON:{
+			broker_caught_pokemon* caughtRecibido;
+			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
+
+			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON (ID = %d) de %s\n con ID_relativo: %d \n puedoAtraparlo: %d ",
+					ID,
+					username,
+					caughtRecibido->id_relativo,
+					caughtRecibido->datos->puedoAtraparlo);
+
+			free(caughtRecibido);
+			break;
+		}
+		case 0:
+			pthread_exit(NULL);
+		case -1:
+			flagTerminoSuscripcion = 1;
+			pthread_exit(NULL);
+		case -2:
+			flagTerminoSuscripcion = 1;
+			pthread_exit(NULL);
+		}
 }

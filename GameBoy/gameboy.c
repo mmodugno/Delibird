@@ -267,14 +267,25 @@ int main(int argc, char* argv[]){
 	//TODO recv con timeout
 	//Ver el tipo de dato y la funcion enviar
 	if(!strcmp(argv[1],"SUSCRIPTOR")){
+
+		segundosSuscripcion = atoi(argv[3]);
+
 		conexionBroker = crear_conexion(ipBroker,puertoBroker);
+
+
 		if(conexionBroker <= 0){
 			log_info(logConexion,"no me pude conectar a Broker");
 			return 0;
-		}
-		else{
+		} else{
 			log_info(logConexion,"me conecte a Broker exitosamente");
 		}
+
+		//Abro el server de Gameboy para escuchar los msj q me manda Broker
+		flagTerminoSuscripcion = 0;
+		iniciar_servidor_gameboy();
+
+
+
 		if(argc==4){
 			suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 			meSuscribo->nombreDeSuscriptor="GAMEBOY";
@@ -317,8 +328,9 @@ int main(int argc, char* argv[]){
 				log_info(logSuscipcion,"me conecto como modo suscriptor por %d segundos a Localized_Pokemon exitosamente",atoi(argv[3]));
 			}
 			free(meSuscribo);
-
 		}
+
+
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -367,6 +379,4 @@ void terminar_programa(){
 	liberar_conexion(conexionBroker);
 	liberar_conexion(conexionGamecard);
 	liberar_conexion(conexionTeam);
-
-
 }

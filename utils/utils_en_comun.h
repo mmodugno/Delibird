@@ -12,6 +12,8 @@
 #include<commons/collections/queue.h>
 
 #include "stdint.h"
+#include "signal.h"
+#include <semaphore.h>
 
 
 // //// ESTRUCTURAS DE MENSAJES //////
@@ -105,6 +107,13 @@ typedef struct{
 	char* nombreDeSuscriptor;
 	tipoDeCola tipoDeCola;
 }suscriptor;
+
+
+// sem_t semaforoTiempo;
+// sem_t semaforoSacarColaSuscripcion;
+uint32_t segundosSuscripcion;
+uint32_t flagTerminoSuscripcion;
+
 //////////////////////////////////////////////////
 
 void* serializar_paquete(t_paquete* paquete, int *bytes);
