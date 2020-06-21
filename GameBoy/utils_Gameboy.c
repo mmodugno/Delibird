@@ -434,10 +434,9 @@ void iniciar_servidor_gameboy(){
 void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Broker al Gameboy para enviarle los mensajes de las colas
 	struct sockaddr_in dir_cliente;
 
-	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
+	socklen_t* tam_direccion = sizeof(struct sockaddr_in);
 
-
-	int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion,segundosSuscripcion);
+	int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion,segundosSuscripcion);
 
 	pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente_gameboy); // EL hilo q procesa los mensajes
 	pthread_detach(hiloConexion);
@@ -469,7 +468,7 @@ int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, so
 	if(n == 0) return -2; //timeout
 	if(n == -1) return -1; // error
 
-	return accept(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion);
+	return accept(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion);
 }
 
 /*void analizadorTime(int* segundos){
@@ -484,8 +483,8 @@ int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, so
 void serve_client_gameboy(int socket){ // Se reciben los bytes enviados por el Broker
 	int cod_op;
 
-	// int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
-	int i = recv(socket, &cod_op, sizeof(op_code));
+	int i = recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	//int i = recv(socket, &cod_op, sizeof(op_code));
 
 	if(i <= 0) cod_op = -1;
 	if(i == -2) cod_op = -2;

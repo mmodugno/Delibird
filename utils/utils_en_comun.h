@@ -111,8 +111,6 @@ typedef struct{
 
 // sem_t semaforoTiempo;
 // sem_t semaforoSacarColaSuscripcion;
-uint32_t segundosSuscripcion;
-uint32_t flagTerminoSuscripcion;
 
 //////////////////////////////////////////////////
 
