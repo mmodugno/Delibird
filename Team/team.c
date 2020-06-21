@@ -49,19 +49,22 @@ int main(int argc, char* argv[]){
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
-	iniciar_servidor();
+	//iniciar_servidor();
 
 
 
 
 
-/*
-	pokemon* squirte = hacer_pokemon("Squirtle", 0,0);
+
+	pokemon* squirte = hacer_pokemon("Squirtle", 10,5,sizeof("Squirtle"));
 	aparece_nuevo_pokemon(squirte);
 
-	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7);
+
+
+	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
 	aparece_nuevo_pokemon(pikachu);
 
+/*
 	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3);
 	aparece_nuevo_pokemon(pikachu2);
 

@@ -17,3 +17,26 @@
 [INFO] 16:32:59:767 Conexion/(9896:9896): me conecte a Team exitosamente
 [INFO] 18:02:43:871 Conexion/(17566:17566): me conecte a Team exitosamente
 [INFO] 18:06:30:378 Conexion/(17929:17929): me conecte a Broker exitosamente
+[INFO] 20:10:04:259 Conexion/(6005:6005): no me pude conectar a Broker
+[INFO] 20:10:26:196 Conexion/(6083:6083): me conecte a Broker exitosamente
+[INFO] 20:10:26:197 Suscripcion/(6083:6083): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 20:11:01:845 Conexion/(6132:6132): me conecte a Broker exitosamente
+[INFO] 20:11:01:846 Suscripcion/(6132:6132): me conecto como modo suscriptor por 1 segundos a New_Pokemon exitosamente
+[INFO] 20:11:42:876 Conexion/(6184:6184): me conecte a Broker exitosamente
+[INFO] 20:11:47:12 Suscripcion/(6184:6184): me conecto como modo suscriptor por 1 segundos a New_Pokemon exitosamente
+[INFO] 16:12:57:44 Conexion/(4710:4710): me conecte a Broker exitosamente
+[INFO] 16:12:57:45 Suscripcion/(4710:4710): me conecto como modo suscriptor por 1 segundos a New_Pokemon exitosamente
+[INFO] 16:13:35:342 Conexion/(4767:4767): me conecte a Broker exitosamente
+[INFO] 16:13:35:342 Suscripcion/(4767:4767): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 16:14:00:552 Conexion/(4811:4811): me conecte a Broker exitosamente
+[INFO] 16:14:00:553 Suscripcion/(4811:4811): me conecto como modo suscriptor por 5 segundos a New_Pokemon exitosamente
+[INFO] 16:14:30:723 Conexion/(4852:4852): me conecte a Broker exitosamente
+[INFO] 16:14:30:723 Suscripcion/(4852:4852): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
+[INFO] 16:15:54:734 Conexion/(4923:4923): me conecte a Broker exitosamente
+[INFO] 16:15:54:734 Suscripcion/(4923:4923): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
+[INFO] 16:16:16:722 Conexion/(4995:4995): me conecte a Broker exitosamente
+[INFO] 16:16:18:604 Suscripcion/(4995:4995): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
+[INFO] 16:16:44:708 Conexion/(5126:5126): me conecte a Broker exitosamente
+[INFO] 16:16:46:686 Suscripcion/(5126:5126): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
+[INFO] 16:17:19:936 Conexion/(5240:5240): me conecte a Broker exitosamente
+[INFO] 16:17:21:947 Suscripcion/(5240:5240): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente

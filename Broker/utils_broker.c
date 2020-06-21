@@ -192,8 +192,7 @@ uint32_t deserializarAck(int socket_cliente){
 }
 
 
-void iniciar_servidor(void)
-{
+void iniciar_servidor(void){
 	int socket_servidor;
 
     struct addrinfo hints, *servinfo, *p;
@@ -205,8 +204,7 @@ void iniciar_servidor(void)
 
     getaddrinfo(ip_broker, puerto_broker, &hints, &servinfo);
 
-    for (p=servinfo; p != NULL; p = p->ai_next)
-    {
+    for (p=servinfo; p != NULL; p = p->ai_next) {
         if ((socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
             continue;
 
@@ -223,13 +221,10 @@ void iniciar_servidor(void)
 
     while(1){
     	esperar_cliente(socket_servidor);
-
     }
-
 }
 
-void esperar_cliente(int socket_servidor)
-{
+void esperar_cliente(int socket_servidor) {
 	struct sockaddr_in dir_cliente;
 
 	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
@@ -243,8 +238,7 @@ void esperar_cliente(int socket_servidor)
 
 }
 
-void serve_client(int* socket)
-{
+void serve_client(int* socket){
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
@@ -261,6 +255,7 @@ void serve_client(int* socket)
 	BROKER__GET_POKEMON = 6,
 	SUSCRIPCION = 11
 */
+
 void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;

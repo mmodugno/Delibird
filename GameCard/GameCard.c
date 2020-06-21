@@ -14,27 +14,35 @@
 
 int main(int argc, char* argv[]){
 
-	if(argc == 1){
-				printf("No hay parametros suficientes\n");
-				return 2;
-			}
-		if(argc == 4){
+		if(argc == 1){
+			printf("No hay parametros suficientes");
+			return 2;
+		}
 
-			nombreConfig = argv[1];
-			tamanioBloques = atoi(argv[2]);
-			cantidadBloques = atoi(argv[3]);
-
-				}
+		nombreConfig = argv[1];
 
 		leer_config();
 
-		crearMetadata();
+		t_config* configCerrar = config_create("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
 
-		crearDirectorio(punto_montaje,"/Files");
+		modificarArchivoComoConfig(configCerrar,"OPEN","N");
+
+		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
+		logFalloConexion = iniciar_logger("FALLO CONEXION");
+
+		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
+
+		leerMetadata();
+
+		crearDirectorio(punto_montaje,"/TallGrass");
+
+		crearFilesAndBlocks();
 
 		crearBitmap();
 
-		txt_close_file(metadata);
+		//registrarPokemon(nombrePoke,registro);
+
+		//procesarNewPokemon("Pikachu",hacerRegistro(10,10,2));
 
 		printf(" \n Terminado  \n" );
 
@@ -55,11 +63,21 @@ void leer_config(void){
 	punto_montaje = config_get_string_value(config,"PUNTO_MONTAJE_TALLGRASS");
 
 	ipBroker = config_get_string_value(config,"IP_BROKER");
+
 	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
 }
 
-void terminar_programa(void){
 
+t_log* iniciar_logger(char* tipoDeProceso){
+
+	//preguntar por el tipo de LOG_LEVEL
+	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
+}
+
+
+void terminar_programa(void){
+	log_destroy(logArchivoAbierto);
+	log_destroy(logFalloConexion);
 	config_destroy(config);
 
 	//liberar_conexion(conexionBroker);
