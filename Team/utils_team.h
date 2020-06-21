@@ -61,11 +61,12 @@ t_dictionary* objetivo_global;
 t_queue* pokemones_en_el_mapa;
 t_list* pokemones_atrapados;
 
-t_list* entrenadores_en_ready;
+t_list* entrenadores_new;
 t_list* entrenadores_finalizados;
 t_list* entrenadores_en_deadlock;
 t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
+t_queue* entrenadores_ready;
 
 char* nombre_pokemon;
 char* archivo_config;
@@ -75,6 +76,7 @@ sem_t hay_entrenador;
 bool broker_conectado;
 
 int conexionBroker;
+int quantum;
 
 typedef struct{
     char* nombre;
@@ -147,6 +149,7 @@ void variables_globales();
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
 void hacer_entrenadores(void);
 void mover_entrenador(entrenador* entrenador,int x, int y);
+void mover_entrenador_RR(entrenador* entrenador,int x, int y);
 void disminuir_cuantos_puede_cazar(entrenador* un_entrenador);
 bool puede_cazar(entrenador* entrenador);
 bool entrenador_en_exec(entrenador* un_entrenador);
@@ -181,6 +184,8 @@ void algoritmo_aplicado(void);
 void planifico_con_fifo(void);
 void terminar_ejecucion_entrenador(void);
 bool validacion_nuevo_pokemon(void);
+bool hay_pokemon_y_entrenador(void);
+void planifico_con_RR(void);
 
 
 //DEADLOCK
