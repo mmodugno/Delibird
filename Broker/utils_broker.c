@@ -9,10 +9,11 @@
 
 void mostrarParticiones(particion* unaParticion){
 	if(unaParticion != NULL){
-		printf("base: %d, tamanio: %d, id: %d, tiempo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->tiempo);
+		printf("base: %d, tamanio: %d, id: %d, tiempo: %s, tipo: %s,libre: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->timestamp,colasDeEnum[unaParticion->tipoMensaje],unaParticion->libre);
 	}
 }
 
+/*
 void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLibres) {
 	particionLibre* pLibre = malloc(sizeof(particionLibre));
 	uint32_t posibleLimite;
@@ -28,7 +29,7 @@ void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLib
 	    } else {
 			uint32_t i = 1;
 			uint32_t next =(uint32_t) list_get(listaPosicionesLibres, i);
-			//*** ver si con un for se soluciona
+			//ver si con un for se soluciona
 
 			for (i = 0; i < list_size(listaPosicionesLibres); i++) {
 				next =(uint32_t) list_get(listaPosicionesLibres,i+1);
@@ -68,21 +69,21 @@ void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
 
 	uint32_t i;
 
-	/* recorrer memoria*/
+	// recorrer memoria
 	for(i = 0; i < tamanio_memoria;i++) {
 	    void* prueba = malloc(1);
 	    memcpy(prueba,memoria+i,1);
 
 	    if(strcmp(prueba,"\0") == 0){
-	        /*listaPosicionesLibres.add(posicion)*/
+	        //listaPosicionesLibres.add(posicion)
 	    	list_add(listaPosicionesLibres,(uint32_t)i);
 	        //printf("posicion libre en: %d \n",posicion);
 	    }
 	}
-	/* fin recorrer memoria */
+	//fin recorrer memoria
 
-	/*armar particionesLibres*/
-	/*la listaPosicionesLibres siempre va a estar ordenada porque recorre la memoria en forma ascendente*/
+	//armar particionesLibres
+	//la listaPosicionesLibres siempre va a estar ordenada porque recorre la memoria en forma ascendente
 
 	//arma una lista de particiones libres
 	armarParticiones(listaPosicionesLibres,particionesLibres);
@@ -114,7 +115,7 @@ void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
 	para que todas me devuelvan el tamaño, hago un filter para que tenga el tamaño minimo para copiar mi dato y de
 	esas saco la minima
 	*/
-
+/*
 	free(pLibreParaAgregar);
 	//free();
 	list_destroy(listaPosicionesLibres);
@@ -132,7 +133,7 @@ void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* partici
 	 * comparar las bases respecto un pivote y así obtener los espacios libres
 	 *
 	 */
-
+/*
 	bool comparadorDeBases(particion* unaParticion, particion* otraParticion){
 		// Fijarse si ordena menor a mayor, o al reves!!!!!!!!!!!!!!!!!!!!!!!!!
 		return (unaParticion->base < otraParticion->base);
@@ -160,7 +161,7 @@ void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* partici
 void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
 	//Agrego la particionLibre a la lista
 }
-
+*/
 
 void iniciarMemoria(){
 
@@ -168,7 +169,16 @@ void iniciarMemoria(){
 
 	tablaDeParticiones = list_create();
 
-	idGlobales = 0;
+	particion *partLibreInicial= malloc(sizeof(particion));
+	//los que tienen idMensaje 0 son particiciones vacias
+	partLibreInicial->idMensaje = 0;
+	partLibreInicial->base = 0;
+	partLibreInicial->tamanioMensaje = tamanio_memoria;
+	partLibreInicial->libre = 1;
+
+	list_add(tablaDeParticiones,partLibreInicial);
+
+	idGlobales = 1;
 
 }
 
@@ -295,8 +305,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			new_pokemon *raiz = transformarBrokerNewPokemon(newRecibido);
-			agregarAMemoria(raiz,newRecibido->id);
-			agregarACola(NEW_POKEMON,newRecibido);
+			agregarAMemoria(raiz,newRecibido->id,NEW_POKEMON);
+			//agregarACola(NEW_POKEMON,newRecibido);
 
 			free(raiz);
 			free(newRecibido);
@@ -321,8 +331,8 @@ void process_request(int cod_op, int cliente_fd) {
 			appearedRecibido->suscriptoresQueRespondieron = queue_create();
 
 			appeared_pokemon *raiz = transformarBrokerAppearedPokemon(appearedRecibido);
-			agregarAMemoria(raiz,appearedRecibido->id);
-			agregarACola(APPEARED_POKEMON,appearedRecibido);
+			agregarAMemoria(raiz,appearedRecibido->id,APPEARED_POKEMON);
+			//agregarACola(APPEARED_POKEMON,appearedRecibido);
 
 			free(raiz);
 			free(appearedRecibido);
@@ -346,8 +356,8 @@ void process_request(int cod_op, int cliente_fd) {
 			getRecibido->suscriptoresQueRespondieron = queue_create();
 
 			get_pokemon *raiz = transformarBrokerGetPokemon(getRecibido);
-			agregarAMemoria(raiz,getRecibido->id);
-			agregarACola(GET_POKEMON,getRecibido);
+			agregarAMemoria(raiz,getRecibido->id,GET_POKEMON);
+			//agregarACola(GET_POKEMON,getRecibido);
 
 			free(raiz);
 			free(getRecibido);
@@ -372,8 +382,8 @@ void process_request(int cod_op, int cliente_fd) {
 			catchRecibido->suscriptoresQueRespondieron = queue_create();
 
 			catch_pokemon *raiz = transformarBrokerCatchPokemon(catchRecibido);
-			agregarAMemoria(raiz, catchRecibido->id);
-			agregarACola(CATCH_POKEMON,catchRecibido);
+			agregarAMemoria(raiz, catchRecibido->id,CATCH_POKEMON);
+			//agregarACola(CATCH_POKEMON,catchRecibido);
 
 			free(raiz);
 			free(catchRecibido);
@@ -397,8 +407,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			caught_pokemon *raiz = transformarBrokerCaughtPokemon(caughtRecibido);
-			agregarAMemoria(raiz,caughtRecibido->id);
-			agregarACola(CAUGHT_POKEMON,caughtRecibido);
+			agregarAMemoria(raiz,caughtRecibido->id,CAUGHT_POKEMON);
+			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
 			free(raiz);
 			free(caughtRecibido);
@@ -440,13 +450,14 @@ void process_request(int cod_op, int cliente_fd) {
 			brokerCAP = NULL;
 			brokerGP  = NULL;
 			brokerLP  = NULL;
+			/*
 
 			brokerNP  = (broker_new_pokemon*)list_find(colaNewPokemon, buscarIdNew);
 			brokerAP  = (broker_appeared_pokemon*)list_find(colaAppearedPokemon, buscarIdAppeared);
 			brokerCTP = (broker_catch_pokemon*)list_find(colaCatchPokemon, buscarIdCatch);
 			brokerCAP = (broker_caught_pokemon*)list_find(colaCaughtPokemon, buscarIdCaught);
 			brokerGP  = (broker_get_pokemon*)list_find(colaGetPokemon, buscarIdGet);
-			brokerLP  = (broker_localized_pokemon*)list_find(colaLocalizedPokemon, buscarIdLocalized);
+			brokerLP  = (broker_localized_pokemon*)list_find(colaLocalizedPokemon, buscarIdLocalized);*/
 
 			if(brokerNP != NULL){
 				queue_push(brokerNP->suscriptoresQueRespondieron, username);
@@ -493,7 +504,7 @@ void* recibir_mensaje(int socket_cliente, int* size) {
 }
 
 //por ahora usamos tipos de dato de broker que van a tener el id_relativo, el mensaje, su id y la cola de suscriptores que les llego el mensaje
-void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
+/*void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
 	switch(tipo_de_Cola){
 		case NEW_POKEMON:
 			list_add(colaNewPokemon,(broker_new_pokemon*)mensaje);
@@ -516,7 +527,7 @@ void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
 			break;
 
 	}
-}
+}*/
 
 void suscribirACola(suscriptor* suscriptor){
 	switch(suscriptor->tipoDeCola){
@@ -543,41 +554,113 @@ void suscribirACola(suscriptor* suscriptor){
 	}
 }
 
-void agregarAMemoria(void * dato, uint32_t idMensaje){
-	particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje);
-	uint32_t desplazamiento = 0;
+void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje){
+	particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje,tipoMensaje);
+	//uint32_t desplazamiento = 0;
 	particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
-	particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
+	//particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
 
 	if(!strcmp(algoritmo_particion_libre,"FF")){
-		algoritmoFirstFit(datoAAgregar,&desplazamiento,particionEncontrada);
+		algoritmoFirstFit(datoAAgregar,particionEncontrada);
 	}
 	if(!strcmp(algoritmo_particion_libre,"BF")){
-		algoritmoBestFit(datoAAgregar,particionMasChica);
+		//algoritmoBestFit(datoAAgregar,particionMasChica);
 	}
 
+	/*
 	free(datoAAgregar);
 	free(particionEncontrada);
-	free(particionMasChica);
+	free(particionMasChica);*/
 }
 
 
 
-particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje){
+particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje){
 	particion *datoAAgregar = malloc(sizeof(particion));
-	datoAAgregar->base = 0;//predeteminado, osea a modificar
 	datoAAgregar->mensaje = malloc(sizeof(dato));
+	datoAAgregar->mensaje = dato;
 	//agregamos tipos de dato raiz como son new_pokemon, localized_pokemon, etc;
 	//TENER EN CUENTA QUE PUEDE CAMBIAR el tamaño si es broker_tipo_dato  PORQUE TIENE LOS SUSCRIPTORES QUE LE MANDARON ACK
-	datoAAgregar->mensaje= dato;
 	datoAAgregar->tamanioMensaje= sizeof(dato);
-	datoAAgregar->tiempo= temporal_get_string_time();//solo tira la hora sin la fecha
+	datoAAgregar->acknoleged = list_create();
+	datoAAgregar->tipoMensaje = tipoMensaje;
+	datoAAgregar->libre = 0;
+	datoAAgregar->timestamp= temporal_get_string_time();//solo tira la hora sin la fecha
 	datoAAgregar->idMensaje = idMensaje;
 
 	return datoAAgregar;
 }
 
+bool baseMasChica(particion *part1,particion* part2){
+	return part1->base < part2->base;
+}
+
+void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
+
+	bool primeroLibreQueEntre(particion *partic){
+		return (partic->libre && (partic->tamanioMensaje >= datoAAgregar->tamanioMensaje));
+	}
+
+	bool partSiguienteALibre(particion *partic){
+		return (partic->base > particionEncontrada->base);
+	}
+
+	bool partEncontradaEliminar(particion *partic){
+		return (partic == particionEncontrada);
+	}
+
+	list_sort(tablaDeParticiones,baseMasChica);
+	particionEncontrada = list_find(tablaDeParticiones,primeroLibreQueEntre);
+	particion *partSig = malloc(sizeof(particion));
+	partSig = list_find(tablaDeParticiones,partSiguienteALibre);
+
+
+	//si encontro una partcion en toda la memoria
+	if(particionEncontrada!=NULL){
+		datoAAgregar->base = particionEncontrada->base;
+		if(particionEncontrada->tamanioMensaje != datoAAgregar->tamanioMensaje){
+			particionEncontrada->base = datoAAgregar->base + datoAAgregar->tamanioMensaje;
+			if(partSig!=NULL){
+				particionEncontrada->tamanioMensaje = partSig->base - particionEncontrada->base;
+			}
+			else{
+				particionEncontrada->tamanioMensaje = tamanio_memoria - 1 - particionEncontrada->base;
+			}
+		}
+		else{
+			//eliminar la particion libre
+			list_remove_by_condition(tablaDeParticiones,partEncontradaEliminar);
+			free(partSig);
+			free(particionEncontrada);
+		}
+		//agregar a la tabal de particiones
+		list_add(tablaDeParticiones,datoAAgregar);
+		//agregar a memoria Real
+		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
+	}
+	else{
+		//como pedi malloc de estas dos cosas y no hay nada les hago un free
+		free(particionEncontrada);
+		free(partSig);
+		//si no hay ninguna particion en donde entre
+		//comprimir
+
+		//volver a ver si entra
+
+		//reemplazar(quien elimina)
+
+		//comprimir
+
+		//volver a ver si entra
+
+	}
+
+	list_iterate(tablaDeParticiones, mostrarParticiones);
+
+}
+
 //funcion recursiva
+/*
 void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada){
 
 	particionEncontrada = NULL;
@@ -609,7 +692,5 @@ void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particio
 	}
 
 }
-
-/*
- * */
+*/
 

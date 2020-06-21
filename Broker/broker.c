@@ -32,19 +32,19 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		confirmacionRecepcion = iniciar_logger("Recepcion Mensaje",log_file); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
 		almacenadoMemoria = iniciar_logger("Almacenado Memoria",log_file); //debe indicar posicion de inicio de particion
 		eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
-		/*compactacionMemoria= iniciar_logger("",log_file);
-		dumpCache= iniciar_logger("",log_file);*/
+		compactacionMemoria= iniciar_logger("compactacionMemoria",log_file);
+		dumpCache= iniciar_logger("dumpCache",log_file);
 
 		iniciarMemoria();
 
 
-
+/*
 		colaNewPokemon = list_create();
 		colaAppearedPokemon = list_create();
 		colaCatchPokemon= list_create();
 		colaCaughtPokemon= list_create();
 		colaGetPokemon= list_create();
-		colaLocalizedPokemon= list_create();
+		colaLocalizedPokemon= list_create();*/
 
 		suscriptoresAppearedPokemon = queue_create();
 		suscriptoresCatchPokemon = queue_create();

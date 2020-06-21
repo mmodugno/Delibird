@@ -34,9 +34,13 @@ typedef struct {
 	uint32_t base;
 	uint32_t tamanioMensaje;
 	void* mensaje;
-	char* tiempo;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
+	tipoDeCola tipoMensaje;
+	t_list *acknoleged;
+	char* timestamp;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
+	uint32_t libre;
 }particion;
 
+/*
 typedef struct {
 
     uint32_t base;
@@ -44,7 +48,7 @@ typedef struct {
     uint32_t tamanio;
 
 } particionLibre;
-
+*/
 t_list *tablaDeParticiones;
 
 uint32_t idGlobales;
@@ -66,14 +70,14 @@ t_config* config;
 void *memoria;
 
 pthread_t thread;
-
+/*
 t_list* colaNewPokemon;
 t_list* colaAppearedPokemon;
 
 t_list* colaCatchPokemon;
 t_list* colaCaughtPokemon;
 t_list* colaGetPokemon;
-t_list* colaLocalizedPokemon;
+t_list* colaLocalizedPokemon;*/
 
 t_queue* suscriptoresNewPokemon;
 t_queue* suscriptoresAppearedPokemon;
@@ -97,9 +101,8 @@ t_log* dumpCache;
 static const char *colasDeEnum[] = {"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON"};
 
 
-//void algoritmoFirstFit(particion* ,uint32_t ,particion* );
-//void algoritmoBestFit(particion* ,uint32_t );
-void agregarAMemoria(void* , uint32_t );
+
+void agregarAMemoria(void* , uint32_t ,tipoDeCola);
 void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
@@ -109,10 +112,10 @@ int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
-void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
+//void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
 void suscribirACola(suscriptor* suscriptor);
-particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje);
-void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada);
-void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
+particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola);
+void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada);
+//void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
 
 #endif /* UTILS_BROKER_H_ */
