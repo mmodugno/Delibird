@@ -27,6 +27,8 @@
 #include "datos_broker.h"
 #include<commons/collections/list.h>
 #include<commons/temporal.h>
+#include<signal.h>
+#include<semaphore.h>
 
 //ID	Base	tamaño de mensaje	Mensaje	Fecha(creacion/uso)
 typedef struct {
@@ -98,10 +100,10 @@ t_log* compactacionMemoria;
 t_log* dumpCache;
 
 
-static const char *colasDeEnum[] = {"NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON"};
+static const char *colasDeEnum[] = {"LIBRE","NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON"};
 
 
-
+sem_t idsDeMensajes;
 void agregarAMemoria(void* , uint32_t ,tipoDeCola);
 void iniciarMemoria();
 void* recibir_buffer(int*, int);

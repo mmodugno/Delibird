@@ -37,6 +37,7 @@ typedef enum
 }op_code;
 
 typedef enum{
+	LIBRE = 0,
 	NEW_POKEMON=1,
 	APPEARED_POKEMON=2,
 	CATCH_POKEMON=3,

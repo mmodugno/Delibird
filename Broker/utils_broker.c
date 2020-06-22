@@ -1,6 +1,6 @@
 /*
  * utils_broker.c
- *
+ *l
  *  Created on: 14 may. 2020
  *      Author: utnso
  */
@@ -9,7 +9,9 @@
 
 void mostrarParticiones(particion* unaParticion){
 	if(unaParticion != NULL){
-		printf("base: %d, tamanio: %d, id: %d, tiempo: %s, tipo: %s,libre: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->timestamp,colasDeEnum[unaParticion->tipoMensaje],unaParticion->libre);
+		log_info(almacenadoMemoria,"base: %d, tamanio: %d, id: %d, tipo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje,colasDeEnum[unaParticion->tipoMensaje]);
+		//printf("base: %d, tamanio: %d, id: %d, tiempo: %s, tipo: %s,libre: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->timestamp,colasDeEnum[unaParticion->tipoMensaje],unaParticion->libre);
+		//printf("base: %d, tamanio: %d, id: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje);
 	}
 }
 
@@ -290,8 +292,10 @@ void process_request(int cod_op, int cliente_fd) {
 								newRecibido->datos->posY,
 								newRecibido->datos->cantidadPokemon);
 			//mutex
+			sem_wait(&idsDeMensajes);
 			newRecibido->id = idGlobales;
 			idGlobales++;
+			sem_post(&idsDeMensajes);
 			//mutex
 
 
@@ -318,8 +322,10 @@ void process_request(int cod_op, int cliente_fd) {
 					appearedRecibido->datos->posX,
 					appearedRecibido->datos->posY,appearedRecibido->id_relativo);
 			//mutex
+			sem_wait(&idsDeMensajes);
 			appearedRecibido->id = idGlobales;
 			idGlobales++;
+			sem_post(&idsDeMensajes);
 			//mutex
 
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
@@ -343,8 +349,10 @@ void process_request(int cod_op, int cliente_fd) {
 									getRecibido->datos->nombrePokemon);
 
 			//mutex
+			sem_wait(&idsDeMensajes);
 			getRecibido->id = idGlobales;
 			idGlobales++;
+			sem_post(&idsDeMensajes);
 			//mutex
 
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
@@ -369,8 +377,10 @@ void process_request(int cod_op, int cliente_fd) {
 									catchRecibido->datos->posX,
 									catchRecibido->datos->posY);
 			//mutex
+			sem_wait(&idsDeMensajes);
 			catchRecibido->id = idGlobales;
 			idGlobales++;
+			sem_post(&idsDeMensajes);
 			//mutex
 
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
@@ -393,8 +403,10 @@ void process_request(int cod_op, int cliente_fd) {
 									,username,caughtRecibido->id_relativo,
 									caughtRecibido->datos->puedoAtraparlo);
 			//mutex
+			sem_wait(&idsDeMensajes);
 			caughtRecibido->id = idGlobales;
 			idGlobales++;
+			sem_post(&idsDeMensajes);
 			//mutex
 
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
@@ -592,6 +604,8 @@ bool baseMasChica(particion *part1,particion* part2){
 
 void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
+	//list_iterate(tablaDeParticiones, mostrarParticiones);
+
 	bool primeroLibreQueEntre(particion *partic){
 		return (partic->libre && (partic->tamanioMensaje >= datoAAgregar->tamanioMensaje));
 	}
@@ -619,19 +633,20 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 				particionEncontrada->tamanioMensaje = partSig->base - particionEncontrada->base;
 			}
 			else{
-				particionEncontrada->tamanioMensaje = tamanio_memoria - 1 - particionEncontrada->base;
+				particionEncontrada->tamanioMensaje = tamanio_memoria - particionEncontrada->base;
 			}
+			//agregar a la tabal de particiones
+			list_add(tablaDeParticiones,datoAAgregar);
+			//agregar a memoria Real
+			memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
 		}
 		else{
 			//eliminar la particion libre
-			list_remove_by_condition(tablaDeParticiones,partEncontradaEliminar);
+			//TODO hacer que la particion sea
+			copiarDatos(particionEncontrada,datoAAgregar);
 			free(partSig);
-			free(particionEncontrada);
 		}
-		//agregar a la tabal de particiones
-		list_add(tablaDeParticiones,datoAAgregar);
-		//agregar a memoria Real
-		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
+
 	}
 	else{
 		//como pedi malloc de estas dos cosas y no hay nada les hago un free
@@ -650,7 +665,9 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	}
 
+	log_info(almacenadoMemoria,"almacene lo siguiente: ");
 	list_iterate(tablaDeParticiones, mostrarParticiones);
+
 
 }
 
@@ -689,3 +706,13 @@ void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particio
 }
 */
 
+void copiarDatos(particion *target,particion * copiado){
+	target->acknoleged =copiado->acknoleged;
+	target->base = copiado->base;
+	target->idMensaje =copiado->idMensaje;
+	target->libre=copiado->libre;
+	target->mensaje=copiado->mensaje;
+	target->tamanioMensaje=copiado->tamanioMensaje;
+	target->timestamp=copiado->timestamp;
+	target->tipoMensaje = copiado->tipoMensaje;
+}
