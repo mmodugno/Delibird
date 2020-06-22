@@ -8,6 +8,7 @@
 #include"utils_gamecard.h"
 
 t_list* crear_lista(char** array){
+
     t_list* nuevaLista = list_create();
     int i = 0;
     while( array[i] != NULL ){
@@ -17,13 +18,34 @@ t_list* crear_lista(char** array){
     return nuevaLista;
 }
 
+char* registro_a_string(registroDatos* registro) {
+
+	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
+
+	char* value = string_from_format("%d",registro->cantidad);
+
+	char* reg_string = string_from_format("%s=%s\n",key, value);
+
+	//free(key);
+	//free(value);
+
+	return reg_string;
+}
+
+int tam_registro(registroDatos* registro) {
+	char* registro_formateado = registro_a_string(registro);
+	int tam_registro = strlen(registro_formateado);
+	//free(registro_formateado);
+	return tam_registro;
+}
+
 void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
 
 	config_set_value(configModif,key,valor);
 
 	config_save(configModif);
 
-	config_destroy(configModif);
+	//config_destroy(configModif);
 
 }
 
@@ -111,8 +133,6 @@ void verificarAperturaArchivo(char* path) {
 
 	aux = config_get_string_value(configAux,"OPEN");
 
-
-
 	if(!strcmp(aux,"Y")){
 
 		printf("NoEntre"); //Deberia delegar un hilo que trate de entrar cada X segundos
@@ -141,6 +161,17 @@ int buscarIndicePrimerBloqueLibre(){
 	txt_close_file(crearArchivo);
 
 	return contador;
+}
+
+int obtenerUltimo(t_list* listaBloques) {
+
+
+	int size = list_size(listaBloques);
+
+	return atoi(list_get(listaBloques,size-1));
+
+
+
 }
 
 char* agregarBloqueALista(t_list* bloques, int nuevoBloque) {
@@ -184,7 +215,9 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
 
-		bitarray_set_bit(bitArray,indiceLibre-1);
+	//	bitarray_set_bit(bitArray,indiceLibre-1);
+
+		agregarBloqueParaPokemon(nombrePoke,indiceLibre);
 
 		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
 
@@ -195,28 +228,54 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		int escribio = 0;
 
-		for(int i = 0;i < list_size(listaBloques);i++){
+		int bloque = obtenerUltimo(listaBloques);
 
-		int bloque = atoi(list_get(listaBloques,i));
+		char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",bloque);
+
+		FILE* archivoBloque = txt_open_for_append(path);
 
 		if(entraDatoEnBloque(registro,bloque)){
 
-			char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",bloque);
 
-			FILE* archivoBloque = txt_open_for_append(path);
-
-			txt_write_in_file(archivoBloque,"\n");
-			txt_write_in_file(archivoBloque,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+			txt_write_in_file(archivoBloque,registro_a_string(registro));
 
 			escribio = 1;
 
 			txt_close_file(archivoBloque);
-
-			break;
-
 		}
+		else {
 
-	}
+			int tamanio_restante = tamanioRestante(archivoBloque);
+
+			if(tamanio_restante > 0){
+
+			char* primeraParte = string_substring_until(registro_a_string(registro),tamanio_restante);
+
+			txt_write_in_file(archivoBloque,primeraParte);
+
+			}
+
+			//
+
+			int indiceSiguienteLibre = buscarIndicePrimerBloqueLibre();
+
+			char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceSiguienteLibre);
+
+			FILE* archivoBloqueLibre = txt_open_for_append(path);
+
+			char* segundaParte = string_substring_from(registro_a_string(registro),tamanio_restante);
+
+			txt_write_in_file(archivoBloqueLibre,segundaParte);
+
+			agregarBloqueParaPokemon(nombrePoke,indiceSiguienteLibre);
+
+			txt_close_file(archivoBloqueLibre);
+
+			txt_close_file(archivoBloque);
+
+			escribio = 1;
+			}
+
 
 		if(!escribio){
 
@@ -238,10 +297,10 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 			txt_close_file(bloqueLibre);
 
 		}
-	}
+}
 
 
-	sleep(tiempo_retardo_operacion);
+	//sleep(tiempo_retardo_operacion);
 	//marcar archivo como cerrado;
 
 	//conetar a broker y enviar a cola Appeared pokemon(datos = idRecibido, pokemon, posicionMapa);
@@ -363,7 +422,6 @@ int tamanioArchivoDadoPath(char* path){
 
 }
 
-
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -372,20 +430,34 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	verificarExistenciaPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
-	registrarPokemon(nombrePoke,registro);//poner los whiles despues
 
-	int cantidadPokemon = estaPosicionEnArchivo(registro->posX,registro->posY,path);
+	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
 
-	if(cantidadPokemon > 0){
+	int yaRegistrado = 0;
+//TODO pasar a registrarPokemon
+	for(int i = 0; i < list_size(listaBloques);i++){
 
-		config_set_value(configPath,string_from_format("%d-%d",registro->posX,registro->posY),string_itoa(cantidadPokemon+registro->cantidad));
+		char* bloque  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",list_get(listaBloques,i));
 
-	} else{
+		FILE* aux = txt_open_for_append(bloque);
+		txt_close_file(aux);
 
-		config_set_value(configPath,string_from_format("%d-%d",registro->posX,registro->posY),string_itoa(registro->cantidad));
+		t_config* configBloque = config_create(bloque);
+
+		char* key = string_from_format("%d-%d",registro->posX,registro->posY);
+
+		if(config_has_property(configBloque,key)){
+
+			config_set_value(configBloque,key,string_itoa(registro->cantidad+config_get_int_value(configBloque,key)));
+			yaRegistrado = 1;
+			break;
+		}
+		config_destroy(configBloque);
 	}
 
-	//cerrarArchivoMetadataPokemonComoConfig(configPath);
+	if(!yaRegistrado){
+	registrarPokemon(nombrePoke,registro);
+	}
 
 	config_destroy(configPath);
 }
@@ -415,6 +487,30 @@ int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
 
 	config_destroy(configPath);
 	return 0;
+
+
+}
+
+int tamanioRestante(FILE* arch) {
+
+	return tamanioBloques - tamanioArchivo(arch);
+
+}
+
+void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
+
+
+	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+
+	char** bloques = config_get_array_value(configPoke,"BLOCKS");
+
+	t_list* listaBloques = crear_lista(bloques);
+
+	config_set_value(configPoke,"BLOCKS",agregarBloqueALista(listaBloques,indiceSiguienteLibre));
+
+	config_save(configPoke);
+
+	config_destroy(configPoke);
 
 
 }

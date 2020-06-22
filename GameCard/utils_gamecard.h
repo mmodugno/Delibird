@@ -64,6 +64,10 @@ int estaPosicionEnArchivo(uint32_t ,uint32_t ,char* );
 int tamanioArchivoDadoPath(char* );
 t_log* iniciar_logger(char*);
 void modificarArchivoComoConfig(t_config* ,char* ,char* );
+char* registro_a_string(registroDatos* );
+registroDatos* hacerRegistro(uint32_t ,uint32_t ,uint32_t );
+int tamanioRestante(FILE* );
+void agregarBloqueParaPokemon(char* ,int );
 
 
 #endif /* UTILS_GAMECARD_H_ */
