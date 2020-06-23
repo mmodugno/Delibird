@@ -7,85 +7,10 @@
 
 #include"utils_gamecard.h"
 
-t_list* crear_lista(char** array){
 
-    t_list* nuevaLista = list_create();
-    int i = 0;
-    while( array[i] != NULL ){
-        list_add(nuevaLista, array[i]);
-        i++;
-    }
-    return nuevaLista;
-}
 
-char* registro_a_string(registroDatos* registro) {
 
-	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
 
-	char* value = string_from_format("%d",registro->cantidad);
-
-	char* reg_string = string_from_format("%s=%s\n",key, value);
-
-	//free(key);
-	//free(value);
-
-	return reg_string;
-}
-
-int tam_registro(registroDatos* registro) {
-	char* registro_formateado = registro_a_string(registro);
-	int tam_registro = strlen(registro_formateado);
-	//free(registro_formateado);
-	return tam_registro;
-}
-
-void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
-
-	config_set_value(configModif,key,valor);
-
-	config_save(configModif);
-
-	//config_destroy(configModif);
-
-}
-
-bool entraDatoEnBloque(registroDatos* registro, int nroBloque) {
-
-	return tamanioArchivoDadoPath(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",nroBloque))+tamanioRegistro(registro) < tamanioBloques;
-
-}
-
-void crearDirectorio(char* path ,char* nombreCarpeta){
-
-	char* aux = malloc(strlen(path) + strlen(nombreCarpeta) + 2);
-
-	strcpy(aux,path);
-	strcat(aux,nombreCarpeta);
-
-	mkdir(aux,0777);
-
-	free(aux);
-}
-
-bool estaVacio(FILE* arch) {
-
-	fseek(arch,0,SEEK_END);
-
-	return ftell(arch) == 0;
-
-}
-
-bool estaVacioConRuta(char* path) {
-
-	FILE* arch = txt_open_for_append(path);
-
-	bool vacio = estaVacio(arch);
-
-	txt_close_file(arch);
-
-	return vacio;
-
-}
 
 void verificarExistenciaPokemon(char* nombrePoke) {
 
@@ -149,11 +74,11 @@ int buscarIndicePrimerBloqueLibre(){
 
 	int contador = 1;
 
-	char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador);
+	char* path = obtener_ruta_bloque(contador);
 
 	while(!estaVacioConRuta(path)){
 	contador++;
-	memcpy(path,string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador),strlen(path));
+	memcpy(path,obtener_ruta_bloque(contador),strlen(path));
 	}
 
 	FILE* crearArchivo = txt_open_for_append(path);
@@ -163,15 +88,11 @@ int buscarIndicePrimerBloqueLibre(){
 	return contador;
 }
 
-int obtenerUltimo(t_list* listaBloques) {
-
+int obtenerUltimoBloque(t_list* listaBloques) {
 
 	int size = list_size(listaBloques);
 
 	return atoi(list_get(listaBloques,size-1));
-
-
-
 }
 
 char* agregarBloqueALista(t_list* bloques, int nuevoBloque) {
@@ -191,6 +112,8 @@ char* agregarBloqueALista(t_list* bloques, int nuevoBloque) {
 	return nuevosBloques;
 }
 
+
+
 void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
@@ -208,12 +131,14 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 	if(list_is_empty(listaBloques)){
 		int indiceLibre = buscarIndicePrimerBloqueLibre();
 
-		char* pathLibre = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceLibre);
+		char* pathLibre = obtener_ruta_bloque(indiceLibre);
 
 		//mutexLock
 		FILE* bloqueLibre = txt_open_for_append(pathLibre);
 
-		txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+		txt_write_in_file(registro_a_string(registro));
+
+
 
 	//	bitarray_set_bit(bitArray,indiceLibre-1);
 
@@ -228,9 +153,10 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		int escribio = 0;
 
-		int bloque = obtenerUltimo(listaBloques);
+		int bloque = obtenerUltimoBloque(listaBloques);
 
-		char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",bloque);
+		char* path = obtener_ruta_bloque(bloque);
+
 
 		FILE* archivoBloque = txt_open_for_append(path);
 
@@ -245,7 +171,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 		}
 		else {
 
-			int tamanio_restante = tamanioRestante(archivoBloque);
+			int tamanio_restante = tamanioRestante(archivoBloque); //Al tamaño maximo le resta el ocupado
 
 			if(tamanio_restante > 0){
 
@@ -255,11 +181,11 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			}
 
-			//
+
 
 			int indiceSiguienteLibre = buscarIndicePrimerBloqueLibre();
 
-			char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceSiguienteLibre);
+			char* path = obtener_ruta_bloque(indiceSiguienteLibre);
 
 			FILE* archivoBloqueLibre = txt_open_for_append(path);
 
@@ -281,7 +207,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			int indiceLibre = buscarIndicePrimerBloqueLibre();
 
-			char* pathLibre = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",indiceLibre);
+			char* pathLibre = obtener_ruta_bloque(indiceLibre);
 
 			//mutexLock
 			FILE* bloqueLibre = txt_open_for_append(pathLibre);
@@ -311,6 +237,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 void leerMetadata(){
 
+
 	t_config* configAux = config_create("/home/utnso/Escritorio/PuntoMontaje/Metadata/Metadata.bin");
 
 	tamanioBloques =  config_get_int_value(configAux,"BLOCK_SIZE");
@@ -321,6 +248,7 @@ void leerMetadata(){
 }
 
 void crearFilesAndBlocks() {
+
 
 	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass","/Files");
 
@@ -339,26 +267,6 @@ void crearFilesAndBlocks() {
 
 }
 
-char* obtener_ruta_bloque(int nro_bloque) {
-	return string_from_format("%s%d.bin","/home/utnso/Escritorio/PuntoMontaje/Blocks/",nro_bloque);
-}
-
-void crearMetadataEspecie(char* nombreEspecie) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
 
 void crearBitmap(){
 
@@ -379,48 +287,8 @@ void crearBitmap(){
 
 }
 
-int tamanioRegistro(registroDatos* registro) {
 
-	int tamanio = strlen(string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
 
-	return tamanio;
-}
-
-registroDatos* hacerRegistro(uint32_t x,uint32_t y,uint32_t cant){
-
-	registroDatos* registro = malloc(sizeof(registroDatos));
-
-	registro->posX = x;
-	registro->posY = y;
-	registro->cantidad = cant;
-
-	return registro;
-
-}
-
-int tamanioArchivo(FILE* arch){
-
-	int tamanio;
-
-	fseek(arch,0,SEEK_END);
-
-	tamanio = ftell(arch);
-
-	return tamanio;
-
-}
-
-int tamanioArchivoDadoPath(char* path){
-
-	FILE* arch = txt_open_for_append(path);
-
-	int tamanio = tamanioArchivo(arch);
-
-	txt_close_file(arch);
-
-	return tamanio;
-
-}
 
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
@@ -437,9 +305,10 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 //TODO pasar a registrarPokemon
 	for(int i = 0; i < list_size(listaBloques);i++){
 
-		char* bloque  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",list_get(listaBloques,i));
+		char* bloque = obtener_ruta_bloque(list_get(listaBloques,i));
 
 		FILE* aux = txt_open_for_append(bloque);
+
 		txt_close_file(aux);
 
 		t_config* configBloque = config_create(bloque);
@@ -514,3 +383,145 @@ void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
 
 }
+
+
+
+
+
+
+//////////////////////////////////////FUNCIONES AUXILIARES//////////////////////////////////////
+
+void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
+
+	config_set_value(configModif,key,valor);
+
+	config_save(configModif);
+
+	//config_destroy(configModif);
+
+}
+
+void crearDirectorio(char* path ,char* nombreCarpeta){
+
+	char* aux = malloc(strlen(path) + strlen(nombreCarpeta) + 2);
+
+	strcpy(aux,path);
+	strcat(aux,nombreCarpeta);
+
+	mkdir(aux,0777);
+
+	free(aux);
+}
+
+
+
+
+t_list* crear_lista(char** array){
+
+    t_list* nuevaLista = list_create();
+    int i = 0;
+    while( array[i] != NULL ){
+        list_add(nuevaLista, array[i]);
+        i++;
+    }
+    return nuevaLista;
+}
+
+
+
+char* registro_a_string(registroDatos* registro) {
+
+	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
+
+	char* value = string_from_format("%d",registro->cantidad);
+
+	char* reg_string = string_from_format("%s=%s\n",key, value);
+
+	//free(key);
+	//free(value);
+
+	return reg_string;
+}
+
+int tam_registro(registroDatos* registro) {
+	char* registro_formateado = registro_a_string(registro);
+	int tam_registro = strlen(registro_formateado);
+	//free(registro_formateado);
+	return tam_registro;
+}
+
+bool entraDatoEnBloque(registroDatos* registro, int nroBloque) {
+	return tamanioArchivoDadoPath(obtener_ruta_bloque(nroBloque))+tamanioRegistro(registro) < tamanioBloques;
+}
+
+bool estaVacio(FILE* arch) {
+
+	fseek(arch,0,SEEK_END);
+
+	return ftell(arch) == 0;
+
+}
+
+bool estaVacioConRuta(char* path) {
+
+	FILE* arch = txt_open_for_append(path);
+
+	bool vacio = estaVacio(arch);
+
+	txt_close_file(arch);
+
+	return vacio;
+
+}
+
+
+char* obtener_ruta_bloque(int nro_bloque) {
+	return string_from_format("%s/TallGrass/Blocks/%d.bin",punto_montaje,nro_bloque);
+}
+
+int tamanioRegistro(registroDatos* registro) {
+
+	int tamanio = strlen(string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+
+	return tamanio;
+}
+
+registroDatos* hacerRegistro(uint32_t x,uint32_t y,uint32_t cant){
+
+	registroDatos* registro = malloc(sizeof(registroDatos));
+
+	registro->posX = x;
+	registro->posY = y;
+	registro->cantidad = cant;
+
+	return registro;
+
+}
+
+int tamanioArchivo(FILE* arch){
+
+	int tamanio;
+
+	fseek(arch,0,SEEK_END);
+
+	tamanio = ftell(arch);
+
+	return tamanio;
+
+}
+
+
+int tamanioArchivoDadoPath(char* path){
+
+	FILE* arch = txt_open_for_append(path);
+
+	int tamanio = tamanioArchivo(arch);
+
+	txt_close_file(arch);
+
+	return tamanio;
+
+}
+
+
+
