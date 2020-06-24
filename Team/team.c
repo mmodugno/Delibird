@@ -21,31 +21,31 @@ int main(int argc, char* argv[]){
 
 	username = malloc(strlen("TEAM")+1);
 	username = "TEAM";
-	cambioDeCola = iniciar_log("CAMBIO DE COLA"); //Detallar razon
-	movimiento_entrenador = iniciar_log("MOVIMIENTO DE ENTRENADOR");//indicando la ubicación a la que se movió).
-	operacion_de_atrapar = iniciar_log("OPERACION ATRAPAR"); //log_info(operacion_de_atrapar,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);
-	operacion_de_intercambio = iniciar_log("OPERACION INTERCAMBIO"); //log_info(log,"intercambio entre entrenadores %d y %d",entrenador1->id,entrenador2->id);
-	inicio_deadlock = iniciar_log("DETECCION_DEADLOCK");
-	resultado_deadlock = iniciar_log("RESULTADO_DE_DEADLOCK");
-	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");//INDICAR TIPO DEL MENSAJE Y SUS DATOS
-	resultado = iniciar_log("RESULTADO TEAM"); //al final
-	comunicacion_broker_error = iniciar_log("ERROR EN COMUNICACION"); //se realizara los resultados por default
-	comunicacion_broker_reintento = iniciar_log("REINTENTO DE COMUNICACION");
-	comunicacion_broker_resultado = iniciar_log("RESULTADO DE COMUNICACION");
+
 
 	printf(" Arrancando \n \n");
 
+
+	iniciar_logs();
+
+
 	sem_init(&hay_entrenador,0,0);
 	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
+	sem_init(&deadlock,0,0);
 
-	///////////////////////////////////////////
+
 	variables_globales();
+
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	printf("Algoritmo de planificacion = %s \n \n",algoritmo);
 
 	conectarse_con_broker();
 
+
 	pthread_t hilo_principal;
+
+
+
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
@@ -53,10 +53,7 @@ int main(int argc, char* argv[]){
 
 
 
-
-
-
-	pokemon* squirte = hacer_pokemon("Squirtle", 10,5,sizeof("Squirtle"));
+	pokemon* squirte = hacer_pokemon("Squirtle", 0,2,sizeof("Squirtle"));
 	aparece_nuevo_pokemon(squirte);
 
 
@@ -64,7 +61,9 @@ int main(int argc, char* argv[]){
 	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
 	aparece_nuevo_pokemon(pikachu);
 
-/*
+
+	/*
+
 	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3);
 	aparece_nuevo_pokemon(pikachu2);
 
@@ -72,11 +71,7 @@ int main(int argc, char* argv[]){
 	pokemon* charmander = hacer_pokemon("Charmander", 0,0);
 	aparece_nuevo_pokemon(charmander);
 
-
-
-
 */
-
 
 
 
@@ -106,4 +101,17 @@ void terminar_programa(void){
 	//liberar_conexion(conexion);
 }
 
+void iniciar_logs(void){
+	cambioDeCola = iniciar_log("CAMBIO DE COLA"); //Detallar razon
+	movimiento_entrenador = iniciar_log("MOVIMIENTO DE ENTRENADOR");//indicando la ubicación a la que se movió).
+	operacion_de_atrapar = iniciar_log("OPERACION ATRAPAR"); //log_info(operacion_de_atrapar,"pokemon: %s con posicion (%d, %d)",poke->nombre,poke->posX,poke->posY);
+	operacion_de_intercambio = iniciar_log("OPERACION INTERCAMBIO"); //log_info(log,"intercambio entre entrenadores %d y %d",entrenador1->id,entrenador2->id);
+	inicio_deadlock = iniciar_log("DETECCION_DEADLOCK");
+	resultado_deadlock = iniciar_log("RESULTADO_DE_DEADLOCK");
+	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");//INDICAR TIPO DEL MENSAJE Y SUS DATOS
+	resultado = iniciar_log("RESULTADO TEAM"); //al final
+	comunicacion_broker_error = iniciar_log("ERROR EN COMUNICACION"); //se realizara los resultados por default
+	comunicacion_broker_reintento = iniciar_log("REINTENTO DE COMUNICACION");
+	comunicacion_broker_resultado = iniciar_log("RESULTADO DE COMUNICACION");
 
+}

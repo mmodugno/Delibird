@@ -72,6 +72,9 @@ char* nombre_pokemon;
 char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
+sem_t deadlock;
+
+
 
 bool broker_conectado;
 
@@ -97,6 +100,7 @@ typedef struct{
     sem_t sem_entrenador;
     sem_t espera_de_catch;
     pokemon* objetivo_proximo;
+    int ciclos_cpu;
 }entrenador;
 
 
@@ -113,7 +117,7 @@ entrenador* entrenador_exec;
 pokemon* proximo_objetivo;
 
 // FUNCIONES DE LA CONFIG //
-
+t_list* crear_lista(char** array);
 t_list* obtener_lista_posiciones(void);
 t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
@@ -192,6 +196,7 @@ void planifico_con_RR(void);
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
 void manejar_deadlock(void);
 bool hay_deadlock(void);
+void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1);
 
 
 //Mensajes

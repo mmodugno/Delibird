@@ -17610,3 +17610,99 @@
 [INFO] 20:12:13:946 ERROR EN COMUNICACION/(5967:5974): No se pudo conectar con Broker,se realizará la operación por default
 [INFO] 20:12:13:946 CAMBIO DE COLA/(5967:5974): Cambio a BLOCKED de entrenador: 2 
  
+[INFO] 22:45:47:984 ERROR EN COMUNICACION/(7359:7359): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:45:48:31 CAMBIO DE COLA/(7359:7367): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:45:52:32 CAMBIO DE COLA/(7359:7364): cambio a READY de entrenador: 0 
+ 
+[INFO] 22:45:52:32 CAMBIO DE COLA/(7359:7367): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:45:56:33 CAMBIO DE COLA/(7359:7366): cambio a READY de entrenador: 2 
+ 
+[INFO] 22:45:56:33 CAMBIO DE COLA/(7359:7367): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:45:56:33 MOVIMIENTO DE ENTRENADOR/(7359:7364): entrenador 0: se movio a (0,3)
+[INFO] 22:45:56:33 OPERACION ATRAPAR/(7359:7364): ATRAPAR POKEMON: Squirtle con posicion (0, 3)
+[INFO] 22:45:56:33 ERROR EN COMUNICACION/(7359:7364): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:45:56:34 CAMBIO DE COLA/(7359:7364): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 22:45:56:34 CAMBIO DE COLA/(7359:7367): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:45:58:40 MOVIMIENTO DE ENTRENADOR/(7359:7366): entrenador 2: se movio a (6,7)
+[INFO] 22:45:58:41 OPERACION ATRAPAR/(7359:7366): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 22:45:58:41 ERROR EN COMUNICACION/(7359:7366): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:45:58:41 CAMBIO DE COLA/(7359:7366): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 22:49:55:566 ERROR EN COMUNICACION/(7440:7440): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:50:16:491 CAMBIO DE COLA/(7440:7471): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:50:23:562 MOVIMIENTO DE ENTRENADOR/(7440:7461): entrenador 0: se movio a (0,3)
+[INFO] 22:50:23:562 OPERACION ATRAPAR/(7440:7461): ATRAPAR POKEMON: Squirtle con posicion (0, 3)
+[INFO] 22:50:23:563 ERROR EN COMUNICACION/(7440:7461): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:50:23:563 CAMBIO DE COLA/(7440:7461): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 22:50:24:22 CAMBIO DE COLA/(7440:7471): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:50:27:20 CAMBIO DE COLA/(7440:7467): cambio a READY de entrenador: 2 
+ 
+[INFO] 22:50:33:583 CAMBIO DE COLA/(7440:7471): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:50:41:761 CAMBIO DE COLA/(7440:7467): cambio a READY de entrenador: 2 
+ 
+[INFO] 22:51:03:117 CAMBIO DE COLA/(7440:7471): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:51:03:973 MOVIMIENTO DE ENTRENADOR/(7440:7467): entrenador 2: se movio a (6,7)
+[INFO] 22:51:03:973 OPERACION ATRAPAR/(7440:7467): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 22:51:03:973 ERROR EN COMUNICACION/(7440:7467): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:51:03:973 CAMBIO DE COLA/(7440:7467): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 22:58:08:354 ERROR EN COMUNICACION/(7677:7677): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:58:08:384 CAMBIO DE COLA/(7677:7685): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:58:12:385 CAMBIO DE COLA/(7677:7682): cambio a READY de entrenador: 0 
+ 
+[INFO] 22:58:12:385 CAMBIO DE COLA/(7677:7685): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:58:16:387 CAMBIO DE COLA/(7677:7684): cambio a READY de entrenador: 2 
+ 
+[INFO] 22:58:16:387 CAMBIO DE COLA/(7677:7685): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 22:58:16:387 MOVIMIENTO DE ENTRENADOR/(7677:7682): entrenador 0: se movio a (0,3)
+[INFO] 22:58:16:387 OPERACION ATRAPAR/(7677:7682): ATRAPAR POKEMON: Squirtle con posicion (0, 3)
+[INFO] 22:58:16:387 ERROR EN COMUNICACION/(7677:7682): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:58:16:387 CAMBIO DE COLA/(7677:7682): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 22:58:16:387 CAMBIO DE COLA/(7677:7685): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 22:58:18:388 MOVIMIENTO DE ENTRENADOR/(7677:7684): entrenador 2: se movio a (6,7)
+[INFO] 22:58:18:388 OPERACION ATRAPAR/(7677:7684): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 22:58:18:389 ERROR EN COMUNICACION/(7677:7684): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 22:58:18:389 CAMBIO DE COLA/(7677:7684): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 23:00:48:90 ERROR EN COMUNICACION/(7757:7757): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:00:53:847 CAMBIO DE COLA/(7757:7799): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:00:57:972 CAMBIO DE COLA/(7757:7792): cambio a READY de entrenador: 0 
+ 
+[INFO] 23:00:58:46 CAMBIO DE COLA/(7757:7799): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:00:58:155 CAMBIO DE COLA/(7757:7794): cambio a READY de entrenador: 2 
+ 
+[INFO] 23:01:00:23 CAMBIO DE COLA/(7757:7799): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:01:00:268 MOVIMIENTO DE ENTRENADOR/(7757:7792): entrenador 0: se movio a (0,3)
+[INFO] 23:01:00:268 OPERACION ATRAPAR/(7757:7792): ATRAPAR POKEMON: Squirtle con posicion (0, 3)
+[INFO] 23:01:00:268 ERROR EN COMUNICACION/(7757:7792): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:01:00:268 CAMBIO DE COLA/(7757:7792): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 23:01:04:582 CAMBIO DE COLA/(7757:7799): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:01:20:645 CAMBIO DE COLA/(7757:7794): cambio a READY de entrenador: 2 
+ 
+[INFO] 23:01:24:109 CAMBIO DE COLA/(7757:7799): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:01:27:244 MOVIMIENTO DE ENTRENADOR/(7757:7794): entrenador 2: se movio a (6,7)
+[INFO] 23:01:27:244 OPERACION ATRAPAR/(7757:7794): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 23:01:27:244 ERROR EN COMUNICACION/(7757:7794): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:01:27:244 CAMBIO DE COLA/(7757:7794): Cambio a BLOCKED de entrenador: 2 
+ 

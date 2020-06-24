@@ -9,8 +9,10 @@
 
 void mostrarParticiones(particion* unaParticion){
 	if(unaParticion != NULL){
+		//este no funciona
+		//log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",unaParticion->idMensaje,colasDeEnum[unaParticion->tipoMensaje],unaParticion->base,unaParticion->tamanioMensaje,unaParticion->timestamp);
+		//este me parece que si y quizas es mas descriptivo
 		log_info(almacenadoMemoria,"base: %d, tamanio: %d, id: %d, tipo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje,colasDeEnum[unaParticion->tipoMensaje]);
-		//printf("base: %d, tamanio: %d, id: %d, tiempo: %s, tipo: %s,libre: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->timestamp,colasDeEnum[unaParticion->tipoMensaje],unaParticion->libre);
 		//printf("base: %d, tamanio: %d, id: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje);
 	}
 }
@@ -376,12 +378,18 @@ void process_request(int cod_op, int cliente_fd) {
 									catchRecibido->datos->nombrePokemon,
 									catchRecibido->datos->posX,
 									catchRecibido->datos->posY);
+
 			//mutex
 			sem_wait(&idsDeMensajes);
 			catchRecibido->id = idGlobales;
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			if(!strcmp(username,"TEAM")){
+				//TODO ver conexiones con los otros sockets
+				//send(conexionTeam,catchRecibido->id,sizeof(uint32_t),0);
+			}
 
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
 			catchRecibido->suscriptoresQueRespondieron = queue_create();
@@ -571,13 +579,9 @@ void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje){
 		algoritmoFirstFit(datoAAgregar,particionEncontrada);
 	}
 	if(!strcmp(algoritmo_particion_libre,"BF")){
-		//algoritmoBestFit(datoAAgregar,particionMasChica);
+		algoritmoBestFit(datoAAgregar,particionEncontrada);
 	}
 
-	/*
-	free(datoAAgregar);
-	free(particionEncontrada);
-	free(particionMasChica);*/
 }
 
 
@@ -602,16 +606,109 @@ bool baseMasChica(particion *part1,particion* part2){
 	return part1->base < part2->base;
 }
 
+void algoritmoBestFit(particion *datoAAgregar,particion *particionChica){
+
+	uint32_t baseSig = -1;
+
+	bool particionLibreQueEntre(particion *partic){
+		return (partic->libre && (partic->tamanioMensaje >= datoAAgregar->tamanioMensaje));
+	}
+
+	void particionMasChica(particion *partic){
+		if(partic->tamanioMensaje<particionChica->tamanioMensaje){
+			particionChica = partic;
+		}
+	}
+	bool partSiguienteALibre(particion *partic){
+		if(partic->base > particionChica->base){
+			baseSig = partic->base;
+			return 1;
+		}
+		return 0;
+	}
+
+	list_sort(tablaDeParticiones,baseMasChica);
+	t_list* tablaParticionesLibres = list_filter(tablaDeParticiones,particionLibreQueEntre);
+	particionChica = list_get(tablaParticionesLibres,0);
+	list_iterate(tablaParticionesLibres,particionMasChica);
+
+	list_find(tablaDeParticiones,partSiguienteALibre);
+
+	//si encontro una partcion en toda la memoria
+	agregarTablaParticionesYMemoria(datoAAgregar,particionChica,&baseSig);
+
+}
+
+void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig){
+	//si encontro una partcion en toda la memoria
+	if(partElegida!=NULL){
+		datoAAgregar->base = partElegida->base;
+		if(partElegida->tamanioMensaje != datoAAgregar->tamanioMensaje){
+			partElegida->base = datoAAgregar->base + datoAAgregar->tamanioMensaje;
+			if(*baseSig!=-1){
+				partElegida->tamanioMensaje = *baseSig - partElegida->base;
+			}
+			else{
+				partElegida->tamanioMensaje = tamanio_memoria - partElegida->base;
+			}
+			//agregar a la tabal de particiones
+			list_add(tablaDeParticiones,datoAAgregar);
+		}
+		else{
+			//eliminar la particion libre
+			//TODO ver si funciona
+			copiarDatos(partElegida,datoAAgregar);
+		}
+		//agregar a memoria Real
+		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
+	}
+	else{
+		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazamiento)
+		//free(particionEncontrada);
+		//si no hay ninguna particion en donde entre
+		//comprimir (ver contador de frecuencia con mutex)
+
+		//volver a ver si entra el dato
+
+		//reemplazar(quien elimina)
+		algoritmoReemplazo(datoAAgregar);
+
+		//comprimir(ver contador de frecuencia con mutex)(CREO)
+
+		//volver a ver si entra
+
+	}
+
+	log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
+	//para ver como esta la memoria
+	//list_iterate(tablaDeParticiones, mostrarParticiones);
+}
+
+void algoritmoReemplazo(particion *datoAAgregar){
+	if(!strcmp(algoritmo_reemplazo,"FIFO")){
+
+	}
+	if(!strcmp(algoritmo_reemplazo,"LRU")){
+
+	}
+}
+
+
 void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	//list_iterate(tablaDeParticiones, mostrarParticiones);
+	uint32_t baseSig = -1;
 
 	bool primeroLibreQueEntre(particion *partic){
 		return (partic->libre && (partic->tamanioMensaje >= datoAAgregar->tamanioMensaje));
 	}
 
 	bool partSiguienteALibre(particion *partic){
-		return (partic->base > particionEncontrada->base);
+		if(partic->base > particionEncontrada->base){
+			baseSig = partic->base;
+			return 1;
+		}
+		return 0;
 	}
 
 	bool partEncontradaEliminar(particion *partic){
@@ -620,54 +717,11 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	list_sort(tablaDeParticiones,baseMasChica);
 	particionEncontrada = list_find(tablaDeParticiones,primeroLibreQueEntre);
-	particion *partSig = malloc(sizeof(particion));
-	partSig = list_find(tablaDeParticiones,partSiguienteALibre);
+	list_find(tablaDeParticiones,partSiguienteALibre);
 
 
 	//si encontro una partcion en toda la memoria
-	if(particionEncontrada!=NULL){
-		datoAAgregar->base = particionEncontrada->base;
-		if(particionEncontrada->tamanioMensaje != datoAAgregar->tamanioMensaje){
-			particionEncontrada->base = datoAAgregar->base + datoAAgregar->tamanioMensaje;
-			if(partSig!=NULL){
-				particionEncontrada->tamanioMensaje = partSig->base - particionEncontrada->base;
-			}
-			else{
-				particionEncontrada->tamanioMensaje = tamanio_memoria - particionEncontrada->base;
-			}
-			//agregar a la tabal de particiones
-			list_add(tablaDeParticiones,datoAAgregar);
-			//agregar a memoria Real
-			memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
-		}
-		else{
-			//eliminar la particion libre
-			//TODO hacer que la particion sea
-			copiarDatos(particionEncontrada,datoAAgregar);
-			free(partSig);
-		}
-
-	}
-	else{
-		//como pedi malloc de estas dos cosas y no hay nada les hago un free
-		free(particionEncontrada);
-		free(partSig);
-		//si no hay ninguna particion en donde entre
-		//comprimir
-
-		//volver a ver si entra
-
-		//reemplazar(quien elimina)
-
-		//comprimir
-
-		//volver a ver si entra
-
-	}
-
-	log_info(almacenadoMemoria,"almacene lo siguiente: ");
-	list_iterate(tablaDeParticiones, mostrarParticiones);
-
+	agregarTablaParticionesYMemoria(datoAAgregar,particionEncontrada,&baseSig);
 
 }
 
