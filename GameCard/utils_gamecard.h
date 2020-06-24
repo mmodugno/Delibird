@@ -10,6 +10,13 @@
 
 #include "utils_en_comun.h"
 
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -58,16 +65,12 @@ void crearFilesAndBlocks(void);
 t_log* iniciar_logger(char*);
 void modificarArchivoComoConfig(t_config* ,char* ,char* );
 
-
-
 ////////// CONFIGURACIONES POKEMONES
 
 void registrarPokemon(char* , registroDatos* );
 void agregarBloqueParaPokemon(char* ,int );
 void verificarExistenciaPokemon(char* );
-
-
-
+void procesarNewPokemon(char*, registroDatos* );
 
 ////////// REGISTROS Y BLOQUES
 
@@ -76,11 +79,10 @@ char* registro_a_string(registroDatos* );
 char* buscarPrimerBloqueLibre(void);
 int estaPosicionEnArchivo(uint32_t ,uint32_t ,char* );
 int tamanioArchivoDadoPath(char* );
+int tamanioArchivo(FILE* );
 registroDatos* hacerRegistro(uint32_t ,uint32_t ,uint32_t );
 int tamanioRestante(FILE* );
-
-
-
+registroDatos* string_a_registro(char* );
 
 ///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
 
@@ -89,8 +91,7 @@ bool entraDatoEnBloque(registroDatos* registro, int nroBloque);
 char* obtener_ruta_bloque(int nro_bloque);
 bool estaVacioConRuta(char* );
 bool estaVacio(FILE* );
-
-
-
+int tamanio_array(char** bloque);
+bool configConKeyCompleta(char* rutaConfig,char* key);
 
 #endif /* UTILS_GAMECARD_H_ */

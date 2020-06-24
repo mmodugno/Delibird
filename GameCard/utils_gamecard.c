@@ -7,11 +7,6 @@
 
 #include"utils_gamecard.h"
 
-
-
-
-
-
 void verificarExistenciaPokemon(char* nombrePoke) {
 
 	char* path = "/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/";
@@ -112,8 +107,6 @@ char* agregarBloqueALista(t_list* bloques, int nuevoBloque) {
 	return nuevosBloques;
 }
 
-
-
 void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
@@ -136,9 +129,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 		//mutexLock
 		FILE* bloqueLibre = txt_open_for_append(pathLibre);
 
-		txt_write_in_file(registro_a_string(registro));
-
-
+		txt_write_in_file(bloqueLibre,registro_a_string(registro));
 
 	//	bitarray_set_bit(bitArray,indiceLibre-1);
 
@@ -180,8 +171,6 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 			txt_write_in_file(archivoBloque,primeraParte);
 
 			}
-
-
 
 			int indiceSiguienteLibre = buscarIndicePrimerBloqueLibre();
 
@@ -287,9 +276,6 @@ void crearBitmap(){
 
 }
 
-
-
-
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -302,27 +288,116 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
 
 	int yaRegistrado = 0;
-//TODO pasar a registrarPokemon
-	for(int i = 0; i < list_size(listaBloques);i++){
+	int i = 0;
 
-		char* bloque = obtener_ruta_bloque(list_get(listaBloques,i));
+	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
 
-		FILE* aux = txt_open_for_append(bloque);
+	//ver si esta como config
+	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
-		txt_close_file(aux);
+		char* bloque = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
 		t_config* configBloque = config_create(bloque);
 
-		char* key = string_from_format("%d-%d",registro->posX,registro->posY);
-
 		if(config_has_property(configBloque,key)){
 
-			config_set_value(configBloque,key,string_itoa(registro->cantidad+config_get_int_value(configBloque,key)));
+			if(configEstaCompleta(bloque,key,registro->posY)) {
+
+			int actual = config_get_int_value(configBloque,key);
+
+			modificarArchivoComoConfig(configBloque,key,string_itoa(registro->cantidad+actual));
+
 			yaRegistrado = 1;
 			break;
+
+			}
 		}
+
 		config_destroy(configBloque);
+		i++;
 	}
+
+	int j = 0;
+
+	//si esta cortado
+	while(yaRegistrado == 0 && j < list_size(listaBloques)-1){
+
+	char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+	char* segundoFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i+1)));
+
+	int fd = open(primerFd,O_RDWR);
+	int fd2 = open(segundoFd,O_RDWR);
+
+	struct stat sb;
+	fstat(fd,&sb);
+
+	struct stat sb2;
+	fstat(fd2,&sb2);
+
+	char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+	char* file_memory2 = mmap(NULL,sb2.st_size,PROT_READ,MAP_PRIVATE,fd2,0);
+
+	int nuevoTamanio = sb.st_size + sb2.st_size;
+
+	char* conjunto = malloc(nuevoTamanio);
+
+	llenarConjunto(conjunto,file_memory,file_memory2,sb,sb2);
+
+	char** bloques;
+
+	char* nuevoConjunto = string_new();
+
+	if(string_contains(conjunto,key)) {
+
+		bloques = string_split(conjunto,"\n");
+		int k;
+		int tamanio = tamanio_array(bloques);
+
+		for(k=0;k < tamanio;k++){
+
+			if(string_contains(bloques[k],key)){
+
+				int valor = (registro->cantidad);
+
+				registroDatos* reg = string_a_registro(bloques[k]);
+				reg->cantidad = reg->cantidad + valor;
+
+				bloques[k] = registro_a_string(reg);
+
+				string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
+
+				yaRegistrado = 1;
+
+			} else {
+
+				string_append(&nuevoConjunto,bloques[k]);
+
+				if(k != tamanio-1){
+					string_append(&nuevoConjunto,"\n");
+
+				}
+
+			}
+		}
+
+		char* subtring = string_substring_from(nuevoConjunto,tamanioBloques);
+
+		write(fd,nuevoConjunto,tamanioBloques);
+
+		write(fd2,subtring,tamanioBloques);
+		break;
+		}
+
+		j++;
+	}
+
+
+
+
+	//agregarYaRegistrado;
+
+
+
 
 	if(!yaRegistrado){
 	registrarPokemon(nombrePoke,registro);
@@ -341,8 +416,6 @@ int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
 
 	char* cantidad = config_get_string_value(configPath,string_from_format("%d-%d",posX,posY));
 
-
-
 	if(cantidad != NULL){
 
 	int numero = config_get_int_value(configPath,string_from_format("%d-%d",posX,posY));
@@ -350,14 +423,10 @@ int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
 	config_destroy(configPath);
 
 	return numero;
-
-
 	}
 
 	config_destroy(configPath);
 	return 0;
-
-
 }
 
 int tamanioRestante(FILE* arch) {
@@ -384,11 +453,6 @@ void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
 }
 
-
-
-
-
-
 //////////////////////////////////////FUNCIONES AUXILIARES//////////////////////////////////////
 
 void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
@@ -413,9 +477,6 @@ void crearDirectorio(char* path ,char* nombreCarpeta){
 	free(aux);
 }
 
-
-
-
 t_list* crear_lista(char** array){
 
     t_list* nuevaLista = list_create();
@@ -426,8 +487,6 @@ t_list* crear_lista(char** array){
     }
     return nuevaLista;
 }
-
-
 
 char* registro_a_string(registroDatos* registro) {
 
@@ -441,6 +500,21 @@ char* registro_a_string(registroDatos* registro) {
 	//free(value);
 
 	return reg_string;
+}
+
+registroDatos* string_a_registro(char* string) {
+
+	char** keyValor = string_split(string,"=");
+	char** posiciones = string_split(keyValor[0],"-");
+
+	int x = atoi(posiciones[0]);
+	int y = atoi(posiciones[1]);
+	int cantidad = atoi(keyValor[1]);
+
+	registroDatos* aux = hacerRegistro(x,y,cantidad);
+
+	return aux;
+
 }
 
 int tam_registro(registroDatos* registro) {
@@ -473,7 +547,6 @@ bool estaVacioConRuta(char* path) {
 	return vacio;
 
 }
-
 
 char* obtener_ruta_bloque(int nro_bloque) {
 	return string_from_format("%s/TallGrass/Blocks/%d.bin",punto_montaje,nro_bloque);
@@ -510,7 +583,6 @@ int tamanioArchivo(FILE* arch){
 
 }
 
-
 int tamanioArchivoDadoPath(char* path){
 
 	FILE* arch = txt_open_for_append(path);
@@ -523,5 +595,44 @@ int tamanioArchivoDadoPath(char* path){
 
 }
 
+void llenarConjunto(char* conjunto,char* file_memory,char* file_memory2,struct stat sb,struct stat sb2) {
 
+		int i,j;
 
+		for(i=0;i<sb.st_size;i++){
+					conjunto[i] = file_memory[i];
+				}
+
+		for(j=0; j< sb2.st_size;j++){
+					conjunto[sb.st_size+j] = file_memory2[j];
+				}
+
+}
+
+int tamanio_array(char** bloque){
+
+	int contador = 0;
+
+	while(bloque[contador] != NULL){
+		contador++;
+	}
+
+	return contador;
+
+}
+
+bool configConKeyCompleta(char* rutaConfig,char* key,int posY) {
+
+			FILE* archBloque = fopen(rutaConfig,"r");
+
+			char ultimo;
+
+			fseek(archBloque,-1,SEEK_END);
+
+			fread(&ultimo,1,1,archBloque);
+
+			txt_close_file(rutaConfig);
+
+			return ultimo != '=' && atoi(&ultimo) != posY;
+
+}
