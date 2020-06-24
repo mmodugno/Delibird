@@ -292,30 +292,76 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
 
-	//ver si esta como config
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
-		char* bloque = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
-		t_config* configBloque = config_create(bloque);
+		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
-		if(config_has_property(configBloque,key)){
+		int fd = open(primerFd,O_RDWR);
 
-			if(configConKeyCompleta(bloque,key,registro->posY)) {
+		struct stat sb;
+		fstat(fd,&sb);
 
-			int actual = config_get_int_value(configBloque,key);
+		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
 
-			modificarArchivoComoConfig(configBloque,key,string_itoa(registro->cantidad+actual));
+		char* conjuntoConKey = malloc(sb.st_size);
 
-			yaRegistrado = 1;
-			break;
+		int j;
 
+		strcpy(conjuntoConKey,file_memory);
+
+		char* keyCompleta = string_new();
+
+		string_append(&keyCompleta,key);
+		string_append(&keyCompleta,"=");
+		string_append(&keyCompleta,string_itoa(registro->cantidad));
+
+		if(string_contains(conjuntoConKey,keyCompleta)){
+
+			char** bloques;
+
+			char* nuevoConjunto = string_new();
+
+			bloques = string_split(conjuntoConKey,"\n");
+			int k;
+			int tamanio = tamanio_array(bloques);
+
+			for(k=0;k < tamanio;k++){
+
+				if(string_contains(bloques[k],key)){
+
+						int valor = (registro->cantidad);
+
+						registroDatos* reg = string_a_registro(bloques[k]);
+						reg->cantidad = reg->cantidad + valor;
+
+						bloques[k] = registro_a_string(reg);
+
+						string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
+
+						yaRegistrado = 1;
+
+					} else {
+
+						string_append(&nuevoConjunto,bloques[k]);
+
+						if(k != tamanio-1){
+							string_append(&nuevoConjunto,"\n");
+
+						}
+
+					}
+				}
+
+				write(fd,nuevoConjunto,sb.st_size);
+				break;
 			}
-		}
 
-		config_destroy(configBloque);
+		close(fd);
 		i++;
+
 	}
+
 
 	int j = 0;
 
@@ -340,6 +386,9 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	int nuevoTamanio = sb.st_size + sb2.st_size;
 
 	char* conjunto = malloc(nuevoTamanio);
+
+	strcpy(conjunto,file_memory);
+	strcpy(conjunto,file_memory2);
 
 	llenarConjunto(conjunto,file_memory,file_memory2,sb,sb2);
 
@@ -383,7 +432,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 		char* subtring = string_substring_from(nuevoConjunto,tamanioBloques);
 
 		write(fd,nuevoConjunto,tamanioBloques);
-		write(fd2,subtring,strlen(subtring));
+		write(fd2,subtring,sb2.st_size);
 
 		close(fd);
 		close(fd2);
@@ -394,14 +443,6 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 		j++;
 	}
-
-
-
-
-	//agregarYaRegistrado;
-
-
-
 
 	if(!yaRegistrado){
 	registrarPokemon(nombrePoke,registro);
