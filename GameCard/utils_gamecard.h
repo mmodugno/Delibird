@@ -92,6 +92,7 @@ char* obtener_ruta_bloque(int nro_bloque);
 bool estaVacioConRuta(char* );
 bool estaVacio(FILE* );
 int tamanio_array(char** bloque);
-bool configConKeyCompleta(char* rutaConfig,char* key);
+bool configConKeyCompleta(char* ,char* ,int );
+void llenarConjunto(char* ,char* ,char* ,struct stat ,struct stat );
 
 #endif /* UTILS_GAMECARD_H_ */

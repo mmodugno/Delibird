@@ -301,7 +301,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 		if(config_has_property(configBloque,key)){
 
-			if(configEstaCompleta(bloque,key,registro->posY)) {
+			if(configConKeyCompleta(bloque,key,registro->posY)) {
 
 			int actual = config_get_int_value(configBloque,key);
 
@@ -322,8 +322,8 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	//si esta cortado
 	while(yaRegistrado == 0 && j < list_size(listaBloques)-1){
 
-	char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
-	char* segundoFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i+1)));
+	char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,j)));
+	char* segundoFd = obtener_ruta_bloque(atoi(list_get(listaBloques,j+1)));
 
 	int fd = open(primerFd,O_RDWR);
 	int fd2 = open(segundoFd,O_RDWR);
@@ -383,8 +383,12 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 		char* subtring = string_substring_from(nuevoConjunto,tamanioBloques);
 
 		write(fd,nuevoConjunto,tamanioBloques);
+		write(fd2,subtring,strlen(subtring));
 
-		write(fd2,subtring,tamanioBloques);
+		close(fd);
+		close(fd2);
+
+
 		break;
 		}
 
@@ -631,7 +635,7 @@ bool configConKeyCompleta(char* rutaConfig,char* key,int posY) {
 
 			fread(&ultimo,1,1,archBloque);
 
-			txt_close_file(rutaConfig);
+			txt_close_file(archBloque);
 
 			return ultimo != '=' && atoi(&ultimo) != posY;
 

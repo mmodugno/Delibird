@@ -44,9 +44,9 @@ int main(int argc, char* argv[]){
 		registroDatos* registro2 = hacerRegistro(2,7,1);
 		registroDatos* registro3 = hacerRegistro(6,4,1);
 
-		procesarNewPokemon("Pikachu",registro1);
+		//procesarNewPokemon("Pikachu",registro1);
 		procesarNewPokemon("Pikachu",registro2);
-		procesarNewPokemon("Pikachu",registro3);
+		//procesarNewPokemon("Pikachu",registro3);
 		//procesarNewPokemon("Pikachu",registro1);
 		//procesarNewPokemon("Pikachu",registro2);
 		//procesarNewPokemon("Pikachu",registro3);
