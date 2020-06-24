@@ -40,9 +40,21 @@ int main(int argc, char* argv[]){
 
 		crearBitmap();
 
-		//registrarPokemon(nombrePoke,registro);
+		registroDatos* registro1 = hacerRegistro(10,10,2);
+		registroDatos* registro2 = hacerRegistro(5,1,2);
+		registroDatos* registro3 = hacerRegistro(6,3,2);
 
-		//procesarNewPokemon("Pikachu",hacerRegistro(10,10,2));
+		procesarNewPokemon("Pikachu",registro1);
+		procesarNewPokemon("Pikachu",registro2);
+		procesarNewPokemon("Pikachu",registro3);
+		procesarNewPokemon("Pikachu",registro1);
+		procesarNewPokemon("Pikachu",registro2);
+		procesarNewPokemon("Pikachu",registro3);
+		procesarNewPokemon("Pikachu",registro1);
+		procesarNewPokemon("Pikachu",registro2);
+		procesarNewPokemon("Pikachu",registro3);
+
+
 
 		printf(" \n Terminado  \n" );
 

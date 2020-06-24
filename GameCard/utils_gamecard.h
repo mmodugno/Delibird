@@ -50,20 +50,47 @@ char *nombreConfig;
 char* punto_montaje;
 char* ipBroker;
 
-void registrarPokemon(char* , registroDatos* );
-char* buscarPrimerBloqueLibre(void);
-bool estaVacioConRuta(char* );
+////////// CONFIGURACIONES INICIALES
 void crearDirectorio(char*  ,char* );
 void crearBitmap(void);
 void leerMetadata(void);
 void crearFilesAndBlocks(void);
-bool estaVacio(FILE* );
-void verificarExistenciaPokemon(char* );
-int tamanioRegistro(registroDatos* );
-int estaPosicionEnArchivo(uint32_t ,uint32_t ,char* );
-int tamanioArchivoDadoPath(char* );
 t_log* iniciar_logger(char*);
 void modificarArchivoComoConfig(t_config* ,char* ,char* );
+
+
+
+////////// CONFIGURACIONES POKEMONES
+
+void registrarPokemon(char* , registroDatos* );
+void agregarBloqueParaPokemon(char* ,int );
+void verificarExistenciaPokemon(char* );
+
+
+
+
+////////// REGISTROS Y BLOQUES
+
+int tamanioRegistro(registroDatos* );
+char* registro_a_string(registroDatos* );
+char* buscarPrimerBloqueLibre(void);
+int estaPosicionEnArchivo(uint32_t ,uint32_t ,char* );
+int tamanioArchivoDadoPath(char* );
+registroDatos* hacerRegistro(uint32_t ,uint32_t ,uint32_t );
+int tamanioRestante(FILE* );
+
+
+
+
+///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
+
+t_list* crear_lista(char** array);
+bool entraDatoEnBloque(registroDatos* registro, int nroBloque);
+char* obtener_ruta_bloque(int nro_bloque);
+bool estaVacioConRuta(char* );
+bool estaVacio(FILE* );
+
+
 
 
 #endif /* UTILS_GAMECARD_H_ */
