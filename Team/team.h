@@ -19,8 +19,8 @@
 
 
 
-//void terminar_programa(int,int,int, t_log,t_log,t_log,t_log, t_config);
 //t_log         log_create(char* file, char program_name, bool is_active_console, t_log_level level);
 
+void iniciar_logs(void);
 void terminar_programa(void);
 #endif /* TEAM_TEAMH */

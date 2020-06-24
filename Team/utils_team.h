@@ -72,6 +72,9 @@ char* nombre_pokemon;
 char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
+sem_t deadlock;
+
+
 
 bool broker_conectado;
 
@@ -114,7 +117,7 @@ entrenador* entrenador_exec;
 pokemon* proximo_objetivo;
 
 // FUNCIONES DE LA CONFIG //
-
+t_list* crear_lista(char** array);
 t_list* obtener_lista_posiciones(void);
 t_list* obtener_lista_objetivos(void);
 t_list* obtener_lista_pokemones(void);
