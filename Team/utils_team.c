@@ -518,7 +518,7 @@ while(1){
 		pthread_t hilo_deadlock;
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
 		//manejar_deadlock();
-		sem_post(&en_ejecucion); //TODO
+		//sem_post(&en_ejecucion); //TODO ACA NO IRIA
 
 		//Aca hay un problema con el sem_post de en ejecucion porque se ejecutan 2 a la vez
 
@@ -631,14 +631,16 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	//intercambio
 
-	//sem_wait(&(entrenador0->sem_entrenador));
-
 	while(cpu_a_usar > quantum){
 		cpu_a_usar -= quantum;
 		printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
-		queue_push(entrenadores_ready, entrenador0);
-		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
 		sem_post(&en_ejecucion);
+
+		sleep(2);
+		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
+		queue_push(entrenadores_ready, entrenador0);
+
+
 		sem_wait(&(entrenador_exec->sem_entrenador));
 	}
 
