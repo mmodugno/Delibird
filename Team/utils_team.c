@@ -96,6 +96,7 @@ char* leer_ip_broker(void){
 
 	 sem_init(&(un_entrenador->sem_entrenador),0,0);
 	 sem_init(&(un_entrenador->espera_de_catch),0,0);
+	 sem_init(&(un_entrenador->nuevoPoke),0,0);
 
 	 pthread_t hiloEntrenador;
 
@@ -232,7 +233,10 @@ void aparece_nuevo_pokemon(pokemon* poke){
 void procedimiento_de_caza(entrenador* un_entrenador){
 
 while(1){
+	//sem_wait(&nuevo_pokemon); //TODO AGREGAR POST EN FIFO
 
+
+	sem_wait(&(un_entrenador->nuevoPoke));//TODO AGREGAR POST EN FIFO
 	sem_wait(&(un_entrenador->sem_entrenador));
 
 	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
@@ -276,7 +280,6 @@ while(1){
 	//libera la ejecucion mientras espera el catch
 
 	sem_wait(&(un_entrenador->sem_entrenador));
-	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",un_entrenador->id); //TODO no deberia ir aca creo
 
 	confirmacion_de_catch(un_entrenador); //PRUBA: SOLO EN CASO DEFAULT
 
@@ -328,7 +331,7 @@ void manejar_deadlock(void){
 }
 
 
-//////////////////////////////////FIFO
+////////////////////////////////////////////////FIFO
 
 
 void planifico_con_fifo(void){
@@ -427,6 +430,7 @@ void planificar_entrenador(void){
 	}
 
 	entrenador_exec->objetivo_proximo = proximo_objetivo;
+	sem_post(&(entrenador_exec->nuevoPoke));
 
 }
 
@@ -507,14 +511,20 @@ while(1){
 
 
 	while(hay_deadlock()){
+
 		sem_wait(&en_ejecucion);
+
+		sem_post(&deadlock);
 
 		pthread_t hilo_deadlock;
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
-
-		sem_post(&deadlock);
 		//manejar_deadlock();
 		sem_post(&en_ejecucion); //TODO
+
+
+	 	//pthread_join(hilo_deadlock,NULL); //Si lo pongo solo se ejecuta mover 1 vez
+
+
 	}
 
 }
@@ -535,14 +545,14 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 			sleep(tiempo);
 			quantum -=1;
 			entrenador->ciclos_cpu += 1;
-			printf("\n El entrenador se movio en X hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+			printf("\n El entrenador %d se movio en X hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		if(entrenador->posX > x){
 			entrenador->posX = entrenador->posX -1;
 			sleep(tiempo);
 			quantum -=1;
 			entrenador->ciclos_cpu += 1;
-			printf("\n El entrenador se movio en X hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+			printf("\n El entrenador  %d  se movio en X hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		}
 
@@ -564,14 +574,14 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 				sleep(tiempo);
 				quantum -=1;
 				entrenador->ciclos_cpu += 1;
-				printf("\n El entrenador se movio en Y hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+				printf("\n El entrenador  %d se movio en Y hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
 			}
 			if(entrenador->posY > y){
 				entrenador->posY = entrenador->posY -1;
 				sleep(tiempo);
 				quantum -=1;
 				entrenador->ciclos_cpu += 1;
-				printf("\n El entrenador se movio en Y hasta: (%d,%d) \n ",entrenador->posX,entrenador->posY);
+				printf("\n El entrenador  %d se movio en Y hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
 			}
 			}
 			//No tengo mas Quantum, pero mi posicion es distinta
@@ -601,14 +611,15 @@ bool hay_pokemon_y_entrenador(){
 
 
 
-void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1){
-
+void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
+//entrenador* entrenador0 = par->primero;
+//entrenador* entrenador1 = par->segundo;
 
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
 	sem_wait(&deadlock);
-	printf("\n Inicio operacion de deadlock \n ");
+	printf("\n ----------------Inicio operacion de deadlock -------------------\n ");
 
 	int cpu_a_usar = 5;
 
@@ -617,21 +628,26 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1){
 	int x = entrenador1->posX;
 	int y = entrenador1->posY;
 
+
 	mover_entrenador_RR(entrenador0,x,y);
 
-	//int retardo = leer_retardo_cpu() * 5;
-	sleep(5); //IRIA sleep(retardo)
+
+	int retardo = leer_retardo_cpu(); //*5
+	sleep(retardo); //IRIA sleep(retardo)
 
 	//intercambio
 
-	//sem_wait(&(entrenador_exec->sem_entrenador));
+	//sem_wait(&(entrenador0->sem_entrenador));
 
 	while(cpu_a_usar > quantum){
 		cpu_a_usar -= quantum;
+		printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 		queue_push(entrenadores_ready, entrenador0);
+		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
 		sem_post(&en_ejecucion);
 		sem_wait(&(entrenador_exec->sem_entrenador));
 	}
+
 
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
@@ -641,9 +657,10 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1){
 	list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
 
-
+	printf("\n ------ Terminado algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 	analizar_proxima_cola(entrenador0);
 	analizar_proxima_cola(entrenador1);
+
 }
 
 

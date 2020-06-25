@@ -73,6 +73,8 @@ char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
 sem_t deadlock;
+sem_t nuevo_pokemon;
+
 
 
 
@@ -101,6 +103,9 @@ typedef struct{
     sem_t espera_de_catch;
     pokemon* objetivo_proximo;
     int ciclos_cpu;
+    //VER:
+    sem_t nuevoPoke;
+
 }entrenador;
 
 
@@ -111,6 +116,13 @@ typedef enum{
 	SJFCD=2,
 	SJFSD=3
 }algoritmoPlanificacion;
+
+
+typedef struct{
+	entrenador* primero;
+	entrenador* segundo;
+}par_entrenadores;
+
 
 
 entrenador* entrenador_exec;
@@ -197,6 +209,7 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
 void manejar_deadlock(void);
 bool hay_deadlock(void);
 void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1);
+//void planificar_deadlock_RR(par_entrenadores* par);
 
 
 //Mensajes
