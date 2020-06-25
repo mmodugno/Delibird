@@ -64,11 +64,11 @@ int main(int argc, char* argv[]){
 	aparece_nuevo_pokemon(pikachu);
 
 
-/*
+
 
 	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3,sizeof("Pikachu"));
 	aparece_nuevo_pokemon(pikachu2);
-
+/*
 
 	pokemon* charmander = hacer_pokemon("Charmander", 0,0,sizeof("Charmander"));
 	aparece_nuevo_pokemon(charmander);

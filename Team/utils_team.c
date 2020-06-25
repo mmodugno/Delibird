@@ -513,16 +513,14 @@ while(1){
 	while(hay_deadlock()){
 
 		sem_wait(&en_ejecucion);
-
-		sem_post(&deadlock);
+		quantum = leer_quantum();
 
 		pthread_t hilo_deadlock;
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
 		//manejar_deadlock();
 		sem_post(&en_ejecucion); //TODO
 
-
-	 	//pthread_join(hilo_deadlock,NULL); //Si lo pongo solo se ejecuta mover 1 vez
+		//Aca hay un problema con el sem_post de en ejecucion porque se ejecutan 2 a la vez
 
 
 	}
@@ -618,19 +616,15 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
-	sem_wait(&deadlock);
+
 	printf("\n ----------------Inicio operacion de deadlock -------------------\n ");
 
 	int cpu_a_usar = 5;
 
-
-
 	int x = entrenador1->posX;
 	int y = entrenador1->posY;
 
-
 	mover_entrenador_RR(entrenador0,x,y);
-
 
 	int retardo = leer_retardo_cpu(); //*5
 	sleep(retardo); //IRIA sleep(retardo)
