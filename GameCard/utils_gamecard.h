@@ -83,6 +83,7 @@ int tamanioArchivo(FILE* );
 registroDatos* hacerRegistro(uint32_t ,uint32_t ,uint32_t );
 int tamanioRestante(FILE* );
 registroDatos* string_a_registro(char* );
+int sumarSiEstaEnBloque(t_list* ,registroDatos*);
 
 ///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
 
@@ -94,5 +95,6 @@ bool estaVacio(FILE* );
 int tamanio_array(char** bloque);
 bool configConKeyCompleta(char* ,char* ,int );
 void llenarConjunto(char* ,char* ,char* ,struct stat ,struct stat );
+void cerrarArchivoMetadataPoke(t_config* );
 
 #endif /* UTILS_GAMECARD_H_ */

@@ -44,8 +44,6 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 }
 
 void verificarAperturaArchivo(char* path) {
-//while(1)
-
 
 	char* aux;
 
@@ -55,11 +53,13 @@ void verificarAperturaArchivo(char* path) {
 
 	if(!strcmp(aux,"Y")){
 
-		printf("NoEntre"); //Deberia delegar un hilo que trate de entrar cada X segundos
+		printf("Abierto, reintentando en: %d segundos \n",tiempo_reintento_operacion);
+		fflush(stdout);
+		sleep(tiempo_reintento_operacion);
+		verificarAperturaArchivo(path);
 
 	} else {
-
-		modificarArchivoComoConfig(configAux,"OPEN","Y");
+	modificarArchivoComoConfig(configAux,"OPEN","Y");
 	}
 
 	config_destroy(configAux);
@@ -256,7 +256,6 @@ void crearFilesAndBlocks() {
 
 }
 
-
 void crearBitmap(){
 
 
@@ -287,11 +286,89 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
 
-	int yaRegistrado = 0;
-	int i = 0;
+	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,registro);
+
+	if(!yaRegistrado){
+	registrarPokemon(nombrePoke,registro);
+	}
+
+	cerrarArchivoMetadataPoke(configPath);
+
+	config_destroy(configPath);
+}
+
+void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
+	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+
+	t_config* configPath = config_create(path);
+
+	verificarDirectorioPokemon(nombrePoke);
+	verificarAperturaArchivo(path);
+
+
+
+	cerrarArchivoMetadataPoke(configPath);
+
+	config_destroy(configPath);
+
+}
+
+
+int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
+
+	FILE* arch = txt_open_for_append(path);
+
+	t_config* configPath = config_create(path);
+
+	txt_close_file(arch);
+
+	char* cantidad = config_get_string_value(configPath,string_from_format("%d-%d",posX,posY));
+
+	if(cantidad != NULL){
+
+	int numero = config_get_int_value(configPath,string_from_format("%d-%d",posX,posY));
+
+	config_destroy(configPath);
+
+	return numero;
+	}
+
+	config_destroy(configPath);
+	return 0;
+}
+
+int tamanioRestante(FILE* arch) {
+
+	return tamanioBloques - tamanioArchivo(arch);
+
+}
+
+void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
+
+
+	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+
+	char** bloques = config_get_array_value(configPoke,"BLOCKS");
+
+	t_list* listaBloques = crear_lista(bloques);
+
+	config_set_value(configPoke,"BLOCKS",agregarBloqueALista(listaBloques,indiceSiguienteLibre));
+
+	config_save(configPoke);
+
+	config_destroy(configPoke);
+
+
+}
+
+int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 
 	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
 
+	int yaRegistrado = 0;
+
+	int i;
+	//si no esta cortado
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
 
@@ -305,8 +382,6 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
 
 		char* conjuntoConKey = malloc(sb.st_size);
-
-		int j;
 
 		strcpy(conjuntoConKey,file_memory);
 
@@ -444,60 +519,9 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 		j++;
 	}
 
-	if(!yaRegistrado){
-	registrarPokemon(nombrePoke,registro);
-	}
-
-	config_destroy(configPath);
-}
-
-int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
-
-	FILE* arch = txt_open_for_append(path);
-
-	t_config* configPath = config_create(path);
-
-	txt_close_file(arch);
-
-	char* cantidad = config_get_string_value(configPath,string_from_format("%d-%d",posX,posY));
-
-	if(cantidad != NULL){
-
-	int numero = config_get_int_value(configPath,string_from_format("%d-%d",posX,posY));
-
-	config_destroy(configPath);
-
-	return numero;
-	}
-
-	config_destroy(configPath);
-	return 0;
-}
-
-int tamanioRestante(FILE* arch) {
-
-	return tamanioBloques - tamanioArchivo(arch);
+	return yaRegistrado;
 
 }
-
-void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
-
-
-	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
-
-	char** bloques = config_get_array_value(configPoke,"BLOCKS");
-
-	t_list* listaBloques = crear_lista(bloques);
-
-	config_set_value(configPoke,"BLOCKS",agregarBloqueALista(listaBloques,indiceSiguienteLibre));
-
-	config_save(configPoke);
-
-	config_destroy(configPoke);
-
-
-}
-
 //////////////////////////////////////FUNCIONES AUXILIARES//////////////////////////////////////
 
 void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
@@ -681,3 +705,25 @@ bool configConKeyCompleta(char* rutaConfig,char* key,int posY) {
 			return ultimo != '=' && atoi(&ultimo) != posY;
 
 }
+
+void cerrarArchivoMetadataPoke(t_config* configPoke){
+
+	modificarArchivoComoConfig(configPoke,"OPEN","N");
+
+}
+
+void verificarDirectorioPokemon(char* nombrePoke){
+
+	char* ruta = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+
+	int f = open(ruta,O_RDWR);
+
+	if( f < 0 ){
+	perror("No existe el pokemon");
+	exit(1);
+	}
+
+	close(f);
+
+}
+
