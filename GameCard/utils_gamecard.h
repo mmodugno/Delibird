@@ -84,6 +84,8 @@ registroDatos* hacerRegistro(uint32_t ,uint32_t ,uint32_t );
 int tamanioRestante(FILE* );
 registroDatos* string_a_registro(char* );
 int sumarSiEstaEnBloque(t_list* ,registroDatos*);
+bool tieneCantidadCero(char*);
+void buscarYeliminarCeros(t_list*);
 
 ///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
 
@@ -96,5 +98,9 @@ int tamanio_array(char** bloque);
 bool configConKeyCompleta(char* ,char* ,int );
 void llenarConjunto(char* ,char* ,char* ,struct stat ,struct stat );
 void cerrarArchivoMetadataPoke(t_config* );
+void verificarDirectorioPokemon(char* );
+char* listToString(t_list* );
+void vaciarArchivo(char* );
+
 
 #endif /* UTILS_GAMECARD_H_ */
