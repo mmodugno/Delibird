@@ -23,10 +23,6 @@ int main(int argc, char* argv[]){
 
 		leer_config();
 
-		t_config* configCerrar = config_create("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Pikachu/Metadata.bin");
-
-		modificarArchivoComoConfig(configCerrar,"OPEN","N");
-
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
 
@@ -40,13 +36,15 @@ int main(int argc, char* argv[]){
 
 		crearBitmap();
 
-		registroDatos* registro1 = hacerRegistro(4,1,1);
-		registroDatos* registro2 = hacerRegistro(2,3,1);
-		registroDatos* registro3 = hacerRegistro(4,3,1);
+		verificarDirectorioPokemon("Messi");
 
-		procesarNewPokemon("Pikachu",registro1);
-		procesarNewPokemon("Pikachu",registro2);
-		procesarNewPokemon("Pikachu",registro3);
+		//registroDatos* registro1 = hacerRegistro(4,1,1);
+		//registroDatos* registro2 = hacerRegistro(4,2,1);
+		//registroDatos* registro3 = hacerRegistro(4,3,1);
+
+		//procesarNewPokemon("Pikachu",registro1);
+		//procesarNewPokemon("Pikachu",registro2);
+		//procesarNewPokemon("Pikachu",registro3);
 
 		//procesarNewPokemon("Pikachu",registro1);
 		//procesarNewPokemon("Pikachu",registro2);
