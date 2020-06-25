@@ -263,7 +263,7 @@ while(1){
 		catchAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
 
 		enviar_catch(un_entrenador,catchAEnviar);
-
+		log_info(llegadaDeMensaje,"del catch que envie su ID es %d",catchAEnviar->id);
 
 		//TODO
 		//recibimos el caught del catch ese, esperar hasta que se terminen de codear los mensajes de las colas
@@ -668,7 +668,7 @@ bool validacion_nuevo_pokemon(void){
 ////////////////////////////////////RESPUESTAS DEL CAUGHT
 
 void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
-	catchAEnviar=malloc(sizeof(broker_catch_pokemon));
+	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
