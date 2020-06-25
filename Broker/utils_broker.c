@@ -17,156 +17,6 @@ void mostrarParticiones(particion* unaParticion){
 	}
 }
 
-/*
-void armarParticiones(t_list* listaPosicionesLibres,t_list * listaParticionesLibres) {
-	particionLibre* pLibre = malloc(sizeof(particionLibre));
-	uint32_t posibleLimite;
-
-	while(list_is_empty(listaPosicionesLibres) != 0) {   //
-	    pLibre->base = (uint32_t) list_get(listaPosicionesLibres,0);
-
-	    list_remove(listaPosicionesLibres,0); //elimina primer elemento lista
-	   // 5 6
-	    posibleLimite = (uint32_t)list_get(listaPosicionesLibres,0);
-	    if(posibleLimite != (pLibre->base+1)) {
-	        posibleLimite = pLibre->base;
-	    } else {
-			uint32_t i = 1;
-			uint32_t next =(uint32_t) list_get(listaPosicionesLibres, i);
-			//ver si con un for se soluciona
-
-			for (i = 0; i < list_size(listaPosicionesLibres); i++) {
-				next =(uint32_t) list_get(listaPosicionesLibres,i+1);
-				if (posibleLimite+1 == next) {
-					posibleLimite = next;
-				}
-			}
-			//
-			t_list* listaBasura = list_take_and_remove(listaPosicionesLibres,i);
-			list_destroy(listaBasura);
-	    }
-	    pLibre->limite = posibleLimite;
-
-		if(pLibre->limite == pLibre->base) {
-			pLibre->tamanio = 1;
-		} else {
-			pLibre->tamanio = pLibre->limite - pLibre->base;
-		}
-
-		list_add(listaParticionesLibres,pLibre);
-	}
-
-}
-
-
-
-void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica){
-	//Leer memoria para buscar espacios libres
-	//Fijarse si los espacios libres entra el tipo de dato que queremos agregar
-	//Evaluar que sea el tamaño mas chico de esos espacios libres
-	//Meter en memoria con esa base del tamaño del espacio libre mas chico y ponerlo con el tamaño del dato a agregar
-
-	t_list* particionesLibres = list_create();
-
-
-	t_list* listaPosicionesLibres = list_create();
-
-	uint32_t i;
-
-	// recorrer memoria
-	for(i = 0; i < tamanio_memoria;i++) {
-	    void* prueba = malloc(1);
-	    memcpy(prueba,memoria+i,1);
-
-	    if(strcmp(prueba,"\0") == 0){
-	        //listaPosicionesLibres.add(posicion)
-	    	list_add(listaPosicionesLibres,(uint32_t)i);
-	        //printf("posicion libre en: %d \n",posicion);
-	    }
-	}
-	//fin recorrer memoria
-
-	//armar particionesLibres
-	//la listaPosicionesLibres siempre va a estar ordenada porque recorre la memoria en forma ascendente
-
-	//arma una lista de particiones libres
-	armarParticiones(listaPosicionesLibres,particionesLibres);
-
-	//filtra por las que entre el dato a agregar
-	bool entraEnParticion(particionLibre *pLibre){
-		return pLibre->tamanio>= datoAAgregar->tamanioMensaje;
-	}
-
-	particionesLibres = list_filter(particionesLibres,entraEnParticion);
-
-	//ordena por tamanio
-	bool ordenarPorTamanio(particionLibre *pLibre1,particionLibre *pLibre2){
-		return pLibre1->tamanio<pLibre2->tamanio;
-	}
-
-	list_sort(particionesLibres,ordenarPorTamanio);
-
-	particionLibre *pLibreParaAgregar = list_get(particionesLibres,0);
-
-
-	//mutex
-	datoAAgregar->base = pLibreParaAgregar->base;
-	list_add(tablaDeParticiones,datoAAgregar);
-	memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
-	//mutex
-
-	/* Para ver que particion asignar, osea que base, hago un map de listaParticionesLibres con una funcion "sacarTamanio"
-	para que todas me devuelvan el tamaño, hago un filter para que tenga el tamaño minimo para copiar mi dato y de
-	esas saco la minima
-	*/
-/*
-	free(pLibreParaAgregar);
-	//free();
-	list_destroy(listaPosicionesLibres);
-	list_destroy(particionesLibres);
-
-}
-
-// 9 11 12
-
-
-void leerMemoria(t_list* particionesLibres, uint32_t *pivote, particion* particionAAgregar, t_list* tablaDeParticionesCopia){
-	//Al leer, voy a meter las particiones libres a la lista particionesLibres
-	/*
-	 * Primero ordenamos la lista de las particiones en memoria, para que luego podamos
-	 * comparar las bases respecto un pivote y así obtener los espacios libres
-	 *
-	 */
-/*
-	bool comparadorDeBases(particion* unaParticion, particion* otraParticion){
-		// Fijarse si ordena menor a mayor, o al reves!!!!!!!!!!!!!!!!!!!!!!!!!
-		return (unaParticion->base < otraParticion->base);
-	}
-
-	//mutex para sincronizar
-	list_sort(tablaDeParticionesCopia, comparadorDeBases);
-	//mutex para sincronizar
-
-	list_iterate(tablaDeParticionesCopia, mostrarParticiones); //Muestro la tabla de particiones para ver como quedo
-
-	//Empezamos a iterar
-	particion* particionPivActual = tablaDeParticionesCopia->head->data;
-	particion* particionLibreAAgregar = malloc(sizeof(particion));
-
-	if( (particionPivActual->base - *pivote) >= particionAAgregar->tamanioMensaje ){
-		particionLibreAAgregar->base = *pivote;
-		particionLibreAAgregar->tamanioMensaje = particionPivActual->base - *pivote;
-	}
-
-
-
-}
-
-void agregarAParticionesLibres(t_list* particionesLibres, particion* unaParticionLibre){
-	//Agrego la particionLibre a la lista
-}
-*/
-
 void iniciarMemoria(){
 
 	memoria = malloc(tamanio_memoria);
@@ -306,6 +156,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			new_pokemon *raiz = transformarBrokerNewPokemon(newRecibido);
+			//log_info(logMensajeNuevo,"lo que vale este new a agregar es %d",sizeof(raiz));
+			//log_info(logMensajeNuevo,"lo que vale este new puntero de dato es %d",sizeof(new_pokemon*));
 			agregarAMemoria(raiz,newRecibido->id,NEW_POKEMON);
 			//agregarACola(NEW_POKEMON,newRecibido);
 
@@ -334,6 +186,7 @@ void process_request(int cod_op, int cliente_fd) {
 			appearedRecibido->suscriptoresQueRespondieron = queue_create();
 
 			appeared_pokemon *raiz = transformarBrokerAppearedPokemon(appearedRecibido);
+			//log_info(logMensajeNuevo,"lo que vale este appeared a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz,appearedRecibido->id,APPEARED_POKEMON);
 			//agregarACola(APPEARED_POKEMON,appearedRecibido);
 
@@ -361,6 +214,7 @@ void process_request(int cod_op, int cliente_fd) {
 			getRecibido->suscriptoresQueRespondieron = queue_create();
 
 			get_pokemon *raiz = transformarBrokerGetPokemon(getRecibido);
+			//log_info(logMensajeNuevo,"lo que vale este get a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz,getRecibido->id,GET_POKEMON);
 			//agregarACola(GET_POKEMON,getRecibido);
 
@@ -388,13 +242,14 @@ void process_request(int cod_op, int cliente_fd) {
 
 			if(!strcmp(username,"TEAM")){
 				//TODO ver conexiones con los otros sockets
-				//send(conexionTeam,catchRecibido->id,sizeof(uint32_t),0);
+				send(cliente_fd,&(catchRecibido->id),sizeof(uint32_t),0);
 			}
 
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
 			catchRecibido->suscriptoresQueRespondieron = queue_create();
 
 			catch_pokemon *raiz = transformarBrokerCatchPokemon(catchRecibido);
+			//log_info(logMensajeNuevo,"lo que vale este catch a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz, catchRecibido->id,CATCH_POKEMON);
 			//agregarACola(CATCH_POKEMON,catchRecibido);
 
@@ -422,6 +277,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			caught_pokemon *raiz = transformarBrokerCaughtPokemon(caughtRecibido);
+			//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz,caughtRecibido->id,CAUGHT_POKEMON);
 			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
@@ -725,40 +581,6 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 }
 
-//funcion recursiva
-/*
-void algoritmoFirstFit(particion *datoAAgregar,uint32_t *desplazamiento,particion *particionEncontrada){
-
-	particionEncontrada = NULL;
-
-	bool estaEnTabla(particion *datoIterado){
-		return (*(desplazamiento)<=(datoIterado->base) && (datoIterado->base)<=(*(desplazamiento)+datoAAgregar->tamanioMensaje));
-	}
-
-	particionEncontrada = list_find(tablaDeParticiones,(void *)estaEnTabla);
-	if(particionEncontrada!=NULL){
-		//encontro una particion que esta entre el desplazamiento y el limite
-		//por lo tanto no debemos poner el tipo de dato
-		if(*(desplazamiento)+datoAAgregar->tamanioMensaje>=tamanio_memoria){
-			//si se pasa de la memoria significa que no encontro ningun lugar
-			//algortimo de reemplazo
-		}
-		else{
-			//volvemos a buscar otro lugar
-			*(desplazamiento)+=(particionEncontrada->base+particionEncontrada->tamanioMensaje);
-			algoritmoFirstFit(datoAAgregar,desplazamiento,particionEncontrada);
-		}
-	}
-	else{
-		//encontro un lugar donde entra
-		//poner en tabla y en la memoria
-		datoAAgregar->base = *(desplazamiento);
-		list_add(tablaDeParticiones,datoAAgregar);
-		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
-	}
-
-}
-*/
 
 void copiarDatos(particion *target,particion * copiado){
 	target->acknoleged =copiado->acknoleged;
