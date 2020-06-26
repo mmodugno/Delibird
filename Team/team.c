@@ -110,7 +110,7 @@ void iniciar_logs(void){
 	inicio_deadlock = iniciar_log("DETECCION_DEADLOCK");
 	resultado_deadlock = iniciar_log("RESULTADO_DE_DEADLOCK");
 	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");//INDICAR TIPO DEL MENSAJE Y SUS DATOS
-	resultado = iniciar_log("RESULTADO TEAM"); //al final
+	resultado = iniciar_log("RESULTADO TEAM");
 	comunicacion_broker_error = iniciar_log("ERROR EN COMUNICACION"); //se realizara los resultados por default
 	comunicacion_broker_reintento = iniciar_log("REINTENTO DE COMUNICACION");
 	comunicacion_broker_resultado = iniciar_log("RESULTADO DE COMUNICACION");

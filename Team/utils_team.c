@@ -91,7 +91,6 @@ char* leer_ip_broker(void){
 
 
 
-
  entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig, int id_creada){
 	 entrenador* un_entrenador = malloc(sizeof(entrenador));
 
@@ -330,6 +329,26 @@ void manejar_deadlock(void){
 }
 }
 
+void planificar_entrenador(void){
+
+	sem_wait(&hay_entrenador);
+
+	proximo_objetivo = queue_peek(pokemones_en_el_mapa);
+	queue_pop(pokemones_en_el_mapa); //Si no lo atrapo se vuelve a poner
+
+	if(!list_is_empty(entrenadores_new)){
+	entrenador_exec = list_get(list_sorted(entrenadores_new,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
+	list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
+	}
+	else{
+		entrenador_exec = queue_peek(entrenadores_block_ready);
+		queue_pop(entrenadores_block_ready);
+	}
+
+	entrenador_exec->objetivo_proximo = proximo_objetivo;
+	sem_post(&(entrenador_exec->nuevoPoke));
+
+}
 
 ////////////////////////////////////////////////FIFO
 
@@ -410,28 +429,6 @@ void terminar_ejecucion_entrenador(void){
 	queue_pop(entrenadores_blocked);
 	proximo_objetivo = entrenador_exec->objetivo_proximo;
 	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-}
-
-
-void planificar_entrenador(void){
-
-	sem_wait(&hay_entrenador);
-
-	proximo_objetivo = queue_peek(pokemones_en_el_mapa);
-	queue_pop(pokemones_en_el_mapa); //Si no lo atrapo se vuelve a poner
-
-	if(!list_is_empty(entrenadores_new)){
-	entrenador_exec = list_get(list_sorted(entrenadores_new,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
-	list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
-	}
-	else{
-		entrenador_exec = queue_peek(entrenadores_block_ready);
-		queue_pop(entrenadores_block_ready);
-	}
-
-	entrenador_exec->objetivo_proximo = proximo_objetivo;
-	sem_post(&(entrenador_exec->nuevoPoke));
-
 }
 
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
@@ -627,8 +624,6 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 bool hay_pokemon_y_entrenador(){
 	return (!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(entrenadores_new));
 }
-
-
 
 
 void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
