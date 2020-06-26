@@ -72,10 +72,12 @@ int leer_algoritmo_planificacion(void){
 
 return 0;
 }
+
 int leer_quantum(void){
 	 int quantum = config_get_int_value(config,"QUANTUM");
 	  return quantum;
 }
+
 int leer_estimacion_inicial(void){
 	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
 	  return estimacion_inicial;
@@ -469,7 +471,7 @@ void planifico_con_RR(void){
 
 
 while(1){
-	while(hay_pokemon_y_entrenador()){
+	while(validacion_nuevo_pokemon()){ //TODO modifico hay_pokemon_y_entrenador por validacion_nuevo_pokemon
 		quantum = leer_quantum();
 
 		planificar_entrenador(); //planifico uno en cada ciclo del fifo
@@ -478,10 +480,10 @@ while(1){
 		sem_wait(&en_ejecucion);
 
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
 		sem_post(&(entrenador_exec->sem_entrenador));
 		//Fin de seccion critica
 	}
-
 
 
 	while(!queue_is_empty(entrenadores_ready)){
@@ -499,13 +501,16 @@ while(1){
 		sem_post(&(entrenador_exec->sem_entrenador));
 	}
 
+
 	while(queue_size(entrenadores_blocked) > 0){
 
 		//esto seria solo si esta el caso default de broker creo
 	sem_wait(&en_ejecucion);
 	entrenador* un_entrenador = queue_peek(entrenadores_blocked);
 	queue_pop(entrenadores_blocked);
-	queue_push(entrenadores_ready,un_entrenador);
+
+	queue_push(entrenadores_ready,un_entrenador); //TODO aca se deberia pasar solo cuando reciba el OK del broker
+
 	sem_post(&en_ejecucion);
 	}
 
@@ -517,18 +522,11 @@ while(1){
 
 		pthread_t hilo_deadlock;
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
-		//manejar_deadlock();
-		//sem_post(&en_ejecucion); //TODO ACA NO IRIA
 
-		//Aca hay un problema con el sem_post de en ejecucion porque se ejecutan 2 a la vez
-
-
+		sem_post(&en_ejecucion);
 	}
-
 }
 }
-
-
 
 
 void mover_entrenador_RR(entrenador* entrenador,int x, int y){
@@ -595,17 +593,13 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 }
 
 
-
 bool hay_pokemon_y_entrenador(){
 	return (!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(entrenadores_new));
 }
 
 
-//Considero que los pokemones pueden estar guardados desde el archivo config
+//Considero que los pokemones pueden estar guardados desde el archivo config //TODO que es esto?
 
-
-
-//TODO
 
 
 
@@ -624,6 +618,8 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	int x = entrenador1->posX;
 	int y = entrenador1->posY;
 
+	sem_wait(&en_ejecucion);
+
 	mover_entrenador_RR(entrenador0,x,y);
 
 	int retardo = leer_retardo_cpu(); //*5
@@ -633,13 +629,14 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	while(cpu_a_usar > quantum){
 		cpu_a_usar -= quantum;
+
 		printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
+
+		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
+
 		sem_post(&en_ejecucion);
 
-		sleep(2);
-		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
 		queue_push(entrenadores_ready, entrenador0);
-
 
 		sem_wait(&(entrenador_exec->sem_entrenador));
 	}
@@ -654,6 +651,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
 
 	printf("\n ------ Terminado algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
+
 	analizar_proxima_cola(entrenador0);
 	analizar_proxima_cola(entrenador1);
 
@@ -794,7 +792,7 @@ void denegar_catch(entrenador* un_entrenador){
 
 
 
-/////////////////////////////////FUNCIONES AUX//////////////////////////////////////////////////////////////
+/////////////////////////////////////////FUNCIONES AUX//////////////////////////////////////////////////////
 
 
 t_list* crear_lista(char** array){
