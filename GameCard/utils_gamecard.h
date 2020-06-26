@@ -86,6 +86,8 @@ registroDatos* string_a_registro(char* );
 int sumarSiEstaEnBloque(t_list* ,registroDatos*);
 bool tieneCantidadCero(char*);
 void buscarYeliminarCeros(t_list*);
+void eliminarBloquesVacios(char* );
+void procesarGetPokemon(char* );
 
 ///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
 
