@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){
 	aparece_nuevo_pokemon(pikachu2);
 
 
-	pokemon* charmander = hacer_pokemon("Charmander", 0,0,sizeof("Charmander"));
+	pokemon* charmander = hacer_pokemon("Charmander", 8,0,sizeof("Charmander"));
 	aparece_nuevo_pokemon(charmander);
 
 
@@ -78,6 +78,8 @@ int main(int argc, char* argv[]){
  	pthread_join(hilo_principal,NULL);
 
  	//terminar_programa();
+
+	printf(" Terminado \n \n");
 }
 
 
