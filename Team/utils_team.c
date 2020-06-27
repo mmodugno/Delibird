@@ -28,6 +28,11 @@ void variables_globales(){
 	entrenadores_en_deadlock = list_create();
 	entrenadores_blocked = queue_create();
 
+
+	cant_deadlocks = 0;
+	cant_deadlocks_resueltos = 0;
+	entrenador_deadlock=0;
+
 }
 
 
@@ -509,6 +514,7 @@ while(1){
 	while(queue_size(entrenadores_blocked) > 0){
 		quantum = leer_quantum();
 		//esto seria solo si esta el caso default de broker creo
+
 	sem_wait(&en_ejecucion);
 	entrenador* un_entrenador = queue_peek(entrenadores_blocked);
 	queue_pop(entrenadores_blocked);
@@ -522,11 +528,15 @@ while(1){
 	}
 
 
-
+	//	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 	while(hay_deadlock()){ //TODO no deberia ser un while que se ejecute asi me parece
 
+		cant_deadlocks += 1;
+		entrenador_deadlock -=1;
+
 		sem_wait(&en_ejecucion);
-		//quantum = leer_quantum(); El quantum se lee en el algoritmo de deadlock
+
+
 
 		pthread_t hilo_deadlock;
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
@@ -564,6 +574,11 @@ while(1){
 
 }
 }
+
+
+
+
+
 
 
 void mover_entrenador_RR(entrenador* entrenador,int x, int y){
@@ -637,6 +652,7 @@ bool hay_pokemon_y_entrenador(){
 
 void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
+	//log_info(resultado_deadlock,"Se detectó deadlock");
 
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
@@ -691,6 +707,8 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	entrenador0->ciclos_cpu += 5;
 	entrenador1->ciclos_cpu += 5;
 
+	cant_deadlocks_resueltos += 1;
+
 	analizar_proxima_cola(entrenador0);
 	analizar_proxima_cola(entrenador1);
 
@@ -702,7 +720,7 @@ bool validacion_nuevo_pokemon(void){
 	return (hay_pokemon_y_entrenador() || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready)));
 }
 
-/////////////////////////////METRICAS
+/////////////////////////////////////////////////METRICAS
 
 void cpu_por_entrenador(void){
 	for(int i= 0; i < list_size(entrenadores); i++){
@@ -937,7 +955,9 @@ void printear_lista_entrenadores(t_list* lista){
 }
 
 bool hay_deadlock(void){
-	return (list_size(entrenadores_en_deadlock) > 1);
+
+	return (entrenador_deadlock>1);
+	//return (list_size(entrenadores_en_deadlock) > 1);
 }
 
 
@@ -956,10 +976,11 @@ void analizar_proxima_cola(entrenador* un_entrenador){
 			else{
 				list_add(entrenadores_en_deadlock,un_entrenador);
 				log_info(cambioDeCola,"cambio a BLOCK-DEADLOCK de entrenador: %d \n ",un_entrenador->id);
+				entrenador_deadlock+=1;
 			}
 	}
-
 }
+
 void bloquear_entrenador(entrenador* un_entrenador){
 	queue_push(entrenadores_blocked,un_entrenador);
 	log_info(cambioDeCola,"Cambio a BLOCKED de entrenador: %d \n ",un_entrenador->id);

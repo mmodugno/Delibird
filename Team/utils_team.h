@@ -75,13 +75,16 @@ sem_t hay_entrenador;
 sem_t deadlock;
 sem_t nuevo_pokemon;
 
-
+//Metricas
+int cant_deadlocks;
+int cant_deadlocks_resueltos;
 
 
 bool broker_conectado;
 
 int conexionBroker;
 int quantum;
+int entrenador_deadlock;
 
 typedef struct{
     char* nombre;
@@ -222,6 +225,7 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar);
 //	Metricas
 
 void cpu_por_entrenador(void);
+void cpu_team(void);
 
 
 

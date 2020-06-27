@@ -62,13 +62,13 @@ int main(int argc, char* argv[]){
 	aparece_nuevo_pokemon(squirte);
 
 
-	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
-	aparece_nuevo_pokemon(pikachu);
+	//pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
+	//aparece_nuevo_pokemon(pikachu);
 
 	pokemon* charmander = hacer_pokemon("Charmander", 1,3,sizeof("Charmander"));
 	aparece_nuevo_pokemon(charmander);
 
-	pokemon* pidgley = hacer_pokemon("Pidgey", 8, 8,sizeof("Pidgey"));
+	pokemon* pidgley = hacer_pokemon("Pidgey", 1, 4,sizeof("Pidgey"));
 	aparece_nuevo_pokemon(pidgley);
 
 
@@ -83,7 +83,9 @@ int main(int argc, char* argv[]){
 
  	//terminar_programa();
 
- 	cpu_por_entrenador();
+ 	imprimir_metricas();
+
+
 
 	printf(" Terminado \n \n");
 }
@@ -121,4 +123,16 @@ void iniciar_logs(void){
 	comunicacion_broker_reintento = iniciar_log("REINTENTO DE COMUNICACION");
 	comunicacion_broker_resultado = iniciar_log("RESULTADO DE COMUNICACION");
 
+}
+
+
+
+void imprimir_metricas(void){
+	cpu_por_entrenador();
+
+	 cpu_team();
+
+	 printf("Cantidad de deadlocks producidos: %d \n", cant_deadlocks);
+
+	 printf("Cantidad de deadlocks resueltos: %d \n", cant_deadlocks_resueltos);
 }
