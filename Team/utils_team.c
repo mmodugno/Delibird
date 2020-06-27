@@ -395,7 +395,6 @@ while(hay_deadlock()){
 	manejar_deadlock();
 	sem_post(&en_ejecucion);
 }
-
 }
 }
 
