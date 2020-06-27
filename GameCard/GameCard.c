@@ -36,12 +36,15 @@ int main(int argc, char* argv[]){
 
 		crearBitmap();
 
-		t_list* listaAux = list_create();
+		eliminarBloquesVacios("Pikachu");
 
-		list_add(listaAux,"1");
-		list_add(listaAux,"2");
 
-		buscarYeliminarCeros(listaAux);
+		//t_list* listaAux = list_create();
+
+		//list_add(listaAux,"1");
+		//ist_add(listaAux,"2");
+
+		//buscarYeliminarCeros(listaAux);
 
 		//verificarDirectorioPokemon("Pikachu");
 
