@@ -394,12 +394,21 @@ sem_post(&(entrenador_exec->sem_entrenador));
 }
 
 
-while(hay_deadlock()){
+while(list_size(entrenadores_en_deadlock)>1){
 	sem_wait(&en_ejecucion);
 	sem_post(&deadlock);
 	manejar_deadlock();
 	sem_post(&en_ejecucion);
 }
+
+if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
+	printf("\n FINALIZO EL PROGRAMA \n ");
+
+	//log_info(resultado,"RESULTADO TEAM");
+
+	break;
+}
+
 }
 }
 
@@ -529,10 +538,12 @@ while(1){
 
 
 	//	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
-	while(hay_deadlock()){ //TODO no deberia ser un while que se ejecute asi me parece
+	// log_info(resultado_deadlock,"No se detectó deadlock");
+	if(hay_deadlock()){ //TODO no deberia ser un while que se ejecute asi me parece
 
-		cant_deadlocks += 1;
 		entrenador_deadlock -=1;
+		cant_deadlocks += 1;
+		log_info(resultado_deadlock,"Se detectó deadlock");
 
 		sem_wait(&en_ejecucion);
 
@@ -549,7 +560,7 @@ while(1){
 	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 	if(hay_deadlock()){
 		sem_wait(&en_ejecucion);
-		log_info(resultado_deadlock,"Se detectó deadlock");
+
 
 		//quantum = leer_quantum(); El quantum se lee en el algoritmo de deadlock
 
@@ -574,9 +585,6 @@ while(1){
 
 }
 }
-
-
-
 
 
 
@@ -704,8 +712,8 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	printf("\n ------ Terminado algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 
-	entrenador0->ciclos_cpu += 5;
-	entrenador1->ciclos_cpu += 5;
+	entrenador0->ciclos_cpu += 5; //Le sumo los 5 ciclos al entrenador por deadlock
+	// entrenador1->ciclos_cpu += 5;
 
 	cant_deadlocks_resueltos += 1;
 

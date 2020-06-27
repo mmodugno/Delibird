@@ -52,11 +52,9 @@ int main(int argc, char* argv[]){
 
 
 	//iniciar_servidor();
-	/*POSICIONES_ENTRENADORES=[1|2,3|7]
-	POKEMON_ENTRENADORES=[,]
-	OBJETIVOS_ENTRENADORES=[Pikachu|Pidgey, Squirtle|Charmander]
 
-	*/
+
+	/*
 
 	pokemon* squirte = hacer_pokemon("Squirtle", 0,3,sizeof("Squirtle"));
 	aparece_nuevo_pokemon(squirte);
@@ -71,9 +69,22 @@ int main(int argc, char* argv[]){
 	pokemon* pidgley = hacer_pokemon("Pidgey", 1, 4,sizeof("Pidgey"));
 	aparece_nuevo_pokemon(pidgley);
 
+*/
+
+	pokemon* squirte = hacer_pokemon("Squirtle", 0,3,sizeof("Squirtle"));
+	aparece_nuevo_pokemon(squirte);
 
 
+	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
+	aparece_nuevo_pokemon(pikachu);
 
+
+	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3,sizeof("Pikachu"));
+	aparece_nuevo_pokemon(pikachu2);
+
+
+	pokemon* charmander = hacer_pokemon("Charmander", 8,0,sizeof("Charmander"));
+	aparece_nuevo_pokemon(charmander);
 
 
 
