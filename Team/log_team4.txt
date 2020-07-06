@@ -1,0 +1,50 @@
+[INFO] 12:31:24:45 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:31:29:49 CAMBIO DE COLA/(5842:5847): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:31:29:49 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:33:50 CAMBIO DE COLA/(5842:5848): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:31:33:50 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:31:33:51 MOVIMIENTO DE ENTRENADOR/(5842:5847): entrenador 0: se movio a (0,3)
+[INFO] 12:31:33:51 OPERACION ATRAPAR/(5842:5847): ATRAPAR POKEMON: Squirtle con posicion (0, 3)
+[INFO] 12:31:33:51 ERROR EN COMUNICACION/(5842:5847): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:31:33:51 CAMBIO DE COLA/(5842:5847): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 12:31:33:51 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:37:53 CAMBIO DE COLA/(5842:5848): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:31:37:53 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:31:37:53 CAMBIO DE COLA/(5842:5847): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 12:31:37:53 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:41:56 CAMBIO DE COLA/(5842:5848): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:31:41:60 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:45:65 CAMBIO DE COLA/(5842:5848): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:31:45:66 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:49:67 CAMBIO DE COLA/(5842:5848): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:31:49:72 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:53:76 CAMBIO DE COLA/(5842:5848): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:31:53:80 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:53:80 MOVIMIENTO DE ENTRENADOR/(5842:5848): entrenador 1: se movio a (8,0)
+[INFO] 12:31:53:80 OPERACION ATRAPAR/(5842:5848): ATRAPAR POKEMON: Charmander con posicion (8, 0)
+[INFO] 12:31:53:81 ERROR EN COMUNICACION/(5842:5848): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:31:53:81 CAMBIO DE COLA/(5842:5848): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:31:53:81 CAMBIO DE COLA/(5842:5849): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:31:53:81 CAMBIO DE COLA/(5842:5848): cambio a BLOCK-READY de entrenador: 1 
+ 

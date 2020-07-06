@@ -78,7 +78,7 @@ sem_t nuevo_pokemon;
 //Metricas
 int cant_deadlocks;
 int cant_deadlocks_resueltos;
-
+int cambio_contexto;
 
 bool broker_conectado;
 

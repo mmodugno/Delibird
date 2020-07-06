@@ -146,6 +146,9 @@ void imprimir_metricas(void){
 	 printf("Cantidad de deadlocks producidos: %d \n", cant_deadlocks);
 
 	 printf("Cantidad de deadlocks resueltos: %d \n", cant_deadlocks_resueltos);
+
+	 printf("Cantidad de cambios de contexto: %d \n", cambio_contexto);
+
 }
 
 void loggear_metricas(void){

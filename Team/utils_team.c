@@ -32,6 +32,7 @@ void variables_globales(){
 	cant_deadlocks = 0;
 	cant_deadlocks_resueltos = 0;
 	entrenador_deadlock=0;
+	cambio_contexto =0;
 
 }
 
@@ -390,6 +391,7 @@ while(validacion_nuevo_pokemon()){
 
 	//Seccion critica
 	sem_wait(&en_ejecucion);
+	cambio_contexto +=1;
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 	sem_post(&(entrenador_exec->sem_entrenador));
 
@@ -414,19 +416,30 @@ while(queue_size(entrenadores_ready)>0){
 	queue_pop(entrenadores_ready);
 
 		sem_wait(&en_ejecucion);
-
+		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 		sem_post(&(entrenador_exec->sem_entrenador));
 }
 
+
+
 while(list_size(entrenadores_en_deadlock)>1){
 	sem_wait(&en_ejecucion);
 	cant_deadlocks +=1;
-	//sem_post(&deadlock);
+
+
+
 	manejar_deadlock();
+	cambio_contexto +=1;
+
 	sem_post(&en_ejecucion);
 }
+
+
+
+
+
 
 if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 	printf("\n FINALIZO EL PROGRAMA \n ");
@@ -520,7 +533,7 @@ while(1){
 
 		//Seccion critica
 		sem_wait(&en_ejecucion);
-
+		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 		sem_post(&(entrenador_exec->sem_entrenador));
@@ -537,7 +550,7 @@ while(1){
 		proximo_objetivo = entrenador_exec->objetivo_proximo;
 
 		sem_wait(&en_ejecucion);
-
+		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 		sem_post(&(entrenador_exec->sem_entrenador));
@@ -553,7 +566,7 @@ while(1){
 	queue_pop(entrenadores_blocked);
 
 
-	//TODO aca se deberia pasar solo cuando reciba el OK del broker, lo mismo en FIFO (revisar)
+	//aca se deberia pasar solo cuando reciba el OK del broker, lo mismo en FIFO (revisar)
 	queue_push(entrenadores_ready,un_entrenador);
 
 
@@ -570,7 +583,7 @@ while(1){
 		log_info(resultado_deadlock,"Se detectó deadlock");
 
 		sem_wait(&en_ejecucion);
-
+		cambio_contexto +=1;
 
 
 		pthread_t hilo_deadlock;
@@ -744,7 +757,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	analizar_proxima_cola(entrenador0);
 	analizar_proxima_cola(entrenador1);
 
-	sem_post(&en_ejecucion);//TODO porque termina el algoritmo??? pendiente revisar
+	sem_post(&en_ejecucion);
 }
 
 
@@ -884,8 +897,7 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 	disminuir_cuantos_puede_cazar(un_entrenador);
 
 	//TODO aca hago que ya no este mas en blocked, sino que en ready
-	//1. lo saco de blocked
-	//2.
+	//lo saco de blocked???
 	queue_push(entrenadores_ready,un_entrenador);
 
 
@@ -901,7 +913,7 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 void denegar_catch(entrenador* un_entrenador){
 	log_info(llegadaDeMensaje,"No se agarró al pokemon %s", un_entrenador->objetivo_proximo->nombre);
 	sem_post(&(un_entrenador->espera_de_catch));
-
+	queue_push(entrenadores_ready,un_entrenador);
 }
 
 
