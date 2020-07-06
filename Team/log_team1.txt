@@ -13401,3 +13401,76 @@
  
 [INFO] 12:44:13:610 CAMBIO DE COLA/(6194:6200): cambio a EXIT de entrenador: 1 
  
+[INFO] 15:26:24:902 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:26:26:921 MOVIMIENTO DE ENTRENADOR/(3537:3542): entrenador 0: se movio a (0,3)
+[INFO] 15:26:26:922 OPERACION ATRAPAR/(3537:3542): ATRAPAR POKEMON: Squirtle con posicion (0, 3)
+[INFO] 15:26:26:922 ERROR EN COMUNICACION/(3537:3542): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:26:26:922 CAMBIO DE COLA/(3537:3542): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 15:26:26:922 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 15:26:28:923 MOVIMIENTO DE ENTRENADOR/(3537:3544): entrenador 2: se movio a (6,7)
+[INFO] 15:26:28:923 OPERACION ATRAPAR/(3537:3544): ATRAPAR POKEMON: Pikachu con posicion (6, 7)
+[INFO] 15:26:28:923 ERROR EN COMUNICACION/(3537:3544): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:26:28:923 CAMBIO DE COLA/(3537:3544): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 15:26:28:923 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:26:30:923 MOVIMIENTO DE ENTRENADOR/(3537:3543): entrenador 1: se movio a (8,3)
+[INFO] 15:26:30:924 OPERACION ATRAPAR/(3537:3543): ATRAPAR POKEMON: Pikachu con posicion (8, 3)
+[INFO] 15:26:30:924 ERROR EN COMUNICACION/(3537:3543): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:26:30:924 CAMBIO DE COLA/(3537:3543): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 15:26:30:924 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:26:30:924 CAMBIO DE COLA/(3537:3542): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 15:26:30:924 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 15:26:30:925 CAMBIO DE COLA/(3537:3544): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 15:26:30:925 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:26:30:926 CAMBIO DE COLA/(3537:3543): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 15:26:30:927 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:26:32:930 MOVIMIENTO DE ENTRENADOR/(3537:3545): entrenador 0: se movio a (6,7)
+[INFO] 15:26:37:930 CAMBIO DE COLA/(3537:3545): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 15:26:37:930 CAMBIO DE COLA/(3537:3545): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 15:26:37:930 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:26:39:932 MOVIMIENTO DE ENTRENADOR/(3537:3543): entrenador 1: se movio a (8,0)
+[INFO] 15:26:39:932 OPERACION ATRAPAR/(3537:3543): ATRAPAR POKEMON: Charmander con posicion (8, 0)
+[INFO] 15:26:39:932 ERROR EN COMUNICACION/(3537:3543): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:26:39:932 CAMBIO DE COLA/(3537:3543): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 15:26:39:932 CAMBIO DE COLA/(3537:3545): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 15:26:39:933 CAMBIO DE COLA/(3537:3543): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 15:52:18:151 CAMBIO DE COLA/(4105:4113): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:52:20:160 MOVIMIENTO DE ENTRENADOR/(4105:4110): entrenador 0: se movio a (1,1)
+[INFO] 15:52:20:163 OPERACION ATRAPAR/(4105:4110): ATRAPAR POKEMON: Pikachu con posicion (1, 1)
+[INFO] 15:52:20:163 ERROR EN COMUNICACION/(4105:4110): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:52:20:163 CAMBIO DE COLA/(4105:4110): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 15:52:20:163 CAMBIO DE COLA/(4105:4113): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 15:52:22:166 MOVIMIENTO DE ENTRENADOR/(4105:4112): entrenador 2: se movio a (9,7)
+[INFO] 15:52:22:166 OPERACION ATRAPAR/(4105:4112): ATRAPAR POKEMON: Squirtle con posicion (9, 7)
+[INFO] 15:52:22:166 ERROR EN COMUNICACION/(4105:4112): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 15:52:22:166 CAMBIO DE COLA/(4105:4112): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 15:52:22:166 CAMBIO DE COLA/(4105:4113): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 15:52:22:168 CAMBIO DE COLA/(4105:4110): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 15:52:22:168 CAMBIO DE COLA/(4105:4113): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 15:52:22:168 CAMBIO DE COLA/(4105:4112): cambio a EXIT de entrenador: 2 
+ 

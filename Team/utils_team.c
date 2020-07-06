@@ -245,8 +245,6 @@ void aparece_nuevo_pokemon(pokemon* poke){
 void procedimiento_de_caza(entrenador* un_entrenador){
 
 while(1){
-	//sem_wait(&nuevo_pokemon); //TODO AGREGAR POST EN FIFO
-
 
 	sem_wait(&(un_entrenador->nuevoPoke));//TODO AGREGAR POST EN FIFO
 	sem_wait(&(un_entrenador->sem_entrenador));
@@ -266,6 +264,7 @@ while(1){
 
 	if(conectarse_con_broker()!=-1){
 		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+
 		broker_catch_pokemon *catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 		catchAEnviar->datos=malloc(sizeof(catch_pokemon));
 
@@ -350,7 +349,7 @@ void manejar_deadlock(void){
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-
+				break;
 			}
 	}
 }
@@ -438,13 +437,8 @@ while(list_size(entrenadores_en_deadlock)>1){
 
 
 
-
-
-
 if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 	printf("\n FINALIZO EL PROGRAMA \n ");
-
-	//log_info(resultado,"RESULTADO TEAM");
 
 	break;
 }
@@ -498,10 +492,13 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
 	//int retardo = leer_retardo_cpu() * 5;
+
 	sleep(5); //IRIA sleep(retardo)
 
 	//intercambio
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
+	char* poke1 = nombre_pokemon;
+
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
 
@@ -509,8 +506,9 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
 
+	printf("\n Intercambio de %s y %s \n ",poke1, nombre_pokemon);
+
 	entrenador0->ciclos_cpu += 5;
-	//entrenador1->ciclos_cpu += 5;
 
 	cant_deadlocks_resueltos+=1;
 
