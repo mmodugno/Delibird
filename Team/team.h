@@ -17,8 +17,8 @@
 #include"utils_team.h"
 
 
-
-
+void imprimir_metricas(void);
+void loggear_metricas(void);
 //t_log         log_create(char* file, char program_name, bool is_active_console, t_log_level level);
 
 void iniciar_logs(void);

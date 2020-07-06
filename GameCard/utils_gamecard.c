@@ -292,6 +292,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	registrarPokemon(nombrePoke,registro);
 	}
 
+	sleep(tiempo_retardo_operacion);
 	cerrarArchivoMetadataPoke(configPath);
 
 	config_destroy(configPath);
@@ -305,14 +306,41 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 	verificarDirectorioPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
 
+	registroDatos* regAux = hacerRegistro(posX,posY,-1);
 
+	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
 
+	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,regAux);
+
+	if(!yaRegistrado){
+		perror("No existe posicion para el pokemon");
+		exit(2);
+	} else {
+		buscarYeliminarCeros(listaBloques);
+	}
+
+	eliminarBloquesVacios(nombrePoke);
+
+	sleep(tiempo_retardo_operacion);
 	cerrarArchivoMetadataPoke(configPath);
 
-	config_destroy(configPath);
+	//TODO conectar con broker -> ponerle que informe si no puede conectarse
 
+	config_destroy(configPath);
 }
 
+void procesarGetPokemon(char* nombrePoke){
+
+	//verificar como GET
+	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+
+	verificarAperturaArchivo(path);
+
+	obtenerPosiciones(nombrePoke);
+
+
+
+}
 
 int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
 
@@ -358,6 +386,55 @@ void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
 	config_destroy(configPoke);
 
+
+}
+
+int obtenerPosiciones(char* nombrePoke){
+
+	int j = 0;
+
+	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+
+	char** bloques = config_get_array_value(configPoke,"BLOCKS");
+
+	t_list* listaBloques = crear_lista(bloques);
+
+	char* conjunto = string_new();
+
+	while(j < list_size(listaBloques)-1){
+
+		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,j)));
+
+		int fd = open(primerFd,O_RDWR);
+
+		struct stat sb;
+		fstat(fd,&sb);
+
+		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+
+		string_append(&conjunto,file_memory);
+
+		close(fd);
+		j++;
+
+	}
+
+	char** arrayRegistros = string_split(conjunto,"\n");
+
+	t_list* listaRegistrosString = crear_lista(arrayRegistros);
+
+	t_list* listaRegistros = list_map(listaRegistrosString, (void*) string_a_registro);
+
+	int i = 0;
+
+	for(i = 0; i < list_size(listaRegistros);i++){
+
+
+
+
+	}
+
+	config_destroy(configPoke);
 
 }
 
@@ -520,6 +597,141 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	}
 
 	return yaRegistrado;
+
+}
+
+void buscarYeliminarCeros(t_list* listaBloques){
+
+	int i;
+	char* todasLasPosiciones = string_new();
+//ok
+	for(i = 0; i < list_size(listaBloques);i++){
+
+		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		int fd = open(primerFd,O_RDWR);
+
+		struct stat sb;
+		fstat(fd,&sb);
+
+		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+
+		string_append(&todasLasPosiciones,file_memory);
+		//string_append(&todasLasPosiciones,"\n");
+
+		close(fd);
+	}
+
+	char** arrayPosiciones = string_split(todasLasPosiciones,"\n");
+
+	t_list* listaTodosPosiciones = crear_lista(arrayPosiciones);
+//todo ver q onda
+
+	while(list_any_satisfy(listaTodosPosiciones,(void*) tieneCantidadCero)) {
+		list_remove_by_condition(listaTodosPosiciones, (void*) tieneCantidadCero);
+	}
+
+
+	char* nuevasPosiciones = listToString(listaTodosPosiciones);
+
+	int cuanto = string_length(nuevasPosiciones);
+
+	for(i = 0; i < list_size(listaBloques);i++){
+
+		char* ruta = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		vaciarArchivo(ruta);
+	}
+
+	int k = 0;
+
+	while(cuanto > 0){
+
+			char* unFd = obtener_ruta_bloque(atoi(list_get(listaBloques,k)));
+
+			int fd = open(unFd,O_RDWR);
+
+			if(cuanto > tamanioBloques) {
+
+				write(fd,nuevasPosiciones,tamanioBloques);
+				cuanto = cuanto - tamanioBloques;
+
+			} else {
+				write(fd,nuevasPosiciones,cuanto);
+				cuanto = cuanto - cuanto;
+			}
+
+			k++;
+			close(fd);
+	}
+
+
+
+
+}
+
+char* listToString(t_list* lista) {
+
+	char* string = string_new();
+
+	int i;
+
+	for(i = 0; i < list_size(lista);i++){
+
+		char* aSumar = list_get(lista,i);
+
+		string_append(&string,aSumar);
+
+		if(i != list_size(lista)-1){
+			string_append(&string,"\n");
+		}
+
+	}
+
+	return string;
+
+}
+
+void eliminarBloquesVacios(char* nombrePoke){
+
+	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+
+	char** bloques = config_get_array_value(configPoke,"BLOCKS");
+
+	t_list* listaBloques = crear_lista(bloques);
+
+	t_list* nuevaListaBloques = list_create();
+
+	char* stringNuevaLista = string_new();
+
+	int i;
+
+	for(i = 0; i < list_size(listaBloques); i++) {
+
+		char* rutaActual = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		if(!estaVacioConRuta(rutaActual)){
+			stringNuevaLista = agregarBloqueALista(nuevaListaBloques,i+1);
+			list_add(nuevaListaBloques,string_itoa(i+1));
+		}
+	}
+
+	config_set_value(configPoke,"BLOCKS",stringNuevaLista);
+
+	config_save(configPoke);
+
+	config_destroy(configPoke);
+
+
+}
+
+bool tieneCantidadCero(char* registroString) {
+
+	registroDatos* registro = string_a_registro(registroString);
+
+	bool resultado = registro->cantidad == 0;
+
+	return resultado;
 
 }
 //////////////////////////////////////FUNCIONES AUXILIARES//////////////////////////////////////
@@ -727,3 +939,12 @@ void verificarDirectorioPokemon(char* nombrePoke){
 
 }
 
+void vaciarArchivo(char* ruta) {
+
+	remove(ruta);
+
+	FILE* arch = txt_open_for_append(ruta);
+
+	txt_close_file(arch);
+
+}

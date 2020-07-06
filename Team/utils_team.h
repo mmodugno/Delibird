@@ -75,13 +75,16 @@ sem_t hay_entrenador;
 sem_t deadlock;
 sem_t nuevo_pokemon;
 
-
-
+//Metricas
+int cant_deadlocks;
+int cant_deadlocks_resueltos;
+int cambio_contexto;
 
 bool broker_conectado;
 
 int conexionBroker;
 int quantum;
+int entrenador_deadlock;
 
 typedef struct{
     char* nombre;
@@ -140,6 +143,7 @@ int leer_quantum(void);
 int leer_estimacion_inicial(void);
 int leer_tiempo_de_reconexion(void);
 int leer_retardo_cpu(void);
+int leer_alpha(void);
 
 
 // FUNCIONES DE LOS LOGS //
@@ -217,6 +221,11 @@ void denegar_catch(entrenador* un_entrenador);
 void confirmacion_de_catch(entrenador* un_entrenador);
 void esperar_respuesta_catch(entrenador* un_entrenador);
 void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar);
+
+//	Metricas
+
+void cpu_por_entrenador(void);
+void cpu_team(void);
 
 
 

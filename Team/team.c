@@ -53,34 +53,51 @@ int main(int argc, char* argv[]){
 
 	//iniciar_servidor();
 
-
-
+	//TEAM1 - TEAM4
 	pokemon* squirte = hacer_pokemon("Squirtle", 0,3,sizeof("Squirtle"));
 	aparece_nuevo_pokemon(squirte);
-
 
 
 	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
 	aparece_nuevo_pokemon(pikachu);
 
 
-
-
 	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3,sizeof("Pikachu"));
 	aparece_nuevo_pokemon(pikachu2);
-/*
 
-	pokemon* charmander = hacer_pokemon("Charmander", 0,0,sizeof("Charmander"));
+
+	pokemon* charmander = hacer_pokemon("Charmander", 8,0,sizeof("Charmander"));
 	aparece_nuevo_pokemon(charmander);
+
+	/*
+ //PRUEBAS DE TP:
+
+	pokemon* pikachu = hacer_pokemon("Pikachu", 1, 1,sizeof("Pikachu"));
+		aparece_nuevo_pokemon(pikachu);
+
+	pokemon* squirte = hacer_pokemon("Squirtle",9,7,sizeof("Squirtle"));
+		aparece_nuevo_pokemon(squirte);
+
+	pokemon* onix = hacer_pokemon("Onix",2,2,sizeof("Onix"));
+		aparece_nuevo_pokemon(onix);
+
+	pokemon* squirte2 = hacer_pokemon("Squirtle",3,5,sizeof("Squirtle"));
+		aparece_nuevo_pokemon(squirte2);
+
+	pokemon* gengar = hacer_pokemon("Gengar",7,5,sizeof("Gengar"));
+		aparece_nuevo_pokemon(gengar);
 
 */
 
-
-
-
  	pthread_join(hilo_principal,NULL);
 
- 	terminar_programa();
+ 	//terminar_programa();
+
+ 	imprimir_metricas();
+ 	//loggear_metricas();
+
+
+	printf(" Terminado \n \n");
 }
 
 
@@ -111,9 +128,43 @@ void iniciar_logs(void){
 	inicio_deadlock = iniciar_log("DETECCION_DEADLOCK");
 	resultado_deadlock = iniciar_log("RESULTADO_DE_DEADLOCK");
 	llegadaDeMensaje = iniciar_log("NUEVO MENSAJE");//INDICAR TIPO DEL MENSAJE Y SUS DATOS
-	resultado = iniciar_log("RESULTADO TEAM"); //al final
+	resultado = iniciar_log("RESULTADO TEAM");
 	comunicacion_broker_error = iniciar_log("ERROR EN COMUNICACION"); //se realizara los resultados por default
 	comunicacion_broker_reintento = iniciar_log("REINTENTO DE COMUNICACION");
 	comunicacion_broker_resultado = iniciar_log("RESULTADO DE COMUNICACION");
 
+}
+
+
+
+void imprimir_metricas(void){
+	cpu_por_entrenador();
+
+	 cpu_team();
+
+	 printf("Cantidad de deadlocks producidos: %d \n", cant_deadlocks);
+
+	 printf("Cantidad de deadlocks resueltos: %d \n", cant_deadlocks_resueltos);
+
+	 printf("Cantidad de cambios de contexto: %d \n", cambio_contexto);
+
+}
+
+void loggear_metricas(void){
+
+
+	for(int i= 0; i < list_size(entrenadores); i++){
+			entrenador* entrenador = list_get(entrenadores, i);
+			log_info(resultado,"Ciclos de cpu entrenador %d: %d", entrenador->id, entrenador->ciclos_cpu);
+		}
+
+	int cpu_totales = 0;
+		for(int i= 0; i < list_size(entrenadores); i++){
+		entrenador* entrenador = list_get(entrenadores, i);
+		cpu_totales += entrenador->ciclos_cpu;
+		}
+
+	log_info(resultado,"Ciclos de cpu totales: %d", cpu_totales);
+	log_info(resultado,"Cantidad de deadlocks producidos: %d", cant_deadlocks);
+	log_info(resultado,"Cantidad de deadlocks resueltos: %d", cant_deadlocks_resueltos);
 }
