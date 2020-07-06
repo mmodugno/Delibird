@@ -40,6 +40,7 @@ typedef struct {
 	t_list *acknoleged;
 	char* timestamp;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
 	uint32_t libre;
+	uint32_t idCorrelativo;
 }particion;
 
 /*
@@ -104,7 +105,8 @@ static const char *colasDeEnum[] = {"LIBRE","NEW_POKEMON","APPEARED_POKEMON","CA
 
 
 sem_t idsDeMensajes;
-void agregarAMemoria(void* , uint32_t ,tipoDeCola);
+sem_t usoMemoria;
+void agregarAMemoria(void* , uint32_t ,tipoDeCola, uint32_t , uint32_t);
 void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
@@ -116,7 +118,7 @@ void serve_client(int *socket);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
 //void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
 void suscribirACola(suscriptor* suscriptor);
-particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola);
+particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola, uint32_t , uint32_t);
 void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada);
 void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
 void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig);

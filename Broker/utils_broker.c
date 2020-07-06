@@ -114,7 +114,7 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
 	char* username;
-
+	uint32_t tamanioAgregar;
 	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
 	username = malloc(tamanio_username);
 	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
@@ -155,13 +155,13 @@ void process_request(int cod_op, int cliente_fd) {
 			newRecibido->suscriptoresQueRespondieron = queue_create();
 
 
-			new_pokemon *raiz = transformarBrokerNewPokemon(newRecibido);
+			void *raiz = transformarBrokerNewPokemon(newRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este new a agregar es %d",sizeof(raiz));
 			//log_info(logMensajeNuevo,"lo que vale este new puntero de dato es %d",sizeof(new_pokemon*));
-			agregarAMemoria(raiz,newRecibido->id,NEW_POKEMON);
+			agregarAMemoria(raiz,newRecibido->id,NEW_POKEMON,0,tamanioAgregar);
 			//agregarACola(NEW_POKEMON,newRecibido);
 
-			free(raiz);
+			//free(raiz);
 			free(newRecibido);
 
 			break;
@@ -185,12 +185,12 @@ void process_request(int cod_op, int cliente_fd) {
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
 			appearedRecibido->suscriptoresQueRespondieron = queue_create();
 
-			appeared_pokemon *raiz = transformarBrokerAppearedPokemon(appearedRecibido);
+			void *raiz = transformarBrokerAppearedPokemon(appearedRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este appeared a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,appearedRecibido->id,APPEARED_POKEMON);
+			agregarAMemoria(raiz,appearedRecibido->id,APPEARED_POKEMON,appearedRecibido->id_relativo,tamanioAgregar);
 			//agregarACola(APPEARED_POKEMON,appearedRecibido);
 
-			free(raiz);
+			//free(raiz);
 			free(appearedRecibido);
 
 			break;
@@ -213,12 +213,12 @@ void process_request(int cod_op, int cliente_fd) {
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
 			getRecibido->suscriptoresQueRespondieron = queue_create();
 
-			get_pokemon *raiz = transformarBrokerGetPokemon(getRecibido);
+			void *raiz = transformarBrokerGetPokemon(getRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este get a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,getRecibido->id,GET_POKEMON);
+			agregarAMemoria(raiz,getRecibido->id,GET_POKEMON,0,tamanioAgregar);
 			//agregarACola(GET_POKEMON,getRecibido);
 
-			free(raiz);
+			//free(raiz);
 			free(getRecibido);
 
 			break;
@@ -248,12 +248,12 @@ void process_request(int cod_op, int cliente_fd) {
 			// Inicializamos la cola de suscriptores ack para que se pueda agregar
 			catchRecibido->suscriptoresQueRespondieron = queue_create();
 
-			catch_pokemon *raiz = transformarBrokerCatchPokemon(catchRecibido);
+			void *raiz = transformarBrokerCatchPokemon(catchRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este catch a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz, catchRecibido->id,CATCH_POKEMON);
+			agregarAMemoria(raiz, catchRecibido->id,CATCH_POKEMON,0,tamanioAgregar);
 			//agregarACola(CATCH_POKEMON,catchRecibido);
 
-			free(raiz);
+			//free(raiz);
 			free(catchRecibido);
 
 			break;
@@ -276,19 +276,22 @@ void process_request(int cod_op, int cliente_fd) {
 			caughtRecibido->suscriptoresQueRespondieron = queue_create();
 
 
-			caught_pokemon *raiz = transformarBrokerCaughtPokemon(caughtRecibido);
+			void *raiz = transformarBrokerCaughtPokemon(caughtRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,caughtRecibido->id,CAUGHT_POKEMON);
+			agregarAMemoria(raiz,caughtRecibido->id,CAUGHT_POKEMON,caughtRecibido->id_relativo,tamanioAgregar);
 			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
-			free(raiz);
+			//free(raiz);
 			free(caughtRecibido);
 
 			break;
 		}
 		case ACKNOWLEDGED:{
+
+
 			uint32_t ackRecibido = deserializarAck(cliente_fd);
 
+			//TODO no hay que hacer asi. Es mas facil, hay que actualizar la lista de particiones por el id qu recibimos
 			bool buscarIdNew(broker_new_pokemon* brokerNP){
 				return (brokerNP->id) == ackRecibido;
 			}
@@ -425,8 +428,8 @@ void suscribirACola(suscriptor* suscriptor){
 	}
 }
 
-void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje){
-	particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje,tipoMensaje);
+void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje, uint32_t idCorrelativo,uint32_t tamanioAgregar){
+	particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje,tipoMensaje,idCorrelativo,tamanioAgregar);
 	//uint32_t desplazamiento = 0;
 	particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
 	//particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
@@ -442,18 +445,19 @@ void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje){
 
 
 
-particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje){
+particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje, uint32_t idCorrelativo,uint32_t tamanioAgregar){
 	particion *datoAAgregar = malloc(sizeof(particion));
-	datoAAgregar->mensaje = malloc(sizeof(dato));
+	datoAAgregar->mensaje = malloc(tamanioAgregar);
 	datoAAgregar->mensaje = dato;
 	//agregamos tipos de dato raiz como son new_pokemon, localized_pokemon, etc;
 	//TENER EN CUENTA QUE PUEDE CAMBIAR el tamaño si es broker_tipo_dato  PORQUE TIENE LOS SUSCRIPTORES QUE LE MANDARON ACK
-	datoAAgregar->tamanioMensaje= sizeof(dato);
+	datoAAgregar->tamanioMensaje= tamanioAgregar;
 	datoAAgregar->acknoleged = list_create();
 	datoAAgregar->tipoMensaje = tipoMensaje;
 	datoAAgregar->libre = 0;
 	datoAAgregar->timestamp= temporal_get_string_time();//solo tira la hora sin la fecha
 	datoAAgregar->idMensaje = idMensaje;
+	datoAAgregar->idCorrelativo = idCorrelativo;
 
 	return datoAAgregar;
 }
@@ -464,6 +468,7 @@ bool baseMasChica(particion *part1,particion* part2){
 
 void algoritmoBestFit(particion *datoAAgregar,particion *particionChica){
 
+	sem_wait(&usoMemoria);
 	uint32_t baseSig = -1;
 
 	bool particionLibreQueEntre(particion *partic){
@@ -492,7 +497,7 @@ void algoritmoBestFit(particion *datoAAgregar,particion *particionChica){
 
 	//si encontro una partcion en toda la memoria
 	agregarTablaParticionesYMemoria(datoAAgregar,particionChica,&baseSig);
-
+	sem_post(&usoMemoria);
 }
 
 void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig){
@@ -517,6 +522,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 		}
 		//agregar a memoria Real
 		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
+
 	}
 	else{
 		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazamiento)
@@ -537,7 +543,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 
 	log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
 	//para ver como esta la memoria
-	//list_iterate(tablaDeParticiones, mostrarParticiones);
+	list_iterate(tablaDeParticiones, mostrarParticiones);
 }
 
 void algoritmoReemplazo(particion *datoAAgregar){
@@ -553,6 +559,7 @@ void algoritmoReemplazo(particion *datoAAgregar){
 void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	//list_iterate(tablaDeParticiones, mostrarParticiones);
+	sem_wait(&usoMemoria);
 	uint32_t baseSig = -1;
 
 	bool primeroLibreQueEntre(particion *partic){
@@ -578,7 +585,7 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	//si encontro una partcion en toda la memoria
 	agregarTablaParticionesYMemoria(datoAAgregar,particionEncontrada,&baseSig);
-
+	sem_post(&usoMemoria);
 }
 
 

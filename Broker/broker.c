@@ -24,6 +24,7 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 	 */
 		leer_config();
 		sem_init(&idsDeMensajes,0,1);
+		sem_init(&usoMemoria,0,1);
 
 
 		logConexion = iniciar_logger("Conexion",log_file);//ver bien donde va
