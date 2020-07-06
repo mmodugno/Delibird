@@ -264,6 +264,7 @@ while(1){
 	//TODO delegar:
 
 	if(conectarse_con_broker()!=-1){
+		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
 		broker_catch_pokemon *catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 		catchAEnviar->datos=malloc(sizeof(catch_pokemon));
 
@@ -281,11 +282,16 @@ while(1){
 
 		//TODO
 		//recibimos el caught del catch ese, esperar hasta que se terminen de codear los mensajes de las colas
-		//la funcion para recibir el caught tiene que ver que sea el mismo id del catch que enviaron
+		//la funcion para recibir el caught tiene que ver que sea el mismo id del catch que enviamos
 
 		//libero la conexion con el broker
 		close(conexionBroker);
+	}else{
+		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
 	}
+
+
+
 
 	bloquear_entrenador(un_entrenador);
 
@@ -293,12 +299,18 @@ while(1){
 	sem_post(&en_ejecucion);
 	//libera la ejecucion mientras espera el catch
 
-	sem_wait(&(un_entrenador->sem_entrenador));
+	//TODO aca puse que si no se puede conectar se confirme el catch
+	if(conectarse_con_broker()==-1){
+		confirmacion_de_catch(un_entrenador);
+	}
 
-	confirmacion_de_catch(un_entrenador); //PRUBA: SOLO EN CASO DEFAULT
+	sem_wait(&(un_entrenador->sem_entrenador));
 
 	sem_wait(&(un_entrenador->espera_de_catch)); //Espera que le llegue al sistema una respuesta a su catch
 
+	if(conectarse_con_broker()==-1){
+	printf("\n Agarró al pokemon %s \n",proximo_objetivo->nombre);
+	}
 
 
 	analizar_proxima_cola(un_entrenador); //ANALIZA A QUE COLA O LISTA SE MUEVE
@@ -327,6 +339,7 @@ void manejar_deadlock(void){
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
 
 					if(leer_algoritmo_planificacion() == FIFO){
+
 						planificar_deadlock(entrenador0,entrenador1);
 						}
 						else{
@@ -377,14 +390,15 @@ while(validacion_nuevo_pokemon()){
 
 	//Seccion critica
 	sem_wait(&en_ejecucion);
-
+	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 	sem_post(&(entrenador_exec->sem_entrenador));
 
 
 	//Fin de seccion critica
 
 }
-
+//TODO SACAR:
+/*
 while(queue_size(entrenadores_blocked) > 0){
 
 terminar_ejecucion_entrenador();
@@ -392,11 +406,24 @@ sem_wait(&en_ejecucion);
 sem_post(&(entrenador_exec->sem_entrenador));
 
 }
+*/
 
+//Agregar entrenadores en ready cuando atrapan al pokemon
+while(queue_size(entrenadores_ready)>0){
+	entrenador_exec = queue_peek(entrenadores_ready);
+	queue_pop(entrenadores_ready);
+
+		sem_wait(&en_ejecucion);
+
+		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
+		sem_post(&(entrenador_exec->sem_entrenador));
+}
 
 while(list_size(entrenadores_en_deadlock)>1){
 	sem_wait(&en_ejecucion);
-	sem_post(&deadlock);
+	cant_deadlocks +=1;
+	//sem_post(&deadlock);
 	manejar_deadlock();
 	sem_post(&en_ejecucion);
 }
@@ -446,12 +473,6 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 	log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 }
 
-void terminar_ejecucion_entrenador(void){
-	entrenador_exec = queue_peek(entrenadores_blocked);
-	queue_pop(entrenadores_blocked);
-	proximo_objetivo = entrenador_exec->objetivo_proximo;
-	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-}
 
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	printf("\n Inicio operacion de deadlock \n ");
@@ -459,6 +480,8 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
+
+	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
 	//int retardo = leer_retardo_cpu() * 5;
@@ -474,8 +497,9 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
 
 	entrenador0->ciclos_cpu += 5;
-	entrenador1->ciclos_cpu += 5;
+	//entrenador1->ciclos_cpu += 5;
 
+	cant_deadlocks_resueltos+=1;
 
 	analizar_proxima_cola(entrenador0);
 
@@ -519,8 +543,8 @@ while(1){
 		sem_post(&(entrenador_exec->sem_entrenador));
 	}
 
-
-	while(queue_size(entrenadores_blocked) > 0){
+//ACA NO DEBERIA SER ESTO TODO
+/*	while(queue_size(entrenadores_blocked) > 0){
 		quantum = leer_quantum();
 		//esto seria solo si esta el caso default de broker creo
 
@@ -535,11 +559,11 @@ while(1){
 
 	sem_post(&en_ejecucion);
 	}
-
+*/
 
 	//	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 	// log_info(resultado_deadlock,"No se detectó deadlock");
-	if(hay_deadlock()){ //TODO no deberia ser un while que se ejecute asi me parece
+	if(hay_deadlock()){
 
 		entrenador_deadlock -=1;
 		cant_deadlocks += 1;
@@ -859,7 +883,15 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 	disminuir_cuantos_puede_cazar(un_entrenador);
 
-printf("\n Agarró al pokemon %s \n",proximo_objetivo->nombre);
+	//TODO aca hago que ya no este mas en blocked, sino que en ready
+	//1. lo saco de blocked
+	//2.
+	queue_push(entrenadores_ready,un_entrenador);
+
+
+
+//printf("\n Agarró al pokemon %s \n",proximo_objetivo->nombre);
+
 	sem_post(&(un_entrenador->espera_de_catch));
 
 
@@ -1039,12 +1071,12 @@ void iniciar_servidor(void)
 int conectarse_con_broker(void){
 	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
 	if(conexionBroker <= 0){
-		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
 		//broker_default();
 		return -1;
 	}
 	else{
-		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
 		return conexionBroker;
 	}
 

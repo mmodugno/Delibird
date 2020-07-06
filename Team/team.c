@@ -95,7 +95,7 @@ int main(int argc, char* argv[]){
  	//terminar_programa();
 
  	imprimir_metricas();
-
+ 	//loggear_metricas();
 
 
 	printf(" Terminado \n \n");
@@ -146,4 +146,23 @@ void imprimir_metricas(void){
 	 printf("Cantidad de deadlocks producidos: %d \n", cant_deadlocks);
 
 	 printf("Cantidad de deadlocks resueltos: %d \n", cant_deadlocks_resueltos);
+}
+
+void loggear_metricas(void){
+
+
+	for(int i= 0; i < list_size(entrenadores); i++){
+			entrenador* entrenador = list_get(entrenadores, i);
+			log_info(resultado,"Ciclos de cpu entrenador %d: %d", entrenador->id, entrenador->ciclos_cpu);
+		}
+
+	int cpu_totales = 0;
+		for(int i= 0; i < list_size(entrenadores); i++){
+		entrenador* entrenador = list_get(entrenadores, i);
+		cpu_totales += entrenador->ciclos_cpu;
+		}
+
+	log_info(resultado,"Ciclos de cpu totales: %d", cpu_totales);
+	log_info(resultado,"Cantidad de deadlocks producidos: %d", cant_deadlocks);
+	log_info(resultado,"Cantidad de deadlocks resueltos: %d", cant_deadlocks_resueltos);
 }
