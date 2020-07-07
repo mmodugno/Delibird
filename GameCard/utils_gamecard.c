@@ -331,14 +331,21 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 
 void procesarGetPokemon(char* nombrePoke){
 
-	//verificar como GET
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	verificarAperturaArchivo(path);
 
-	obtenerPosiciones(nombrePoke);
+	t_list* listaRegistros = obtenerPosiciones(nombrePoke);
 
+	if(list_is_empty(listaRegistros)) {
+		//enviar mensaje vacio
+	}
 
+	sleep(tiempo_retardo_operacion);
+	//cerrarArchivoMetadataPoke(path);
+
+	//Si la lista no esta vacía
+	//TODO conectar con broker y enviar mensaje a LOCALIZED_POKE
 
 }
 
@@ -389,7 +396,7 @@ void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
 }
 
-int obtenerPosiciones(char* nombrePoke){
+t_list* obtenerPosiciones(char* nombrePoke){
 
 	int j = 0;
 
@@ -425,17 +432,9 @@ int obtenerPosiciones(char* nombrePoke){
 
 	t_list* listaRegistros = list_map(listaRegistrosString, (void*) string_a_registro);
 
-	int i = 0;
-
-	for(i = 0; i < list_size(listaRegistros);i++){
-
-
-
-
-	}
-
 	config_destroy(configPoke);
 
+	return listaRegistros;
 }
 
 int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
@@ -946,5 +945,251 @@ void vaciarArchivo(char* ruta) {
 	FILE* arch = txt_open_for_append(ruta);
 
 	txt_close_file(arch);
+
+}
+
+///////////////////////////////////////CONEXIONES///////////////////////////////////////
+
+
+//ESTE ES EL SV PARA RECIBIR MENSAJES
+void iniciar_servidor(void)
+{
+	int socket_servidor;
+
+    struct addrinfo hints, *servinfo, *p;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE;
+
+    getaddrinfo(ipGamecard,puertoGamecard, &hints, &servinfo);
+
+    for (p=servinfo; p != NULL; p = p->ai_next)
+    {
+        if ((socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
+            continue;
+
+        if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
+            close(socket_servidor);
+            continue;
+        }
+        break;
+    }
+
+	listen(socket_servidor, SOMAXCONN);
+
+    freeaddrinfo(servinfo);
+
+    while(1){
+    	esperar_cliente(socket_servidor);
+
+    }
+
+}
+
+int conectarse_con_broker(void){
+	int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	if(conexionBroker <= 0){
+		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		//broker_default();
+		return -1;
+	}
+	else{
+		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+		return conexionBroker;
+	}
+
+}
+
+void serve_client(int* socket)
+{
+	int cod_op;
+	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	if(i <= 0)
+		cod_op = -1;
+	process_request(cod_op, *socket);
+}
+
+void esperar_cliente(int socket_servidor)
+{
+	struct sockaddr_in dir_cliente;
+	//poner en globales si es necesario
+
+	pthread_t thread;
+
+
+	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
+
+	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
+
+	//log_info(logConexion," se conectaron a broker");
+
+	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
+	pthread_detach(thread);
+
+}
+
+void process_request(int cod_op, int cliente_fd) {
+
+	uint32_t tamanio_buffer;
+	uint32_t tamanio_username;
+
+
+	char* username;
+
+	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
+
+	username = malloc(tamanio_username);
+	recv(cliente_fd,username,tamanio_username,MSG_WAITALL);
+
+	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
+
+	registroConNombre* registroConNombre;
+
+	char *nombre;
+
+
+	switch (cod_op) {
+
+	case GAMECARD__NEW_POKEMON:
+
+	registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
+
+	procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro);
+
+	free(registroConNombre);
+
+	break;
+
+	case GAMECARD__CATCH_POKEMON:
+
+	registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
+
+	procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY);
+
+	free(registroConNombre);
+
+	break;
+
+	case GAMECARD__GET_POKEMON:
+
+	nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
+
+	procesarGetPokemon(nombre);
+
+	free(nombre);
+
+	break;
+
+	case 0:
+	pthread_exit(NULL);
+	case -1:
+	pthread_exit(NULL);
+	}
+
+
+}
+
+void* recibir_mensaje(int socket_cliente, int* size)
+{
+	void * buffer;
+
+	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
+	buffer = malloc(*size);
+	recv(socket_cliente, buffer, *size, MSG_WAITALL);
+
+	return buffer;
+}
+
+//ESTO ES PARA SER EL CLIENTE
+int crear_conexion(char *ip, char* puerto)
+{
+	struct addrinfo hints;
+	struct addrinfo *server_info;
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE;
+
+	getaddrinfo(ip, puerto, &hints, &server_info);
+
+	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
+
+	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) != 0){
+		//printf("error");
+		freeaddrinfo(server_info);
+		return -1;
+	}
+
+
+	freeaddrinfo(server_info);
+
+	return socket_cliente;
+}
+
+
+//////////////////////////////////////SERIALIZACIONES Y DESERIALIZACIONES///////////////
+
+registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
+
+	registroConNombre* registroConNombre = malloc(sizeof(registroConNombre));
+
+	int tamanioNombre;
+
+    //void* nombre;
+    /////NO HACE FALTA NOMBRE, PODEMOS HACER UN MALLOC DEL NOMBRE DESPUES DE PEDIR EL TAMANIO DEL NOMBRE
+
+    recv(socket_cliente,&(tamanioNombre),sizeof(uint32_t),0);
+
+    registroConNombre->nombre = malloc(tamanioNombre);
+
+    recv(socket_cliente,registroConNombre->nombre,tamanioNombre,0);
+    //memcpy(newPoke->datos->nombrePokemon,nombre,newPoke->datos->tamanioNombre);
+
+    recv(socket_cliente,&(registroConNombre->registro->posX),sizeof(uint32_t),0);
+
+    recv(socket_cliente,&(registroConNombre->registro->posY),sizeof(uint32_t),0);
+
+    recv(socket_cliente,&(registroConNombre->registro->cantidad),sizeof(uint32_t),0);
+
+    return registroConNombre;
+
+}
+
+registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
+
+	registroConNombre* registroConNombre = malloc(sizeof(registroConNombre));
+
+	int tamanioNombre;
+
+    recv(socket_cliente,&(tamanioNombre),sizeof(uint32_t),0);
+
+    registroConNombre->nombre = malloc(tamanioNombre);
+
+    recv(socket_cliente,registroConNombre->nombre,tamanioNombre,0);
+
+    recv(socket_cliente,&(registroConNombre->registro->posX),sizeof(uint32_t),0);
+
+    recv(socket_cliente,&(registroConNombre->registro->posY),sizeof(uint32_t),0);
+
+    registroConNombre->registro->cantidad = 0;
+
+    return registroConNombre;
+
+}
+
+char* deserializar_get_pokemon_Gamecard(int socket_cliente){
+
+	int tamanioNombre;
+
+    recv(socket_cliente,&(tamanioNombre),sizeof(uint32_t),0);
+
+    char* nombre = malloc(tamanioNombre);
+
+    recv(socket_cliente,nombre,tamanioNombre,0);
+
+    return nombre;
 
 }
