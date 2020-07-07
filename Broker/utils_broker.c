@@ -361,6 +361,7 @@ void suscribirACola(suscriptor* suscriptor){
 }
 
 void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje, uint32_t idCorrelativo,uint32_t tamanioAgregar){
+	sem_wait(&usoMemoria);
 	if(!strcmp(algoritmo_memoria,"PARTICIONES")){
 
 		particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje,tipoMensaje,idCorrelativo,tamanioAgregar);
@@ -378,7 +379,7 @@ void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje, uin
 	if(!strcmp(algoritmo_memoria,"BS")){
 
 	}
-
+	sem_post(&usoMemoria);
 }
 
 
@@ -406,7 +407,7 @@ bool baseMasChica(particion *part1,particion* part2){
 
 void algoritmoBestFit(particion *datoAAgregar,particion *particionChica){
 
-	sem_wait(&usoMemoria);
+
 	uint32_t baseSig = -1;
 
 	bool particionLibreQueEntre(particion *partic){
@@ -435,7 +436,7 @@ void algoritmoBestFit(particion *datoAAgregar,particion *particionChica){
 
 	//si encontro una partcion en toda la memoria
 	agregarTablaParticionesYMemoria(datoAAgregar,particionChica,&baseSig);
-	sem_post(&usoMemoria);
+
 }
 
 void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig){
@@ -497,7 +498,7 @@ void algoritmoReemplazo(particion *datoAAgregar){
 void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	//list_iterate(tablaDeParticiones, mostrarParticiones);
-	sem_wait(&usoMemoria);
+
 	uint32_t baseSig = -1;
 
 	bool primeroLibreQueEntre(particion *partic){
@@ -523,7 +524,7 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	//si encontro una partcion en toda la memoria
 	agregarTablaParticionesYMemoria(datoAAgregar,particionEncontrada,&baseSig);
-	sem_post(&usoMemoria);
+
 }
 
 
