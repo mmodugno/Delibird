@@ -26,13 +26,17 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		sem_init(&idsDeMensajes,0,1);
 		sem_init(&usoMemoria,0,1);
 
-
-		logConexion = iniciar_logger("Conexion",log_file);//ver bien donde va
+		//logs implementados
 		logSuscipcion = iniciar_logger("Suscripcion",log_file);
 		logMensajeNuevo = iniciar_logger("Mensaje Nuevo",log_file);
-		logEnviarNuevo = iniciar_logger("Enviar Mensaje",log_file);
 		confirmacionRecepcion = iniciar_logger("Recepcion Mensaje",log_file); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
 		almacenadoMemoria = iniciar_logger("Almacenado Memoria",log_file); //debe indicar posicion de inicio de particion
+
+		//TODO?
+		logConexion = iniciar_logger("Conexion",log_file);//ver bien donde va
+
+		//TODO
+		logEnviarNuevo = iniciar_logger("Enviar Mensaje",log_file);
 		eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
 		compactacionMemoria= iniciar_logger("compactacionMemoria",log_file);
 		dumpCache= iniciar_logger("dumpCache",log_file);

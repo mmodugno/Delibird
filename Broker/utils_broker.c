@@ -21,16 +21,22 @@ void iniciarMemoria(){
 
 	memoria = malloc(tamanio_memoria);
 
-	tablaDeParticiones = list_create();
+	if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+		tablaDeParticiones = list_create();
 
-	particion *partLibreInicial= malloc(sizeof(particion));
-	//los que tienen idMensaje 0 son particiciones vacias
-	partLibreInicial->idMensaje = 0;
-	partLibreInicial->base = 0;
-	partLibreInicial->tamanioMensaje = tamanio_memoria;
-	partLibreInicial->libre = 1;
+		particion *partLibreInicial= malloc(sizeof(particion));
+		//los que tienen idMensaje 0 son particiciones vacias
+		partLibreInicial->idMensaje = 0;
+		partLibreInicial->base = 0;
+		partLibreInicial->tamanioMensaje = tamanio_memoria;
+		partLibreInicial->libre = 1;
 
-	list_add(tablaDeParticiones,partLibreInicial);
+		list_add(tablaDeParticiones,partLibreInicial);
+	}
+	if(!strcmp(algoritmo_memoria,"BS")){
+
+	}
+
 
 	idGlobales = 1;
 
@@ -120,7 +126,7 @@ void process_request(int cod_op, int cliente_fd) {
 	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
 
-	//log_info(logConexion,"%s se conecto al broker",username);
+	log_info(logConexion,"%s se conecto al broker",username);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
 		case SUSCRIPCION:{
@@ -327,31 +333,7 @@ void* recibir_mensaje(int socket_cliente, int* size) {
 	return buffer;
 }
 
-//por ahora usamos tipos de dato de broker que van a tener el id_relativo, el mensaje, su id y la cola de suscriptores que les llego el mensaje
-/*void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje){
-	switch(tipo_de_Cola){
-		case NEW_POKEMON:
-			list_add(colaNewPokemon,(broker_new_pokemon*)mensaje);
-			break;
-		case APPEARED_POKEMON:
-			list_add(colaAppearedPokemon,(broker_appeared_pokemon*)mensaje);
-			break;
-		case CATCH_POKEMON:
-			list_add(colaCatchPokemon,(broker_catch_pokemon*)mensaje);
-			break;
-		case CAUGHT_POKEMON:
-			list_add(colaCaughtPokemon,(broker_caught_pokemon*)mensaje);
-			break;
-		case GET_POKEMON:
-			list_add(colaGetPokemon,(broker_get_pokemon*)mensaje);
-			break;
-		case LOCALIZED_POKEMON:
-			//queue_push(colaLocalizedPokemon,(broker_localize_pokemon*) mensaje);
-			list_add(colaLocalizedPokemon,(broker_localized_pokemon*) mensaje);
-			break;
 
-	}
-}*/
 
 void suscribirACola(suscriptor* suscriptor){
 	switch(suscriptor->tipoDeCola){
@@ -379,16 +361,22 @@ void suscribirACola(suscriptor* suscriptor){
 }
 
 void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje, uint32_t idCorrelativo,uint32_t tamanioAgregar){
-	particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje,tipoMensaje,idCorrelativo,tamanioAgregar);
-	//uint32_t desplazamiento = 0;
-	particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
-	//particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
+	if(!strcmp(algoritmo_memoria,"PARTICIONES")){
 
-	if(!strcmp(algoritmo_particion_libre,"FF")){
-		algoritmoFirstFit(datoAAgregar,particionEncontrada);
+		particion *datoAAgregar = crearEntradaParticionBasica(dato,idMensaje,tipoMensaje,idCorrelativo,tamanioAgregar);
+		//uint32_t desplazamiento = 0;
+		particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
+		//particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
+
+		if(!strcmp(algoritmo_particion_libre,"FF")){
+			algoritmoFirstFit(datoAAgregar,particionEncontrada);
+		}
+		if(!strcmp(algoritmo_particion_libre,"BF")){
+			algoritmoBestFit(datoAAgregar,particionEncontrada);
+		}
 	}
-	if(!strcmp(algoritmo_particion_libre,"BF")){
-		algoritmoBestFit(datoAAgregar,particionEncontrada);
+	if(!strcmp(algoritmo_memoria,"BS")){
+
 	}
 
 }
