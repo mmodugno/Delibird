@@ -290,68 +290,18 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			uint32_t ackRecibido = deserializarAck(cliente_fd);
+			log_info(confirmacionRecepcion,"me llego la confirmacion para el ID:%d",ackRecibido);
 
-			//TODO no hay que hacer asi. Es mas facil, hay que actualizar la lista de particiones por el id qu recibimos
-			bool buscarIdNew(broker_new_pokemon* brokerNP){
-				return (brokerNP->id) == ackRecibido;
-			}
-			bool buscarIdAppeared(broker_appeared_pokemon* brokerAP){
-				return (brokerAP->id) == ackRecibido;
-			}
-			bool buscarIdCatch(broker_catch_pokemon* brokerCTP){
-				return (brokerCTP->id) == ackRecibido;
-			}
-			bool buscarIdCaught(broker_caught_pokemon* brokerCAP){
-				return (brokerCAP->id) == ackRecibido;
-			}
-			bool buscarIdGet(broker_get_pokemon* brokerGP){
-				return (brokerGP->id) == ackRecibido;
-			}
-			bool buscarIdLocalized(broker_localized_pokemon* brokerLP){
-				return (brokerLP->id) == ackRecibido;
+			bool partAck(particion *part){
+				if((!part->libre) &&(ackRecibido==part->idMensaje)){
+					return 1;
+				}
+				return 0;
 			}
 
-			broker_new_pokemon* brokerNP = malloc(sizeof(broker_new_pokemon));
-			broker_appeared_pokemon* brokerAP = malloc(sizeof(broker_appeared_pokemon));
-			broker_catch_pokemon* brokerCTP = malloc(sizeof(broker_catch_pokemon));
-			broker_caught_pokemon* brokerCAP = malloc(sizeof(broker_caught_pokemon));
-			broker_get_pokemon* brokerGP = malloc(sizeof(broker_get_pokemon));
-			broker_localized_pokemon* brokerLP = malloc(sizeof(broker_localized_pokemon));
+			particion* partEncontrada=list_find(tablaDeParticiones,partAck);
 
-			brokerNP  = NULL;
-			brokerAP  = NULL;
-			brokerCTP = NULL;
-			brokerCAP = NULL;
-			brokerGP  = NULL;
-			brokerLP  = NULL;
-			/*
-
-			brokerNP  = (broker_new_pokemon*)list_find(colaNewPokemon, buscarIdNew);
-			brokerAP  = (broker_appeared_pokemon*)list_find(colaAppearedPokemon, buscarIdAppeared);
-			brokerCTP = (broker_catch_pokemon*)list_find(colaCatchPokemon, buscarIdCatch);
-			brokerCAP = (broker_caught_pokemon*)list_find(colaCaughtPokemon, buscarIdCaught);
-			brokerGP  = (broker_get_pokemon*)list_find(colaGetPokemon, buscarIdGet);
-			brokerLP  = (broker_localized_pokemon*)list_find(colaLocalizedPokemon, buscarIdLocalized);*/
-
-			if(brokerNP != NULL){
-				queue_push(brokerNP->suscriptoresQueRespondieron, username);
-			}
-			if(brokerAP != NULL){
-				queue_push(brokerAP->suscriptoresQueRespondieron, username);
-			}
-			if(brokerCTP != NULL){
-				queue_push(brokerCTP->suscriptoresQueRespondieron, username);
-			}
-			if(brokerCAP != NULL){
-				queue_push(brokerCAP->suscriptoresQueRespondieron, username);
-			}
-			if(brokerGP != NULL){
-				queue_push(brokerGP->suscriptoresQueRespondieron, username);
-			}
-			if(brokerLP != NULL){
-				queue_push(brokerLP->suscriptoresQueRespondieron, username);
-			}
-
+			list_add(partEncontrada->acknoleged,username);
 
 			break;
 		}
