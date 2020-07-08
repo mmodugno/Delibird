@@ -8,15 +8,23 @@
 #ifndef UTILS_GAMECARD_H_
 #define UTILS_GAMECARD_H_
 
+#define ipGamecard "127.0.0.3"
+#define puertoGamecard "5001"
+
+#define IP_BROKER "127.0.0.1"
+#define PUERTO_BROKER "5003"
+
 #include "utils_en_comun.h"
 
+#include <pthread.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include<sys/socket.h>
+#include<netdb.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -34,6 +42,14 @@ typedef struct {
 	uint32_t cantidad;
 
 } registroDatos;
+
+typedef struct {
+
+	char* nombre;
+
+	registroDatos* registro;
+
+} registroConNombre;
 
 t_log* logArchivoAbierto;
 t_log* logFalloConexion;
@@ -74,6 +90,7 @@ void procesarNewPokemon(char*, registroDatos* );
 
 ////////// REGISTROS Y BLOQUES
 
+t_list* obtenerPosiciones(char* nombrePoke);
 int tamanioRegistro(registroDatos* );
 char* registro_a_string(registroDatos* );
 char* buscarPrimerBloqueLibre(void);
@@ -103,6 +120,17 @@ void cerrarArchivoMetadataPoke(t_config* );
 void verificarDirectorioPokemon(char* );
 char* listToString(t_list* );
 void vaciarArchivo(char* );
+
+//////////////////////////CONEXIONES///////////////////////////////////////
+int conectarse_con_broker(void);
+void esperar_cliente(int);
+void serve_client(int* );
+void process_request(int , int);
+void* recibir_mensaje(int , int*);
+int crear_conexion(char *, char*);
+registroConNombre* deserializar_new_pokemon_Gamecard(int);
+registroConNombre* deserializar_catch_pokemon_Gamecard(int);
+char* deserializar_get_pokemon_Gamecard(int);
 
 
 #endif /* UTILS_GAMECARD_H_ */

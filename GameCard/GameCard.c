@@ -36,7 +36,9 @@ int main(int argc, char* argv[]){
 
 		crearBitmap();
 
-		eliminarBloquesVacios("Pikachu");
+		int conexion = conectarse_con_broker();
+
+		printf("%d",conexion);
 
 
 		//t_list* listaAux = list_create();
