@@ -615,6 +615,8 @@ void algoritmoReemplazo(particion *datoAAgregar){
 
 	list_add(tablaDeParticiones,partNueva);
 
+	list_sort(tablaDeParticiones,baseMasChica);
+
 	list_destroy(tablaParticionesLlenas);
 	list_destroy(particionesAnteriores);
 }
