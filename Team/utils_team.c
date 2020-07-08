@@ -33,6 +33,7 @@ void variables_globales(){
 	cant_deadlocks_resueltos = 0;
 	entrenador_deadlock=0;
 	cambio_contexto =0;
+	validar_deadlock = 1;
 
 }
 
@@ -398,16 +399,7 @@ while(validacion_nuevo_pokemon()){
 	//Fin de seccion critica
 
 }
-//TODO SACAR:
-/*
-while(queue_size(entrenadores_blocked) > 0){
 
-terminar_ejecucion_entrenador();
-sem_wait(&en_ejecucion);
-sem_post(&(entrenador_exec->sem_entrenador));
-
-}
-*/
 
 //Agregar entrenadores en ready cuando atrapan al pokemon
 while(queue_size(entrenadores_ready)>0){
@@ -422,19 +414,27 @@ while(queue_size(entrenadores_ready)>0){
 }
 
 
-
-while(list_size(entrenadores_en_deadlock)>1){
+//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
+if(validar_deadlock){
+	validar_deadlock=0;
 	sem_wait(&en_ejecucion);
-	cant_deadlocks +=1;
+	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 
+	if(list_size(entrenadores_en_deadlock)>1){
+		log_info(resultado_deadlock,"Se detectó deadlock");
+		cant_deadlocks +=1;
+		manejar_deadlock();
+		cambio_contexto +=1;
 
-
-	manejar_deadlock();
-	cambio_contexto +=1;
+	}else{
+		log_info(resultado_deadlock,"No se detectó deadlock");
+	}
 
 	sem_post(&en_ejecucion);
-}
 
+	pthread_t espera_deadlock;
+	pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
+}
 
 
 if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
@@ -445,6 +445,13 @@ if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
 }
 }
+
+//Funcion de deteccion deadlock
+void espera_de_deadlock(void){
+	sleep(10);
+	validar_deadlock = 1;
+}
+
 
 void mover_entrenador(entrenador* entrenador,int x, int y){
 
@@ -554,26 +561,8 @@ while(1){
 		sem_post(&(entrenador_exec->sem_entrenador));
 	}
 
-//ACA NO DEBERIA SER ESTO TODO
-/*	while(queue_size(entrenadores_blocked) > 0){
-		quantum = leer_quantum();
-		//esto seria solo si esta el caso default de broker creo
-
-	sem_wait(&en_ejecucion);
-	entrenador* un_entrenador = queue_peek(entrenadores_blocked);
-	queue_pop(entrenadores_blocked);
-
-
-	//aca se deberia pasar solo cuando reciba el OK del broker, lo mismo en FIFO (revisar)
-	queue_push(entrenadores_ready,un_entrenador);
-
-
-	sem_post(&en_ejecucion);
-	}
-*/
-
-	//	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
-	// log_info(resultado_deadlock,"No se detectó deadlock");
+//TODO Sacar?
+/*
 	if(hay_deadlock()){
 
 		entrenador_deadlock -=1;
@@ -589,30 +578,37 @@ while(1){
 
 		sem_post(&en_ejecucion);
 	}
+	*/
 
-
-/*
-	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
-	if(hay_deadlock()){
+	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
+	if(validar_deadlock){
+		validar_deadlock=0;
 		sem_wait(&en_ejecucion);
+		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 
-
-		//quantum = leer_quantum(); El quantum se lee en el algoritmo de deadlock
+		if(hay_deadlock()){
+			log_info(resultado_deadlock,"Se detectó deadlock");
+			entrenador_deadlock-=1;
+			cant_deadlocks +=1;
+			cambio_contexto +=1;
 
 		pthread_t hilo_deadlock;
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
+		}else{
+			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+		}
+
 		sem_post(&en_ejecucion);
-	}
-	else{
-		log_info(resultado_deadlock,"No se detectó deadlock");
+
+		//espera 10 segundos y pone el contador validar_deadlock en 1
+		pthread_t espera_deadlock;
+		pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
 	}
 
-*/
 
 	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 		printf("\n FINALIZO EL PROGRAMA \n ");
-
-		//log_info(resultado,"RESULTADO TEAM");
 
 		break;
 	}
@@ -620,8 +616,6 @@ while(1){
 
 }
 }
-
-
 
 
 void mover_entrenador_RR(entrenador* entrenador,int x, int y){

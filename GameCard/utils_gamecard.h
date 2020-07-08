@@ -14,7 +14,10 @@
 #define IP_BROKER "127.0.0.1"
 #define PUERTO_BROKER "5003"
 
+char* username;
+
 #include "utils_en_comun.h"
+#include "datos_broker.h"
 
 #include <pthread.h>
 #include <sys/mman.h>
@@ -131,6 +134,8 @@ int crear_conexion(char *, char*);
 registroConNombre* deserializar_new_pokemon_Gamecard(int);
 registroConNombre* deserializar_catch_pokemon_Gamecard(int);
 char* deserializar_get_pokemon_Gamecard(int);
+void enviar_appeared(int ,char* , int ,int , int );
+void enviar_caught(int ,uint32_t , uint32_t );
 
 
 #endif /* UTILS_GAMECARD_H_ */

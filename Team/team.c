@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	sem_init(&nuevo_pokemon,0,0);
 
 	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
-	sem_init(&deadlock,0,0);
+
 
 
 	variables_globales();
@@ -68,6 +68,7 @@ int main(int argc, char* argv[]){
 
 	pokemon* charmander = hacer_pokemon("Charmander", 8,0,sizeof("Charmander"));
 	aparece_nuevo_pokemon(charmander);
+
 
 	/*
  //PRUEBAS DE TP:
