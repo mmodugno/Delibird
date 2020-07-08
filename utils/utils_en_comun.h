@@ -32,7 +32,8 @@ typedef enum
 	GAMECARD__GET_POKEMON = 10,
 	SUSCRIPCION = 11,
 	ACKNOWLEDGED = 12,
-	BROKER__LOCALIZED_POKEMON=13
+	BROKER__LOCALIZED_POKEMON=13,
+	TEAM__CAUGHT_POKEMON=14
 	//despues vamos a tener un tipo de mensaje de Gamecard del tipo BROKER_LOCALIZED_POKEMON
 
 }op_code;

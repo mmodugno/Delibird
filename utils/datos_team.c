@@ -73,6 +73,21 @@ team_appeared_pokemon* deserializar_team_appeared_pokemon(int socket_cliente){
 
 }
 
+team_caught_pokemon* deserializar_team_caught_pokemon(int socket_cliente){
+
+	// deserializacion
+	//1. uint32_t id_relativo;
+	//2. uint32_t puedoAtraparlo;
+
+
+	team_caught_pokemon* caughtPokemon = malloc(sizeof(team_caught_pokemon));
+	caughtPokemon->datos = malloc(sizeof(caught_pokemon));
+
+	recv(socket_cliente, &(caughtPokemon->id_relativo),sizeof(uint32_t),0);
+	recv(socket_cliente, &(caughtPokemon->datos->puedoAtraparlo),sizeof(uint32_t),0);
+
+	return caughtPokemon;
+}
 
 /* todo
 void serializar_team_catch_pokemon(team_catch_pokemon* teamCatchPokemon, t_buffer* buffer){

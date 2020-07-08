@@ -1151,6 +1151,7 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
 	team_appeared_pokemon* appearedRecibido;
+	team_caught_pokemon* caughtRecibido;
 	char* username;
 
 	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
@@ -1176,6 +1177,17 @@ void process_request(int cod_op, int cliente_fd) {
 
 			free(appearedRecibido);
 			break;
+
+		case TEAM__CAUGHT_POKEMON:
+
+			caughtRecibido = deserealizar_team_caught_pokemon(cliente_fd);
+
+
+			//ver con maga el diseño
+
+
+			break;
+
 
 		case 0:
 			pthread_exit(NULL);
