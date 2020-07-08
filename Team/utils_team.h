@@ -72,7 +72,6 @@ char* nombre_pokemon;
 char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
-sem_t deadlock;
 sem_t nuevo_pokemon;
 
 //Metricas
@@ -80,11 +79,13 @@ int cant_deadlocks;
 int cant_deadlocks_resueltos;
 int cambio_contexto;
 
+
 bool broker_conectado;
 
 int conexionBroker;
 int quantum;
 int entrenador_deadlock;
+int validar_deadlock;
 
 typedef struct{
     char* nombre;
@@ -213,7 +214,7 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
 void manejar_deadlock(void);
 bool hay_deadlock(void);
 void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1);
-//void planificar_deadlock_RR(par_entrenadores* par);
+void espera_de_deadlock(void);
 
 
 //Mensajes
