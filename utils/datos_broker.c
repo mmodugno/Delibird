@@ -264,6 +264,8 @@ void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffe
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;
 
+	brokerGetPokemon->datos->tamanioNombre = strlen(brokerGetPokemon->datos->nombrePokemon)+1;
+
 	buffer->size= sizeof(uint32_t)
 			+ strlen(brokerGetPokemon->datos->nombrePokemon)+1; //longitud del string nombre de pokemon
 
@@ -277,6 +279,135 @@ void serializar_broker_get_pokemon(broker_get_pokemon* brokerGetPokemon, t_buffe
 	//ESTO ESTA MAL, NO ES SIZEOF
 	offset+=brokerGetPokemon->datos->tamanioNombre;
 
+}
+
+//RECORDAR HACER UN MALLOC EN CADA POS(posX,posY) antes de llenar los datos de cada posicion
+void serializar_broker_localized_pokemon(broker_localized_pokemon* brokerLocPokemon, t_buffer* buffer)
+{
+	//serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t cantidadPosiciones;
+	//4. uint32_t* posX;
+	//5. uint32_t* posY;
+	//6. uint32_t idCorrelativo;
+
+	uint32_t posiciones = 0 ;
+
+	brokerLocPokemon->datos->tamanioNombre = strlen(brokerLocPokemon->datos->nombrePokemon)+1;
+
+	buffer->size= sizeof(uint32_t)+sizeof(uint32_t)+sizeof(uint32_t)+((sizeof(uint32_t)*2)*brokerLocPokemon->datos->cantidadPosiciones)
+			+ strlen(brokerLocPokemon->datos->nombrePokemon)+1; //longitud del string nombre de pokemon
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+	//longitud del string nombre de pokemon
+	memcpy(buffer->stream+offset,&(brokerLocPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	//string nombre de pokemon
+	memcpy(buffer->stream+offset,(brokerLocPokemon->datos->nombrePokemon),brokerLocPokemon->datos->tamanioNombre);
+	offset+=brokerLocPokemon->datos->tamanioNombre;
+
+	//cantidad de Posciones
+	memcpy(buffer->stream+offset,&(brokerLocPokemon->datos->cantidadPosiciones),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	for(posiciones=0;posiciones<brokerLocPokemon->datos->cantidadPosiciones;posiciones++){
+		//tengo mis dudas por el &
+		memcpy(buffer->stream+offset,&(brokerLocPokemon->datos->posX[posiciones] ),sizeof(uint32_t));
+		offset+=sizeof(uint32_t);
+
+		memcpy(buffer->stream+offset,&(brokerLocPokemon->datos->posY[posiciones]),sizeof(uint32_t));
+		offset+=sizeof(uint32_t);
+	}
+
+
+	//id correlativo
+	memcpy(buffer->stream+offset,&(brokerLocPokemon->id_relativo),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+}
+
+broker_localized_pokemon* deserializar_localized_pokemon(int socket_cliente){
+
+	// deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t cantidadPosiciones;
+	//4. uint32_t* posX;
+	//5. uint32_t* posY;
+	//6. uint32_t idCorrelativo;
+
+	uint32_t posiciones = 0 ;
+
+	broker_localized_pokemon* locPokemon = malloc(sizeof(broker_localized_pokemon));
+	locPokemon->datos = malloc(sizeof(localized_pokemon));
+	locPokemon->datos->posX = malloc(sizeof(uint32_t));
+	locPokemon->datos->posY = malloc(sizeof(uint32_t));
+
+	//1. uint32_t tamanioNombre;
+	recv(socket_cliente, &(locPokemon->datos->tamanioNombre),sizeof(uint32_t),0);
+
+	locPokemon->datos->nombrePokemon = malloc(locPokemon->datos->tamanioNombre);
+	//2. char* nombrePokemon;
+	recv(socket_cliente, (locPokemon->datos->nombrePokemon),locPokemon->datos->tamanioNombre,0);
+
+	//3. uint32_t cantidadPosiciones;
+	recv(socket_cliente, &(locPokemon->datos->tamanioNombre),sizeof(uint32_t),0);
+
+	//4. uint32_t* posX;
+	//5. uint32_t* posY;
+	for(posiciones=0;posiciones<locPokemon->datos->cantidadPosiciones;posiciones++){
+		//tengo mis dudas por el &
+		recv(socket_cliente,&(locPokemon->datos->posX[posiciones]), sizeof(uint32_t),0);
+
+		recv(socket_cliente,&(locPokemon->datos->posY[posiciones]), sizeof(uint32_t),0);
+	}
+
+	//6. uint32_t idCorrelativo;
+	recv(socket_cliente,&(locPokemon->id_relativo), sizeof(uint32_t),0);
+
+	return locPokemon;
+}
+
+void* transformarBrokerLocalizedPokemon(broker_localized_pokemon *locRecibido,uint32_t* offset){
+	//serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t cantidadPosiciones;
+	//4. uint32_t* posX;
+	//5. uint32_t* posY;
+
+	uint32_t posiciones =0;
+
+	void *pokeTransformado = malloc(sizeof(uint32_t)+sizeof(uint32_t)+((sizeof(uint32_t)*2)*(locRecibido->datos->cantidadPosiciones))
+			+ strlen(locRecibido->datos->nombrePokemon)+1 );
+
+	*offset=0;
+
+	memcpy(pokeTransformado+*offset,&(locRecibido->datos->tamanioNombre),sizeof(uint32_t));
+	*offset+=sizeof(uint32_t);
+
+	memcpy(pokeTransformado+*offset,(locRecibido->datos->nombrePokemon),locRecibido->datos->tamanioNombre);
+	*offset+=locRecibido->datos->tamanioNombre;
+
+	memcpy(pokeTransformado+*offset,&(locRecibido->datos->cantidadPosiciones),sizeof(uint32_t));
+	*offset+=sizeof(uint32_t);
+
+	for(posiciones=0;posiciones<locRecibido->datos->cantidadPosiciones;posiciones++){
+		//tengo mis dudas por el &
+		memcpy(pokeTransformado+*offset,&(locRecibido->datos->posX[posiciones]),sizeof(uint32_t));
+		*offset+=sizeof(uint32_t);
+
+		memcpy(pokeTransformado+*offset,&(locRecibido->datos->posY[posiciones]),sizeof(uint32_t));
+		*offset+=sizeof(uint32_t);
+
+	}
+
+
+	return pokeTransformado;
 }
 
 void* transformarBrokerNewPokemon(broker_new_pokemon *newRecibido,uint32_t* offset){

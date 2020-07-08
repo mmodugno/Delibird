@@ -12,12 +12,14 @@
 
 typedef struct {
 	uint32_t id;
-	localize_pokemon* datos;
+	uint32_t id_relativo;
+	localized_pokemon* datos;
 	t_queue* suscriptoresQueRespondieron;
 } broker_localized_pokemon;
 
 typedef struct {
 	uint32_t id;
+	uint32_t id_relativo;
 	new_pokemon* datos;
 	t_queue* suscriptoresQueRespondieron;
 } broker_new_pokemon;
@@ -31,6 +33,7 @@ typedef struct {
 
 typedef struct {
 	uint32_t id;
+	uint32_t id_relativo;
 	catch_pokemon* datos;
 	t_queue* suscriptoresQueRespondieron;
 } broker_catch_pokemon;
@@ -44,17 +47,12 @@ typedef struct {
 
 typedef struct {
 	uint32_t id;
+	uint32_t id_relativo;
 	get_pokemon* datos;
 	t_queue* suscriptoresQueRespondieron;
 } broker_get_pokemon;
 
-/*
-typedef struct{
-	uint32_t id;
-	localize_pokemon* datos;
-	t_queue suscriptoresQueRespondieron;
-}broker_localized_pokemon;
-*/
+
 
 broker_get_pokemon* deserializar_get_pokemon(int socket_cliente);
 broker_new_pokemon* deserializar_new_pokemon(int socket_cliente);
@@ -71,5 +69,8 @@ void* transformarBrokerAppearedPokemon(broker_appeared_pokemon *appRecibido,uint
 void* transformarBrokerGetPokemon(broker_get_pokemon *getRecibido,uint32_t*);
 void* transformarBrokerCatchPokemon(broker_catch_pokemon *catchRecibido,uint32_t*);
 void* transformarBrokerCaughtPokemon(broker_caught_pokemon *caughtRecibido,uint32_t*);
+broker_localized_pokemon* deserializar_localized_pokemon(int socket_cliente);
+void serializar_broker_localized_pokemon(broker_localized_pokemon* brokerLocPokemon, t_buffer* buffer);
+void* transformarBrokerLocalizedPokemon(broker_localized_pokemon *locRecibido,uint32_t* offset);
 
 #endif /* DATOS_BROKER_H_ */

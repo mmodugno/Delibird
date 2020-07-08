@@ -113,6 +113,7 @@ void serve_client(int* socket){
 	BROKER__CATCH_POKEMON = 4,
 	BROKER__CAUGHT_POKEMON = 5,
 	BROKER__GET_POKEMON = 6,
+	BROKER__LOCALIZED_POKEMON = 13,
 	SUSCRIPCION = 11
 */
 
@@ -289,6 +290,56 @@ void process_request(int cod_op, int cliente_fd) {
 
 			//free(raiz);
 			free(caughtRecibido);
+
+			break;
+		}
+		case BROKER__LOCALIZED_POKEMON:{
+			broker_localized_pokemon* localizedRecibido;
+			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
+
+			uint32_t posiciones = 0;
+			char* posicionesString = string_new();
+			char* posXString= string_new();
+			char* posYString= string_new();
+
+
+			for(posiciones=0;posiciones<localizedRecibido->datos->cantidadPosiciones;posiciones++){
+				posXString= string_itoa(localizedRecibido->datos->posX[posiciones]);
+				posYString= string_itoa(localizedRecibido->datos->posY[posiciones]);
+
+				string_append(&posicionesString,"(");
+				string_append(&posicionesString,posXString);
+				string_append(&posicionesString,";");
+				string_append(&posicionesString,posYString);
+				string_append(&posicionesString,")");
+				string_append(&posicionesString,",");
+			}
+
+
+			log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n "
+									,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,posicionesString,
+									localizedRecibido->id_relativo);
+			//mutex
+			sem_wait(&idsDeMensajes);
+			localizedRecibido->id = idGlobales;
+			idGlobales++;
+			sem_post(&idsDeMensajes);
+			//mutex
+
+			// Inicializamos la cola de suscriptores ack para que se pueda agregar
+			localizedRecibido->suscriptoresQueRespondieron = queue_create();
+
+
+			void *raiz = transformarBrokerLocalizedPokemon(localizedRecibido,&tamanioAgregar);
+			//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
+			agregarAMemoria(raiz,localizedRecibido->id,LOCALIZED_POKEMON,localizedRecibido->id_relativo,tamanioAgregar);
+			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
+
+			//free(raiz);
+			free(posXString);
+			free(posYString);
+			free(posicionesString);
+			free(localizedRecibido);
 
 			break;
 		}

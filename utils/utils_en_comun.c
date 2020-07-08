@@ -39,8 +39,6 @@ void* serializar_paquete(t_paquete* paquete, int *bytes){
 	return stream_a_enviar;
 }
 
-//TODO
-//cuando recibamos un mensaje catch de team tenemos que devolverle el id y el mensaje completo
 
 
 void enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){

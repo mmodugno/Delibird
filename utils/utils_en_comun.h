@@ -31,7 +31,8 @@ typedef enum
 	GAMECARD__CATCH_POKEMON = 9,
 	GAMECARD__GET_POKEMON = 10,
 	SUSCRIPCION = 11,
-	ACKNOWLEDGED = 12
+	ACKNOWLEDGED = 12,
+	BROKER__LOCALIZED_POKEMON=13
 	//despues vamos a tener un tipo de mensaje de Gamecard del tipo BROKER_LOCALIZED_POKEMON
 
 }op_code;
@@ -58,11 +59,9 @@ typedef struct {
 	uint32_t tamanioNombre;
 	char* nombrePokemon;
 	uint32_t cantidadPosiciones;
-	//preguntar []
-
 	uint32_t* posX;
 	uint32_t* posY;
-} localize_pokemon;
+} localized_pokemon;
 
 typedef struct {
 	uint32_t tamanioNombre;
