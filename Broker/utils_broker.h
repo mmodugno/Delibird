@@ -43,15 +43,6 @@ typedef struct {
 	uint32_t idCorrelativo;
 }particion;
 
-/*
-typedef struct {
-
-    uint32_t base;
-    uint32_t limite;
-    uint32_t tamanio;
-
-} particionLibre;
-*/
 t_list *tablaDeParticiones;
 
 uint32_t idGlobales;
@@ -73,14 +64,6 @@ t_config* config;
 void *memoria;
 
 pthread_t thread;
-/*
-t_list* colaNewPokemon;
-t_list* colaAppearedPokemon;
-
-t_list* colaCatchPokemon;
-t_list* colaCaughtPokemon;
-t_list* colaGetPokemon;
-t_list* colaLocalizedPokemon;*/
 
 t_queue* suscriptoresNewPokemon;
 t_queue* suscriptoresAppearedPokemon;
@@ -116,7 +99,6 @@ int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
-//void agregarACola(tipoDeCola tipo_de_Cola, void* mensaje);
 void suscribirACola(suscriptor* suscriptor);
 particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola, uint32_t , uint32_t);
 void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada);

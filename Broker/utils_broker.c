@@ -432,10 +432,14 @@ void algoritmoBestFit(particion *datoAAgregar,particion *particionChica){
 	particionChica = list_get(tablaParticionesLibres,0);
 	list_iterate(tablaParticionesLibres,particionMasChica);
 
+
+
 	list_find(tablaDeParticiones,partSiguienteALibre);
 
 	//si encontro una partcion en toda la memoria
 	agregarTablaParticionesYMemoria(datoAAgregar,particionChica,&baseSig);
+
+	list_destroy(tablaParticionesLibres);
 
 }
 
@@ -455,8 +459,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 			list_add(tablaDeParticiones,datoAAgregar);
 		}
 		else{
-			//eliminar la particion libre
-			//TODO ver si funciona
+			//"eliminar" la particion libre, en realidad modificamos la particion libre por la que vamos a agregar
 			copiarDatos(partElegida,datoAAgregar);
 		}
 		//agregar a memoria Real
@@ -467,16 +470,21 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazamiento)
 		//free(particionEncontrada);
 		//si no hay ninguna particion en donde entre
-		//comprimir (ver contador de frecuencia con mutex)
-
-		//volver a ver si entra el dato
 
 		//reemplazar(quien elimina)
 		algoritmoReemplazo(datoAAgregar);
 
-		//comprimir(ver contador de frecuencia con mutex)(CREO)
+		//comprimir(ver contador de frecuencia con mutex)
+
 
 		//volver a ver si entra
+		partElegida = NULL;
+		if(!strcmp(algoritmo_particion_libre,"FF")){
+			algoritmoFirstFit(datoAAgregar,partElegida);
+		}
+		if(!strcmp(algoritmo_particion_libre,"BF")){
+			algoritmoBestFit(datoAAgregar,partElegida);
+		}
 
 	}
 
@@ -486,12 +494,129 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 }
 
 void algoritmoReemplazo(particion *datoAAgregar){
-	if(!strcmp(algoritmo_reemplazo,"FIFO")){
+
+	uint32_t baseAEliminar = -1;
+
+
+	particion* partAnt = NULL;
+
+	particion* partNueva = NULL;
+
+	char ** timeAct;
+	char ** timeElim;
+
+	uint32_t horaAct;
+	uint32_t horaElim;
+	uint32_t minAct;
+	uint32_t minElim;
+	uint32_t segAct;
+	uint32_t segElim;
+	uint32_t milAct;
+	uint32_t milElim;
+
+	bool partLlenas(particion* part){
+		return !(part->libre);
+	}
+
+	t_list *tablaParticionesLlenas= list_filter(tablaDeParticiones,partLlenas);
+	particion* partAEliminar = list_get(tablaParticionesLlenas,0);
+
+	bool particionesAnt(particion* part){
+		return (part->base < partAEliminar->base);
+	}
+
+	void partMasVieja(particion* part){
+
+		timeAct = string_split(part->timestamp,":");
+		timeElim = string_split(partAEliminar->timestamp,":");
+
+		horaAct = atoi(timeAct[0]);
+		horaElim =atoi(timeElim[0]) ;
+
+		minAct =atoi(timeAct[1]) ;
+		minElim = atoi(timeElim[1]);
+
+		segAct = atoi(timeAct[2]);
+		segElim = atoi(timeElim[2]);
+
+		milAct = atoi(timeAct[3]);
+		milElim = atoi(timeElim[3]);
+
+		if(horaAct<=horaElim){
+			if(minAct<=minElim){
+				if(segAct<=segElim){
+					if(milAct<=milElim){
+						partAEliminar= part;
+					}
+				}
+			}
+		}
+	}
+
+	bool partSiguienteALibre(particion *partic){
+		return partic->base > partAEliminar->base;
+	}
+
+	void particionAnterior(particion * part){
+		partAnt = part;
+	}
+
+	bool particionConEsaBase(particion * part){
+		return (part->base == baseAEliminar);
+	}
+
+
+	//se elije cual es la particion que vamos a eliminar
+	list_iterate(tablaParticionesLlenas,partMasVieja);
+
+
+	//ordenamos todas las pariciones por sus bases
+	list_sort(tablaDeParticiones,baseMasChica);
+
+	particion *partSig = list_find(tablaDeParticiones,partSiguienteALibre);
+
+	t_list *particionesAnteriores  = list_filter(tablaDeParticiones,particionesAnt);
+
+	list_sort(particionesAnteriores,baseMasChica);
+
+	list_iterate(particionesAnteriores,particionAnterior);
+
+	if(partAEliminar!=NULL){
+
+		copiarDatos(partNueva,partAEliminar);
+
+		partNueva->libre = 1;
+		//LIBRE
+		partNueva->tipoMensaje = 0;
+		partNueva->idCorrelativo = 0;
+		partNueva->idMensaje = 0;
+		partNueva->base = partAEliminar->base;
+		partNueva->tamanioMensaje = partAEliminar->tamanioMensaje;
+
+		if(partSig->libre){
+			partNueva->tamanioMensaje += partAEliminar->tamanioMensaje;
+			//eliminar partSig de la Tabla de Particiones
+			baseAEliminar = partSig->base;
+			list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
+		}
+		if(partAnt->libre){
+			partNueva->base = partAnt->base;
+			partAnt->tamanioMensaje += partAEliminar->tamanioMensaje;
+			//eliminar partAnt de la Tabla de Particiones
+			baseAEliminar = partAnt->base;
+			list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
+		}
+		log_info(eliminacionMemoria,"eliminamos de la memoria el dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",partAEliminar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],partAEliminar->base,partAEliminar->tamanioMensaje,partAEliminar->timestamp);
+		//eliminar la particion que quiero eliminar
+		baseAEliminar = partAEliminar->base;
+		list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
 
 	}
-	if(!strcmp(algoritmo_reemplazo,"LRU")){
 
-	}
+	list_add(tablaDeParticiones,partNueva);
+
+	list_destroy(tablaParticionesLlenas);
+	list_destroy(particionesAnteriores);
 }
 
 
