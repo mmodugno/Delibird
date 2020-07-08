@@ -23,6 +23,9 @@ int main(int argc, char* argv[]){
 
 		leer_config();
 
+		username = malloc(strlen("GAMECARD"+1));
+		username = "GAMECARD";
+
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
 
@@ -35,11 +38,6 @@ int main(int argc, char* argv[]){
 		crearFilesAndBlocks();
 
 		crearBitmap();
-
-		int conexion = conectarse_con_broker();
-
-		printf("%d",conexion);
-
 
 		//t_list* listaAux = list_create();
 
