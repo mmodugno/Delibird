@@ -31,13 +31,13 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		logMensajeNuevo = iniciar_logger("Mensaje Nuevo",log_file);
 		confirmacionRecepcion = iniciar_logger("Recepcion Mensaje",log_file); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
 		almacenadoMemoria = iniciar_logger("Almacenado Memoria",log_file); //debe indicar posicion de inicio de particion
+		eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
 
 		//TODO?
 		logConexion = iniciar_logger("Conexion",log_file);//ver bien donde va
 
 		//TODO
 		logEnviarNuevo = iniciar_logger("Enviar Mensaje",log_file);
-		eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
 		compactacionMemoria= iniciar_logger("compactacionMemoria",log_file);
 		dumpCache= iniciar_logger("dumpCache",log_file);
 

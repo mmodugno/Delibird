@@ -55,6 +55,7 @@ char* algoritmo_memoria;
 char* algoritmo_reemplazo;
 char* algoritmo_particion_libre;
 uint32_t frecuencia_compactacion;
+uint32_t frecuencia;
 char* log_file;
 
 
@@ -90,6 +91,7 @@ static const char *colasDeEnum[] = {"LIBRE","NEW_POKEMON","APPEARED_POKEMON","CA
 sem_t idsDeMensajes;
 sem_t usoMemoria;
 void agregarAMemoria(void* , uint32_t ,tipoDeCola, uint32_t , uint32_t);
+void compactarMemoria(void);
 void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);

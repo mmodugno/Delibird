@@ -264,7 +264,7 @@ int main(int argc, char* argv[]){
 
 	}
 
-	//TODO recv con timeout
+	//TODO probar recv con timeout
 	//Ver el tipo de dato y la funcion enviar
 	if(!strcmp(argv[1],"SUSCRIPTOR")){
 

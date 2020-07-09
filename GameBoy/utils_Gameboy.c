@@ -324,7 +324,7 @@ void enviar_GameCard_Get_Pokemon(gameCard_get_pokemon *gameCardGetPokemon,char* 
 
 
 
-//TODO
+//TODO?
 //se podria usar este para no repetir codigo, pero no se me ocurrio cómo
 void enviar_mensaje(char* mensaje, int socket_cliente)
 {

@@ -20,6 +20,7 @@ void mostrarParticiones(particion* unaParticion){
 void iniciarMemoria(){
 
 	memoria = malloc(tamanio_memoria);
+	frecuencia = 0;
 
 	if(!strcmp(algoritmo_memoria,"PARTICIONES")){
 		tablaDeParticiones = list_create();
@@ -386,6 +387,7 @@ void* recibir_mensaje(int socket_cliente, int* size) {
 
 
 
+
 void suscribirACola(suscriptor* suscriptor){
 	switch(suscriptor->tipoDeCola){
 		case NEW_POKEMON:
@@ -440,7 +442,6 @@ particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCol
 	datoAAgregar->mensaje = malloc(tamanioAgregar);
 	datoAAgregar->mensaje = dato;
 	//agregamos tipos de dato raiz como son new_pokemon, localized_pokemon, etc;
-	//TENER EN CUENTA QUE PUEDE CAMBIAR el tamaño si es broker_tipo_dato  PORQUE TIENE LOS SUSCRIPTORES QUE LE MANDARON ACK
 	datoAAgregar->tamanioMensaje= tamanioAgregar;
 	datoAAgregar->acknoleged = list_create();
 	datoAAgregar->tipoMensaje = tipoMensaje;
@@ -518,15 +519,15 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 
 	}
 	else{
-		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazamiento)
-		//free(particionEncontrada);
+		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazo)
+		//free(partElegida);
+		//ver los pasos para agregar a memoria porque no estoy seguro
 		//si no hay ninguna particion en donde entre
-
-		//reemplazar(quien elimina)
-		algoritmoReemplazo(datoAAgregar);
 
 		//comprimir(ver contador de frecuencia con mutex)
 
+		//reemplazar(quien elimina)
+		algoritmoReemplazo(datoAAgregar);
 
 		//volver a ver si entra
 		partElegida = NULL;
@@ -716,3 +717,46 @@ void copiarDatos(particion *target,particion * copiado){
 	target->timestamp=copiado->timestamp;
 	target->tipoMensaje = copiado->tipoMensaje;
 }
+
+void compactarMemoria(){
+	bool partLlenas(particion* part){
+		return !(part->libre);
+	}
+	//nos fijamos la frecuencia
+	if(frecuencia == frecuencia_compactacion){
+		frecuencia = 0;
+		uint32_t baseAOcupar = 0 ;
+
+		void cambiarBases(particion * part){
+			//cambia todas las bases para que esten juntas(solo en la tabla de particiones)
+			part->base= baseAOcupar;
+			baseAOcupar+=part->tamanioMensaje;
+			//cambia la memoria
+			memcpy(memoria+(part->base),part->mensaje,part->tamanioMensaje);
+		}
+
+		t_list* partOcupadas = list_filter(tablaDeParticiones,partLlenas);
+
+		//ordenamos las bases ocupadas
+		list_sort(partOcupadas,baseMasChica);
+		//cambiamos las bases ocupadas para que esten todas juntas
+		list_iterate(partOcupadas,cambiarBases);
+
+		list_remove_and_destroy_by_condition(tablaDeParticiones,!partLlenas);
+
+		particion *partLibreNueva = malloc(sizeof(particion));
+		partLibreNueva->idMensaje = 0;
+		partLibreNueva->base = baseAOcupar;
+		partLibreNueva->idCorrelativo = 0;
+		partLibreNueva->tipoMensaje = LIBRE;
+		partLibreNueva->libre = 1;
+		partLibreNueva->acknoleged = list_create();
+
+
+		list_add(tablaDeParticiones,partLibreNueva);
+
+		list_destroy(partOcupadas);
+	}
+	frecuencia++;
+}
+
