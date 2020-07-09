@@ -756,6 +756,11 @@ void compactarMemoria(){
 		list_add(tablaDeParticiones,partLibreNueva);
 
 		list_destroy(partOcupadas);
+
+		log_info(compactacionMemoria,"Compacte la memoria y quedo asi:");
+
+		//muestra como quedo la tabla de particiones
+		list_iterate(tablaDeParticiones,mostrarParticiones);
 	}
 	frecuencia++;
 }
