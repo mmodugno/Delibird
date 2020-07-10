@@ -48,9 +48,13 @@ int main(int argc, char* argv[]){
 
 		//verificarDirectorioPokemon("Pikachu");
 
-		//registroDatos* registro1 = hacerRegistro(4,1,1);
+		registroDatos* registro1 = hacerRegistro(4,1,1);
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
+
+		//procesarNewPokemon("Charmander",registro1);
+
+		procesarCatchPokemon("Charmander",4,1);
 
 		printf(" \n Terminado  \n" );
 

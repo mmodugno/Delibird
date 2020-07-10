@@ -42,7 +42,7 @@ typedef struct {
 
 	uint32_t posX;
 	uint32_t posY;
-	uint32_t cantidad;
+	int cantidad;
 
 } registroDatos;
 
@@ -90,6 +90,7 @@ void registrarPokemon(char* , registroDatos* );
 void agregarBloqueParaPokemon(char* ,int );
 void verificarExistenciaPokemon(char* );
 void procesarNewPokemon(char*, registroDatos* );
+void procesarCatchPokemon(char* ,uint32_t , uint32_t );
 
 ////////// REGISTROS Y BLOQUES
 

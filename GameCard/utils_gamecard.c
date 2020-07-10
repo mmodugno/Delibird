@@ -26,19 +26,16 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 
 	if(estaVacio(metadataPoke)){
 
-	txt_write_in_file(metadataPoke,"DIRECTORY=N");
-	txt_write_in_file(metadata,"\n");
-	txt_write_in_file(metadataPoke,"SIZE=0");
-	txt_write_in_file(metadata,"\n");
-	txt_write_in_file(metadataPoke,"BLOCKS=[]"); //CAMBIAR () a corchetes
-	txt_write_in_file(metadata,"\n");
+	txt_write_in_file(metadataPoke,"DIRECTORY=N\n");
+	txt_write_in_file(metadataPoke,"SIZE=0\n");
+	txt_write_in_file(metadataPoke,"BLOCKS=[]\n"); //CAMBIAR () a corchetes
 	txt_write_in_file(metadataPoke,"OPEN=N");
 
 	txt_close_file(metadataPoke);
 
 	}
 
-	fclose(metadataPoke);
+
 
 	free(aux);
 
@@ -297,6 +294,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	//TODO revisar
 	uint32_t id_rel = 1; //para que no me tire error nomas
+	cerrarArchivoMetadataPoke(configPath);
 
 	if(conexion < 0){
 		log_info(logFalloConexion,"Fallo conexion con Broker");
@@ -306,7 +304,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	}
 
 	sleep(tiempo_retardo_operacion);
-	cerrarArchivoMetadataPoke(configPath);
+
 
 	config_destroy(configPath);
 }
@@ -319,7 +317,8 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 	verificarDirectorioPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
 
-	registroDatos* regAux = hacerRegistro(posX,posY,-1);
+	int cantidad = -1;
+	registroDatos* regAux = hacerRegistro(posX,posY,cantidad);
 
 	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
 
@@ -468,7 +467,7 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 
 	int yaRegistrado = 0;
 
-	int i;
+	int i = 0;
 	//si no esta cortado
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
@@ -492,7 +491,8 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 		string_append(&keyCompleta,"=");
 		string_append(&keyCompleta,string_itoa(registro->cantidad));
 
-		if(string_contains(conjuntoConKey,keyCompleta)){
+		//TODO ver esto
+		if(string_contains(conjuntoConKey,"4-1")){
 
 			char** bloques;
 
@@ -1228,11 +1228,12 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 
 	broker_appeared_pokemon* brokerAppearedPokemon = malloc(sizeof(broker_appeared_pokemon));
+	brokerAppearedPokemon->datos = malloc(sizeof(appeared_pokemon));
 	brokerAppearedPokemon->datos->tamanioNombre = strlen(nombrePokemon)+1;
 	brokerAppearedPokemon->datos->nombrePokemon = nombrePokemon;
 	brokerAppearedPokemon->datos->posX = posX;
 	brokerAppearedPokemon->datos->posY = posY;
-	//brokerAppearedPokemon->id_relativo = id_rel;
+	brokerAppearedPokemon->id_relativo = id_rel;
 
 	serializar_broker_appeared_pokemon(brokerAppearedPokemon,buffer);
 
@@ -1259,6 +1260,7 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id_rel){
 	//serializacion de brokerCaughtPokemon
 
 	broker_caught_pokemon* brokerCaughtPokemon = malloc(sizeof(broker_caught_pokemon));
+	brokerCaughtPokemon->datos = malloc(sizeof(caught_pokemon));
 
 	brokerCaughtPokemon->datos->puedoAtraparlo = resultado;
 
