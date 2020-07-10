@@ -293,6 +293,8 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	registrarPokemon(nombrePoke,registro);
 	}
 
+	cerrarArchivoMetadataPoke(configPath);
+
 	int conexion = conectarse_con_broker();
 
 	//TODO revisar
@@ -306,7 +308,6 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	}
 
 	sleep(tiempo_retardo_operacion);
-	cerrarArchivoMetadataPoke(configPath);
 
 	config_destroy(configPath);
 }
@@ -1228,11 +1229,12 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 
 	broker_appeared_pokemon* brokerAppearedPokemon = malloc(sizeof(broker_appeared_pokemon));
+	brokerAppearedPokemon->datos = malloc(sizeof(appeared_pokemon));
 	brokerAppearedPokemon->datos->tamanioNombre = strlen(nombrePokemon)+1;
 	brokerAppearedPokemon->datos->nombrePokemon = nombrePokemon;
 	brokerAppearedPokemon->datos->posX = posX;
 	brokerAppearedPokemon->datos->posY = posY;
-	//brokerAppearedPokemon->id_relativo = id_rel;
+	brokerAppearedPokemon->id_relativo = id_rel;
 
 	serializar_broker_appeared_pokemon(brokerAppearedPokemon,buffer);
 

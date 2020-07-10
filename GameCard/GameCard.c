@@ -19,6 +19,8 @@ int main(int argc, char* argv[]){
 			return 2;
 		}
 
+
+
 		nombreConfig = argv[1];
 
 		leer_config();
@@ -48,9 +50,12 @@ int main(int argc, char* argv[]){
 
 		//verificarDirectorioPokemon("Pikachu");
 
-		//registroDatos* registro1 = hacerRegistro(4,1,1);
+		registroDatos* registro1 = hacerRegistro(4,1,1);
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
+
+
+		procesarNewPokemon("Pikachu",registro1);
 
 		printf(" \n Terminado  \n" );
 
