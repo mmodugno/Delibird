@@ -107,6 +107,7 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada);
 void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
 void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig);
 void copiarDatos(particion *target,particion * copiado);
-void algoritmoReemplazo(particion *datoAAgregar);
+void algoritmoReemplazo();
+void eliminarParticion(particion * part);
 
 #endif /* UTILS_BROKER_H_ */
