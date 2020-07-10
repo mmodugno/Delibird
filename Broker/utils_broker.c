@@ -128,7 +128,7 @@ void process_request(int cod_op, int cliente_fd) {
 	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
 
-	log_info(logConexion,"%s se conecto al broker",username);
+	//log_info(logConexion,"%s se conecto al broker",username);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
 		case SUSCRIPCION:{

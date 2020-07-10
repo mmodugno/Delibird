@@ -290,6 +290,8 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	registrarPokemon(nombrePoke,registro);
 	}
 
+	cerrarArchivoMetadataPoke(configPath);
+
 	int conexion = conectarse_con_broker();
 
 	//TODO revisar
@@ -304,7 +306,6 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	}
 
 	sleep(tiempo_retardo_operacion);
-
 
 	config_destroy(configPath);
 }
