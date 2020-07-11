@@ -294,6 +294,8 @@ void serializar_broker_localized_pokemon(broker_localized_pokemon* brokerLocPoke
 
 	uint32_t posiciones = 0 ;
 
+	uint32_t posX,posY;
+
 	brokerLocPokemon->datos->tamanioNombre = strlen(brokerLocPokemon->datos->nombrePokemon)+1;
 
 	buffer->size= sizeof(uint32_t)+sizeof(uint32_t)+sizeof(uint32_t)+((sizeof(uint32_t)*2)*brokerLocPokemon->datos->cantidadPosiciones)
@@ -315,11 +317,15 @@ void serializar_broker_localized_pokemon(broker_localized_pokemon* brokerLocPoke
 	offset+=sizeof(uint32_t);
 
 	for(posiciones=0;posiciones<brokerLocPokemon->datos->cantidadPosiciones;posiciones++){
+
+		posX = brokerLocPokemon->datos->posX[posiciones];
+		posY = brokerLocPokemon->datos->posX[posiciones];
+
 		//tengo mis dudas por el &
-		memcpy(buffer->stream+offset,&(brokerLocPokemon->datos->posX[posiciones] ),sizeof(uint32_t));
+		memcpy(buffer->stream+offset,&posX,sizeof(uint32_t));
 		offset+=sizeof(uint32_t);
 
-		memcpy(buffer->stream+offset,&(brokerLocPokemon->datos->posY[posiciones]),sizeof(uint32_t));
+		memcpy(buffer->stream+offset,&posY,sizeof(uint32_t));
 		offset+=sizeof(uint32_t);
 	}
 
@@ -344,21 +350,28 @@ broker_localized_pokemon* deserializar_localized_pokemon(int socket_cliente){
 
 	broker_localized_pokemon* locPokemon = malloc(sizeof(broker_localized_pokemon));
 	locPokemon->datos = malloc(sizeof(localized_pokemon));
-	locPokemon->datos->posX = malloc(sizeof(uint32_t));
-	locPokemon->datos->posY = malloc(sizeof(uint32_t));
 
-	//1. uint32_t tamanioNombre;
 	recv(socket_cliente, &(locPokemon->datos->tamanioNombre),sizeof(uint32_t),0);
 
 	locPokemon->datos->nombrePokemon = malloc(locPokemon->datos->tamanioNombre);
-	//2. char* nombrePokemon;
+
+
+
 	recv(socket_cliente, (locPokemon->datos->nombrePokemon),locPokemon->datos->tamanioNombre,0);
 
-	//3. uint32_t cantidadPosiciones;
-	recv(socket_cliente, &(locPokemon->datos->tamanioNombre),sizeof(uint32_t),0);
+	uint32_t numPos;
+
+	recv(socket_cliente,&(numPos),sizeof(uint32_t),0);
+
+	locPokemon->datos->cantidadPosiciones = numPos;
+
+	locPokemon->datos->posX = malloc(sizeof(uint32_t));
+	locPokemon->datos->posY = malloc(sizeof(uint32_t));
 
 	//4. uint32_t* posX;
 	//5. uint32_t* posY;
+
+
 	for(posiciones=0;posiciones<locPokemon->datos->cantidadPosiciones;posiciones++){
 		//tengo mis dudas por el &
 		recv(socket_cliente,&(locPokemon->datos->posX[posiciones]), sizeof(uint32_t),0);
