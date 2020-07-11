@@ -12,7 +12,7 @@ void mostrarParticiones(particion* unaParticion){
 		//este no funciona
 		//log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",unaParticion->idMensaje,colasDeEnum[unaParticion->tipoMensaje],unaParticion->base,unaParticion->tamanioMensaje,unaParticion->timestamp);
 		//este me parece que si y quizas es mas descriptivo
-		log_info(almacenadoMemoria,"base: %d, tamanio: %d, id: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje);
+		log_info(almacenadoMemoria,"base: %d, tamanio: %d, id: %d, tipo %d con tiempo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->tipoMensaje,unaParticion->timestamp);
 		//printf("base: %d, tamanio: %d, id: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje);
 	}
 }
@@ -28,9 +28,11 @@ void iniciarMemoria(){
 		particion *partLibreInicial= malloc(sizeof(particion));
 		//los que tienen idMensaje 0 son particiciones vacias
 		partLibreInicial->idMensaje = 0;
+		partLibreInicial->tipoMensaje = LIBRE;
 		partLibreInicial->base = 0;
 		partLibreInicial->tamanioMensaje = tamanio_memoria;
 		partLibreInicial->libre = 1;
+		partLibreInicial->timestamp = string_new();
 
 		list_add(tablaDeParticiones,partLibreInicial);
 	}
@@ -517,7 +519,11 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 		}
 		//agregar a memoria Real
 		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
+		log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
 
+		//para ver como esta la memoria
+		log_info(almacenadoMemoria,"la memoria quedo asi: ");
+		list_iterate(tablaDeParticiones,mostrarParticiones);
 	}
 	else{
 		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazo)
@@ -544,7 +550,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 
 	}
 
-	log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
+
 	//para ver como esta la memoria
 	//list_iterate(tablaDeParticiones, mostrarParticiones);
 }
@@ -561,14 +567,14 @@ void algoritmoReemplazo(){
 	char ** timeAct;
 	char ** timeElim;
 
-	uint32_t horaAct;
-	uint32_t horaElim;
-	uint32_t minAct;
-	uint32_t minElim;
-	uint32_t segAct;
-	uint32_t segElim;
-	uint32_t milAct;
-	uint32_t milElim;
+	int horaAct;
+	int horaElim;
+	int minAct;
+	int minElim;
+	int segAct;
+	int segElim;
+	int milAct;
+	int milElim;
 
 	bool partLlenas(particion* part){
 		return !(part->libre);
@@ -598,11 +604,20 @@ void algoritmoReemplazo(){
 		milAct = atoi(timeAct[3]);
 		milElim = atoi(timeElim[3]);
 
-		if(horaAct<=horaElim){
-			if(minAct<=minElim){
-				if(segAct<=segElim){
+		if(horaAct<horaElim){
+			partAEliminar= part;
+		}
+		else if(horaAct==horaElim){
+			if(minAct<minElim){
+				partAEliminar= part;
+			}
+			else if (minAct==minElim) {
+				if (segAct<segElim) {
+					partAEliminar =part;
+				}
+				else if (segAct==segElim) {
 					if(milAct<=milElim){
-						partAEliminar= part;
+						partAEliminar = part;
 					}
 				}
 			}
@@ -620,6 +635,11 @@ void algoritmoReemplazo(){
 	bool particionConEsaBase(particion * part){
 		return (part->base == baseAEliminar);
 	}
+
+	/*
+	bool partEliminarPorDireccionMemo(particion* part){
+		return &part==&partAEliminar;
+	}*/
 
 
 	//se elije cual es la particion que vamos a eliminar
@@ -643,11 +663,12 @@ void algoritmoReemplazo(){
 
 		partNueva->libre = 1;
 		//LIBRE
-		partNueva->tipoMensaje = 0;
+		partNueva->tipoMensaje = LIBRE;
 		partNueva->idCorrelativo = 0;
 		partNueva->idMensaje = 0;
 		partNueva->base = partAEliminar->base;
 		partNueva->tamanioMensaje = partAEliminar->tamanioMensaje;
+		partNueva->timestamp = string_new();
 
 		if(partSig !=NULL){
 			if(partSig->libre){
@@ -659,23 +680,24 @@ void algoritmoReemplazo(){
 		}
 		if(partAnt !=NULL){
 			if(partAnt->libre){
-				partNueva->base = partAnt->base;
 				partAnt->tamanioMensaje += partAEliminar->tamanioMensaje;
 				//eliminar partAnt de la Tabla de Particiones
 				baseAEliminar = partAnt->base;
-				list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
+				list_remove_by_condition(tablaDeParticiones,particionConEsaBase);
+				partNueva->base = partAnt->base;
+				free(partAnt);
 			}
 		}
 		log_info(eliminacionMemoria,"eliminamos de la memoria el dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",partAEliminar->idMensaje,colasDeEnum[partAEliminar->tipoMensaje],partAEliminar->base,partAEliminar->tamanioMensaje,partAEliminar->timestamp);
 		//eliminar la particion que quiero eliminar
 		baseAEliminar = partAEliminar->base;
 		list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
+		list_add(tablaDeParticiones,partNueva);
 
 	}
 
-	list_add(tablaDeParticiones,partNueva);
-
 	list_sort(tablaDeParticiones,baseMasChica);
+
 
 	log_info(eliminacionMemoria,"la memoria quedo asi: ");
 	list_iterate(tablaDeParticiones,mostrarParticiones);
