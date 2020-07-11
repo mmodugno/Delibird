@@ -137,6 +137,7 @@ registroConNombre* deserializar_catch_pokemon_Gamecard(int);
 char* deserializar_get_pokemon_Gamecard(int);
 void enviar_appeared(int ,char* , int ,int , int );
 void enviar_caught(int ,uint32_t , uint32_t );
+void enviar_localized(int , char* , uint32_t , uint32_t* , uint32_t* ,uint32_t );
 
 
 #endif /* UTILS_GAMECARD_H_ */

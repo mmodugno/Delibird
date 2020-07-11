@@ -67,12 +67,14 @@ int buscarIndicePrimerBloqueLibre(){
 
 	int contador = 1;
 
-	char* path = obtener_ruta_bloque(contador);
+	while(!estaVacioConRuta(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador))){
 
-	while(!estaVacioConRuta(path)){
 	contador++;
-	memcpy(path,obtener_ruta_bloque(contador),strlen(path));
+
+
 	}
+
+	char* path = obtener_ruta_bloque(contador);
 
 	FILE* crearArchivo = txt_open_for_append(path);
 
@@ -131,9 +133,9 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	//	bitarray_set_bit(bitArray,indiceLibre-1);
 
-		agregarBloqueParaPokemon(nombrePoke,indiceLibre);
-
 		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
+
+		config_save(configAux);
 
 		txt_close_file(bloqueLibre);
 		//mutexUNlock
@@ -213,13 +215,6 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 }
 
 
-	//sleep(tiempo_retardo_operacion);
-	//marcar archivo como cerrado;
-
-	//conetar a broker y enviar a cola Appeared pokemon(datos = idRecibido, pokemon, posicionMapa);
-	config_destroy(configAux);
-
-
 }
 
 void leerMetadata(){
@@ -290,13 +285,16 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	registrarPokemon(nombrePoke,registro);
 	}
 
+	config_destroy(configPath);
+
+	configPath = config_create(path);
+
 	cerrarArchivoMetadataPoke(configPath);
 
 	int conexion = conectarse_con_broker();
 
 	//TODO revisar
 	uint32_t id_rel = 1; //para que no me tire error nomas
-	cerrarArchivoMetadataPoke(configPath);
 
 	if(conexion < 0){
 		log_info(logFalloConexion,"Fallo conexion con Broker");
@@ -307,7 +305,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	sleep(tiempo_retardo_operacion);
 
-	config_destroy(configPath);
+
 }
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
@@ -341,6 +339,11 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 	uint32_t id_rel = 2;
 
 	sleep(tiempo_retardo_operacion);
+
+	config_destroy(configPath);
+
+	configPath = config_create(path);
+
 	cerrarArchivoMetadataPoke(configPath);
 
 	int conexion = conectarse_con_broker();
@@ -352,6 +355,7 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 	}
 
 	config_destroy(configPath);
+
 }
 
 void procesarGetPokemon(char* nombrePoke){
@@ -362,15 +366,49 @@ void procesarGetPokemon(char* nombrePoke){
 
 	t_list* listaRegistros = obtenerPosiciones(nombrePoke);
 
-	if(list_is_empty(listaRegistros)) {
-		//enviar mensaje vacio
-	}
-
 	sleep(tiempo_retardo_operacion);
-	//cerrarArchivoMetadataPoke(path);
 
-	//Si la lista no esta vacía
-	//TODO conectar con broker y enviar mensaje a LOCALIZED_POKE
+	t_config* configPath = config_create(path);
+
+	cerrarArchivoMetadataPoke(configPath);
+
+	config_destroy(configPath);
+
+	int id_rel = 3;
+
+	int conexion = conectarse_con_broker();
+
+	if(conexion < 0){
+			log_info(logFalloConexion,"Fallo conexion con Broker");
+		} else {
+
+			if(list_is_empty(listaRegistros)) {
+				uint32_t* posicionesX;
+				uint32_t* posicionesY;
+
+				enviar_localized(conexion,nombrePoke,0,posicionesX,posicionesY,id_rel);
+				} else {
+
+					uint32_t paresDePosiciones = list_size(listaRegistros);
+
+					int i = 0;
+
+					uint32_t posicionesX[paresDePosiciones];
+					uint32_t posicionesY[paresDePosiciones];
+
+					for(i = 0; i < paresDePosiciones;i ++) {
+
+						registroDatos* registro = list_get(listaRegistros,i);
+
+						posicionesX[i] = registro->posX;
+						posicionesY[i] = registro->posY;
+
+					}
+
+					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id_rel);
+				}
+
+		}
 
 }
 
@@ -433,7 +471,7 @@ t_list* obtenerPosiciones(char* nombrePoke){
 
 	char* conjunto = string_new();
 
-	while(j < list_size(listaBloques)-1){
+	while(j < list_size(listaBloques)){
 
 		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,j)));
 
@@ -464,14 +502,13 @@ t_list* obtenerPosiciones(char* nombrePoke){
 
 int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 
-	char* key = string_from_format("%d-%d",registro->posX,registro->posY);
+	char* key = string_from_format("%d-%d",registro->posX,registro->posY); //lee posicion a buscar
 
 	int yaRegistrado = 0;
 
 	int i = 0;
 	//si no esta cortado
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
-
 
 		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
@@ -493,7 +530,7 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 		string_append(&keyCompleta,string_itoa(registro->cantidad));
 
 		//TODO ver esto
-		if(string_contains(conjuntoConKey,"4-1")){
+		if(string_contains(conjuntoConKey,keyCompleta)){
 
 			char** bloques;
 
@@ -736,8 +773,8 @@ void eliminarBloquesVacios(char* nombrePoke){
 		char* rutaActual = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
 		if(!estaVacioConRuta(rutaActual)){
-			stringNuevaLista = agregarBloqueALista(nuevaListaBloques,i+1);
-			list_add(nuevaListaBloques,string_itoa(i+1));
+			stringNuevaLista = agregarBloqueALista(nuevaListaBloques,atoi(list_get(listaBloques,i)));
+			list_add(nuevaListaBloques,list_get(listaBloques,i));
 		}
 	}
 
@@ -766,8 +803,6 @@ void modificarArchivoComoConfig(t_config* configModif,char* key,char* valor){
 	config_set_value(configModif,key,valor);
 
 	config_save(configModif);
-
-	//config_destroy(configModif);
 
 }
 
@@ -812,6 +847,7 @@ registroDatos* string_a_registro(char* string) {
 
 	char** keyValor = string_split(string,"=");
 	char** posiciones = string_split(keyValor[0],"-");
+
 
 	int x = atoi(posiciones[0]);
 	int y = atoi(posiciones[1]);
@@ -1246,7 +1282,7 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 	send(socket_cliente,bufferStream,tamanio_buffer,0);
 
 	free(bufferStream);
-
+	free(brokerAppearedPokemon->datos);
 	free(paquete_a_enviar->buffer);
 	free(paquete_a_enviar);
 
@@ -1279,7 +1315,40 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id_rel){
 	send(socket_cliente,bufferStream,tamanio_buffer,0);
 
 	free(bufferStream);
+	free(brokerCaughtPokemon->datos);
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
 
+void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosiciones, uint32_t* posicionesX, uint32_t* posicionesY,uint32_t id_rel) {
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen(username);
+	paquete_a_enviar->username = username;
+
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+
+	broker_localized_pokemon* brokerLocalizedPokemon = malloc(sizeof(broker_appeared_pokemon));
+	brokerLocalizedPokemon->datos = malloc(sizeof(localized_pokemon));
+	brokerLocalizedPokemon->id_relativo = id_rel;
+	brokerLocalizedPokemon->datos->tamanioNombre = strlen(nombre)+1;
+	brokerLocalizedPokemon->datos->nombrePokemon = nombre;
+	brokerLocalizedPokemon->datos->cantidadPosiciones = paresDePosiciones;
+	brokerLocalizedPokemon->datos->posX = posicionesX;
+	brokerLocalizedPokemon->datos->posY = posicionesY;
+
+	serializar_broker_localized_pokemon(brokerLocalizedPokemon,buffer);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+	free(brokerLocalizedPokemon->datos);
 	free(paquete_a_enviar->buffer);
 	free(paquete_a_enviar);
 }

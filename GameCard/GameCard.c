@@ -19,8 +19,6 @@ int main(int argc, char* argv[]){
 			return 2;
 		}
 
-
-
 		nombreConfig = argv[1];
 
 		leer_config();
@@ -54,9 +52,11 @@ int main(int argc, char* argv[]){
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
-		//procesarNewPokemon("Charmander",registro1);
+		procesarNewPokemon("Charmander",registro1);
 
-		procesarCatchPokemon("Charmander",4,1);
+		//procesarCatchPokemon("Charmander",4,1);
+
+		//procesarGetPokemon("Charmander");
 
 		printf(" \n Terminado  \n" );
 
