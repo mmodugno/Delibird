@@ -102,8 +102,8 @@ void esperar_cliente(int socket_servidor) {
 }
 
 void serve_client(int* socket){
-	int cod_op;
-	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	int cod_op =0;
+	int i= recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
 	process_request(cod_op, *socket);
@@ -129,7 +129,10 @@ void process_request(int cod_op, int cliente_fd) {
 	username = malloc(tamanio_username);
 	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
-
+	uint32_t posiciones;
+	char* posicionesString = string_new();
+	char* posXString= string_new();
+	char* posYString= string_new();
 	//log_info(logConexion,"%s se conecto al broker",username);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
@@ -174,6 +177,7 @@ void process_request(int cod_op, int cliente_fd) {
 			//free(raiz);
 			free(newRecibido);
 
+
 			break;
 		}
 		case BROKER__APPEARED_POKEMON:{
@@ -202,6 +206,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			//free(raiz);
 			free(appearedRecibido);
+
 
 			break;
 		}
@@ -265,7 +270,6 @@ void process_request(int cod_op, int cliente_fd) {
 
 			//free(raiz);
 			free(catchRecibido);
-
 			break;
 		}
 		case BROKER__CAUGHT_POKEMON:{
@@ -293,29 +297,27 @@ void process_request(int cod_op, int cliente_fd) {
 
 			//free(raiz);
 			free(caughtRecibido);
-
 			break;
 		}
 		case BROKER__LOCALIZED_POKEMON:{
 			broker_localized_pokemon* localizedRecibido;
 			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 
-			uint32_t posiciones = 0;
-			char* posicionesString = string_new();
-			char* posXString= string_new();
-			char* posYString= string_new();
-
+			posiciones = 0;
 
 			for(posiciones=0;posiciones<localizedRecibido->datos->cantidadPosiciones;posiciones++){
-				posXString= string_itoa(localizedRecibido->datos->posX[posiciones]);
-				posYString= string_itoa(localizedRecibido->datos->posY[posiciones]);
+				/*
+				string_append(&posXString,string_itoa(localizedRecibido->datos->posX[posiciones]));
+				string_append(&posYString,string_itoa(localizedRecibido->datos->posY[posiciones]));*/
+				//string_itoa(localizedRecibido->datos->posX[posiciones]);
+				sprintf(posXString,"%d",localizedRecibido->datos->posX[posiciones]);
+				sprintf(posYString,"%d",localizedRecibido->datos->posY[posiciones]);
 
 				string_append(&posicionesString,"(");
 				string_append(&posicionesString,posXString);
 				string_append(&posicionesString,";");
 				string_append(&posicionesString,posYString);
 				string_append(&posicionesString,")");
-				string_append(&posicionesString,",");
 			}
 
 
@@ -339,9 +341,6 @@ void process_request(int cod_op, int cliente_fd) {
 			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
 			//free(raiz);
-			free(posXString);
-			free(posYString);
-			free(posicionesString);
 			free(localizedRecibido);
 
 			break;
@@ -371,6 +370,10 @@ void process_request(int cod_op, int cliente_fd) {
 			pthread_exit(NULL);
 		}
 
+	free(username);
+	//free(posXString);
+	//free(posYString);
+	free(posicionesString);
 
 }
 
