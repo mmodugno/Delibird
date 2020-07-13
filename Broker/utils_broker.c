@@ -526,9 +526,9 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 		log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
 
 		//para ver como esta la memoria (COMENTAR)
-
+/*
 		log_info(almacenadoMemoria,"la memoria quedo asi: ");
-		list_iterate(tablaDeParticiones,mostrarParticiones);
+		list_iterate(tablaDeParticiones,mostrarParticiones);*/
 	}
 	else{
 		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazo)
