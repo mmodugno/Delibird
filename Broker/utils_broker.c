@@ -164,11 +164,6 @@ void process_request(int cod_op, int cliente_fd) {
 			sem_post(&idsDeMensajes);
 			//mutex
 
-
-			// Inicializamos la cola de suscriptores ack para que se pueda agregar
-			newRecibido->suscriptoresQueRespondieron = queue_create();
-
-
 			void *raiz = transformarBrokerNewPokemon(newRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este new a agregar es %d",sizeof(raiz));
 			//log_info(logMensajeNuevo,"lo que vale este new puntero de dato es %d",sizeof(new_pokemon*));
@@ -197,9 +192,6 @@ void process_request(int cod_op, int cliente_fd) {
 			sem_post(&idsDeMensajes);
 			//mutex
 
-			// Inicializamos la cola de suscriptores ack para que se pueda agregar
-			appearedRecibido->suscriptoresQueRespondieron = queue_create();
-
 			void *raiz = transformarBrokerAppearedPokemon(appearedRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este appeared a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz,appearedRecibido->id,APPEARED_POKEMON,appearedRecibido->id_relativo,tamanioAgregar);
@@ -225,9 +217,6 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
-
-			// Inicializamos la cola de suscriptores ack para que se pueda agregar
-			getRecibido->suscriptoresQueRespondieron = queue_create();
 
 			void *raiz = transformarBrokerGetPokemon(getRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este get a agregar es %d",sizeof(raiz));
@@ -261,8 +250,6 @@ void process_request(int cod_op, int cliente_fd) {
 				send(cliente_fd,&(catchRecibido->id),sizeof(uint32_t),0);
 			}
 
-			// Inicializamos la cola de suscriptores ack para que se pueda agregar
-			catchRecibido->suscriptoresQueRespondieron = queue_create();
 
 			void *raiz = transformarBrokerCatchPokemon(catchRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este catch a agregar es %d",sizeof(raiz));
@@ -287,10 +274,6 @@ void process_request(int cod_op, int cliente_fd) {
 			sem_post(&idsDeMensajes);
 			//mutex
 
-			// Inicializamos la cola de suscriptores ack para que se pueda agregar
-			caughtRecibido->suscriptoresQueRespondieron = queue_create();
-
-
 			void *raiz = transformarBrokerCaughtPokemon(caughtRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz,caughtRecibido->id,CAUGHT_POKEMON,caughtRecibido->id_relativo,tamanioAgregar);
@@ -304,12 +287,13 @@ void process_request(int cod_op, int cliente_fd) {
 			broker_localized_pokemon* localizedRecibido;
 			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 
+			/*
 			posiciones = 0;
 
 			for(posiciones=0;posiciones<localizedRecibido->datos->cantidadPosiciones;posiciones++){
-				/*
-				string_append(&posXString,string_itoa(localizedRecibido->datos->posX[posiciones]));
-				string_append(&posYString,string_itoa(localizedRecibido->datos->posY[posiciones]));*/
+
+				//string_append(&posXString,string_itoa(localizedRecibido->datos->posX[posiciones]));
+				//string_append(&posYString,string_itoa(localizedRecibido->datos->posY[posiciones]));
 				//string_itoa(localizedRecibido->datos->posX[posiciones]);
 				sprintf(posXString,"%d",localizedRecibido->datos->posX[posiciones]);
 				sprintf(posYString,"%d",localizedRecibido->datos->posY[posiciones]);
@@ -325,6 +309,9 @@ void process_request(int cod_op, int cliente_fd) {
 			log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n "
 									,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,posicionesString,
 									localizedRecibido->id_relativo);
+			/*log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n con ID_relativo: %d \n "
+												,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,
+												localizedRecibido->id_relativo);*/
 			//mutex
 			sem_wait(&idsDeMensajes);
 			localizedRecibido->id = idGlobales;
@@ -332,8 +319,6 @@ void process_request(int cod_op, int cliente_fd) {
 			sem_post(&idsDeMensajes);
 			//mutex
 
-			// Inicializamos la cola de suscriptores ack para que se pueda agregar
-			localizedRecibido->suscriptoresQueRespondieron = queue_create();
 
 
 			void *raiz = transformarBrokerLocalizedPokemon(localizedRecibido,&tamanioAgregar);
@@ -374,7 +359,7 @@ void process_request(int cod_op, int cliente_fd) {
 	free(username);
 	//free(posXString);
 	//free(posYString);
-	free(posicionesString);
+	//free(posicionesString);
 
 }
 
@@ -428,11 +413,16 @@ void agregarAMemoria(void * dato, uint32_t idMensaje,tipoDeCola tipoMensaje, uin
 		particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
 		//particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
 
-		if(!strcmp(algoritmo_particion_libre,"FF")){
-			algoritmoFirstFit(datoAAgregar,particionEncontrada);
+		if(tamanioAgregar<=tamanio_memoria){
+			if(!strcmp(algoritmo_particion_libre,"FF")){
+				algoritmoFirstFit(datoAAgregar,particionEncontrada);
+			}
+			if(!strcmp(algoritmo_particion_libre,"BF")){
+				algoritmoBestFit(datoAAgregar,particionEncontrada);
+			}
 		}
-		if(!strcmp(algoritmo_particion_libre,"BF")){
-			algoritmoBestFit(datoAAgregar,particionEncontrada);
+		else{
+			log_info(almacenadoMemoria,"El dato a agregar es mas grande que la memoria");
 		}
 	}
 	if(!strcmp(algoritmo_memoria,"BS")){

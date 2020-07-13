@@ -64,15 +64,26 @@ t_config* config;
 
 void *memoria;
 
+//hilos para Recibir Mensajes
 pthread_t thread;
+pthread_t hiloReciboMensajes;
 
-t_queue* suscriptoresNewPokemon;
-t_queue* suscriptoresAppearedPokemon;
+//hilos para Enviar Mensajes
+pthread_t hiloNew_Envio;
+pthread_t hiloLocalized_Envio;
+pthread_t hiloGet_Envio;
+pthread_t hiloAppeared_Envio;
+pthread_t hiloCatch_Envio;
+pthread_t hiloCaught_Envio;
 
-t_queue* suscriptoresCatchPokemon;
-t_queue* suscriptoresCaughtPokemon;
-t_queue* suscriptoresGetPokemon;
-t_queue* suscriptoresLocalizedPokemon;
+
+t_list* suscriptoresNewPokemon;
+t_list* suscriptoresAppearedPokemon;
+
+t_list* suscriptoresCatchPokemon;
+t_list* suscriptoresCaughtPokemon;
+t_list* suscriptoresGetPokemon;
+t_list* suscriptoresLocalizedPokemon;
 
 t_log* logConexion;
 t_log* logSuscipcion;
