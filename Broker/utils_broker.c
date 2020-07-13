@@ -12,7 +12,7 @@ void mostrarParticiones(particion* unaParticion){
 		//este no funciona
 		//log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",unaParticion->idMensaje,colasDeEnum[unaParticion->tipoMensaje],unaParticion->base,unaParticion->tamanioMensaje,unaParticion->timestamp);
 		//este me parece que si y quizas es mas descriptivo
-		log_info(almacenadoMemoria,"base: %d, tamanio: %d, id: %d, tipo %d con tiempo: %s", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, unaParticion->tipoMensaje,unaParticion->timestamp);
+		log_info(almacenadoMemoria,"base: %d, tamanio: %d, id: %d, tipo %s, libre?: %d con tiempo: %s ", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje, colasDeEnum[unaParticion->tipoMensaje],unaParticion->libre,unaParticion->timestamp);
 		//printf("base: %d, tamanio: %d, id: %d", unaParticion->base, unaParticion->tamanioMensaje, unaParticion->idMensaje);
 	}
 }
@@ -33,6 +33,7 @@ void iniciarMemoria(){
 		partLibreInicial->tamanioMensaje = tamanio_memoria;
 		partLibreInicial->libre = 1;
 		partLibreInicial->timestamp = string_new();
+		partLibreInicial->acknoleged =list_create();
 
 		list_add(tablaDeParticiones,partLibreInicial);
 	}
@@ -214,7 +215,7 @@ void process_request(int cod_op, int cliente_fd) {
 			broker_get_pokemon* getRecibido;
 			getRecibido = deserializar_get_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON%s\n con tamanio: %d \n nombre: %s "
+			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON de %s\n con tamanio: %d \n nombre: %s "
 									,username,getRecibido->datos->tamanioNombre,
 									getRecibido->datos->nombrePokemon);
 
@@ -256,7 +257,7 @@ void process_request(int cod_op, int cliente_fd) {
 			//mutex
 
 			if(!strcmp(username,"TEAM")){
-				//TODO ver conexiones con los otros sockets
+				//TODO ver conexiones con los otros sockets (si les tengo que mandar ID
 				send(cliente_fd,&(catchRecibido->id),sizeof(uint32_t),0);
 			}
 
@@ -524,7 +525,8 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
 		log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
 
-		//para ver como esta la memoria
+		//para ver como esta la memoria (COMENTAR)
+
 		log_info(almacenadoMemoria,"la memoria quedo asi: ");
 		list_iterate(tablaDeParticiones,mostrarParticiones);
 	}
@@ -639,13 +641,8 @@ void algoritmoReemplazo(){
 		return (part->base == baseAEliminar);
 	}
 
-	/*
-	bool partEliminarPorDireccionMemo(particion* part){
-		return &part==&partAEliminar;
-	}*/
 
-
-	//se elije cual es la particion que vamos a eliminar
+	//se elije cual es la particion que vamos a eliminar (la mas vieja, ya sea para LRU o FIFO
 	list_iterate(tablaParticionesLlenas,partMasVieja);
 
 
@@ -672,10 +669,16 @@ void algoritmoReemplazo(){
 		partNueva->base = partAEliminar->base;
 		partNueva->tamanioMensaje = partAEliminar->tamanioMensaje;
 		partNueva->timestamp = string_new();
+		partNueva->acknoleged = list_create();
 
+		//saco la particion a eliminar de la tabla de particiones
+		baseAEliminar = partAEliminar->base;
+		partAEliminar = list_remove_by_condition(tablaDeParticiones,particionConEsaBase);
+
+		//consolidacion
 		if(partSig !=NULL){
 			if(partSig->libre){
-				partNueva->tamanioMensaje += partAEliminar->tamanioMensaje;
+				partNueva->tamanioMensaje += partSig->tamanioMensaje;
 				//eliminar partSig de la Tabla de Particiones
 				baseAEliminar = partSig->base;
 				list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
@@ -683,30 +686,38 @@ void algoritmoReemplazo(){
 		}
 		if(partAnt !=NULL){
 			if(partAnt->libre){
-				partAnt->tamanioMensaje += partAEliminar->tamanioMensaje;
 				//eliminar partAnt de la Tabla de Particiones
 				baseAEliminar = partAnt->base;
-				list_remove_by_condition(tablaDeParticiones,particionConEsaBase);
+				partAnt = list_remove_by_condition(tablaDeParticiones,particionConEsaBase);
+				//sumamos el tamaño de esa particion anterior LIBRE
+				partNueva->tamanioMensaje+=partAnt->tamanioMensaje;
+				//movemos la Base a esa
 				partNueva->base = partAnt->base;
 				free(partAnt);
 			}
 		}
 		log_info(eliminacionMemoria,"eliminamos de la memoria el dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",partAEliminar->idMensaje,colasDeEnum[partAEliminar->tipoMensaje],partAEliminar->base,partAEliminar->tamanioMensaje,partAEliminar->timestamp);
-		//eliminar la particion que quiero eliminar
-		baseAEliminar = partAEliminar->base;
-		list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase,free);
+		//libero la particion que quiero eliminar
+		eliminarParticion(partAEliminar);
+		//agrego la nueva particion LIBRE que quedo de la consolidacion
 		list_add(tablaDeParticiones,partNueva);
 
 	}
 
+
+	//PARA VER COMO QUEDA LA MEMORIA DESPUES DE ELIMINAR (COMENTAR)
+	/*
 	list_sort(tablaDeParticiones,baseMasChica);
-
-
 	log_info(eliminacionMemoria,"la memoria quedo asi: ");
 	list_iterate(tablaDeParticiones,mostrarParticiones);
+	log_info(eliminacionMemoria," ");*/
 
-	list_destroy(tablaParticionesLlenas);
-	list_destroy(particionesAnteriores);
+	if(tablaParticionesLlenas->elements_count){
+		list_destroy(tablaParticionesLlenas);
+	}
+	if(tablaParticionesLlenas->elements_count){
+		list_destroy(particionesAnteriores);
+	}
 }
 
 
@@ -734,7 +745,9 @@ void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada){
 
 	list_sort(tablaDeParticiones,baseMasChica);
 	particionEncontrada = list_find(tablaDeParticiones,primeroLibreQueEntre);
-	list_find(tablaDeParticiones,partSiguienteALibre);
+	if(particionEncontrada){
+		list_find(tablaDeParticiones,partSiguienteALibre);
+	}
 
 
 	//si encontro una partcion en toda la memoria
@@ -755,56 +768,87 @@ void copiarDatos(particion *target,particion * copiado){
 }
 
 void compactarMemoria(){
+
 	bool partLlenas(particion* part){
 		return !(part->libre);
+	}
+	bool partLibres(particion* part){
+		return (part->libre);
 	}
 	//nos fijamos la frecuencia
 	if(frecuencia == frecuencia_compactacion){
 		frecuencia = 0;
-		uint32_t baseAOcupar = 0 ;
+		if(list_count_satisfying(tablaDeParticiones,partLibres) != 0){
+			uint32_t baseAOcupar = 0 ;
+			uint32_t cantLibres = 0;
 
-		void cambiarBases(particion * part){
-			//cambia todas las bases para que esten juntas(solo en la tabla de particiones)
-			part->base= baseAOcupar;
-			baseAOcupar+=part->tamanioMensaje;
-			//cambia la memoria
-			memcpy(memoria+(part->base),part->mensaje,part->tamanioMensaje);
+			void cambiarBases(particion * part){
+				//cambia todas las bases para que esten juntas(solo en la tabla de particiones)
+				part->base= baseAOcupar;
+				baseAOcupar+=part->tamanioMensaje;
+				//cambia la memoria
+				memcpy(memoria+(part->base),part->mensaje,part->tamanioMensaje);
+			}
+
+			t_list* partOcupadas = list_filter(tablaDeParticiones,partLlenas);
+
+			list_sort(tablaDeParticiones,baseMasChica);
+			//muestra como quedo la tabla de particiones TODO (COMENTAR)
+			/*
+			log_info(compactacionMemoria,"antes de compactar la memoria esta asi:");
+			list_iterate(tablaDeParticiones,mostrarParticiones);*/
+
+			//ordenamos las bases ocupadas
+			list_sort(partOcupadas,baseMasChica);
+			//cambiamos las bases ocupadas para que esten todas juntas
+			list_iterate(partOcupadas,cambiarBases);
+
+			//destruir y liberar todas las particiones libres
+			cantLibres = list_count_satisfying(tablaDeParticiones,partLibres);
+
+			while(cantLibres>0){
+				list_remove_and_destroy_by_condition(tablaDeParticiones,partLibres,free);
+				cantLibres--;
+			}
+
+			particion *partLibreNueva = malloc(sizeof(particion));
+			partLibreNueva->idMensaje = 0;
+			partLibreNueva->base = baseAOcupar;
+			partLibreNueva->tamanioMensaje = tamanio_memoria - partLibreNueva->base;
+			partLibreNueva->idCorrelativo = 0;
+			partLibreNueva->tipoMensaje = LIBRE;
+			partLibreNueva->libre = 1;
+			partLibreNueva->acknoleged = list_create();
+
+
+			list_add(tablaDeParticiones,partLibreNueva);
+
+			list_destroy(partOcupadas);
+
+			log_info(compactacionMemoria,"Compacte la memoria");
+
+			//muestra como quedo la tabla de particiones
+			/*
+			log_info(compactacionMemoria,"Despues de compactar la memoria y quedo asi:");
+			list_iterate(tablaDeParticiones,mostrarParticiones);*/
 		}
-
-		t_list* partOcupadas = list_filter(tablaDeParticiones,partLlenas);
-
-		//ordenamos las bases ocupadas
-		list_sort(partOcupadas,baseMasChica);
-		//cambiamos las bases ocupadas para que esten todas juntas
-		list_iterate(partOcupadas,cambiarBases);
-
-		list_remove_and_destroy_by_condition(tablaDeParticiones,!partLlenas,free);
-
-		particion *partLibreNueva = malloc(sizeof(particion));
-		partLibreNueva->idMensaje = 0;
-		partLibreNueva->base = baseAOcupar;
-		partLibreNueva->idCorrelativo = 0;
-		partLibreNueva->tipoMensaje = LIBRE;
-		partLibreNueva->libre = 1;
-		partLibreNueva->acknoleged = list_create();
-
-
-		list_add(tablaDeParticiones,partLibreNueva);
-
-		list_destroy(partOcupadas);
-
-		log_info(compactacionMemoria,"Compacte la memoria y quedo asi:");
-
-		//muestra como quedo la tabla de particiones
-		list_iterate(tablaDeParticiones,mostrarParticiones);
 	}
-	frecuencia++;
+	else{
+		frecuencia++;
+	}
+
 }
 
 void eliminarParticion(particion * part){
-	list_destroy_and_destroy_elements(part->acknoleged,free);
-	free(part->mensaje);
-	free(part->timestamp);
+	if(part->acknoleged != NULL){
+		list_destroy_and_destroy_elements(part->acknoleged,free);
+	}
+	if(part->mensaje!=NULL){
+		free(part->mensaje);
+	}
+	if(!strcmp(part->timestamp,"")){
+		free(part->timestamp);
+	}
 
 	free(part);
 }
