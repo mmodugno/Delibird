@@ -26,6 +26,9 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		sem_init(&idsDeMensajes,0,1);
 		sem_init(&usoMemoria,0,1);
 
+
+
+
 		//logs implementados
 		logSuscipcion = iniciar_logger("Suscripcion",log_file);
 		logMensajeNuevo = iniciar_logger("Mensaje Nuevo",log_file);
@@ -45,14 +48,17 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 
 
 
-		suscriptoresAppearedPokemon = queue_create();
-		suscriptoresCatchPokemon = queue_create();
-		suscriptoresCaughtPokemon = queue_create();
-		suscriptoresGetPokemon = queue_create();
-		suscriptoresLocalizedPokemon = queue_create();
-		suscriptoresNewPokemon = queue_create();
+		suscriptoresAppearedPokemon = list_create();
+		suscriptoresCatchPokemon = list_create();
+		suscriptoresCaughtPokemon = list_create();
+		suscriptoresGetPokemon = list_create();
+		suscriptoresLocalizedPokemon = list_create();
+		suscriptoresNewPokemon = list_create();
 
-		iniciar_servidor();
+
+		pthread_create(&hiloReciboMensajes,NULL,(void*)iniciar_servidor,NULL);
+
+		pthread_join(hiloReciboMensajes,NULL);
 
 
 

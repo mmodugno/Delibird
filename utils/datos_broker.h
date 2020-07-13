@@ -14,42 +14,42 @@ typedef struct {
 	uint32_t id;
 	uint32_t id_relativo;
 	localized_pokemon* datos;
-	t_queue* suscriptoresQueRespondieron;
+	//t_queue* suscriptoresQueRespondieron;
 } broker_localized_pokemon;
 
 typedef struct {
 	uint32_t id;
 	uint32_t id_relativo;
 	new_pokemon* datos;
-	t_queue* suscriptoresQueRespondieron;
+	//t_queue* suscriptoresQueRespondieron;
 } broker_new_pokemon;
 
 typedef struct {
 	uint32_t id;
 	uint32_t id_relativo;
 	appeared_pokemon* datos;
-	t_queue* suscriptoresQueRespondieron;
+	//t_queue* suscriptoresQueRespondieron;
 } broker_appeared_pokemon;
 
 typedef struct {
 	uint32_t id;
 	uint32_t id_relativo;
 	catch_pokemon* datos;
-	t_queue* suscriptoresQueRespondieron;
+	//t_queue* suscriptoresQueRespondieron;
 } broker_catch_pokemon;
 
 typedef struct {
 	uint32_t id;
 	uint32_t id_relativo;
 	caught_pokemon* datos;
-	t_queue* suscriptoresQueRespondieron;
+	//t_queue* suscriptoresQueRespondieron;
 } broker_caught_pokemon;
 
 typedef struct {
 	uint32_t id;
 	uint32_t id_relativo;
 	get_pokemon* datos;
-	t_queue* suscriptoresQueRespondieron;
+	//t_queue* suscriptoresQueRespondieron;
 } broker_get_pokemon;
 
 
