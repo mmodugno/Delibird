@@ -809,3 +809,178 @@ void eliminarParticion(particion * part){
 	free(part);
 }
 
+void iniciarBuddySystem() {
+	root = malloc(sizeof(buddy));
+	root->size = tamanio_memoria;
+	root->freeSpace = root->size;
+	root->padre = NULL;
+	root->hijoIzq = NULL;
+	root->hijoDer = NULL;
+	root->next = NULL;
+	root->back = NULL;
+	root->ocupado = false;
+
+	buddy* freeList[cantidadNiveles(root)];
+
+	colaVictimaBuddy = list_create();
+
+	alocarMemoria(7, freeList, cantidadNiveles(root));
+}
+
+void alocarMemoria(int tamNuevoMensaje, buddy* freeList[], cantNivelesTotales) {
+	int nivelMensaje = nivelParticion(tamNuevoMensaje);
+
+	if (freeList[nivelMensaje] != NULL) { //encontre el buddy
+		buddyAAlocar = freeList[nivelMensaje];
+		buddyAAlocar->ocupado = true;
+		buddyAAlocar->freeSpace = buddyAAlocar->size - tamNuevoMensaje;
+
+		//Saco el buddy de la freeList
+		if (freeList[nivelMensaje]->next != NULL) {
+			freeList[nivelMensaje] = freeList[nivelMensaje]->next;
+		} else {
+			freeList[nivelMensaje] = NULL;
+		}
+
+		// Lo agrego a la estructura correspondiente de seleccionDeVictima
+
+	} else {
+		// voy a tener que splitear la memoria y volver a buscar el nodo libre
+		int aux = nivelMensaje + 1;
+		bool spliteado = false;
+
+		while (spliteado != true && aux <= cantNivelesTotales) {
+			if (freeList[aux] != NULL) {
+				splitMemory(freeList[aux]);
+
+				//lo saco de la freeList
+				if (freeList[aux]->next != NULL) {
+					freeList[aux] = freeList[aux]->next;
+				} else {
+					freeList[aux] = NULL;
+				}
+
+				spliteado = true;
+				alocarMemoria(tamNuevoMensaje, freeList, cantNivelesTotales);
+			}
+		}
+
+		if (spliteado == false) {
+			searchAndDestroy(); //busco una victima y la hago boleta. Veo si puedo mergear.
+		}
+
+	}
+}
+
+void seleccionarVictimaFIFO(){
+	buddy* buddyVictima = list_get(colaVictimaBuddy, 0);
+
+	//Si tiene hijos los hago boleta
+	if(tieneHijos(buddyVictima)){
+		matarHijos(buddyVictima); //Free cada hijo
+	}
+
+	//Aniquilo a la victima
+	eliminarBuddy(buddyVictima);
+
+	//Mergeo en lo posible
+	mergeTree(); //TODO
+}
+
+void mergeTree(){
+	//TODO
+}
+
+bool tieneHijos(buddy* unBuddy){
+	return (unBuddy->hijoIzq != NULL && unBuddy->hijoDer != NULL);
+}
+
+void matarHijos(buddy* unBuddy){
+	if(!tieneHijos(unBuddy)){
+		eliminarBuddy(unBuddy);
+	} else if (unBuddy->hijoIzq != NULL){
+		matarHijos(unBuddy->hijoIzq);
+	} else if (unBuddy->hijoDer != NULL){
+		matarHijos(unBuddy->hijoDer);
+	}
+}
+
+void eliminarBuddy(buddy* unBuddy){
+	free(unBuddy);
+}
+
+void splitMemory(buddy* unBuddy) {
+	buddy *nuevoIzq = malloc(sizeof(buddy));
+	buddy *nuevoDer = malloc(sizeof(buddy));
+
+	nuevoIzq->parent = unBuddy;
+	nuevoDer->parent = unBuddy;
+
+	nuevoIzq->size = unBuddy->size / 2;
+	nuevoDer->size = unBuddy->size / 2;
+
+	nuevoIzq->freeSpace = unBuddy->size / 2;
+	nuevoDer->freeSpace = unBuddy->size / 2;
+
+	nuevoIzq->ocupado = false;
+	nuevoDer->ocupado = false;
+
+	nuevoIzq->left = NULL;
+	nuevoIzq->right = NULL;
+
+	nuevoDer->left = NULL;
+	nuevoDer->right = NULL;
+
+	//asigno los hijos al buddy
+	unBuddy->left = nuevoIzq;
+	unBuddy->right = nuevoDer;
+	unBuddy->ocupado = true;
+
+	//agrego los hijos a la freeList
+	int nivelNuevosBuddys = nivelParticion(nuevoIzq->size);
+
+	if (freeList[nivelNuevosBuddys] != NULL) {
+		while (freeList[nivelNuevosBuddys]->next != NULL) {
+			freeList[nivelNuevosBuddys] = freeList[nivelNuevosBuddys]->next;
+		}
+
+		freeList[nivelNuevosBuddys]->next = nuevoIzq;
+		nuevoIzq->back = freeList[nivelNuevosBuddys];
+		nuevoIzq->next = nuevoDer;
+		nuevoDer->back = nuevoIzq;
+		nuevoDer->next = NULL;
+	} else {
+		freeList[nivelNuevosBuddys] = nuevoIzq;
+		nuevoIzq->back = freeList[nivelNuevosBuddys];
+		nuevoIzq->next = nuevoDer;
+		nuevoDer->back = nuevoIzq;
+		nuevoDer->next = NULL;
+	}
+}
+
+
+
+
+
+int cantidadNiveles(buddy unBuddy) {
+	int valorPotencia = 1;
+	int level = 0;
+	while (valorPotencia < unBuddy->size) {
+		valorPotencia = valorPotencia * 2;
+		level++;
+	}
+	return level;
+}
+
+int nivelParticion(int tamNuevoMensaje) {
+	int valorPotencia = 1;
+	int level = 0;
+	while (valorPotencia < tamNuevoMensaje) {
+		valorPotencia = valorPotencia * 2;
+		level++;
+	}
+	return level;
+}
+
+
+

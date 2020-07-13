@@ -101,7 +101,6 @@ t_log* dumpCache;
  */
 
 void terminar_programa(){
-
 	log_destroy(logConexion);
 	log_destroy(logSuscipcion);
 	log_destroy(logMensajeNuevo);
@@ -112,8 +111,5 @@ void terminar_programa(){
 	log_destroy(compactacionMemoria);
 	log_destroy(dumpCache);
 
-
 	config_destroy(config);
-
-
 }

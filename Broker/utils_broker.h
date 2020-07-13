@@ -43,6 +43,23 @@ typedef struct {
 	uint32_t idCorrelativo;
 }particion;
 
+typedef struct{
+	buddy* padre;
+	buddy* hijoIzq;
+	buddy* hijoDer;
+	buddy* next;
+	buddy* back;
+	uint32_t size;
+	uint32_t freeSpace;
+	uint32_t lvl;
+	bool ocupado;
+}buddy;
+
+buddy* root;
+buddy* buddyAAlocar;
+
+t_list* colaVictimaBuddy;
+
 t_list *tablaDeParticiones;
 
 uint32_t idGlobales;
