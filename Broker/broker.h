@@ -8,15 +8,11 @@
 #ifndef BROKER_H_
 #define BROKER_H_
 
-
-
 #include "utils_broker.h"
 
-t_log* iniciar_logger(char*,char* archivoLog);
+t_log* iniciar_logger(char*, char* archivoLog);
 void leer_config(void);
 //void terminar_programa(int,int,int, t_log*,t_log*,t_log*,t_log*, t_config*);
-
-
 
 int crear_conexion(char* ip, char* puerto);
 void enviar_mensaje(char* mensaje, int socket_cliente);
