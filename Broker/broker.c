@@ -26,6 +26,12 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 		sem_init(&idsDeMensajes,0,1);
 		sem_init(&usoMemoria,0,1);
 
+		sem_init(&hiloAppeared_Envio,0,0);
+		sem_init(&hiloCatch_Envio,0,0);
+		sem_init(&hiloCaught_Envio,0,0);
+		sem_init(&hiloGet_Envio,0,0);
+		sem_init(&hiloLocalized_Envio,0,0);
+		sem_init(&hiloNew_Envio,0,0);
 
 
 

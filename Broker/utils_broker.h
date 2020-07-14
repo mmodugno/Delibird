@@ -101,8 +101,17 @@ static const char *colasDeEnum[] = {"LIBRE","NEW_POKEMON","APPEARED_POKEMON","CA
 
 sem_t idsDeMensajes;
 sem_t usoMemoria;
+
+sem_t colaNew;
+sem_t colaAppeared;
+sem_t colaCatch;
+sem_t colaCaught;
+sem_t colaLocalized;
+sem_t colaGet;
+
+
 void agregarAMemoria(void* , uint32_t ,tipoDeCola, uint32_t , uint32_t);
-void compactarMemoria(void);
+int compactarMemoria(void);
 void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);

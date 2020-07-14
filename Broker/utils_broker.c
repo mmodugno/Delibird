@@ -335,7 +335,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			uint32_t ackRecibido = deserializarAck(cliente_fd);
-			log_info(confirmacionRecepcion,"me llego la confirmacion para el ID:%d",ackRecibido);
+
 
 			bool partAck(particion *part){
 				if((!part->libre) &&(ackRecibido==part->idMensaje)){
@@ -344,9 +344,19 @@ void process_request(int cod_op, int cliente_fd) {
 				return 0;
 			}
 
+			//mutex porque manejo algo de memoria
+			sem_wait(&usoMemoria);
+
+			//busco si hay una particion con ese ID
 			particion* partEncontrada=list_find(tablaDeParticiones,partAck);
 
-			list_add(partEncontrada->acknoleged,username);
+			//si la encontro lo agrega a su tabla de ACK
+			if(partEncontrada!=NULL){
+				list_add(partEncontrada->acknoleged,username);
+				log_info(confirmacionRecepcion,"ACK de %s ID:%d para la cola %s",username,ackRecibido,colasDeEnum[partEncontrada->tipoMensaje]);
+			}
+
+			sem_post(&usoMemoria);
 
 			break;
 		}
@@ -399,7 +409,6 @@ void suscribirACola(suscriptor* suscriptor){
 		case LOCALIZED_POKEMON:
 			queue_push(suscriptoresLocalizedPokemon,(char*) suscriptor->nombreDeSuscriptor);
 			break;
-
 
 	}
 }
@@ -515,24 +524,22 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 		memcpy(memoria+datoAAgregar->base,datoAAgregar->mensaje,datoAAgregar->tamanioMensaje);
 		log_info(almacenadoMemoria,"El dato(ID:%d) %s con base: %d, tamanio: %d y tiempo: %s",datoAAgregar->idMensaje,colasDeEnum[datoAAgregar->tipoMensaje],datoAAgregar->base,datoAAgregar->tamanioMensaje,datoAAgregar->timestamp);
 
+		producirUnMensaje(datoAAgregar->tipoMensaje);
 		//para ver como esta la memoria (COMENTAR)
 /*
 		log_info(almacenadoMemoria,"la memoria quedo asi: ");
 		list_iterate(tablaDeParticiones,mostrarParticiones);*/
 	}
 	else{
-		//cuando se llena la memoria o no hay espacio (por ahora crashea porque no esta hecha la compresion ni el reemplazo)
+		//cuando se llena la memoria o no hay espacio
 		//free(partElegida);
-		//ver los pasos para agregar a memoria porque no estoy seguro
 		//si no hay ninguna particion en donde entre
 
+		if(!compactarMemoria()){
+			//reemplazar si no pudo compactar
+			algoritmoReemplazo();
+		}
 
-
-		//reemplazar(quien elimina)
-		algoritmoReemplazo();
-
-		//comprimir(ver contador de frecuencia con mutex)
-		compactarMemoria();
 
 		//volver a ver si entra
 		partElegida = NULL;
@@ -548,6 +555,30 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partEleg
 
 	//para ver como esta la memoria
 	//list_iterate(tablaDeParticiones, mostrarParticiones);
+}
+
+void producirUnMensaje(tipoDeCola tipo){
+	switch (tipo) {
+	case NEW_POKEMON:
+		sem_post(&hiloNew_Envio);
+		break;
+	case APPEARED_POKEMON:
+		sem_post(&hiloAppeared_Envio);
+		break;
+	case CATCH_POKEMON:
+		sem_post(&hiloCatch_Envio);
+		break;
+	case CAUGHT_POKEMON:
+		sem_post(&hiloCaught_Envio);
+		break;
+	case GET_POKEMON:
+		sem_post(&hiloGet_Envio);
+		break;
+	case LOCALIZED_POKEMON:
+		sem_post(&hiloLocalized_Envio);
+		break;
+
+	}
 }
 
 void algoritmoReemplazo(){
@@ -757,7 +788,7 @@ void copiarDatos(particion *target,particion * copiado){
 	target->tipoMensaje = copiado->tipoMensaje;
 }
 
-void compactarMemoria(){
+int compactarMemoria(){
 
 	bool partLlenas(particion* part){
 		return !(part->libre);
@@ -821,10 +852,13 @@ void compactarMemoria(){
 			/*
 			log_info(compactacionMemoria,"Despues de compactar la memoria y quedo asi:");
 			list_iterate(tablaDeParticiones,mostrarParticiones);*/
+
+			return 1;
 		}
 	}
 	else{
 		frecuencia++;
+		return 0;
 	}
 
 }
