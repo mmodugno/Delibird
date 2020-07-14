@@ -53,25 +53,10 @@ int main(int argc, char* argv[]){
 
 	//iniciar_servidor();
 
-	//TEAM1 - TEAM4
-	pokemon* squirte = hacer_pokemon("Squirtle", 0,3,sizeof("Squirtle"));
-	aparece_nuevo_pokemon(squirte);
 
 
-	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
-	aparece_nuevo_pokemon(pikachu);
-
-
-	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3,sizeof("Pikachu"));
-	aparece_nuevo_pokemon(pikachu2);
-
-
-	pokemon* charmander = hacer_pokemon("Charmander", 8,0,sizeof("Charmander"));
-	aparece_nuevo_pokemon(charmander);
-
-
-	/*
  //PRUEBAS DE TP:
+
 
 	pokemon* pikachu = hacer_pokemon("Pikachu", 1, 1,sizeof("Pikachu"));
 		aparece_nuevo_pokemon(pikachu);
@@ -82,13 +67,15 @@ int main(int argc, char* argv[]){
 	pokemon* onix = hacer_pokemon("Onix",2,2,sizeof("Onix"));
 		aparece_nuevo_pokemon(onix);
 
-	pokemon* squirte2 = hacer_pokemon("Squirtle",3,5,sizeof("Squirtle"));
-		aparece_nuevo_pokemon(squirte2);
-
 	pokemon* gengar = hacer_pokemon("Gengar",7,5,sizeof("Gengar"));
 		aparece_nuevo_pokemon(gengar);
 
-*/
+	pokemon* squirte2 = hacer_pokemon("Squirtle",3,5,sizeof("Squirtle"));
+		aparece_nuevo_pokemon(squirte2);
+
+
+
+
 
  	pthread_join(hilo_principal,NULL);
 
