@@ -28,7 +28,6 @@ Ejecución de Dump de cache (solo informar que se solicitó el mismo).
 
 
 
-
 		//logs implementados
 		logSuscipcion = iniciar_logger("Suscripcion",log_file);
 		logMensajeNuevo = iniciar_logger("Mensaje Nuevo",log_file);

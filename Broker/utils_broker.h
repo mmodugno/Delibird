@@ -119,6 +119,9 @@ void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
 void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig);
 void copiarDatos(particion *target,particion * copiado);
 void algoritmoReemplazo();
+void formarPosiciones(char* ,localized_pokemon* );
 void eliminarParticion(particion * part);
+void reservarMemoria(char** , size_t );
+char* mostrarPosiciones(localized_pokemon* );
 
 #endif /* UTILS_BROKER_H_ */
