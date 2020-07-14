@@ -131,247 +131,40 @@ void process_request(int cod_op, int cliente_fd) {
 	username = malloc(tamanio_username);
 	recv(cliente_fd, username, tamanio_username, MSG_WAITALL);
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
-<<<<<<< HEAD
+	uint32_t posiciones;
+	char* posicionesString = string_new();
 	void *raiz;
-	char* posiciones;
 
-	broker_localized_pokemon* localizedRecibido;
+	uint32_t ackRecibido;
+	particion* partEncontrada;
+
 	suscriptor* suscriptor;
 	broker_new_pokemon* newRecibido;
 	broker_appeared_pokemon* appearedRecibido;
 	broker_get_pokemon* getRecibido;
 	broker_catch_pokemon* catchRecibido;
 	broker_caught_pokemon* caughtRecibido;
-	uint32_t ackRecibido;
-	particion* partEncontrada;
+	broker_localized_pokemon* localizedRecibido;
 
 	//log_info(logConexion,"%s se conecto al broker",username);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
-		case SUSCRIPCION:
+	case SUSCRIPCION:
 
-			suscriptor = deserializar_suscripcion(cliente_fd);
-
-			log_info(logSuscipcion,"recibi mensaje de suscripcion de %s a la cola %s",suscriptor->nombreDeSuscriptor,colasDeEnum[(suscriptor->tipoDeCola)-1]);
-
-			suscribirACola(suscriptor);
-			free(suscriptor);
-
-			break;
-
-		case BROKER__NEW_POKEMON:
-
-			newRecibido = deserializar_new_pokemon(cliente_fd);
-			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d"
-								,username,newRecibido->datos->tamanioNombre,
-								newRecibido->datos->nombrePokemon,
-								newRecibido->datos->posX,
-								newRecibido->datos->posY,
-								newRecibido->datos->cantidadPokemon);
-			//mutex
-			sem_wait(&idsDeMensajes);
-			newRecibido->id = idGlobales;
-			idGlobales++;
-			sem_post(&idsDeMensajes);
-			//mutex
-
-			raiz = transformarBrokerNewPokemon(newRecibido,&tamanioAgregar);
-			//log_info(logMensajeNuevo,"lo que vale este new a agregar es %d",sizeof(raiz));
-			//log_info(logMensajeNuevo,"lo que vale este new puntero de dato es %d",sizeof(new_pokemon*));
-			agregarAMemoria(raiz,newRecibido->id,NEW_POKEMON,0,tamanioAgregar);
-			//agregarACola(NEW_POKEMON,newRecibido);
-
-			//free(raiz);
-			free(newRecibido);
-
-
-			break;
-
-		case BROKER__APPEARED_POKEMON:
-
-			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
-
-			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d"
-					,username,appearedRecibido->datos->tamanioNombre,
-					appearedRecibido->datos->nombrePokemon,
-					appearedRecibido->datos->posX,
-					appearedRecibido->datos->posY,appearedRecibido->id_relativo);
-			//mutex
-			sem_wait(&idsDeMensajes);
-			appearedRecibido->id = idGlobales;
-			idGlobales++;
-			sem_post(&idsDeMensajes);
-			//mutex
-
-			raiz = transformarBrokerAppearedPokemon(appearedRecibido,&tamanioAgregar);
-			//log_info(logMensajeNuevo,"lo que vale este appeared a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,appearedRecibido->id,APPEARED_POKEMON,appearedRecibido->id_relativo,tamanioAgregar);
-			//agregarACola(APPEARED_POKEMON,appearedRecibido);
-
-			//free(raiz);
-			free(appearedRecibido);
-
-
-			break;
-
-		case BROKER__GET_POKEMON:
-
-			getRecibido = deserializar_get_pokemon(cliente_fd);
-
-			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON de %s\n con tamanio: %d \n nombre: %s "
-									,username,getRecibido->datos->tamanioNombre,
-									getRecibido->datos->nombrePokemon);
-
-			//mutex
-			sem_wait(&idsDeMensajes);
-			getRecibido->id = idGlobales;
-			idGlobales++;
-			sem_post(&idsDeMensajes);
-			//mutex
-
-			void *raiz = transformarBrokerGetPokemon(getRecibido,&tamanioAgregar);
-			//log_info(logMensajeNuevo,"lo que vale este get a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,getRecibido->id,GET_POKEMON,0,tamanioAgregar);
-			//agregarACola(GET_POKEMON,getRecibido);
-
-			//free(raiz);
-			free(getRecibido);
-
-			break;
-
-		case BROKER__CATCH_POKEMON:
-
-			catchRecibido = deserializar_catch_pokemon(cliente_fd);
-
-			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
-									,username,catchRecibido->datos->tamanioNombre,
-									catchRecibido->datos->nombrePokemon,
-									catchRecibido->datos->posX,
-									catchRecibido->datos->posY);
-
-			//mutex
-			sem_wait(&idsDeMensajes);
-			catchRecibido->id = idGlobales;
-			idGlobales++;
-			sem_post(&idsDeMensajes);
-			//mutex
-
-			if(!strcmp(username,"TEAM")){
-				//TODO ver conexiones con los otros sockets (si les tengo que mandar ID
-				send(cliente_fd,&(catchRecibido->id),sizeof(uint32_t),0);
-			}
-=======
-	uint32_t posiciones;
-	char* posicionesString = string_new();
-	char* posXString = string_new();
-	char* posYString = string_new();
-	//log_info(logConexion,"%s se conecto al broker",username);
-	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
-	switch (cod_op) {
-	case SUSCRIPCION: {
-		suscriptor* suscriptor;
 		suscriptor = deserializar_suscripcion(cliente_fd);
->>>>>>> c9f9f952d3ef44f2cd1543d5f33f85057d159490
 
 		log_info(logSuscipcion,
 				"recibi mensaje de suscripcion de %s a la cola %s",
 				suscriptor->nombreDeSuscriptor,
 				colasDeEnum[(suscriptor->tipoDeCola) - 1]);
 
-<<<<<<< HEAD
-			raiz = transformarBrokerCatchPokemon(catchRecibido,&tamanioAgregar);
-			//log_info(logMensajeNuevo,"lo que vale este catch a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz, catchRecibido->id,CATCH_POKEMON,0,tamanioAgregar);
-			//agregarACola(CATCH_POKEMON,catchRecibido);
-
-			//free(raiz);
-			free(catchRecibido);
-			break;
-
-		case BROKER__CAUGHT_POKEMON:
-
-			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
-
-			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON de %s\n con ID_relativo: %d \n puedoAtraparlo: %d "
-									,username,caughtRecibido->id_relativo,
-									caughtRecibido->datos->puedoAtraparlo);
-			//mutex
-			sem_wait(&idsDeMensajes);
-			caughtRecibido->id = idGlobales;
-			idGlobales++;
-			sem_post(&idsDeMensajes);
-			//mutex
-
-			raiz = transformarBrokerCaughtPokemon(caughtRecibido,&tamanioAgregar);
-			//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,caughtRecibido->id,CAUGHT_POKEMON,caughtRecibido->id_relativo,tamanioAgregar);
-			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
-
-			//free(raiz);
-			free(caughtRecibido);
-			break;
-
-		case BROKER__LOCALIZED_POKEMON:
-
-			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
-
-			posiciones = mostrarPosiciones(localizedRecibido->datos);
-
-			log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n "
-									,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,posiciones,
-									localizedRecibido->id_relativo);
-			/*log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n con ID_relativo: %d \n "
-												,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,
-												localizedRecibido->id_relativo);*/
-			//mutex
-			sem_wait(&idsDeMensajes);
-			localizedRecibido->id = idGlobales;
-			idGlobales++;
-			sem_post(&idsDeMensajes);
-			//mutex
-
-			raiz = transformarBrokerLocalizedPokemon(localizedRecibido,&tamanioAgregar);
-			//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
-			agregarAMemoria(raiz,localizedRecibido->id,LOCALIZED_POKEMON,localizedRecibido->id_relativo,tamanioAgregar);
-			//agregarACola(CAUGHT_POKEMON,caughtRecibido);
-
-			//free(raiz);
-			free(localizedRecibido);
-
-			break;
-
-		case ACKNOWLEDGED:
-
-			ackRecibido = deserializarAck(cliente_fd);
-
-			log_info(confirmacionRecepcion,"me llego la confirmacion para el ID:%d",ackRecibido);
-
-			bool partAck(particion *part){
-				if((!part->libre) &&(ackRecibido==part->idMensaje)){
-					return 1;
-				}
-				return 0;
-			}
-
-			partEncontrada=list_find(tablaDeParticiones,partAck);
-
-			list_add(partEncontrada->acknoleged,username);
-
-			break;
-
-		case 0:
-			pthread_exit(NULL);
-		case -1:
-			pthread_exit(NULL);
-		}
-=======
 		suscribirACola(suscriptor);
 		free(suscriptor);
 
 		break;
-	}
-	case BROKER__NEW_POKEMON: {
-		broker_new_pokemon* newRecibido;
+
+	case BROKER__NEW_POKEMON:
+
 		newRecibido = deserializar_new_pokemon(cliente_fd);
 		log_info(logMensajeNuevo,
 				"recibi mensaje de NEW_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
@@ -385,7 +178,7 @@ void process_request(int cod_op, int cliente_fd) {
 		sem_post(&idsDeMensajes);
 		//mutex
 
-		void *raiz = transformarBrokerNewPokemon(newRecibido, &tamanioAgregar);
+		raiz = transformarBrokerNewPokemon(newRecibido, &tamanioAgregar);
 		//log_info(logMensajeNuevo,"lo que vale este new a agregar es %d",sizeof(raiz));
 		//log_info(logMensajeNuevo,"lo que vale este new puntero de dato es %d",sizeof(new_pokemon*));
 		agregarAMemoria(raiz, newRecibido->id, NEW_POKEMON, 0, tamanioAgregar);
@@ -395,9 +188,9 @@ void process_request(int cod_op, int cliente_fd) {
 		free(newRecibido);
 
 		break;
-	}
-	case BROKER__APPEARED_POKEMON: {
-		broker_appeared_pokemon* appearedRecibido;
+
+	case BROKER__APPEARED_POKEMON:
+
 		appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
 		log_info(logMensajeNuevo,
@@ -413,7 +206,7 @@ void process_request(int cod_op, int cliente_fd) {
 		sem_post(&idsDeMensajes);
 		//mutex
 
-		void *raiz = transformarBrokerAppearedPokemon(appearedRecibido,
+		raiz = transformarBrokerAppearedPokemon(appearedRecibido,
 				&tamanioAgregar);
 		//log_info(logMensajeNuevo,"lo que vale este appeared a agregar es %d",sizeof(raiz));
 		agregarAMemoria(raiz, appearedRecibido->id, APPEARED_POKEMON,
@@ -424,9 +217,9 @@ void process_request(int cod_op, int cliente_fd) {
 		free(appearedRecibido);
 
 		break;
-	}
-	case BROKER__GET_POKEMON: {
-		broker_get_pokemon* getRecibido;
+
+	case BROKER__GET_POKEMON:
+
 		getRecibido = deserializar_get_pokemon(cliente_fd);
 
 		log_info(logMensajeNuevo,
@@ -441,7 +234,7 @@ void process_request(int cod_op, int cliente_fd) {
 		sem_post(&idsDeMensajes);
 		//mutex
 
-		void *raiz = transformarBrokerGetPokemon(getRecibido, &tamanioAgregar);
+		raiz = transformarBrokerGetPokemon(getRecibido, &tamanioAgregar);
 		//log_info(logMensajeNuevo,"lo que vale este get a agregar es %d",sizeof(raiz));
 		agregarAMemoria(raiz, getRecibido->id, GET_POKEMON, 0, tamanioAgregar);
 		//agregarACola(GET_POKEMON,getRecibido);
@@ -450,9 +243,9 @@ void process_request(int cod_op, int cliente_fd) {
 		free(getRecibido);
 
 		break;
-	}
-	case BROKER__CATCH_POKEMON: {
-		broker_catch_pokemon* catchRecibido;
+
+	case BROKER__CATCH_POKEMON:
+
 		catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
 		log_info(logMensajeNuevo,
@@ -473,7 +266,7 @@ void process_request(int cod_op, int cliente_fd) {
 			send(cliente_fd, &(catchRecibido->id), sizeof(uint32_t), 0);
 		}
 
-		void *raiz = transformarBrokerCatchPokemon(catchRecibido,
+		raiz = transformarBrokerCatchPokemon(catchRecibido,
 				&tamanioAgregar);
 		//log_info(logMensajeNuevo,"lo que vale este catch a agregar es %d",sizeof(raiz));
 		agregarAMemoria(raiz, catchRecibido->id, CATCH_POKEMON, 0,
@@ -483,9 +276,9 @@ void process_request(int cod_op, int cliente_fd) {
 		//free(raiz);
 		free(catchRecibido);
 		break;
-	}
-	case BROKER__CAUGHT_POKEMON: {
-		broker_caught_pokemon* caughtRecibido;
+
+	case BROKER__CAUGHT_POKEMON:
+
 		caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
 		log_info(logMensajeNuevo,
@@ -499,7 +292,7 @@ void process_request(int cod_op, int cliente_fd) {
 		sem_post(&idsDeMensajes);
 		//mutex
 
-		void *raiz = transformarBrokerCaughtPokemon(caughtRecibido,
+		raiz = transformarBrokerCaughtPokemon(caughtRecibido,
 				&tamanioAgregar);
 		//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
 		agregarAMemoria(raiz, caughtRecibido->id, CAUGHT_POKEMON,
@@ -509,29 +302,17 @@ void process_request(int cod_op, int cliente_fd) {
 		//free(raiz);
 		free(caughtRecibido);
 		break;
-	}
-	case BROKER__LOCALIZED_POKEMON: {
-		broker_localized_pokemon* localizedRecibido;
+
+	case BROKER__LOCALIZED_POKEMON:
+
 		localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 
-		/*
+
 		 posiciones = 0;
-
 		 for(posiciones=0;posiciones<localizedRecibido->datos->cantidadPosiciones;posiciones++){
-
-		 //string_append(&posXString,string_itoa(localizedRecibido->datos->posX[posiciones]));
-		 //string_append(&posYString,string_itoa(localizedRecibido->datos->posY[posiciones]));
-		 //string_itoa(localizedRecibido->datos->posX[posiciones]);
-		 sprintf(posXString,"%d",localizedRecibido->datos->posX[posiciones]);
-		 sprintf(posYString,"%d",localizedRecibido->datos->posY[posiciones]);
-
-		 string_append(&posicionesString,"(");
-		 string_append(&posicionesString,posXString);
-		 string_append(&posicionesString,";");
-		 string_append(&posicionesString,posYString);
-		 string_append(&posicionesString,")");
+		 char* posicion = string_from_format("(%d;%d)",localizedRecibido->datos->posX[posiciones],localizedRecibido->datos->posY[posiciones]);
+		 string_append(&posicionesString,posicion);
 		 }
-
 
 		 log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n "
 		 ,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,posicionesString,
@@ -546,7 +327,7 @@ void process_request(int cod_op, int cliente_fd) {
 		sem_post(&idsDeMensajes);
 		//mutex
 
-		void *raiz = transformarBrokerLocalizedPokemon(localizedRecibido,
+		raiz = transformarBrokerLocalizedPokemon(localizedRecibido,
 				&tamanioAgregar);
 		//log_info(logMensajeNuevo,"lo que vale este caught a agregar es %d",sizeof(raiz));
 		agregarAMemoria(raiz, localizedRecibido->id, LOCALIZED_POKEMON,
@@ -557,10 +338,10 @@ void process_request(int cod_op, int cliente_fd) {
 		free(localizedRecibido);
 
 		break;
-	}
-	case ACKNOWLEDGED: {
 
-		uint32_t ackRecibido = deserializarAck(cliente_fd);
+	case ACKNOWLEDGED:
+
+		ackRecibido = deserializarAck(cliente_fd);
 		log_info(confirmacionRecepcion,
 				"me llego la confirmacion para el ID:%d", ackRecibido);
 
@@ -571,18 +352,17 @@ void process_request(int cod_op, int cliente_fd) {
 			return 0;
 		}
 
-		particion* partEncontrada = list_find(tablaDeParticiones, partAck);
+		partEncontrada = list_find(tablaDeParticiones, partAck);
 
 		list_add(partEncontrada->acknoleged, username);
 
 		break;
-	}
+
 	case 0:
 		pthread_exit(NULL);
 	case -1:
 		pthread_exit(NULL);
 	}
->>>>>>> c9f9f952d3ef44f2cd1543d5f33f85057d159490
 
 	free(username);
 	//free(posXString);
@@ -1074,48 +854,7 @@ void eliminarParticion(particion * part) {
 
 	free(part);
 }
-
-<<<<<<< HEAD
-void formarPosiciones(char* stringPos,localized_pokemon* datos){
-
-	int i;
-
-	for(i = 0;i < datos->cantidadPosiciones;i++){
-
-		string_append(&stringPos,"(");
-		string_append(&stringPos,string_itoa(datos->posX[i]));
-		string_append(&stringPos,";");
-		string_append(&stringPos,string_itoa(datos->posY[i]));
-		string_append(&stringPos,")");
-	}
-
-}
-
-char* mostrarPosiciones(localized_pokemon* datos){
-
-	char* stringPos = malloc(datos->cantidadPosiciones * 5);
-
-	int i;
-
-	for(i = 0;i < datos->cantidadPosiciones;i++){
-
-		string_append(&stringPos,"(");
-		string_append(&stringPos,string_itoa(datos->posX[i]));
-		string_append(&stringPos,";");
-		string_append(&stringPos,string_itoa(datos->posY[i]));
-		string_append(&stringPos,")");
-	}
-
-	return stringPos;
-
-}
-
-void reservarMemoria(char** ptr, size_t size){
-	void* memoria = malloc(size);
-
-	*ptr = (char*) memoria;
-}
-=======
+/*
 void iniciarBuddySystem() {
 	root = malloc(sizeof(buddy));
 	root->size = tamanio_memoria;
@@ -1215,7 +954,7 @@ void matarHijos(buddy* unBuddy) {
 void eliminarBuddy(buddy* unBuddy) {
 	free(unBuddy);
 }
-
+/*
 void splitMemory(buddy* unBuddy) {
 	buddy *nuevoIzq = malloc(sizeof(buddy));
 	buddy *nuevoDer = malloc(sizeof(buddy));
@@ -1283,6 +1022,4 @@ int nivelParticion(int tamNuevoMensaje) {
 		level++;
 	}
 	return level;
-}
-
->>>>>>> c9f9f952d3ef44f2cd1543d5f33f85057d159490
+}*/

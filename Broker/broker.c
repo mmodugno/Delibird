@@ -21,7 +21,6 @@ int main() {
 
 	 *
 	 */
-<<<<<<< HEAD
 		leer_config();
 		sem_init(&idsDeMensajes,0,1);
 		sem_init(&usoMemoria,0,1);
@@ -45,11 +44,11 @@ int main() {
 
 		iniciarMemoria();
 
-=======
+
 	leer_config();
 	sem_init(&idsDeMensajes, 0, 1);
 	sem_init(&usoMemoria, 0, 1);
->>>>>>> c9f9f952d3ef44f2cd1543d5f33f85057d159490
+
 
 	//logs implementados
 	logSuscipcion = iniciar_logger("Suscripcion", log_file);

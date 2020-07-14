@@ -42,7 +42,7 @@ typedef struct {
 	uint32_t idCorrelativo;
 } particion;
 
-typedef struct {
+/*typedef struct {
 	buddy* padre;
 	buddy* hijoIzq;
 	buddy* hijoDer;
@@ -55,7 +55,7 @@ typedef struct {
 } buddy;
 
 buddy* root;
-buddy* buddyAAlocar;
+buddy* buddyAAlocar;*/
 
 t_list* colaVictimaBuddy;
 
