@@ -29,6 +29,7 @@ int main() {
 	leer_config();
 	sem_init(&idsDeMensajes, 0, 1);
 	sem_init(&usoMemoria, 0, 1);
+	sem_init(&llegadaMensajes,0,1);
 
 	sem_init(&colaNew, 0, 0);
 	sem_init(&colaAppeared, 0, 0);
@@ -110,16 +111,4 @@ void leer_config(void) {
  t_log* dumpCache;
  */
 
-void terminar_programa() {
-	log_destroy(logConexion);
-	log_destroy(logSuscipcion);
-	log_destroy(logMensajeNuevo);
-	log_destroy(logEnviarNuevo);
-	log_destroy(confirmacionRecepcion);
-	log_destroy(almacenadoMemoria);
-	log_destroy(eliminacionMemoria);
-	log_destroy(compactacionMemoria);
-	log_destroy(dumpCache);
 
-	config_destroy(config);
-}

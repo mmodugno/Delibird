@@ -114,6 +114,8 @@ static const char *colasDeEnum[] = { "LIBRE", "NEW_POKEMON", "APPEARED_POKEMON",
 sem_t idsDeMensajes;
 sem_t usoMemoria;
 
+sem_t llegadaMensajes;
+
 sem_t colaNew;
 sem_t colaAppeared;
 sem_t colaCatch;
@@ -147,5 +149,6 @@ void eliminarParticion(particion * part);
 void reservarMemoria(char** , size_t );
 char* mostrarPosiciones(localized_pokemon* );
 void producirUnMensaje(tipoDeCola tipo);
+void terminar_programa();
 
 #endif /* UTILS_BROKER_H_ */

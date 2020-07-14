@@ -104,6 +104,8 @@ void esperar_cliente(int socket_servidor) {
 }
 
 void serve_client(int* socket) {
+
+	sem_wait(&llegadaMensajes);
 	int cod_op = 0;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if (i <= 0)
@@ -151,6 +153,7 @@ void process_request(int cod_op, int cliente_fd) {
 	switch (cod_op) {
 		case SUSCRIPCION:
 
+
 			suscriptor = deserializar_suscripcion(cliente_fd);
 
 			log_info(logSuscipcion,
@@ -159,11 +162,13 @@ void process_request(int cod_op, int cliente_fd) {
 					colasDeEnum[(suscriptor->tipoDeCola) - 1]);
 
 			suscribirACola(suscriptor);
+
 			free(suscriptor);
 
 			break;
 
 		case BROKER__NEW_POKEMON:
+
 
 			newRecibido = deserializar_new_pokemon(cliente_fd);
 			log_info(logMensajeNuevo,
@@ -179,6 +184,8 @@ void process_request(int cod_op, int cliente_fd) {
 			//mutex
 
 			raiz = transformarBrokerNewPokemon(newRecibido, &tamanioAgregar);
+
+
 			//log_info(logMensajeNuevo,"lo que vale este new a agregar es %d",sizeof(raiz));
 			//log_info(logMensajeNuevo,"lo que vale este new puntero de dato es %d",sizeof(new_pokemon*));
 			agregarAMemoria(raiz, newRecibido->id, NEW_POKEMON, 0, tamanioAgregar);
@@ -190,6 +197,7 @@ void process_request(int cod_op, int cliente_fd) {
 			break;
 
 		case BROKER__APPEARED_POKEMON:
+
 
 			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
@@ -214,11 +222,13 @@ void process_request(int cod_op, int cliente_fd) {
 			//agregarACola(APPEARED_POKEMON,appearedRecibido);
 
 			//free(raiz);
+
 			free(appearedRecibido);
 
 			break;
 
 		case BROKER__GET_POKEMON:
+
 
 			getRecibido = deserializar_get_pokemon(cliente_fd);
 
@@ -239,12 +249,15 @@ void process_request(int cod_op, int cliente_fd) {
 			agregarAMemoria(raiz, getRecibido->id, GET_POKEMON, 0, tamanioAgregar);
 			//agregarACola(GET_POKEMON,getRecibido);
 
+
 			//free(raiz);
 			free(getRecibido);
 
 			break;
 
 		case BROKER__CATCH_POKEMON:
+
+
 
 			catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
@@ -273,11 +286,14 @@ void process_request(int cod_op, int cliente_fd) {
 					tamanioAgregar);
 			//agregarACola(CATCH_POKEMON,catchRecibido);
 
+
 			//free(raiz);
 			free(catchRecibido);
 			break;
 
 		case BROKER__CAUGHT_POKEMON:
+
+
 
 			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
@@ -304,6 +320,7 @@ void process_request(int cod_op, int cliente_fd) {
 			break;
 
 		case BROKER__LOCALIZED_POKEMON:
+
 
 			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 
@@ -343,6 +360,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 		case ACKNOWLEDGED:
 
+
+
 			ackRecibido = deserializarAck(cliente_fd);
 			log_info(confirmacionRecepcion,
 					"me llego la confirmacion para el ID:%d", ackRecibido);
@@ -374,6 +393,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			sem_post(&usoMemoria);
 
+
 			break;
 
 		case 0:
@@ -390,6 +410,7 @@ void process_request(int cod_op, int cliente_fd) {
 		//free(posicionesString);
 
 	}
+	sem_post(&llegadaMensajes);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size) {
@@ -462,6 +483,9 @@ particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCol
 	datoAAgregar->mensaje = malloc(tamanioAgregar);
 	datoAAgregar->mensaje = dato;
 	//agregamos tipos de dato raiz como son new_pokemon, localized_pokemon, etc;
+	if(tamanioAgregar<tamanio_minimo_particion){
+		tamanioAgregar = tamanio_minimo_particion;
+	}
 	datoAAgregar->tamanioMensaje = tamanioAgregar;
 	datoAAgregar->acknoleged = list_create();
 	datoAAgregar->tipoMensaje = tipoMensaje;
@@ -523,13 +547,11 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,
 	if (partElegida != NULL) {
 		datoAAgregar->base = partElegida->base;
 		if (partElegida->tamanioMensaje != datoAAgregar->tamanioMensaje) {
-			partElegida->base = datoAAgregar->base
-					+ datoAAgregar->tamanioMensaje;
+			partElegida->base = datoAAgregar->base + datoAAgregar->tamanioMensaje - 1;
 			if (*baseSig != -1) {
 				partElegida->tamanioMensaje = *baseSig - partElegida->base;
 			} else {
-				partElegida->tamanioMensaje = tamanio_memoria
-						- partElegida->base;
+				partElegida->tamanioMensaje = tamanio_memoria - partElegida->base;
 			}
 			//agregar a la tabal de particiones
 			list_add(tablaDeParticiones, datoAAgregar);
@@ -1061,3 +1083,17 @@ int nivelParticion(int tamNuevoMensaje) {
 	}
 	return level;
 }*/
+
+void terminar_programa() {
+	log_destroy(logConexion);
+	log_destroy(logSuscipcion);
+	log_destroy(logMensajeNuevo);
+	log_destroy(logEnviarNuevo);
+	log_destroy(confirmacionRecepcion);
+	log_destroy(almacenadoMemoria);
+	log_destroy(eliminacionMemoria);
+	log_destroy(compactacionMemoria);
+	log_destroy(dumpCache);
+
+	config_destroy(config);
+}
