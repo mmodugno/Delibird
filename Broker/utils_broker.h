@@ -8,7 +8,6 @@
 #ifndef UTILS_BROKER_H_
 #define UTILS_BROKER_H_
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -38,10 +37,27 @@ typedef struct {
 	void* mensaje;
 	tipoDeCola tipoMensaje;
 	t_list *acknoleged;
-	char* timestamp;//no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
+	char* timestamp; //no hay un date, en las commons hay un temporal.h que solo hay una funcion que devuelve el tiempo en string
 	uint32_t libre;
 	uint32_t idCorrelativo;
-}particion;
+} particion;
+
+/*typedef struct {
+	buddy* padre;
+	buddy* hijoIzq;
+	buddy* hijoDer;
+	buddy* next;
+	buddy* back;
+	uint32_t size;
+	uint32_t freeSpace;
+	uint32_t lvl;
+	bool ocupado;
+} buddy;
+
+buddy* root;
+buddy* buddyAAlocar;*/
+
+t_list* colaVictimaBuddy;
 
 t_list *tablaDeParticiones;
 
@@ -58,8 +74,6 @@ uint32_t frecuencia_compactacion;
 uint32_t frecuencia;
 char* log_file;
 
-
-
 t_config* config;
 
 void *memoria;
@@ -75,7 +89,6 @@ pthread_t hiloGet_Envio;
 pthread_t hiloAppeared_Envio;
 pthread_t hiloCatch_Envio;
 pthread_t hiloCaught_Envio;
-
 
 t_list* suscriptoresNewPokemon;
 t_list* suscriptoresAppearedPokemon;
@@ -95,9 +108,8 @@ t_log* eliminacionMemoria;
 t_log* compactacionMemoria;
 t_log* dumpCache;
 
-
-static const char *colasDeEnum[] = {"LIBRE","NEW_POKEMON","APPEARED_POKEMON","CATCH_POKEMON","CAUGHT_POKEMON","GET_POKEMON","LOCALIZED_POKEMON"};
-
+static const char *colasDeEnum[] = { "LIBRE", "NEW_POKEMON", "APPEARED_POKEMON",
+		"CATCH_POKEMON", "CAUGHT_POKEMON", "GET_POKEMON", "LOCALIZED_POKEMON" };
 
 sem_t idsDeMensajes;
 sem_t usoMemoria;
@@ -122,12 +134,18 @@ void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
 void suscribirACola(suscriptor* suscriptor);
-particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,tipoDeCola, uint32_t , uint32_t);
-void algoritmoFirstFit(particion *datoAAgregar,particion *particionEncontrada);
+particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,
+		tipoDeCola, uint32_t, uint32_t);
+void algoritmoFirstFit(particion *datoAAgregar, particion *particionEncontrada);
 void algoritmoBestFit(particion *datoAAgregar, particion* particionMasChica);
-void agregarTablaParticionesYMemoria(particion *datoAAgregar,particion *partElegida,uint32_t* baseSig);
-void copiarDatos(particion *target,particion * copiado);
+void agregarTablaParticionesYMemoria(particion *datoAAgregar,
+		particion *partElegida, uint32_t* baseSig);
+void copiarDatos(particion *target, particion * copiado);
 void algoritmoReemplazo();
+void formarPosiciones(char* ,localized_pokemon* );
 void eliminarParticion(particion * part);
+void reservarMemoria(char** , size_t );
+char* mostrarPosiciones(localized_pokemon* );
+void producirUnMensaje(tipoDeCola tipo);
 
 #endif /* UTILS_BROKER_H_ */

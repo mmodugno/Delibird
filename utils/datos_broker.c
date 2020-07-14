@@ -319,7 +319,7 @@ void serializar_broker_localized_pokemon(broker_localized_pokemon* brokerLocPoke
 	for(posiciones=0;posiciones<brokerLocPokemon->datos->cantidadPosiciones;posiciones++){
 
 		posX = brokerLocPokemon->datos->posX[posiciones];
-		posY = brokerLocPokemon->datos->posX[posiciones];
+		posY = brokerLocPokemon->datos->posY[posiciones];
 
 		//tengo mis dudas por el &
 		memcpy(buffer->stream+offset,&posX,sizeof(uint32_t));
@@ -365,8 +365,8 @@ broker_localized_pokemon* deserializar_localized_pokemon(int socket_cliente){
 
 	locPokemon->datos->cantidadPosiciones = numPos;
 
-	locPokemon->datos->posX = malloc(sizeof(uint32_t));
-	locPokemon->datos->posY = malloc(sizeof(uint32_t));
+	locPokemon->datos->posX = malloc(numPos*sizeof(uint32_t));
+	locPokemon->datos->posY = malloc(numPos*sizeof(uint32_t));
 
 	//4. uint32_t* posX;
 	//5. uint32_t* posY;

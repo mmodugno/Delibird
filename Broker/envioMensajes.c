@@ -13,7 +13,7 @@ void envioColaNewPokemon() {
 
 	//este while esta demas creo
 
-	sem_wait(&hiloNew_Envio);
+	sem_wait(&colaNew);
 
 
 
@@ -96,7 +96,7 @@ void envioColaNewPokemon() {
 }
 
 void envioColaGetPokemon() {
-	sem_wait(&hiloGet_Envio);
+	sem_wait(&colaGet);
 	sem_wait(&usoMemoria);
 
 
@@ -105,7 +105,7 @@ void envioColaGetPokemon() {
 }
 
 void envioColaLocalizedPokemon() {
-	sem_wait(&hiloLocalized_Envio);
+	sem_wait(&colaLocalized);
 	sem_wait(&usoMemoria);
 
 
@@ -115,7 +115,7 @@ void envioColaLocalizedPokemon() {
 }
 
 void envioColaAppearedPokemon() {
-	sem_wait(&hiloAppeared_Envio);
+	sem_wait(&colaAppeared);
 	sem_wait(&usoMemoria);
 
 
@@ -125,7 +125,7 @@ void envioColaAppearedPokemon() {
 }
 
 void envioColaCatchPokemon() {
-	sem_wait(&hiloCatch_Envio);
+	sem_wait(&colaCatch);
 	sem_wait(&usoMemoria);
 
 
@@ -134,7 +134,7 @@ void envioColaCatchPokemon() {
 }
 
 void envioColaCaughtPokemon() {
-	sem_wait(&hiloCaught_Envio);
+	sem_wait(&colaCaught);
 	sem_wait(&usoMemoria);
 
 

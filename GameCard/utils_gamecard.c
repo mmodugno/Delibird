@@ -366,7 +366,7 @@ void procesarGetPokemon(char* nombrePoke){
 
 	t_list* listaRegistros = obtenerPosiciones(nombrePoke);
 
-	sleep(tiempo_retardo_operacion);
+	//sleep(tiempo_retardo_operacion);
 
 	t_config* configPath = config_create(path);
 
@@ -1116,6 +1116,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__NEW_POKEMON:
 
+
 	registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
 
 	procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro);
@@ -1123,6 +1124,8 @@ void process_request(int cod_op, int cliente_fd) {
 	free(registroConNombre);
 
 	break;
+
+
 
 	case GAMECARD__CATCH_POKEMON:
 
@@ -1133,6 +1136,8 @@ void process_request(int cod_op, int cliente_fd) {
 	free(registroConNombre);
 
 	break;
+
+
 
 	case GAMECARD__GET_POKEMON:
 
@@ -1148,6 +1153,8 @@ void process_request(int cod_op, int cliente_fd) {
 	pthread_exit(NULL);
 	case -1:
 	pthread_exit(NULL);
+
+
 	}
 
 
