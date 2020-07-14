@@ -107,8 +107,9 @@ typedef struct{
     sem_t espera_de_catch;
     pokemon* objetivo_proximo;
     int ciclos_cpu;
-    //VER:
     sem_t nuevoPoke;
+    uint32_t id_caught;
+
 
 }entrenador;
 

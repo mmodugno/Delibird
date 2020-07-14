@@ -277,6 +277,7 @@ while(1){
 
 		enviar_catch(un_entrenador,catchAEnviar);
 		log_info(llegadaDeMensaje,"del catch que envie su ID es %d",catchAEnviar->id);
+		un_entrenador->id_caught = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
 
 		un_entrenador->ciclos_cpu += 1;
 
@@ -296,11 +297,11 @@ while(1){
 
 	bloquear_entrenador(un_entrenador);
 
-
-	sem_post(&en_ejecucion);
 	//libera la ejecucion mientras espera el catch
+	sem_post(&en_ejecucion);
 
-	//TODO aca puse que si no se puede conectar se confirme el catch
+
+	//TODO aca puse que si no se puede conectar se confirme el catch. Ver si es asi
 	if(conectarse_con_broker()==-1){
 		confirmacion_de_catch(un_entrenador);
 	}
@@ -310,7 +311,7 @@ while(1){
 	sem_wait(&(un_entrenador->espera_de_catch)); //Espera que le llegue al sistema una respuesta a su catch
 
 	if(conectarse_con_broker()==-1){
-	printf("\n Agarró al pokemon %s \n",proximo_objetivo->nombre);
+	printf("\n Agarró al pokemon %s \n",un_entrenador->objetivo_proximo->nombre);
 	}
 
 
@@ -350,7 +351,7 @@ void manejar_deadlock(void){
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				break;
+				//break;
 			}
 	}
 }
@@ -387,16 +388,13 @@ while(1){
 //Se fija si hay nuevos pokemones, y alguien para cazarlos
 while(validacion_nuevo_pokemon()){
 
+	sem_wait(&en_ejecucion);
+
 	planificar_entrenador(); //planifico uno en cada ciclo del fifo
 
-	//Seccion critica
-	sem_wait(&en_ejecucion);
 	cambio_contexto +=1;
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 	sem_post(&(entrenador_exec->sem_entrenador));
-
-
-	//Fin de seccion critica
 
 }
 
@@ -803,9 +801,6 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 	//llenamos el ID del catch que enviamos
 	recv(conexionBroker,&(catchAEnviar->id),sizeof(uint32_t),0);
 
-
-
-
 	free(bufferStream);
 
 	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
@@ -816,8 +811,9 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 	free(paquete_a_enviar->buffer);
 	free(paquete_a_enviar);
 
-
 }
+
+
 
 void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
 	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
@@ -1086,31 +1082,6 @@ int conectarse_con_broker(void){
 
 }
 
-/*
-void catch_pokemon(void){
-broker_catch_pokemon *catchPoke = malloc(sizeof(broker_catch_pokemon));
-				catchPoke->datos = malloc(sizeof(catch_pokemon));
-				//dinamicas
-				catchPoke->datos->nombrePokemon = argv[3];
-				catchPoke->datos->tamanioNombre = strlen(catchPoke->datos->nombrePokemon)+1;
-
-				//estaticas
-				catchPoke->datos->posX = atoi(argv[4]);
-				catchPoke->datos->posY = atoi(argv[5]);
-
-				enviar_Broker_Catch_Pokemon(catchPoke,"GAMEBOY",conexionBroker);
-
-				//log_info(logEnviarNuevo,"Mensaje Catch Pokemon \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d "
-									,catchPoke->datos->tamanioNombre,
-									catchPoke->datos->nombrePokemon,
-									catchPoke->datos->posX,
-									catchPoke->datos->posY);
-				free(catchPoke);
-	}
-*/
-
-
-
 
 
 void esperar_cliente(int socket_servidor)
@@ -1180,10 +1151,23 @@ void process_request(int cod_op, int cliente_fd) {
 
 		case TEAM__CAUGHT_POKEMON:
 
-			caughtRecibido = deserealizar_team_caught_pokemon(cliente_fd);
+			caughtRecibido = deserializar_team_caught_pokemon(cliente_fd);
 
 
-			//ver con maga el diseño
+			//Comparo entre los IDS de los entrenadores si existe el recibido
+			uint32_t id_recibido = caughtRecibido->id_relativo;
+
+			for(int i = 0; i < list_size(entrenadores);i++){
+				entrenador* un_entrenador = list_get(entrenadores,i);
+				if(un_entrenador->id_caught == id_recibido){
+
+					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
+					else { denegar_catch(un_entrenador); }
+
+					break;
+				}
+
+			}
 
 
 			break;
