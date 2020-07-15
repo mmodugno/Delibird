@@ -284,3 +284,42 @@ int crear_conexion(char *ip, char* puerto)
 void liberar_conexion(int socket_cliente){
 	close(socket_cliente);
 }
+
+
+t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar, uint32_t* tamanio){
+
+	//serializacion
+	//1. uint32_t idMensaje
+	//2. uint32_t tamanioNombre;
+	//3. char* nombrePokemon;
+	//4. uint32_t posX;
+	//5. uint32_t posY;
+	//6. uint32_t CantidadPokemons;
+
+
+	t_buffer* mensaje ;
+	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->nombrePokemon;
+	mensaje->stream = malloc(mensaje->size);
+
+	int offset = 0;
+
+	memcpy(mensaje->stream+offset,&(newAEnviar->id),sizeof (uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,&(newAEnviar->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,(newAEnviar->datos->nombrePokemon),newAEnviar->datos->tamanioNombre);
+	offset+=newAEnviar->datos->tamanioNombre;
+
+	memcpy(mensaje->stream+offset,&(newAEnviar->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,&(newAEnviar->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,&(newAEnviar->datos->cantidadPokemon),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	return mensaje;
+}

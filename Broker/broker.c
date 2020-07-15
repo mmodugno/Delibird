@@ -22,10 +22,6 @@ int main() {
 	 *
 	 */
 
-
-
-
-
 	leer_config();
 	sem_init(&idsDeMensajes, 0, 1);
 	sem_init(&usoMemoria, 0, 1);
