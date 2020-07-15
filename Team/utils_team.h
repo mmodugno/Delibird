@@ -219,6 +219,10 @@ void manejar_deadlock(void);
 bool hay_deadlock(void);
 void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1);
 void espera_de_deadlock(void);
+bool hay_deadlock_multiple(void);
+
+void manejar_deadlock_multiple();
+void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador1);
 
 
 //Mensajes

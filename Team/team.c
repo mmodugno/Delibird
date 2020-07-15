@@ -55,7 +55,6 @@ int main(int argc, char* argv[]){
 	//iniciar_servidor();
 
 
-
  //PRUEBAS DE TP:
 
 
@@ -102,6 +101,16 @@ void terminar_programa(void){
 	log_destroy(comunicacion_broker_error);
 	log_destroy(comunicacion_broker_reintento);
 	log_destroy(comunicacion_broker_resultado);
+
+	list_destroy(entrenadores);
+	list_destroy(pokemones_atrapados);
+	list_destroy(entrenadores_finalizados);
+	list_destroy(entrenadores_en_deadlock);
+
+	queue_destroy(pokemones_en_el_mapa);
+	queue_destroy(entrenadores_ready);
+	queue_destroy(entrenadores_block_ready);
+	queue_destroy(entrenadores_blocked);
 
 	config_destroy(config);
 	//liberar_conexion(conexion);
