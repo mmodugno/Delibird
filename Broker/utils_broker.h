@@ -65,6 +65,13 @@ uint32_t idGlobales;
 
 char* ip_broker;
 char* puerto_broker;
+char* ip_team;
+char* puerto_team;
+char* ip_gameboy;
+char* puerto_gameboy;
+char* ip_gamecard;
+char* puerto_gamecard;
+
 uint32_t tamanio_memoria;
 uint32_t tamanio_minimo_particion;
 char* algoritmo_memoria;
@@ -73,6 +80,7 @@ char* algoritmo_particion_libre;
 uint32_t frecuencia_compactacion;
 uint32_t frecuencia;
 char* log_file;
+
 
 t_config* config;
 
@@ -113,8 +121,19 @@ static const char *colasDeEnum[] = { "LIBRE", "NEW_POKEMON", "APPEARED_POKEMON",
 
 sem_t idsDeMensajes;
 sem_t usoMemoria;
-void agregarAMemoria(void*, uint32_t, tipoDeCola, uint32_t, uint32_t);
-void compactarMemoria(void);
+
+sem_t llegadaMensajes;
+
+sem_t colaNew;
+sem_t colaAppeared;
+sem_t colaCatch;
+sem_t colaCaught;
+sem_t colaLocalized;
+sem_t colaGet;
+
+
+void agregarAMemoria(void* , uint32_t ,tipoDeCola, uint32_t , uint32_t);
+int compactarMemoria(void);
 void iniciarMemoria();
 void* recibir_buffer(int*, int);
 void iniciar_servidor(void);
@@ -137,5 +156,15 @@ void formarPosiciones(char* ,localized_pokemon* );
 void eliminarParticion(particion * part);
 void reservarMemoria(char** , size_t );
 char* mostrarPosiciones(localized_pokemon* );
+void producirUnMensaje(tipoDeCola tipo);
+void terminar_programa();
+broker_new_pokemon* leerdeMemoriaNEW(particion* part);
+broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part);
+broker_catch_pokemon* leerdeMemoriaCATCH(particion* part);
+broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part);
+broker_get_pokemon* leerdeMemoriaGET(particion* part);
+broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part);
+
+
 
 #endif /* UTILS_BROKER_H_ */

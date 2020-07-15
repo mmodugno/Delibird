@@ -124,7 +124,12 @@ int main(int argc, char* argv[]){
 				caughtPoke->datos = malloc(sizeof(caughtPoke));
 				//estaticas
 				caughtPoke->id_relativo = atoi(argv[3]);
-				caughtPoke->datos->puedoAtraparlo = atoi(argv[4]);
+				if(!strcmp(argv[4],"OK")){
+					caughtPoke->datos->puedoAtraparlo = 1;
+				}
+				if(!strcmp(argv[4],"FAIL")){
+					caughtPoke->datos->puedoAtraparlo = 0;
+				}
 
 				enviar_Broker_Caught_Pokemon(caughtPoke,"GAMEBOY",conexionBroker);
 

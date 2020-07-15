@@ -21,33 +21,22 @@ int main() {
 
 	 *
 	 */
-		leer_config();
-		sem_init(&idsDeMensajes,0,1);
-		sem_init(&usoMemoria,0,1);
 
 
 
-		//logs implementados
-		logSuscipcion = iniciar_logger("Suscripcion",log_file);
-		logMensajeNuevo = iniciar_logger("Mensaje Nuevo",log_file);
-		confirmacionRecepcion = iniciar_logger("Recepcion Mensaje",log_file); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
-		almacenadoMemoria = iniciar_logger("Almacenado Memoria",log_file); //debe indicar posicion de inicio de particion
-		eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
-		compactacionMemoria= iniciar_logger("compactacionMemoria",log_file);
-
-		//TODO?
-		logConexion = iniciar_logger("Conexion",log_file);//ver bien donde va
-
-		//TODO
-		logEnviarNuevo = iniciar_logger("Enviar Mensaje",log_file);
-		dumpCache= iniciar_logger("dumpCache",log_file);
-
-		iniciarMemoria();
 
 
 	leer_config();
 	sem_init(&idsDeMensajes, 0, 1);
 	sem_init(&usoMemoria, 0, 1);
+	sem_init(&llegadaMensajes,0,1);
+
+	sem_init(&colaNew, 0, 0);
+	sem_init(&colaAppeared, 0, 0);
+	sem_init(&colaCatch, 0, 0);
+	sem_init(&colaCaught, 0, 0);
+	sem_init(&colaLocalized, 0, 0);
+	sem_init(&colaGet, 0, 0);
 
 
 	//logs implementados
@@ -55,8 +44,7 @@ int main() {
 	logMensajeNuevo = iniciar_logger("Mensaje Nuevo", log_file);
 	confirmacionRecepcion = iniciar_logger("Recepcion Mensaje", log_file); //ver bien donde va, cuando una suscrpicion reciba el mensaje, se tiene que loggear esto
 	almacenadoMemoria = iniciar_logger("Almacenado Memoria", log_file); //debe indicar posicion de inicio de particion
-	eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",
-			log_file); //debe indicar posicion de inicio
+	eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
 	compactacionMemoria = iniciar_logger("compactacionMemoria", log_file);
 
 	//TODO?
@@ -97,6 +85,17 @@ void leer_config(void) {
 
 	ip_broker = config_get_string_value(config, "IP_BROKER");
 	puerto_broker = config_get_string_value(config, "PUERTO_BROKER");
+
+	ip_team = config_get_string_value(config, "IP_TEAM");
+	puerto_team = config_get_string_value(config, "PUERTO_TEAM");
+
+	ip_gameboy = config_get_string_value(config, "IP_GAMEBOY");
+	puerto_gameboy = config_get_string_value(config, "PUERTO_GAMEBOY");
+
+	ip_gamecard = config_get_string_value(config, "IP_GAMECARD");
+	puerto_gamecard = config_get_string_value(config, "PUERTO_GAMECARD");
+
+
 	tamanio_memoria = config_get_int_value(config, "TAMANO_MEMORIA");
 	tamanio_minimo_particion = config_get_int_value(config,
 			"TAMANO_MINIMO_PARTICION");
@@ -123,16 +122,4 @@ void leer_config(void) {
  t_log* dumpCache;
  */
 
-void terminar_programa() {
-	log_destroy(logConexion);
-	log_destroy(logSuscipcion);
-	log_destroy(logMensajeNuevo);
-	log_destroy(logEnviarNuevo);
-	log_destroy(confirmacionRecepcion);
-	log_destroy(almacenadoMemoria);
-	log_destroy(eliminacionMemoria);
-	log_destroy(compactacionMemoria);
-	log_destroy(dumpCache);
 
-	config_destroy(config);
-}

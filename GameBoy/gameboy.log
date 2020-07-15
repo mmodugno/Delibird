@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 [INFO] 11:27:58:387 Conexion/(17900:17900): me conecte a Broker exitosamente
 [INFO] 11:29:32:684 Conexion/(18151:18151): me conecte a Gamecard exitosamente
 [INFO] 11:30:49:212 Conexion/(18252:18252): no me pude conectar a Gamecard
@@ -51,3 +52,6 @@
 [INFO] 20:06:49:691 Conexion/(4725:4725): me conecte a Gamecard exitosamente
 [INFO] 20:08:21:784 Conexion/(4893:4893): me conecte a Gamecard exitosamente
 [INFO] 20:10:14:546 Conexion/(5056:5056): me conecte a Gamecard exitosamente
+=======
+[INFO] 17:22:43:279 Conexion/(16482:16482): no me pude conectar a Broker
+>>>>>>> c3260d5c516f2feab0f080625a8040c07035ff23

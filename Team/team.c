@@ -32,11 +32,18 @@ int main(int argc, char* argv[]){
 	sem_init(&hay_entrenador,0,0);
 	sem_init(&nuevo_pokemon,0,0);
 
-	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
+	sem_init(&en_ejecucion,0,1);
+
+
+	//float alpha = leer_alpha();
+
 
 
 
 	variables_globales();
+
+
+
 
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	printf("Algoritmo de planificacion = %s \n \n",algoritmo);
@@ -47,58 +54,43 @@ int main(int argc, char* argv[]){
 	pthread_t hilo_principal;
 
 
-
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
 	//iniciar_servidor();
 
-	//TEAM1 - TEAM4
-	pokemon* squirte = hacer_pokemon("Squirtle", 0,3,sizeof("Squirtle"));
-	aparece_nuevo_pokemon(squirte);
 
-
-	pokemon* pikachu = hacer_pokemon("Pikachu", 6, 7,sizeof("Pikachu"));
-	aparece_nuevo_pokemon(pikachu);
-
-
-	pokemon* pikachu2 = hacer_pokemon("Pikachu", 8, 3,sizeof("Pikachu"));
-	aparece_nuevo_pokemon(pikachu2);
-
-
-	pokemon* charmander = hacer_pokemon("Charmander", 8,0,sizeof("Charmander"));
-	aparece_nuevo_pokemon(charmander);
-
-
-	/*
  //PRUEBAS DE TP:
 
-	pokemon* pikachu = hacer_pokemon("Pikachu", 1, 1,sizeof("Pikachu"));
+
+	pokemon* pikachu = hacer_pokemon("Pikachu",9, 9,sizeof("Pikachu"));
 		aparece_nuevo_pokemon(pikachu);
 
-	pokemon* squirte = hacer_pokemon("Squirtle",9,7,sizeof("Squirtle"));
+	pokemon* squirte = hacer_pokemon("Squirtle",5,2,sizeof("Squirtle"));
 		aparece_nuevo_pokemon(squirte);
 
-	pokemon* onix = hacer_pokemon("Onix",2,2,sizeof("Onix"));
+	pokemon* onix = hacer_pokemon("Onix",2,8,sizeof("Onix"));
 		aparece_nuevo_pokemon(onix);
 
-	pokemon* squirte2 = hacer_pokemon("Squirtle",3,5,sizeof("Squirtle"));
-		aparece_nuevo_pokemon(squirte2);
-
-	pokemon* gengar = hacer_pokemon("Gengar",7,5,sizeof("Gengar"));
+	pokemon* gengar = hacer_pokemon("Gengar",6,6,sizeof("Gengar"));
 		aparece_nuevo_pokemon(gengar);
 
-*/
+	pokemon* squirte2 = hacer_pokemon("Squirtle",5,5,sizeof("Squirtle"));
+		aparece_nuevo_pokemon(squirte2);
+
+
+
+
 
  	pthread_join(hilo_principal,NULL);
 
- 	//terminar_programa();
+
 
  	imprimir_metricas();
  	//loggear_metricas();
 
+	terminar_programa();
 
-	printf(" Terminado \n \n");
 }
 
 
@@ -116,6 +108,16 @@ void terminar_programa(void){
 	log_destroy(comunicacion_broker_error);
 	log_destroy(comunicacion_broker_reintento);
 	log_destroy(comunicacion_broker_resultado);
+
+	list_destroy(entrenadores);
+	list_destroy(pokemones_atrapados);
+	list_destroy(entrenadores_finalizados);
+	list_destroy(entrenadores_en_deadlock);
+
+	queue_destroy(pokemones_en_el_mapa);
+	queue_destroy(entrenadores_ready);
+	queue_destroy(entrenadores_block_ready);
+	queue_destroy(entrenadores_blocked);
 
 	config_destroy(config);
 	//liberar_conexion(conexion);
