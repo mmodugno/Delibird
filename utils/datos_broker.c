@@ -532,3 +532,5 @@ void* transformarBrokerCaughtPokemon(broker_caught_pokemon *caughtRecibido,uint3
 	return pokeTransformado;
 }
 
+
+

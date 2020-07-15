@@ -19,6 +19,6 @@ int crear_conexion(char* ip, char* puerto);
 //void iniciarmemoria();
 //char* recibir_mensaje(int socket_cliente);
 //void eliminar_paquete(t_paquete* paquete);
-void liberar_conexion(int socket_cliente);
+
 
 #endif /* BROKER_H_ */

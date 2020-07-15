@@ -11,11 +11,9 @@ void envioColaNewPokemon() {
 	t_list *usersSinACK ;
 	char* username;
 
-	//este while esta demas creo
-
+	//TODO ver si este while esta demas
+	//while(1){
 	sem_wait(&colaNew);
-
-
 
 	bool esSuscriptor(char* userActual){
 		return (!strcmp(userActual,username));
@@ -28,7 +26,6 @@ void envioColaNewPokemon() {
 			list_add(usersSinACK,userActual);
 		}
 	}
-
 
 	bool menNewQueFalten(particion *part) {
 		if (part->tipoMensaje == NEW_POKEMON) {
@@ -51,36 +48,7 @@ void envioColaNewPokemon() {
 	particion *mensajeNewEnMemo = list_find(tablaDeParticiones,menNewQueFalten);
 
 
-
-	//conectarme con cada uno que necesite mandarle
-	bool esTeam(char* username){
-		return string_contains(username,"TEAM");
-	}
-	bool esGameCard(char* username){
-		return string_contains(username,"GAMECARD");
-	}
-	bool esGameBoy(char* username){
-		return string_contains(username,"GAMEBOY");
-	}
-
-	if(mensajeNewEnMemo!=NULL){
-		if(list_any_satisfy(usersSinACK,esTeam)){
-
-			//conexion con TEAM
-
-		}
-		if(list_any_satisfy(usersSinACK,esGameBoy)){
-
-			//conexion con GAMEBOY
-
-		}
-		if(list_any_satisfy(usersSinACK,esGameCard)){
-
-			//conexion con GAMECARD
-
-		}
-
-	}
+	enviarPorTipo(mensajeNewEnMemo,usersSinACK);
 
 
 	//nose si list_destroy_and_destroy_elements() eliminaria los username que siguen estando en la de ack de esa part
@@ -93,8 +61,148 @@ void envioColaNewPokemon() {
 	free(username);
 	sem_post(&usoMemoria);
 
+
+}
+//por el while
+//}
+
+//conectarme con cada uno que necesite mandarle
+bool esTeam(char* username){
+	return string_contains(username,"TEAM");
+}
+bool esGameCard(char* username){
+	return string_contains(username,"GAMECARD");
+}
+bool esGameBoy(char* username){
+	return string_contains(username,"GAMEBOY");
 }
 
+void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
+	broker_new_pokemon* newEnMemo;
+	broker_get_pokemon* getEnMemo;
+	broker_appeared_pokemon* appEnMemo;
+	broker_localized_pokemon* localizedEnMemo;
+	broker_catch_pokemon* catchEnMemo;
+	broker_caught_pokemon* caughtEnMemo;
+
+	if (partAEnviar != NULL) {
+		switch (partAEnviar->tipoMensaje) {
+			case NEW_POKEMON:
+				newEnMemo = leerdeMemoriaNEW(partAEnviar);
+
+				//TODO volver a serializar pero con los ids que necesite
+
+				//TODO mandar ese mensaje a los userAEnviar
+
+				free(newEnMemo->datos->nombrePokemon);
+				free(newEnMemo);
+				break;
+			case GET_POKEMON:
+				getEnMemo= leerdeMemoriaGET(partAEnviar);
+
+				//TODO volver a serializar pero con los ids que necesite
+
+				//TODO mandar ese mensaje a los userAEnviar
+
+				free(getEnMemo->datos->nombrePokemon);
+				free(getEnMemo);
+				break;
+			case APPEARED_POKEMON:
+				appEnMemo = leerdeMemoriaAPPEARED(partAEnviar);
+
+				//TODO volver a serializar pero con los ids que necesite
+
+				//TODO mandar ese mensaje a los userAEnviar
+
+				free(appEnMemo->datos->nombrePokemon);
+				free(appEnMemo);
+				break;
+			case LOCALIZED_POKEMON:
+				localizedEnMemo = leerdeMemoriaLOCALIZED(partAEnviar);
+
+				//TODO volver a serializar pero con los ids que necesite
+
+				//TODO mandar ese mensaje a los userAEnviar
+
+
+				free(localizedEnMemo->datos->posX);
+				free(localizedEnMemo->datos->posY);
+				free(localizedEnMemo->datos->nombrePokemon);
+				free(localizedEnMemo);
+				break;
+			case CATCH_POKEMON:
+				catchEnMemo = leerdeMemoriaCATCH(partAEnviar);
+
+				//TODO volver a serializar pero con los ids que necesite
+
+				//TODO mandar ese mensaje a los userAEnviar
+
+				free(catchEnMemo->datos->nombrePokemon);
+				free(catchEnMemo);
+				break;
+			case CAUGHT_POKEMON:
+				caughtEnMemo = leerdeMemoriaCAUGHT(partAEnviar);
+
+				//TODO volver a serializar pero con los ids que necesite
+
+				//TODO mandar ese mensaje a los userAEnviar
+
+
+				free(caughtEnMemo);
+				break;
+		}
+	}
+}
+
+
+//TODO revisar porque seguro debemos cambiar que es lo que recibe
+void enviarASuscriptores(t_paquete* paqueteAEnviar,t_list* usersAEnviar){
+	if (list_any_satisfy(usersAEnviar, esTeam)) {
+		//conexion con TEAM
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+
+		enviarMensaje(paqueteAEnviar,conexionTeam,"TEAM");
+
+
+		liberar_conexion(conexionTeam);
+	}
+	if (list_any_satisfy(usersAEnviar, esGameBoy)) {
+		//conexion con GAMEBOY
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+
+		enviarMensaje(paqueteAEnviar,conexionGameboy,"GAMEBOY");
+
+		liberar_conexion(conexionGameboy);
+	}
+	if (list_any_satisfy(usersAEnviar, esGameCard)) {
+
+		//conexion con GAMECARD
+		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
+
+		enviarMensaje(paqueteAEnviar,conexionGamecard,"GAMECARD");
+
+		liberar_conexion(conexionGamecard);
+
+	}
+
+}
+
+
+void enviarMensaje(t_paquete* paqueteAEnviar,int socket_cliente,char* suscriptorAEnviar){
+	if(socket_cliente!=-1){
+
+		//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
+
+		log_info(logEnviarNuevo,"Envie a %s el mensaje ",suscriptorAEnviar);
+
+	}
+	else{
+		log_info(logEnviarNuevo,"No pude enviar el mensaje a %s porque no esta en linea",suscriptorAEnviar);
+	}
+}
+
+
+//TODO si funciona NEW, replicar
 void envioColaGetPokemon() {
 	sem_wait(&colaGet);
 	sem_wait(&usoMemoria);
@@ -104,6 +212,7 @@ void envioColaGetPokemon() {
 	sem_post(&usoMemoria);
 }
 
+//TODO si funciona NEW, replicar
 void envioColaLocalizedPokemon() {
 	sem_wait(&colaLocalized);
 	sem_wait(&usoMemoria);
@@ -114,6 +223,7 @@ void envioColaLocalizedPokemon() {
 	sem_post(&usoMemoria);
 }
 
+//TODO si funciona NEW, replicar
 void envioColaAppearedPokemon() {
 	sem_wait(&colaAppeared);
 	sem_wait(&usoMemoria);
@@ -124,6 +234,7 @@ void envioColaAppearedPokemon() {
 	sem_post(&usoMemoria);
 }
 
+//TODO si funciona NEW, replicar
 void envioColaCatchPokemon() {
 	sem_wait(&colaCatch);
 	sem_wait(&usoMemoria);
@@ -133,6 +244,7 @@ void envioColaCatchPokemon() {
 	sem_post(&usoMemoria);
 }
 
+//TODO si funciona NEW, replicar
 void envioColaCaughtPokemon() {
 	sem_wait(&colaCaught);
 	sem_wait(&usoMemoria);
@@ -167,4 +279,8 @@ int crear_conexion(char *ip, char* puerto)
 	freeaddrinfo(server_info);
 
 	return socket_cliente;
+}
+
+void liberar_conexion(int socket_cliente){
+	close(socket_cliente);
 }

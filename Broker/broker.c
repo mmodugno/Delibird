@@ -85,6 +85,17 @@ void leer_config(void) {
 
 	ip_broker = config_get_string_value(config, "IP_BROKER");
 	puerto_broker = config_get_string_value(config, "PUERTO_BROKER");
+
+	ip_team = config_get_string_value(config, "IP_TEAM");
+	puerto_team = config_get_string_value(config, "PUERTO_TEAM");
+
+	ip_gameboy = config_get_string_value(config, "IP_GAMEBOY");
+	puerto_gameboy = config_get_string_value(config, "PUERTO_GAMEBOY");
+
+	ip_gamecard = config_get_string_value(config, "IP_GAMECARD");
+	puerto_gamecard = config_get_string_value(config, "PUERTO_GAMECARD");
+
+
 	tamanio_memoria = config_get_int_value(config, "TAMANO_MEMORIA");
 	tamanio_minimo_particion = config_get_int_value(config,
 			"TAMANO_MINIMO_PARTICION");

@@ -65,6 +65,13 @@ uint32_t idGlobales;
 
 char* ip_broker;
 char* puerto_broker;
+char* ip_team;
+char* puerto_team;
+char* ip_gameboy;
+char* puerto_gameboy;
+char* ip_gamecard;
+char* puerto_gamecard;
+
 uint32_t tamanio_memoria;
 uint32_t tamanio_minimo_particion;
 char* algoritmo_memoria;
@@ -73,6 +80,7 @@ char* algoritmo_particion_libre;
 uint32_t frecuencia_compactacion;
 uint32_t frecuencia;
 char* log_file;
+
 
 t_config* config;
 
@@ -150,5 +158,13 @@ void reservarMemoria(char** , size_t );
 char* mostrarPosiciones(localized_pokemon* );
 void producirUnMensaje(tipoDeCola tipo);
 void terminar_programa();
+broker_new_pokemon* leerdeMemoriaNEW(particion* part);
+broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part);
+broker_catch_pokemon* leerdeMemoriaCATCH(particion* part);
+broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part);
+broker_get_pokemon* leerdeMemoriaGET(particion* part);
+broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part);
+
+
 
 #endif /* UTILS_BROKER_H_ */
