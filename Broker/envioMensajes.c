@@ -286,7 +286,7 @@ void liberar_conexion(int socket_cliente){
 }
 
 
-t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar, uint32_t* tamanio){
+t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
 
 	//serializacion
 	//1. uint32_t idMensaje
@@ -297,7 +297,7 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar, uint32_t* tam
 	//6. uint32_t CantidadPokemons;
 
 
-	t_buffer* mensaje ;
+	t_buffer* mensaje = malloc(sizeof(t_buffer));
 	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->nombrePokemon;
 	mensaje->stream = malloc(mensaje->size);
 
@@ -322,4 +322,43 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar, uint32_t* tam
 	offset+=sizeof(uint32_t);
 
 	return mensaje;
+}
+
+t_buffer* serializarMensajeColaAPPEARED(broker_appeared_pokemon* brokerAppearedPokemon)
+{
+	// serializacion
+	//1. uint32_t id;
+	//2. uint32_t tamanioNombre;
+	//3. char* nombrePokemon;
+	//4. uint32_t posX;
+	//5. uint32_t posY;
+	//6. uint32_t id_relativo;
+
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+
+	buffer->size= sizeof(uint32_t) +sizeof(uint32_t)// id, id_relativo
+			+ sizeof(uint32_t)*3 // posX, posY, tamanioNombre
+			+ brokerAppearedPokemon->datos->tamanioNombre; //longitud del strind nombre de pokemon
+
+	buffer->stream = malloc(buffer->size);
+	int offset = 0;
+
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->id_relativo),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon), brokerAppearedPokemon->datos->tamanioNombre);
+	//ESTO ESTA MAL, NO ES SIZEOF
+	offset+=brokerAppearedPokemon->datos->tamanioNombre;
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posY),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	return buffr
 }

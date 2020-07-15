@@ -940,6 +940,7 @@ broker_new_pokemon* leerdeMemoriaNEW(particion* part) {
 	//new no tiene id relativo
 	//newEnMemo->id_relativo = part->idCorrelativo;
 
+
 	//deserializacion
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;
