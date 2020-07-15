@@ -326,39 +326,92 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
 
 t_buffer* serializarMensajeColaAPPEARED(broker_appeared_pokemon* brokerAppearedPokemon)
 {
+
+
+}
+
+t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar){
+
+	//serializacion
+	//1. uint32_t idMensaje;
+	//2. uint32_t tamanioNombre;
+	//3. char* nombrePokemon;
+
+	t_buffer* mensaje = malloc(sizeof(t_buffer));
+
+	mensaje->size = sizeof(uint32_t)*2 + strlen(getAEnviar->datos->nombrePokemon);
+	mensaje->stream = malloc(mensaje->size);
+
+	int offset = 0;
+
+	memcpy(mensaje->stream+offset,&(getAEnviar->id),sizeof (uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,&(getAEnviar->datos->tamanioNombre),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,(getAEnviar->datos->nombrePokemon),getAEnviar->datos->tamanioNombre);
+	offset+=getAEnviar->datos->tamanioNombre;
+
+	return mensaje;
+}
+
+t_buffer* serializarMensajeColaCATCH(broker_catch_pokemon* catchAEnviar){
+
 	// serializacion
 	//1. uint32_t id;
 	//2. uint32_t tamanioNombre;
 	//3. char* nombrePokemon;
 	//4. uint32_t posX;
 	//5. uint32_t posY;
-	//6. uint32_t id_relativo;
 
-	t_buffer* buffer = malloc(sizeof(t_buffer));
+	t_buffer* mensaje = malloc(sizeof(t_buffer));
 
-	buffer->size= sizeof(uint32_t) +sizeof(uint32_t)// id, id_relativo
-			+ sizeof(uint32_t)*3 // posX, posY, tamanioNombre
-			+ brokerAppearedPokemon->datos->tamanioNombre; //longitud del strind nombre de pokemon
+	mensaje->size= sizeof(uint32_t)*4 + strlen(catchAEnviar->datos->nombrePokemon);
 
-	buffer->stream = malloc(buffer->size);
+	mensaje->stream = malloc(mensaje->size);
 	int offset = 0;
 
-
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->id_relativo),sizeof(uint32_t));
+	memcpy(mensaje->stream+offset,&(catchAEnviar->id),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	memcpy(mensaje->stream+offset,&(catchAEnviar->datos->tamanioNombre),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon), brokerAppearedPokemon->datos->tamanioNombre);
-	//ESTO ESTA MAL, NO ES SIZEOF
-	offset+=brokerAppearedPokemon->datos->tamanioNombre;
+	memcpy(mensaje->stream+offset,(catchAEnviar->datos->nombrePokemon),catchAEnviar->datos->tamanioNombre);
+	offset+=(catchAEnviar->datos->tamanioNombre);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
+	memcpy(mensaje->stream+offset,&(catchAEnviar->datos->posX),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posY),sizeof(uint32_t));
+	memcpy(mensaje->stream+offset,&(catchAEnviar->datos->posY),sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
-	return buffr
+	return mensaje;
+}
+
+t_buffer* serializarMensajeColaCAUGHT(broker_caught_pokemon* caughtAEnviar){
+
+	// serializacion
+	//1. uint32_t id;
+	//2. uint32_t puedoAtraparlo;
+	//3. uint32_t id_rel;
+
+	t_buffer* mensaje = malloc(sizeof(t_buffer));
+
+	mensaje->size = sizeof(uint32_t)*3;
+	mensaje->stream = malloc(mensaje->size);
+
+	int offset = 0;
+
+	memcpy(mensaje->stream+offset,&(caughtAEnviar->id),sizeof (uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,(caughtAEnviar->datos->puedoAtraparlo),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(mensaje->stream+offset,&(caughtAEnviar->id_relativo),sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	return mensaje;
 }
