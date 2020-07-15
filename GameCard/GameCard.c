@@ -52,11 +52,15 @@ int main(int argc, char* argv[]){
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
-		//procesarNewPokemon("Charmander",registro1);
+
+
+//		procesarNewPokemon("Messi2",registro1);
 
 		//procesarCatchPokemon("Charmander",4,1);
 
-		procesarGetPokemon("Charmander");
+		//procesarGetPokemon("Charmander");
+
+		iniciar_servidor();
 
 		printf(" \n Terminado  \n" );
 

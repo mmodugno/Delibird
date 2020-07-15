@@ -64,7 +64,9 @@ void variables_globales(){
 
 	 un_entrenador->id_caught = 0;
 
-	 un_entrenador->rafaga_anterior = leer_estimacion_inicial();
+	 un_entrenador->rafaga_estimada = leer_estimacion_inicial();
+
+	 un_entrenador->rafaga_real = 1;
 
 	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
@@ -810,9 +812,9 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 }
 
 //////////////////////////////////////////////// SJFSD
+
+
 //TODO
-
-
 
 void planificar_entrenador_segun_rafaga(void){
 
@@ -829,28 +831,49 @@ void planificar_entrenador_segun_rafaga(void){
 		list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
 
 		}
-	else{ //PLANIFICO LOS DE LA LSITA BLOCK_READY
-
+	/*
+	else{ //PLANIFICO LOS DE LA LISTA BLOCK_READY
 		entrenador_exec = list_get(list_sorted(lista_entrenadores_block_ready,(void*) entrenador_con_menor_rafaga) ,0);
 		list_remove_by_condition(lista_entrenadores_block_ready,(void*)entrenador_en_exec);
+	} */
 
-	}
+	else{
+
+		entrenador_exec = list_get(list_sorted(lista_entrenadores_block_ready,(void*) entrenador_con_menor_rafaga) ,0);
+
+		list_remove_by_condition(lista_entrenadores_block_ready,(void*)entrenador_en_exec);
+
+		entrenador_exec->rafaga_estimada = calcular_rafaga_siguiente(entrenador_exec,proximo_objetivo);
+
+		}
 
 	entrenador_exec->objetivo_proximo = proximo_objetivo;
 
-	entrenador_exec->rafaga_anterior = calcular_rafaga_siguiente(entrenador_exec,proximo_objetivo);
+	float distancia_real = distancia_entrenador_pokemon(entrenador_exec,entrenador_exec->objetivo_proximo);
+
+	entrenador_exec->rafaga_real = distancia_real;
+
+
+
+
+
 
 	sem_post(&(entrenador_exec->nuevoPoke));
 }
 
 bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador2){
-	bool resultado = calcular_rafaga_siguiente(entrenador1,proximo_objetivo) <= calcular_rafaga_siguiente(entrenador2,proximo_objetivo);
+
+	float rafaga1 = calcular_rafaga_siguiente(entrenador1,proximo_objetivo);
+	float rafaga2 = calcular_rafaga_siguiente(entrenador2,proximo_objetivo);
+	bool resultado =  rafaga1 >= rafaga2 ;
 	return resultado;
 }
 
 float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke){
 	//Rafaga siguiente: alpha*rafaga_estimada_anterior + (1-aplha)*rafaga_real_anterior
-	return un_entrenador->rafaga_anterior * alpha + (1-alpha) * distancia_entrenador_pokemon(un_entrenador,un_entrenador->objetivo_proximo);
+	//TODO
+
+	return un_entrenador->rafaga_estimada * alpha + (1-alpha) * un_entrenador->rafaga_real ;
 }
 
 //////////////////////////////////////////////// SJFCD
@@ -1054,8 +1077,8 @@ int distancia_entrenador_pokemon(entrenador* un_entrenador, pokemon* un_pokemon)
 	int pos_pokX = (un_pokemon->posX);
 	int restaX = pos_entX - pos_pokX;
 
-	int pos_entY =  (un_entrenador->posX);
-	int pos_pokY = (un_pokemon->posX);
+	int pos_entY =  (un_entrenador->posY);
+	int pos_pokY = (un_pokemon->posY);
 	int restaY = pos_entY - pos_pokY;
 
 	double x_final = fabs(restaX);

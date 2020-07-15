@@ -1,2 +1,57 @@
 
+<<<<<<< HEAD
+[INFO] 11:27:58:387 Conexion/(17900:17900): me conecte a Broker exitosamente
+[INFO] 11:29:32:684 Conexion/(18151:18151): me conecte a Gamecard exitosamente
+[INFO] 11:30:49:212 Conexion/(18252:18252): no me pude conectar a Gamecard
+[INFO] 11:32:08:691 Conexion/(18501:18501): me conecte a Gamecard exitosamente
+[INFO] 11:33:29:497 Conexion/(18600:18600): me conecte a Gamecard exitosamente
+[INFO] 11:35:12:601 Conexion/(18777:18777): me conecte a Gamecard exitosamente
+[INFO] 11:36:01:927 Conexion/(18917:18917): me conecte a Gamecard exitosamente
+[INFO] 11:37:00:489 Conexion/(19018:19018): me conecte a Gamecard exitosamente
+[INFO] 11:38:39:548 Conexion/(19143:19143): me conecte a Gamecard exitosamente
+[INFO] 11:38:51:876 Conexion/(19192:19192): me conecte a Gamecard exitosamente
+[INFO] 11:39:14:156 Conexion/(19255:19255): me conecte a Gamecard exitosamente
+[INFO] 11:41:17:506 Conexion/(19414:19414): me conecte a Gamecard exitosamente
+[INFO] 11:44:28:920 Conexion/(19710:19710): me conecte a Gamecard exitosamente
+[INFO] 11:45:41:208 Conexion/(19891:19891): me conecte a Gamecard exitosamente
+[INFO] 11:47:21:60 Conexion/(20004:20004): me conecte a Broker exitosamente
+[INFO] 11:47:39:22 Conexion/(20075:20075): me conecte a Broker exitosamente
+[INFO] 11:48:29:378 Conexion/(20186:20186): no me pude conectar a Gamecard
+[INFO] 11:50:11:605 Conexion/(20287:20287): me conecte a Gamecard exitosamente
+[INFO] 11:52:32:710 Conexion/(20619:20619): me conecte a Gamecard exitosamente
+[INFO] 11:58:26:621 Conexion/(20829:20829): me conecte a Gamecard exitosamente
+[INFO] 12:01:18:231 Conexion/(20919:20919): me conecte a Gamecard exitosamente
+[INFO] 12:11:33:919 Conexion/(21374:21374): me conecte a Gamecard exitosamente
+[INFO] 12:12:27:480 Conexion/(21525:21525): me conecte a Gamecard exitosamente
+[INFO] 13:14:16:607 Conexion/(23189:23189): me conecte a Gamecard exitosamente
+[INFO] 13:15:07:515 Conexion/(23299:23299): me conecte a Gamecard exitosamente
+[INFO] 13:16:42:267 Conexion/(18249:18249): me conecte a Gamecard exitosamente
+[INFO] 13:17:44:380 Conexion/(18357:18357): me conecte a Gamecard exitosamente
+[INFO] 13:18:46:884 Conexion/(18457:18457): me conecte a Gamecard exitosamente
+[INFO] 13:24:52:745 Conexion/(18673:18673): me conecte a Gamecard exitosamente
+[INFO] 13:26:28:452 Conexion/(18789:18789): me conecte a Gamecard exitosamente
+[INFO] 13:27:22:586 Conexion/(18894:18894): me conecte a Gamecard exitosamente
+[INFO] 13:28:33:510 Conexion/(19000:19000): me conecte a Gamecard exitosamente
+[INFO] 13:31:33:327 Conexion/(19223:19223): me conecte a Gamecard exitosamente
+[INFO] 13:32:10:965 Conexion/(19326:19326): me conecte a Gamecard exitosamente
+[INFO] 13:36:24:636 Conexion/(19573:19573): me conecte a Gamecard exitosamente
+[INFO] 13:37:07:201 Conexion/(19026:19026): no me pude conectar a Gamecard
+[INFO] 13:37:45:38 Conexion/(19500:19500): me conecte a Broker exitosamente
+[INFO] 13:38:14:231 Conexion/(19570:19570): me conecte a Broker exitosamente
+[INFO] 14:03:29:570 Conexion/(20615:20615): no me pude conectar a Broker
+[INFO] 19:50:26:611 Conexion/(2955:2955): me conecte a Broker exitosamente
+[INFO] 19:53:31:907 Conexion/(3618:3618): me conecte a Broker exitosamente
+[INFO] 19:55:07:962 Conexion/(3776:3776): no me pude conectar a Broker
+[INFO] 19:55:38:918 Conexion/(3892:3892): me conecte a Broker exitosamente
+[INFO] 19:57:04:112 Conexion/(3949:3949): no me pude conectar a Gamecard
+[INFO] 19:57:16:158 Conexion/(4016:4016): me conecte a Gamecard exitosamente
+[INFO] 19:58:48:92 Conexion/(4118:4118): me conecte a Gamecard exitosamente
+[INFO] 20:03:17:954 Conexion/(4381:4381): me conecte a Gamecard exitosamente
+[INFO] 20:05:25:471 Conexion/(4523:4523): me conecte a Gamecard exitosamente
+[INFO] 20:05:50:656 Conexion/(4599:4599): me conecte a Gamecard exitosamente
+[INFO] 20:06:49:691 Conexion/(4725:4725): me conecte a Gamecard exitosamente
+[INFO] 20:08:21:784 Conexion/(4893:4893): me conecte a Gamecard exitosamente
+[INFO] 20:10:14:546 Conexion/(5056:5056): me conecte a Gamecard exitosamente
+=======
 [INFO] 17:22:43:279 Conexion/(16482:16482): no me pude conectar a Broker
+>>>>>>> c3260d5c516f2feab0f080625a8040c07035ff23

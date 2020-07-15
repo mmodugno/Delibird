@@ -88,7 +88,7 @@ void modificarArchivoComoConfig(t_config* ,char* ,char* );
 
 void registrarPokemon(char* , registroDatos* );
 void agregarBloqueParaPokemon(char* ,int );
-void verificarExistenciaPokemon(char* );
+int verificarExistenciaPokemon(char* );
 void procesarNewPokemon(char*, registroDatos* );
 void procesarCatchPokemon(char* ,uint32_t , uint32_t );
 

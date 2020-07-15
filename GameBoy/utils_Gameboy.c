@@ -231,6 +231,7 @@ void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon,cha
 void enviar_GameCard_New_Pokemon(gameCard_new_pokemon *gameCardNewPokemon,char* username , int socket_cliente)
 {
 
+
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = GAMECARD__NEW_POKEMON;
 	paquete_a_enviar->tamanio_username =strlen(username)+1;
@@ -238,10 +239,12 @@ void enviar_GameCard_New_Pokemon(gameCard_new_pokemon *gameCardNewPokemon,char* 
 
 	//serializacion de gamecardNewPokemon
 	t_buffer* buffer = malloc(sizeof(t_buffer));
+	paquete_a_enviar->buffer = buffer;
+
 	serializar_gameCard_new_pokemon(gameCardNewPokemon,buffer);
 
 
-	paquete_a_enviar->buffer= buffer;
+
 
 	int tamanio_buffer=0;
 

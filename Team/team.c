@@ -35,13 +35,13 @@ int main(int argc, char* argv[]){
 	sem_init(&en_ejecucion,0,1);
 
 
-
 	//float alpha = leer_alpha();
 
 
 
 
 	variables_globales();
+
 
 
 

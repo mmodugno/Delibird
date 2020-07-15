@@ -112,7 +112,9 @@ typedef struct{
     int ciclos_cpu;
     sem_t nuevoPoke;
     uint32_t id_caught;
-    float rafaga_anterior;
+
+    float rafaga_estimada;
+    float rafaga_real;
 
 }entrenador;
 
