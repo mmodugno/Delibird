@@ -32,7 +32,8 @@ int main(int argc, char* argv[]){
 	sem_init(&hay_entrenador,0,0);
 	sem_init(&nuevo_pokemon,0,0);
 
-	sem_init(&en_ejecucion,0,1); //Empieza en 1 porque se puede ejecutar solo 1 por vez
+	sem_init(&en_ejecucion,0,1);
+
 
 
 
@@ -58,33 +59,31 @@ int main(int argc, char* argv[]){
  //PRUEBAS DE TP:
 
 
-	pokemon* pikachu = hacer_pokemon("Pikachu", 1, 1,sizeof("Pikachu"));
+	pokemon* pikachu = hacer_pokemon("Pikachu",9, 9,sizeof("Pikachu"));
 		aparece_nuevo_pokemon(pikachu);
 
-	pokemon* squirte = hacer_pokemon("Squirtle",9,7,sizeof("Squirtle"));
+	pokemon* squirte = hacer_pokemon("Squirtle",5,2,sizeof("Squirtle"));
 		aparece_nuevo_pokemon(squirte);
 
-	pokemon* onix = hacer_pokemon("Onix",2,2,sizeof("Onix"));
+	pokemon* onix = hacer_pokemon("Onix",2,8,sizeof("Onix"));
 		aparece_nuevo_pokemon(onix);
 
-	pokemon* gengar = hacer_pokemon("Gengar",7,5,sizeof("Gengar"));
+	pokemon* gengar = hacer_pokemon("Gengar",6,6,sizeof("Gengar"));
 		aparece_nuevo_pokemon(gengar);
 
-	pokemon* squirte2 = hacer_pokemon("Squirtle",3,5,sizeof("Squirtle"));
+	pokemon* squirte2 = hacer_pokemon("Squirtle",5,5,sizeof("Squirtle"));
 		aparece_nuevo_pokemon(squirte2);
-
-
 
 
 
  	pthread_join(hilo_principal,NULL);
 
- 	//terminar_programa();
+
 
  	imprimir_metricas();
  	//loggear_metricas();
 
-
+	terminar_programa();
 	printf(" Terminado \n \n");
 }
 

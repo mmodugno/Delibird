@@ -39,66 +39,6 @@ void variables_globales(){
 
 
 
-//////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
-
-  int leer_retardo_cpu(void){
-	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
-	  return retardo;
- }
-
- t_list* obtener_lista_posiciones(void){
-     char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
-     return crear_lista(array_posiciones);
- }
-
- t_list* obtener_lista_objetivos(void){
-      char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
-     return crear_lista(array_objetivos);
-  }
-
- t_list* obtener_lista_pokemones(void){
-      char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
-       return crear_lista(array_pokemones);
-  }
-
-int leer_tiempo_de_reconexion(void){
-	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
-     return tiempo_de_reconexion;
-}
-
-int leer_puerto_broker(void){
-	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
-	  return puerto_broker;
-}
-int leer_algoritmo_planificacion(void){
-	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-
-	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
-	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
-	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
-
-return 0;
-}
-
-int leer_quantum(void){
-	 int quantum = config_get_int_value(config,"QUANTUM");
-	  return quantum;
-}
-
-int leer_estimacion_inicial(void){
-	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
-	  return estimacion_inicial;
-}
-
-char* leer_ip_broker(void){
-	 char* ip = config_get_string_value(config,"IP_BROKER");
-	 return ip;
-}
-
-int leer_alpha(void){
-	 int alpha = config_get_int_value(config,"ALPHA");
-	  return alpha;
-}
  /////////////////////////////////////////////////////////////////////////////
 
 
@@ -119,6 +59,8 @@ int leer_alpha(void){
 
 
 	 un_entrenador->id = id_creada;
+
+	 un_entrenador->id_caught = 0;
 
 	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
@@ -217,11 +159,15 @@ void agregar_un_objetivo(char* pokemon_a_agregar){
 void algoritmo_aplicado(void){
 	switch (leer_algoritmo_planificacion()){
 	case FIFO:
-		planifico_con_fifo();
+		planifico_sin_desalojo();
 		break;
 
 	case RR:
 		planifico_con_RR();
+		break;
+
+	case SJFSD:
+		planifico_sin_desalojo();
 		break;
 
 	 default:
@@ -381,7 +327,7 @@ void planificar_entrenador(void){
 ////////////////////////////////////////////////FIFO
 
 
-void planifico_con_fifo(void){
+void planifico_sin_desalojo(void){
 
 while(1){
 
@@ -390,7 +336,13 @@ while(validacion_nuevo_pokemon()){
 
 	sem_wait(&en_ejecucion);
 
-	planificar_entrenador(); //planifico uno en cada ciclo del fifo
+	//TODO
+	//planifico uno en cada ciclo del fifo
+	if(leer_algoritmo_planificacion() == FIFO){
+	planificar_entrenador();
+	}
+
+	if(leer_algoritmo_planificacion() == SJFSD)	planificar_entrenador_segun_distancia();
 
 	cambio_contexto +=1;
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
@@ -458,12 +410,12 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 		if(entrenador->posX < x){
 			entrenador->posX = entrenador->posX + 1;
 			entrenador->ciclos_cpu += 1;
-			//sleep(tiempo);
+			usleep(tiempo);
 		}
 		else {
 			entrenador->posX = entrenador->posX -1;
 			entrenador->ciclos_cpu += 1;
-			//sleep(tiempo);
+			usleep(tiempo);
 		}
 	}
 
@@ -471,12 +423,12 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 		if(entrenador->posY < y){
 			entrenador->posY = entrenador->posY + 1;
 			entrenador->ciclos_cpu += 1;
-			//sleep(tiempo);
+			usleep(tiempo);
 		}
 		else {
 			entrenador->posY = entrenador->posY -1;
 			entrenador->ciclos_cpu += 1;
-			//sleep(tiempo);
+			usleep(tiempo);
 		}
 	}
 
@@ -755,6 +707,47 @@ bool validacion_nuevo_pokemon(void){
 	return (hay_pokemon_y_entrenador() || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready)));
 }
 
+
+//////////////////////////////////////////////// SJFSD
+
+
+void planificar_entrenador_segun_distancia(void){
+
+	sem_wait(&hay_entrenador);
+
+	proximo_objetivo = queue_peek(pokemones_en_el_mapa);
+	queue_pop(pokemones_en_el_mapa); //Si no lo atrapo se vuelve a poner
+
+	//Juntamos los entrenadores en new y en block_ready, para ver quien esta mas cerca del pokemon
+	t_list* entrenadores_para_planificar = list_create();
+
+	if(!list_is_empty(entrenadores_new)){
+		int i;
+		for(i = 0; i < list_size(entrenadores_new)-1;i++){
+		list_add(entrenadores_para_planificar,list_get(entrenadores_new,i));
+		}
+	}
+
+	for(int j = 0; j< list_size(lista_entrenadores_block_ready)-1;j++){
+		list_add(entrenadores_para_planificar,list_get(lista_entrenadores_block_ready,j));
+	}
+
+	entrenador_exec = list_get(list_sorted(entrenadores_para_planificar,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
+		list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
+		list_remove_by_condition(lista_entrenadores_block_ready,(void*)entrenador_en_exec);
+
+
+
+	entrenador_exec->objetivo_proximo = proximo_objetivo;
+	sem_post(&(entrenador_exec->nuevoPoke));
+
+}
+
+
+//////////////////////////////////////////////// SJFCD
+
+
+
 /////////////////////////////////////////////////METRICAS
 
 void cpu_por_entrenador(void){
@@ -763,8 +756,6 @@ void cpu_por_entrenador(void){
 		printf("Ciclos de cpu entrenador %d: %d \n", entrenador->id, entrenador->ciclos_cpu);
 	}
 }
-
-
 void cpu_team(void){
 
 	int cpu_totales = 0;
@@ -1005,7 +996,13 @@ void analizar_proxima_cola(entrenador* un_entrenador){
 	if(puede_cazar(un_entrenador)){
 
 		log_info(cambioDeCola,"cambio a BLOCK-READY de entrenador: %d \n ",un_entrenador->id);
+
+		if(leer_algoritmo_planificacion() == FIFO){
 		queue_push(entrenadores_block_ready,un_entrenador);
+		}
+		if(leer_algoritmo_planificacion() == SJFSD){
+				list_add(lista_entrenadores_block_ready,un_entrenador);
+				}
 	}
 	if(!puede_cazar(un_entrenador)){
 			if(cumplio_objetivo(un_entrenador)){
@@ -1244,3 +1241,63 @@ void liberar_conexion(int socket_cliente)
  }
 
 
+ //////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
+
+   int leer_retardo_cpu(void){
+ 	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
+ 	  return retardo;
+  }
+
+  t_list* obtener_lista_posiciones(void){
+      char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
+      return crear_lista(array_posiciones);
+  }
+
+  t_list* obtener_lista_objetivos(void){
+       char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
+      return crear_lista(array_objetivos);
+   }
+
+  t_list* obtener_lista_pokemones(void){
+       char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
+        return crear_lista(array_pokemones);
+   }
+
+ int leer_tiempo_de_reconexion(void){
+ 	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
+      return tiempo_de_reconexion;
+ }
+
+ int leer_puerto_broker(void){
+ 	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
+ 	  return puerto_broker;
+ }
+ int leer_algoritmo_planificacion(void){
+ 	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+
+ 	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+ 	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
+ 	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+
+ return 0;
+ }
+
+ int leer_quantum(void){
+ 	 int quantum = config_get_int_value(config,"QUANTUM");
+ 	  return quantum;
+ }
+
+ int leer_estimacion_inicial(void){
+ 	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
+ 	  return estimacion_inicial;
+ }
+
+ char* leer_ip_broker(void){
+ 	 char* ip = config_get_string_value(config,"IP_BROKER");
+ 	 return ip;
+ }
+
+ int leer_alpha(void){
+ 	 int alpha = config_get_int_value(config,"ALPHA");
+ 	  return alpha;
+ }
