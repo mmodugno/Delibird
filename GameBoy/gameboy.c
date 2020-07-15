@@ -202,7 +202,7 @@ int main(int argc, char* argv[]){
 		if(!strcmp(argv[2],"NEW_POKEMON")){
 			if(argc==8){
 				gameCard_new_pokemon *newPokemon = malloc(sizeof(gameCard_new_pokemon));
-				newPokemon->datos = malloc(sizeof(newPokemon));
+				newPokemon->datos = malloc(sizeof(new_pokemon));
 
 				newPokemon->datos->nombrePokemon = argv[3];
 				newPokemon->datos->tamanioNombre = strlen(newPokemon->datos->nombrePokemon)+1;

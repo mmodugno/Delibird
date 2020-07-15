@@ -8,7 +8,7 @@
 #include"utils_gamecard.h"
 
 
-void verificarExistenciaPokemon(char* nombrePoke) {
+int verificarExistenciaPokemon(char* nombrePoke) {
 
 	char* path = "/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/";
 
@@ -24,6 +24,8 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 
 	FILE* metadataPoke = txt_open_for_append(aux);
 
+	int existe = 1;
+
 	if(estaVacio(metadataPoke)){
 
 	txt_write_in_file(metadataPoke,"DIRECTORY=N\n");
@@ -33,11 +35,15 @@ void verificarExistenciaPokemon(char* nombrePoke) {
 
 	txt_close_file(metadataPoke);
 
+	existe = 0;
+
 	}
 
 
 
 	free(aux);
+
+	return existe;
 
 }
 
@@ -212,6 +218,8 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 			txt_close_file(bloqueLibre);
 
 		}
+
+		config_destroy(configAux);
 }
 
 
@@ -272,12 +280,25 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	t_config* configPath = config_create(path);
 
-	verificarExistenciaPokemon(nombrePoke);
+
+	int existe = verificarExistenciaPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
 
-	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
+	t_list* listaBloques;
+
+	if(existe){
+
+		t_config* configPath = config_create(path);
+		listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
+		config_destroy(configPath);
+	}
+
+	else {
+		listaBloques = list_create();
+	}
+
+
 
 	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,registro);
 
@@ -285,11 +306,12 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	registrarPokemon(nombrePoke,registro);
 	}
 
-	config_destroy(configPath);
 
-	configPath = config_create(path);
+	t_config* configPath = config_create(path);
 
 	cerrarArchivoMetadataPoke(configPath);
+
+	config_destroy(configPath);
 
 	int conexion = conectarse_con_broker();
 
@@ -507,6 +529,13 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	int yaRegistrado = 0;
 
 	int i = 0;
+
+	//si la lista es vacia
+
+	if(list_is_empty(listaBloques)) {
+	return yaRegistrado;
+	}
+
 	//si no esta cortado
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
@@ -1202,7 +1231,8 @@ int crear_conexion(char *ip, char* puerto)
 
 registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
 
-	registroConNombre* registroConNombre = malloc(sizeof(registroConNombre));
+	registroConNombre* registroConName = malloc(sizeof(registroConNombre));
+	registroConName->registro = malloc(sizeof(registroDatos));
 
 	int tamanioNombre;
 
@@ -1211,18 +1241,18 @@ registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
 
     recv(socket_cliente,&(tamanioNombre),sizeof(uint32_t),0);
 
-    registroConNombre->nombre = malloc(tamanioNombre);
+    registroConName->nombre = malloc(tamanioNombre);
 
-    recv(socket_cliente,registroConNombre->nombre,tamanioNombre,0);
+    recv(socket_cliente,registroConName->nombre,tamanioNombre,0);
     //memcpy(newPoke->datos->nombrePokemon,nombre,newPoke->datos->tamanioNombre);
 
-    recv(socket_cliente,&(registroConNombre->registro->posX),sizeof(uint32_t),0);
+    recv(socket_cliente,&(registroConName->registro->posX),sizeof(uint32_t),0);
 
-    recv(socket_cliente,&(registroConNombre->registro->posY),sizeof(uint32_t),0);
+    recv(socket_cliente,&(registroConName->registro->posY),sizeof(uint32_t),0);
 
-    recv(socket_cliente,&(registroConNombre->registro->cantidad),sizeof(uint32_t),0);
+    recv(socket_cliente,&(registroConName->registro->cantidad),sizeof(uint32_t),0);
 
-    return registroConNombre;
+    return registroConName;
 
 }
 
