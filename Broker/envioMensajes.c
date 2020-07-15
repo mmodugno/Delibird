@@ -298,7 +298,7 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
 
 
 	t_buffer* mensaje ;
-	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->nombrePokemon;
+	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->tamanioNombre;
 	mensaje->stream = malloc(mensaje->size);
 
 	int offset = 0;
@@ -333,7 +333,7 @@ t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar){
 
 	t_buffer* mensaje = malloc(sizeof(t_buffer));
 
-	mensaje->size = sizeof(uint32_t)*2 + strlen(getAEnviar->datos->nombrePokemon);
+	mensaje->size = sizeof(uint32_t)*2 + strlen(getAEnviar->datos->tamanioNombre);
 	mensaje->stream = malloc(mensaje->size);
 
 	int offset = 0;
@@ -361,7 +361,7 @@ t_buffer* serializarMensajeColaCATCH(broker_catch_pokemon* catchAEnviar){
 
 	t_buffer* mensaje = malloc(sizeof(t_buffer));
 
-	mensaje->size= sizeof(uint32_t)*4 + strlen(catchAEnviar->datos->nombrePokemon);
+	mensaje->size= sizeof(uint32_t)*4 + (catchAEnviar->datos->tamanioNombre);
 
 	mensaje->stream = malloc(mensaje->size);
 	int offset = 0;
@@ -408,4 +408,120 @@ t_buffer* serializarMensajeColaCAUGHT(broker_caught_pokemon* caughtAEnviar){
 	offset+=sizeof(uint32_t);
 
 	return mensaje;
+}
+
+void enviar_Cola_New_Pokemon(broker_new_pokemon *brokerNewPokemon, int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__NEW_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->username = "BROKER";
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+
+	buffer = serializarMensajeColaNEW(brokerNewPokemon);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_cola_Get_Pokemon(broker_get_pokemon *brokerGetPokemon, int socket_cliente)
+{
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__GET_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->username = "BROKER";
+	//serializacion de brokerGetPokemon
+
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	buffer = serializarMensajeColaGET(brokerGetPokemon);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_cola_Caught_Pokemon(broker_caught_pokemon *brokerCaughtPokemon,int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__CAUGHT_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->username = "BROKER";
+	//serializacion de brokerCaughtPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+
+	buffer = serializarMensajeColaCAUGHT(brokerCaughtPokemon);
+
+	paquete_a_enviar->buffer = buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
+void enviar_cola_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon, int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__CATCH_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->username = "BROKER";
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	buffer = serializarMensajeColaCATCH(brokerCatchPokemon);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
 }
