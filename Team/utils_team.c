@@ -402,7 +402,13 @@ if(validar_deadlock){
 
 
 if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
-	printf("\n FINALIZO EL PROGRAMA \n ");
+
+
+
+	if(!pthread_cancel(&hilo_servidor)){
+		printf("\n FINALIZO EL PROGRAMA \n ");
+	}
+
 
 	break;
 }
@@ -1066,8 +1072,15 @@ bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenado
 
 
 bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador* entrenador2){
+	int dist1 = distancia_entrenador_pokemon(entrenador1,proximo_objetivo);
+	int dist2 = distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
 
-	bool resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
+	bool resultado;
+	if(dist1 == dist2) resultado = false;
+	else{
+	 resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
+	}
+
 	return resultado;
 }
 
@@ -1197,8 +1210,9 @@ void iniciar_servidor(void)
     freeaddrinfo(servinfo);
 
     while(1){
-    	esperar_cliente(socket_servidor);
-
+    	//TODO
+    	//if(list_size(entrenadores) == list_size(entrenadores_finalizados)) break;
+    		esperar_cliente(socket_servidor);
     }
 
 }
@@ -1269,6 +1283,8 @@ void process_request(int cod_op, int cliente_fd) {
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
 
+	sem_wait(&semaforo_mensaje);
+
 		case TEAM__APPEARED_POKEMON:
 
 			appearedRecibido = deserializar_team_appeared_pokemon(cliente_fd);
@@ -1281,6 +1297,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			printf("nombre poke: %s",nuevoPoke->nombre);
 
+			sem_post(&semaforo_mensaje);
 			free(appearedRecibido);
 			break;
 
@@ -1299,6 +1316,7 @@ void process_request(int cod_op, int cliente_fd) {
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
 
+					sem_post(&semaforo_mensaje);
 					break;
 				}
 

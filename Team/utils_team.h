@@ -69,12 +69,14 @@ t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
 t_queue* entrenadores_ready;
 
+pthread_t hilo_servidor;
 
 char* nombre_pokemon;
 char* archivo_config;
 sem_t en_ejecucion;
 sem_t hay_entrenador;
 sem_t nuevo_pokemon;
+sem_t semaforo_mensaje;
 
 //Metricas
 int cant_deadlocks;
