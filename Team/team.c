@@ -48,7 +48,6 @@ int main(int argc, char* argv[]){
 	pthread_t hilo_principal;
 
 
-
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
@@ -75,6 +74,8 @@ int main(int argc, char* argv[]){
 
 
 
+
+
  	pthread_join(hilo_principal,NULL);
 
 
@@ -83,7 +84,7 @@ int main(int argc, char* argv[]){
  	//loggear_metricas();
 
 	terminar_programa();
-	printf(" Terminado \n \n");
+
 }
 
 

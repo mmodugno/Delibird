@@ -76,11 +76,18 @@ void variables_globales(){
 
 
 void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
-	for(int i = 0; i < list_size(pokemones);i++){
-		nombre_pokemon = list_get(pokemones,i);
-		//printf("voy sacando a: %s       ",nobmre_objetivoconfig);
 
+	t_list* pokemones_aux = pokemones;
+
+	for(int i = 0; i < list_size(pokemones_aux);i++){
+		nombre_pokemon = list_get(pokemones_aux,i);
+		printf("verifico si tengo repetido a %s:  \n ",nombre_pokemon);
+
+		if(list_any_satisfy(objetivos, (void*) pokemon_repetido)){
+		printf(" Tengo repetido!! \n");
 		list_remove_by_condition(objetivos,(void*) pokemon_repetido);
+		list_remove_by_condition(pokemones,(void*) pokemon_repetido);
+		}
 
 	}
 }
@@ -773,7 +780,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 		list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
 
 		//TODO
-		nombre_pokemon = list_get(entrenador0->pokemones, list_size(entrenador0->pokemones)-1);
+		nombre_pokemon = list_get(entrenador0->pokemones, 0);
 
 		list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 		list_add(entrenador1->pokemones,nombre_pokemon);

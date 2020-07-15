@@ -187,6 +187,8 @@ pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tama
 void aparece_nuevo_pokemon(pokemon* poke);
 bool es_de_especie(char* nombre_poke);
 void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones);
+//TODO sacar:
+void sacar_pokemones_repetidos_bis(t_list* objetivos, t_list* pokemones);
 bool pokemon_repetido(char* nombre);
 
 //OBJETIVO GLOBAL
