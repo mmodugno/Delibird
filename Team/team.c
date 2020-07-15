@@ -36,8 +36,14 @@ int main(int argc, char* argv[]){
 
 
 
+	//float alpha = leer_alpha();
+
+
+
 
 	variables_globales();
+
+
 
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	printf("Algoritmo de planificacion = %s \n \n",algoritmo);

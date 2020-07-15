@@ -81,6 +81,7 @@ int cant_deadlocks;
 int cant_deadlocks_resueltos;
 int cambio_contexto;
 
+int alpha;
 
 bool broker_conectado;
 
@@ -111,7 +112,7 @@ typedef struct{
     int ciclos_cpu;
     sem_t nuevoPoke;
     uint32_t id_caught;
-
+    float rafaga_anterior;
 
 }entrenador;
 
@@ -134,36 +135,6 @@ typedef struct{
 
 entrenador* entrenador_exec;
 pokemon* proximo_objetivo;
-
-// FUNCIONES DE LA CONFIG //
-t_list* crear_lista(char** array);
-t_list* obtener_lista_posiciones(void);
-t_list* obtener_lista_objetivos(void);
-t_list* obtener_lista_pokemones(void);
-int leer_puerto_broker(void);
-char* leer_ip_broker(void);
-int leer_algoritmo_planificacion(void);
-int leer_quantum(void);
-int leer_estimacion_inicial(void);
-int leer_tiempo_de_reconexion(void);
-int leer_retardo_cpu(void);
-int leer_alpha(void);
-
-
-// FUNCIONES DE LOS LOGS //
-t_log* iniciar_log(char* proceso);
-
-
-// FUNCIONES DE CONEXIONES //
-void iniciar_servidor(void);
-void esperar_cliente(int);
-//void* recibir_mensaje(int socket_cliente, int* size);
-int recibir_operacion(int);
-void process_request(int cod_op, int cliente_fd);
-void serve_client(int *socket);
-int crear_conexion(char *ip, char* puerto);
-int conectarse_con_broker(void);
-
 
 
 //globales
@@ -212,7 +183,12 @@ void terminar_ejecucion_entrenador(void);
 bool validacion_nuevo_pokemon(void);
 bool hay_pokemon_y_entrenador(void);
 void planifico_con_RR(void);
-void planificar_entrenador_segun_distancia(void);
+
+
+//SJF
+void planificar_entrenador_segun_rafaga(void);
+bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador2);
+float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke);
 
 
 //DEADLOCK
@@ -232,6 +208,39 @@ void denegar_catch(entrenador* un_entrenador);
 void confirmacion_de_catch(entrenador* un_entrenador);
 void esperar_respuesta_catch(entrenador* un_entrenador);
 void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar);
+
+
+// FUNCIONES DE LA CONFIG //
+t_list* crear_lista(char** array);
+t_list* obtener_lista_posiciones(void);
+t_list* obtener_lista_objetivos(void);
+t_list* obtener_lista_pokemones(void);
+int leer_puerto_broker(void);
+char* leer_ip_broker(void);
+int leer_algoritmo_planificacion(void);
+int leer_quantum(void);
+int leer_estimacion_inicial(void);
+int leer_tiempo_de_reconexion(void);
+int leer_retardo_cpu(void);
+float leer_alpha(void);
+
+// FUNCIONES DE LOS LOGS //
+t_log* iniciar_log(char* proceso);
+
+
+// FUNCIONES DE CONEXIONES //
+void iniciar_servidor(void);
+void esperar_cliente(int);
+//void* recibir_mensaje(int socket_cliente, int* size);
+int recibir_operacion(int);
+void process_request(int cod_op, int cliente_fd);
+void serve_client(int *socket);
+int crear_conexion(char *ip, char* puerto);
+int conectarse_con_broker(void);
+
+
+
+
 
 //	Metricas
 

@@ -26,8 +26,10 @@ void variables_globales(){
 	entrenadores_block_ready = queue_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
+	lista_entrenadores_block_ready = list_create();
 	entrenadores_blocked = queue_create();
 
+	alpha = leer_alpha();
 
 	cant_deadlocks = 0;
 	cant_deadlocks_resueltos = 0;
@@ -62,6 +64,8 @@ void variables_globales(){
 
 	 un_entrenador->id_caught = 0;
 
+	 un_entrenador->rafaga_anterior = leer_estimacion_inicial();
+
 	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
 	 un_entrenador->cuantos_puede_cazar = list_size(un_entrenador->objetivos);
@@ -81,10 +85,8 @@ void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 
 	for(int i = 0; i < list_size(pokemones_aux);i++){
 		nombre_pokemon = list_get(pokemones_aux,i);
-		printf("verifico si tengo repetido a %s:  \n ",nombre_pokemon);
 
 		if(list_any_satisfy(objetivos, (void*) pokemon_repetido)){
-		printf(" Tengo repetido!! \n");
 		list_remove_by_condition(objetivos,(void*) pokemon_repetido);
 		list_remove_by_condition(pokemones,(void*) pokemon_repetido);
 		}
@@ -205,11 +207,11 @@ while(1){
 
 	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
-	if(leer_algoritmo_planificacion() == FIFO){
-	mover_entrenador(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
+	if(leer_algoritmo_planificacion() == RR){
+		mover_entrenador_RR(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
 	}
 	else{
-		mover_entrenador_RR(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
+		mover_entrenador(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
 	}
 
 	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
@@ -250,14 +252,15 @@ while(1){
 
 	bloquear_entrenador(un_entrenador);
 
+
 	//libera la ejecucion mientras espera el catch
 	sem_post(&en_ejecucion);
 
+//TODO aca puse que si no se puede conectar se confirme el catch. Ver si es asi
+		if(conectarse_con_broker()==-1){
+			confirmacion_de_catch(un_entrenador);
+		}
 
-	//TODO aca puse que si no se puede conectar se confirme el catch. Ver si es asi
-	if(conectarse_con_broker()==-1){
-		confirmacion_de_catch(un_entrenador);
-	}
 
 	sem_wait(&(un_entrenador->sem_entrenador));
 
@@ -293,12 +296,12 @@ void manejar_deadlock(void){
 
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
 
-					if(leer_algoritmo_planificacion() == FIFO){
+					if(leer_algoritmo_planificacion() == RR){
+						planificar_deadlock_RR(entrenador0,entrenador1);
 
-						planificar_deadlock(entrenador0,entrenador1);
 						}
 						else{
-							planificar_deadlock_RR(entrenador0,entrenador1);
+							planificar_deadlock(entrenador0,entrenador1);
 						}
 
 					break;
@@ -349,7 +352,9 @@ while(validacion_nuevo_pokemon()){
 	planificar_entrenador();
 	}
 
-	if(leer_algoritmo_planificacion() == SJFSD)	planificar_entrenador_segun_distancia();
+	if(leer_algoritmo_planificacion() == SJFSD){
+		planificar_entrenador_segun_rafaga();
+	}
 
 	cambio_contexto +=1;
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
@@ -706,10 +711,15 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 
 bool validacion_nuevo_pokemon(void){
-	return (hay_pokemon_y_entrenador() || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready)));
+	if(leer_algoritmo_planificacion() == SJFSD){
+	return (hay_pokemon_y_entrenador() ||(!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(lista_entrenadores_block_ready)));
+	}else{
+	return (hay_pokemon_y_entrenador() || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready))    );
+
+	}
 }
 
-//TODO
+
 void manejar_deadlock_multiple(){
 
 	for(int i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
@@ -800,9 +810,11 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 }
 
 //////////////////////////////////////////////// SJFSD
+//TODO
 
 
-void planificar_entrenador_segun_distancia(void){
+
+void planificar_entrenador_segun_rafaga(void){
 
 	sem_wait(&hay_entrenador);
 
@@ -810,30 +822,36 @@ void planificar_entrenador_segun_distancia(void){
 	queue_pop(pokemones_en_el_mapa); //Si no lo atrapo se vuelve a poner
 
 	//Juntamos los entrenadores en new y en block_ready, para ver quien esta mas cerca del pokemon
-	t_list* entrenadores_para_planificar = list_create();
 
+//TODO
 	if(!list_is_empty(entrenadores_new)){
-		int i;
-		for(i = 0; i < list_size(entrenadores_new)-1;i++){
-		list_add(entrenadores_para_planificar,list_get(entrenadores_new,i));
-		}
-	}
-
-	for(int j = 0; j< list_size(lista_entrenadores_block_ready)-1;j++){
-		list_add(entrenadores_para_planificar,list_get(lista_entrenadores_block_ready,j));
-	}
-
-	entrenador_exec = list_get(list_sorted(entrenadores_para_planificar,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
+		entrenador_exec = list_get(list_sorted(entrenadores_new,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
 		list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
+
+		}
+	else{ //PLANIFICO LOS DE LA LSITA BLOCK_READY
+
+		entrenador_exec = list_get(list_sorted(lista_entrenadores_block_ready,(void*) entrenador_con_menor_rafaga) ,0);
 		list_remove_by_condition(lista_entrenadores_block_ready,(void*)entrenador_en_exec);
 
-
+	}
 
 	entrenador_exec->objetivo_proximo = proximo_objetivo;
-	sem_post(&(entrenador_exec->nuevoPoke));
 
+	entrenador_exec->rafaga_anterior = calcular_rafaga_siguiente(entrenador_exec,proximo_objetivo);
+
+	sem_post(&(entrenador_exec->nuevoPoke));
 }
 
+bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador2){
+	bool resultado = calcular_rafaga_siguiente(entrenador1,proximo_objetivo) <= calcular_rafaga_siguiente(entrenador2,proximo_objetivo);
+	return resultado;
+}
+
+float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke){
+	//Rafaga siguiente: alpha*rafaga_estimada_anterior + (1-aplha)*rafaga_real_anterior
+	return un_entrenador->rafaga_anterior * alpha + (1-alpha) * distancia_entrenador_pokemon(un_entrenador,un_entrenador->objetivo_proximo);
+}
 
 //////////////////////////////////////////////// SJFCD
 
@@ -1374,7 +1392,7 @@ void liberar_conexion(int socket_cliente)
 
  	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
  	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
- 	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+ 	 if(strcmp(algoritmo_planificacion,"SJFSD") == 0) return SJFSD;
 
  return 0;
  }
@@ -1394,7 +1412,18 @@ void liberar_conexion(int socket_cliente)
  	 return ip;
  }
 
- int leer_alpha(void){
- 	 int alpha = config_get_int_value(config,"ALPHA");
+ float leer_alpha(void){
+
+ 	 char* alpha_char = config_get_string_value(config,"ALPHA");
+
+ 	 char** array_alpha = string_split(alpha_char,".");
+
+ 	 int parte_entera = atoi(array_alpha[0]);
+ 	 int parte_decimal = atoi(array_alpha[1]);
+
+ 	 float alpha = parte_entera + 0.1 * parte_decimal;
+
  	  return alpha;
  }
+
+
