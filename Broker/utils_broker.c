@@ -914,6 +914,257 @@ void eliminarParticion(particion * part){
 	free(part);
 }
 
+void terminar_programa() {
+	log_destroy(logConexion);
+	log_destroy(logSuscipcion);
+	log_destroy(logMensajeNuevo);
+	log_destroy(logEnviarNuevo);
+	log_destroy(confirmacionRecepcion);
+	log_destroy(almacenadoMemoria);
+	log_destroy(eliminacionMemoria);
+	log_destroy(compactacionMemoria);
+	log_destroy(dumpCache);
+
+	config_destroy(config);
+}
+
+//TODO ver id correlativo si lo usa
+broker_new_pokemon* leerdeMemoriaNEW(particion* part) {
+
+	int offset = part->base;
+
+	broker_new_pokemon* newEnMemo = malloc(sizeof(broker_new_pokemon));
+	newEnMemo->datos= malloc(sizeof(new_pokemon));
+
+	newEnMemo->id = part->idMensaje;
+	//new no tiene id relativo
+	//newEnMemo->id_relativo = part->idCorrelativo;
+
+	//deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+	//5. uint32_t CantidadPokemons;
+
+	memcpy(&(newEnMemo->datos->tamanioNombre),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	newEnMemo->datos->nombrePokemon = malloc(newEnMemo->datos->tamanioNombre);
+
+	memcpy((newEnMemo->datos->nombrePokemon),memoria+offset,newEnMemo->datos->tamanioNombre);
+	offset+=newEnMemo->datos->tamanioNombre;
+
+	memcpy(&(newEnMemo->datos->posX),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(&(newEnMemo->datos->posY),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(&(newEnMemo->datos->cantidadPokemon),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+
+	if (!strcmp(algoritmo_reemplazo, "LRU")) {
+		part->timestamp = temporal_get_string_time();
+	}
+
+	return newEnMemo;
+}
+
+//TODO ver id correlativo si lo usa
+broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part) {
+
+	int offset =part->base;
+
+	broker_appeared_pokemon* appEnMemoria = malloc(sizeof(broker_appeared_pokemon));
+	appEnMemoria->datos = malloc(sizeof(appeared_pokemon));
+
+	appEnMemoria->id= part->idMensaje;
+	//ver id correlativo si lo usa
+	appEnMemoria->id_relativo = part->idCorrelativo;
+
+
+	//deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+
+	memcpy(&(appEnMemoria->datos->tamanioNombre),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	appEnMemoria->datos->nombrePokemon = malloc(appEnMemoria->datos->tamanioNombre);
+
+	memcpy((appEnMemoria->datos->nombrePokemon),memoria+offset,appEnMemoria->datos->tamanioNombre);
+	offset+=appEnMemoria->datos->tamanioNombre;
+
+	memcpy(&(appEnMemoria->datos->posX),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(&(appEnMemoria->datos->posY),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+
+
+	if (!strcmp(algoritmo_reemplazo, "LRU")) {
+		part->timestamp = temporal_get_string_time();
+	}
+
+	return appEnMemoria;
+}
+
+//TODO ver id correlativo si lo usa
+broker_catch_pokemon* leerdeMemoriaCATCH(particion* part) {
+	int offset =part->base;
+
+	broker_catch_pokemon* catchEnMemo = malloc(sizeof(broker_catch_pokemon));
+	catchEnMemo->datos = malloc(sizeof(catch_pokemon));
+
+	catchEnMemo->id = part->idMensaje;
+	//ver id correlativo si lo usa
+	//catchEnMemo->id_relativo = part->idCorrelativo;
+
+	//deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t posX;
+	//4. uint32_t posY;
+
+	memcpy(&(catchEnMemo->datos->tamanioNombre),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	catchEnMemo->datos->nombrePokemon = malloc(catchEnMemo->datos->tamanioNombre);
+
+	memcpy((catchEnMemo->datos->nombrePokemon),memoria+offset,catchEnMemo->datos->tamanioNombre);
+	offset+=catchEnMemo->datos->tamanioNombre;
+
+	memcpy(&(catchEnMemo->datos->posX),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	memcpy(&(catchEnMemo->datos->posY),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+
+	if (!strcmp(algoritmo_reemplazo, "LRU")) {
+		part->timestamp = temporal_get_string_time();
+	}
+
+
+	return catchEnMemo;
+}
+
+//TODO ver id correlativo si lo usa
+broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part) {
+	int offset =part->base;
+
+	broker_caught_pokemon * caughtEnMemo = malloc(sizeof(broker_caught_pokemon));
+	caughtEnMemo->datos = malloc(sizeof(caught_pokemon));
+
+	caughtEnMemo->id = part->idMensaje;
+	//ver id correlativo si lo usa
+	caughtEnMemo->id_relativo = part->idCorrelativo;
+
+
+	//deserializacion
+	//1. uint32_t puedoAtraparlo;
+
+	memcpy(&(caughtEnMemo->datos->puedoAtraparlo),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+
+	if (!strcmp(algoritmo_reemplazo, "LRU")) {
+		part->timestamp = temporal_get_string_time();
+	}
+
+	return caughtEnMemo;
+}
+
+//TODO ver id correlativo si lo usa
+broker_get_pokemon* leerdeMemoriaGET(particion* part) {
+	int offset =part->base;
+
+	broker_get_pokemon* getEnMemo = malloc(sizeof(broker_get_pokemon));
+	getEnMemo->datos = malloc(sizeof(get_pokemon));
+
+	getEnMemo->id = part->idMensaje;
+	//ver id correlativo si lo usa (este es medio dudoso porque el GAMEBOY le manda a GAMECARD un id relativo
+	//getEnMemo->id_relativo = part->idCorrelativo;
+
+	//serializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+
+	memcpy(&(getEnMemo->datos->tamanioNombre),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	getEnMemo->datos->nombrePokemon = malloc(getEnMemo->datos->tamanioNombre);
+
+	memcpy((getEnMemo->datos->nombrePokemon),memoria+offset,getEnMemo->datos->tamanioNombre);
+	offset+=getEnMemo->datos->tamanioNombre;
+
+
+	if (!strcmp(algoritmo_reemplazo, "LRU")) {
+		part->timestamp = temporal_get_string_time();
+	}
+
+	return getEnMemo;
+}
+
+//TODO ver id correlativo si lo usa
+broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part) {
+	int offset =part->base;
+
+	broker_localized_pokemon* localizedEnMemo = malloc(
+			sizeof(broker_localized_pokemon));
+	localizedEnMemo->datos = malloc(sizeof(localized_pokemon));
+
+	localizedEnMemo->id = part->idMensaje;
+	//ver id correlativo si lo usa
+	localizedEnMemo->id_relativo = part->idCorrelativo;
+
+
+	//deserializacion
+	//1. uint32_t tamanioNombre;
+	//2. char* nombrePokemon;
+	//3. uint32_t cantidadPosiciones;
+	//4. uint32_t* posX;
+	//5. uint32_t* posY;
+
+	uint32_t posiciones;
+
+	memcpy(&(localizedEnMemo->datos->tamanioNombre),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	localizedEnMemo->datos->nombrePokemon = malloc(localizedEnMemo->datos->tamanioNombre);
+
+	memcpy((localizedEnMemo->datos->nombrePokemon),memoria+offset,localizedEnMemo->datos->tamanioNombre);
+	offset+=localizedEnMemo->datos->tamanioNombre;
+
+	memcpy(&(localizedEnMemo->datos->cantidadPosiciones),memoria+offset,sizeof(uint32_t));
+	offset+=sizeof(uint32_t);
+
+	localizedEnMemo->datos->posX = malloc((localizedEnMemo->datos->cantidadPosiciones)*sizeof(uint32_t));
+	localizedEnMemo->datos->posY = malloc((localizedEnMemo->datos->cantidadPosiciones)*sizeof(uint32_t));
+
+	for(posiciones=0;posiciones<localizedEnMemo->datos->cantidadPosiciones;posiciones++){
+		//tengo mis dudas por el &
+		memcpy(&(localizedEnMemo->datos->posX[posiciones]),memoria+offset,sizeof(uint32_t));
+		offset+=sizeof(uint32_t);
+
+		memcpy(&(localizedEnMemo->datos->posY[posiciones]),memoria+offset,sizeof(uint32_t));
+		offset+=sizeof(uint32_t);
+
+	}
+
+
+	if (!strcmp(algoritmo_reemplazo, "LRU")) {
+		part->timestamp = temporal_get_string_time();
+	}
+
+	return localizedEnMemo;
+}
+
 /*
 void iniciarBuddySystem() {
 	root = malloc(sizeof(buddy));
@@ -1084,16 +1335,3 @@ int nivelParticion(int tamNuevoMensaje) {
 	return level;
 }*/
 
-void terminar_programa() {
-	log_destroy(logConexion);
-	log_destroy(logSuscipcion);
-	log_destroy(logMensajeNuevo);
-	log_destroy(logEnviarNuevo);
-	log_destroy(confirmacionRecepcion);
-	log_destroy(almacenadoMemoria);
-	log_destroy(eliminacionMemoria);
-	log_destroy(compactacionMemoria);
-	log_destroy(dumpCache);
-
-	config_destroy(config);
-}
