@@ -831,3 +831,71 @@
 [INFO] 16:59:36:984 RESULTADO_DE_DEADLOCK/(6813:6821): No se detectó deadlock
 [INFO] 16:59:46:997 DETECCION_DEADLOCK/(6813:6821): Inicio de deteccion de deadlock
 [INFO] 16:59:46:998 RESULTADO_DE_DEADLOCK/(6813:6821): No se detectó deadlock
+[INFO] 23:10:00:956 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 23:10:05:966 MOVIMIENTO DE ENTRENADOR/(7790:7796): entrenador 1: se movio a (9,9)
+[INFO] 23:10:05:967 OPERACION ATRAPAR/(7790:7796): ATRAPAR POKEMON: Pikachu con posicion (9, 9)
+[INFO] 23:10:05:967 ERROR EN COMUNICACION/(7790:7796): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:10:05:967 CAMBIO DE COLA/(7790:7796): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 23:10:05:967 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:10:10:967 MOVIMIENTO DE ENTRENADOR/(7790:7797): entrenador 2: se movio a (5,2)
+[INFO] 23:10:10:967 OPERACION ATRAPAR/(7790:7797): ATRAPAR POKEMON: Squirtle con posicion (5, 2)
+[INFO] 23:10:10:968 ERROR EN COMUNICACION/(7790:7797): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:10:10:968 CAMBIO DE COLA/(7790:7797): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 23:10:10:968 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:10:15:968 MOVIMIENTO DE ENTRENADOR/(7790:7795): entrenador 0: se movio a (2,8)
+[INFO] 23:10:15:969 OPERACION ATRAPAR/(7790:7795): ATRAPAR POKEMON: Onix con posicion (2, 8)
+[INFO] 23:10:15:969 ERROR EN COMUNICACION/(7790:7795): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:10:15:969 CAMBIO DE COLA/(7790:7795): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 23:10:15:969 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 23:10:15:969 CAMBIO DE COLA/(7790:7796): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 23:10:15:969 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:10:15:969 CAMBIO DE COLA/(7790:7797): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 23:10:15:970 DETECCION_DEADLOCK/(7790:7798): Inicio de deteccion de deadlock
+[INFO] 23:10:15:970 RESULTADO_DE_DEADLOCK/(7790:7798): No se detectó deadlock
+[INFO] 23:10:15:970 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 23:10:20:970 MOVIMIENTO DE ENTRENADOR/(7790:7796): entrenador 1: se movio a (6,6)
+[INFO] 23:10:20:971 OPERACION ATRAPAR/(7790:7796): ATRAPAR POKEMON: Gengar con posicion (6, 6)
+[INFO] 23:10:20:971 ERROR EN COMUNICACION/(7790:7796): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:10:20:971 CAMBIO DE COLA/(7790:7796): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 23:10:20:971 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:10:25:971 MOVIMIENTO DE ENTRENADOR/(7790:7797): entrenador 2: se movio a (5,5)
+[INFO] 23:10:25:972 OPERACION ATRAPAR/(7790:7797): ATRAPAR POKEMON: Squirtle con posicion (5, 5)
+[INFO] 23:10:25:972 ERROR EN COMUNICACION/(7790:7797): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 23:10:25:972 CAMBIO DE COLA/(7790:7797): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 23:10:25:972 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:10:25:972 CAMBIO DE COLA/(7790:7795): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 23:10:25:972 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 23:10:25:972 CAMBIO DE COLA/(7790:7796): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 23:10:25:972 DETECCION_DEADLOCK/(7790:7798): Inicio de deteccion de deadlock
+[INFO] 23:10:25:972 RESULTADO_DE_DEADLOCK/(7790:7798): No se detectó deadlock
+[INFO] 23:10:25:974 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 23:10:25:974 CAMBIO DE COLA/(7790:7797): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 23:10:35:979 DETECCION_DEADLOCK/(7790:7798): Inicio de deteccion de deadlock
+[INFO] 23:10:35:982 RESULTADO_DE_DEADLOCK/(7790:7798): Se detectó deadlock
+[INFO] 23:10:35:982 CAMBIO DE COLA/(7790:7798): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 23:10:40:983 MOVIMIENTO DE ENTRENADOR/(7790:7798): entrenador 0: se movio a (5,5)
+[INFO] 23:10:45:985 CAMBIO DE COLA/(7790:7798): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 23:10:45:986 CAMBIO DE COLA/(7790:7798): cambio a EXIT de entrenador: 2 
+ 

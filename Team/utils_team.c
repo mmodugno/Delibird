@@ -39,66 +39,6 @@ void variables_globales(){
 
 
 
-//////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
-
-  int leer_retardo_cpu(void){
-	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
-	  return retardo;
- }
-
- t_list* obtener_lista_posiciones(void){
-     char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
-     return crear_lista(array_posiciones);
- }
-
- t_list* obtener_lista_objetivos(void){
-      char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
-     return crear_lista(array_objetivos);
-  }
-
- t_list* obtener_lista_pokemones(void){
-      char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
-       return crear_lista(array_pokemones);
-  }
-
-int leer_tiempo_de_reconexion(void){
-	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
-     return tiempo_de_reconexion;
-}
-
-int leer_puerto_broker(void){
-	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
-	  return puerto_broker;
-}
-int leer_algoritmo_planificacion(void){
-	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-
-	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
-	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
-	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
-
-return 0;
-}
-
-int leer_quantum(void){
-	 int quantum = config_get_int_value(config,"QUANTUM");
-	  return quantum;
-}
-
-int leer_estimacion_inicial(void){
-	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
-	  return estimacion_inicial;
-}
-
-char* leer_ip_broker(void){
-	 char* ip = config_get_string_value(config,"IP_BROKER");
-	 return ip;
-}
-
-int leer_alpha(void){
-	 int alpha = config_get_int_value(config,"ALPHA");
-	  return alpha;
-}
  /////////////////////////////////////////////////////////////////////////////
 
 
@@ -119,6 +59,8 @@ int leer_alpha(void){
 
 
 	 un_entrenador->id = id_creada;
+
+	 un_entrenador->id_caught = 0;
 
 	 sacar_pokemones_repetidos(un_entrenador->objetivos,un_entrenador->pokemones);
 
@@ -1244,3 +1186,63 @@ void liberar_conexion(int socket_cliente)
  }
 
 
+ //////////////////////////LEO TODA LA CONFIG //////////////////////////////////////////////////
+
+   int leer_retardo_cpu(void){
+ 	 int retardo = config_get_int_value(config,"RETARDO_CICLO_CPU");
+ 	  return retardo;
+  }
+
+  t_list* obtener_lista_posiciones(void){
+      char** array_posiciones = config_get_array_value(config,"POSICIONES_ENTRENADORES");
+      return crear_lista(array_posiciones);
+  }
+
+  t_list* obtener_lista_objetivos(void){
+       char** array_objetivos = config_get_array_value(config,"OBJETIVOS_ENTRENADORES");
+      return crear_lista(array_objetivos);
+   }
+
+  t_list* obtener_lista_pokemones(void){
+       char** array_pokemones = config_get_array_value(config,"POKEMON_ENTRENADORES");
+        return crear_lista(array_pokemones);
+   }
+
+ int leer_tiempo_de_reconexion(void){
+ 	int tiempo_de_reconexion = config_get_int_value(config,"TIEMPO_RECONEXION");
+      return tiempo_de_reconexion;
+ }
+
+ int leer_puerto_broker(void){
+ 	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
+ 	  return puerto_broker;
+ }
+ int leer_algoritmo_planificacion(void){
+ 	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
+
+ 	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+ 	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
+ 	 //if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
+
+ return 0;
+ }
+
+ int leer_quantum(void){
+ 	 int quantum = config_get_int_value(config,"QUANTUM");
+ 	  return quantum;
+ }
+
+ int leer_estimacion_inicial(void){
+ 	 int estimacion_inicial = config_get_int_value(config,"ESTIMACION_INICIAL");
+ 	  return estimacion_inicial;
+ }
+
+ char* leer_ip_broker(void){
+ 	 char* ip = config_get_string_value(config,"IP_BROKER");
+ 	 return ip;
+ }
+
+ int leer_alpha(void){
+ 	 int alpha = config_get_int_value(config,"ALPHA");
+ 	  return alpha;
+ }
