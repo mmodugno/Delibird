@@ -64,9 +64,11 @@ t_list* pokemones_atrapados;
 t_list* entrenadores_new;
 t_list* entrenadores_finalizados;
 t_list* entrenadores_en_deadlock;
+t_list* lista_entrenadores_block_ready;
 t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
 t_queue* entrenadores_ready;
+
 
 char* nombre_pokemon;
 char* archivo_config;
@@ -203,11 +205,12 @@ bool se_puede_planificar(entrenador* entrenador);
 void planificar_entrenador(void);
 void procedimiento_de_caza(entrenador* un_entrenador);
 void algoritmo_aplicado(void);
-void planifico_con_fifo(void);
+void planifico_sin_desalojo(void);
 void terminar_ejecucion_entrenador(void);
 bool validacion_nuevo_pokemon(void);
 bool hay_pokemon_y_entrenador(void);
 void planifico_con_RR(void);
+void planificar_entrenador_segun_distancia(void);
 
 
 //DEADLOCK
