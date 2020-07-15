@@ -177,7 +177,7 @@ void serializar_broker_new_pokemon(broker_new_pokemon* brokerNewPokemon, t_buffe
 void serializar_broker_appeared_pokemon(broker_appeared_pokemon* brokerAppearedPokemon, t_buffer* buffer)
 {
 	// serializacion
-	//1. uint32_t id;
+	//1. uint32_t id_relativo;
 	//2. uint32_t tamanioNombre;
 	//3. char* nombrePokemon;
 	//4. uint32_t posX;

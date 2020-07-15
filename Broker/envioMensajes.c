@@ -297,8 +297,13 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
 	//6. uint32_t CantidadPokemons;
 
 
+
 	t_buffer* mensaje ;
 	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->tamanioNombre;
+
+	t_buffer* mensaje = malloc(sizeof(t_buffer));
+	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->nombrePokemon;
+
 	mensaje->stream = malloc(mensaje->size);
 
 	int offset = 0;
@@ -322,6 +327,12 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
 	offset+=sizeof(uint32_t);
 
 	return mensaje;
+}
+
+t_buffer* serializarMensajeColaAPPEARED(broker_appeared_pokemon* brokerAppearedPokemon)
+{
+
+
 }
 
 t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar){
