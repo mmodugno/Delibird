@@ -42,6 +42,24 @@ void iniciarMemoria() {
 		list_add(tablaDeParticiones, partLibreInicial);
 	}
 	if (!strcmp(algoritmo_memoria, "BS")) {
+		tablaDeParticiones = list_create();
+
+		buddy* buddyLibreInicial = malloc(sizeof(buddy));
+		buddyLibreInicial->particion = malloc(sizeof(particion));
+
+				//los que tienen idMensaje 0 son particiciones vacias
+		buddyLibreInicial->particion->idMensaje = 0;
+		buddyLibreInicial->particion->tipoMensaje = LIBRE;
+		buddyLibreInicial->particion->base = 0;
+		buddyLibreInicial->particion->tamanioMensaje = tamanio_memoria;
+		buddyLibreInicial->particion->libre = 1;
+		buddyLibreInicial->particion->timestamp = string_new();
+		buddyLibreInicial->particion->acknoleged = list_create();
+
+		buddyLibreInicial->limite = tamanio_memoria-1;
+
+		//al principio tendría una particion nomás de tamanioMemoria.
+		list_add(tablaDeParticiones, buddyLibreInicial);
 
 	}
 
@@ -425,9 +443,6 @@ void* recibir_mensaje(int socket_cliente, int* size) {
 	return buffer;
 }
 
-
-
-
 void suscribirACola(suscriptor* suscriptor){
 	switch(suscriptor->tipoDeCola){
 		case NEW_POKEMON:
@@ -475,6 +490,13 @@ void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uin
 		}
 	}
 	if (!strcmp(algoritmo_memoria, "BS")) {
+
+			buddy* buddyAAgregar = malloc(sizeof(buddy));
+
+			buddyAAgregar->particion = crearEntradaParticionBasica(dato, idMensaje,
+			tipoMensaje, idCorrelativo, tamanioAgregar);
+
+			agregarEnBuddy(buddyAAgregar);
 
 	}
 	sem_post(&usoMemoria);
@@ -1338,3 +1360,202 @@ int nivelParticion(int tamNuevoMensaje) {
 	return level;
 }*/
 
+int tamanioBuddy(buddy* unBuddy){
+	return unBuddy->limite - unBuddy->particion->base + 1;
+}
+
+void dividirEnDos(buddy* unBuddy) {
+
+	buddy* primerNuevoBuddy = malloc(sizeof(buddy));
+	primerNuevoBuddy->particion = malloc(sizeof(particion));
+
+	primerNuevoBuddy->particion->idMensaje = 0;
+	primerNuevoBuddy->particion->tipoMensaje = LIBRE;
+	primerNuevoBuddy->particion->base = unBuddy->particion->base;
+	primerNuevoBuddy->particion->tamanioMensaje = tamanioBuddy(unBuddy)/2;
+	primerNuevoBuddy->particion->libre = 1;
+	primerNuevoBuddy->particion->timestamp = string_new();
+	primerNuevoBuddy->particion->acknoleged = list_create();
+	primerNuevoBuddy->limite = unBuddy->particion->base + tamanioBuddy(unBuddy)/2 - 1;
+
+	buddy* segundoNuevoBuddy = malloc(sizeof(buddy));
+	segundoNuevoBuddy->particion = malloc(sizeof(particion));
+
+	segundoNuevoBuddy->particion->idMensaje = 0;
+	segundoNuevoBuddy->particion->tipoMensaje = LIBRE;
+	segundoNuevoBuddy->particion->base = primerNuevoBuddy->limite+1;
+	segundoNuevoBuddy->particion->tamanioMensaje = tamanioBuddy(unBuddy)/2;
+	segundoNuevoBuddy->particion->libre = 1;
+	segundoNuevoBuddy->particion->timestamp = string_new();
+	segundoNuevoBuddy->particion->acknoleged = list_create();
+	segundoNuevoBuddy->limite = unBuddy->limite;
+
+	actualizarTablaParticionesParaBuddy(unBuddy,primerNuevoBuddy,segundoNuevoBuddy);
+
+}
+
+void agregarEnBuddy(buddy* unBuddyParaAgregar){
+
+	t_list* buddiesTotales = tablaDeParticiones;
+
+	uint32_t tamanioParaAgregar = unBuddyParaAgregar->particion->tamanioMensaje;
+
+	uint32_t tamanioIdeal = tamanioIdealBuddy(tamanioParaAgregar);
+
+	bool mayorOIgualAtamanioIdeal(buddy* unBuddy){
+		return tamanioBuddy(unBuddy) >=  tamanioIdeal;
+	}
+
+	bool estaLibre(buddy* unBuddy){
+		return unBuddy->particion->libre;
+	}
+
+	t_list* buddiesLibres = list_filter(buddiesTotales,estaLibre);
+
+	t_list* buddiesQueMeSirven = list_filter(buddiesLibres,mayorOIgualAtamanioIdeal);
+
+	//if agregar buscando victima
+
+	buddy* buddyMenor = list_get(buddiesQueMeSirven,0);
+	uint32_t i = 0;
+
+	for(i = 0; i < list_size(buddiesQueMeSirven);i++){
+
+		buddy* aComparar = list_get(buddiesQueMeSirven,i);
+
+		if(tamanioBuddy(buddyMenor) > tamanioBuddy(aComparar)){
+			buddyMenor = aComparar;
+		}
+
+	}
+
+	if(tamanioIdeal == tamanioBuddy(buddyMenor)){
+
+		memcpy(memoria+buddyMenor->particion->base,unBuddyParaAgregar->particion->mensaje,
+	unBuddyParaAgregar->particion->tamanioMensaje);
+
+		actualizarComoOcupadoEnLista(buddyMenor);
+
+		log_info(almacenadoMemoria,"base: %d libre: %d limite: %d tamanioMensaje: %d",
+		buddyMenor->particion->base,
+		buddyMenor->particion->libre,
+		buddyMenor->limite,
+		unBuddyParaAgregar->particion->tamanioMensaje
+		);
+
+
+	} else {
+
+		dividirEnDos(buddyMenor);
+		agregarEnBuddy(unBuddyParaAgregar);
+
+	}
+
+}
+
+void actualizarComoOcupadoEnLista(buddy* unBuddy) {
+
+	buddy* aComparar;
+
+	int yaLoEncontre = 0;
+
+	int j = 0;
+
+	while(yaLoEncontre == 0){
+
+		aComparar = list_get(tablaDeParticiones,j);
+
+		if(unBuddy->particion->base == aComparar->particion->base) yaLoEncontre = 1;
+		else j++;
+	}
+
+	buddy* buddyQueSustituye = unBuddy;
+
+	buddyQueSustituye->particion->libre = 0;
+
+	list_replace(tablaDeParticiones,j,buddyQueSustituye);
+
+
+}
+
+void actualizarTablaParticionesParaBuddy(buddy* aReemplazar,buddy* primerNuevoBuddy,buddy* segundoNuevoBuddy){
+
+	int j = 0;
+
+	t_list* nuevaLista = list_create();
+
+	buddy* buddysEnTabla;
+
+	int yaLoEncontre = 0;
+
+	while(yaLoEncontre == 0){
+
+		buddysEnTabla = list_get(tablaDeParticiones,j);
+
+		if(buddysEnTabla->particion->base == aReemplazar->particion->base) yaLoEncontre = 1;
+		else j++;
+	}
+
+
+	int i;
+
+	for(i = 0; i < j; i++) {
+		buddy* aAgregar = list_get(tablaDeParticiones,i);
+		list_add(nuevaLista,aAgregar);
+	}
+
+	list_add(nuevaLista,primerNuevoBuddy);
+	list_add(nuevaLista,segundoNuevoBuddy);
+
+	for(i = j+1; i < list_size(tablaDeParticiones); i++) {
+			buddy* aAgregar = list_get(tablaDeParticiones,i);
+			list_add(nuevaLista,aAgregar);
+	}
+
+	list_clean(tablaDeParticiones);
+
+	list_add_all(tablaDeParticiones,nuevaLista);
+
+}
+
+t_list* listaTamanioBuddiesPosibles() {
+
+	t_list* posiblesTamanios = list_create();
+
+	int tamanioInicial = tamanio_memoria;
+
+	while(tamanioInicial != tamanio_minimo_particion){
+		list_add(posiblesTamanios,tamanioInicial);
+		tamanioInicial = tamanioInicial / 2;
+	}
+
+	list_add(posiblesTamanios,tamanioInicial);
+
+	return posiblesTamanios;
+
+}
+
+uint32_t tamanioIdealBuddy(uint32_t tamanio) {
+
+	t_list* tamanioBuddies = listaTamanioBuddiesPosibles();
+
+	bool buddyEsMasGrandeTamanioMensaje(uint32_t tamanioAcomparar){
+		 return tamanioAcomparar > tamanio;
+	}
+
+	t_list* dondeEntra = list_filter(tamanioBuddies,buddyEsMasGrandeTamanioMensaje);
+
+	uint32_t minimo = list_get(dondeEntra,0);
+	uint32_t i = 0;
+
+	for(i = 0; i < list_size(dondeEntra);i++){
+
+		if(minimo > list_get(dondeEntra,i)){
+			minimo = list_get(dondeEntra,i);
+		}
+
+	}
+
+	return minimo;
+
+}

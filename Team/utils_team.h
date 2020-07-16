@@ -65,6 +65,8 @@ t_list* entrenadores_new;
 t_list* entrenadores_finalizados;
 t_list* entrenadores_en_deadlock;
 t_list* lista_entrenadores_block_ready;
+t_list* lista_entrenadores_ready;
+
 t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
 t_queue* entrenadores_ready;
@@ -91,6 +93,8 @@ int conexionBroker;
 int quantum;
 int entrenador_deadlock;
 int validar_deadlock;
+
+pthread_t hilo_deadlock;
 
 typedef struct{
     char* nombre;
@@ -187,13 +191,14 @@ void terminar_ejecucion_entrenador(void);
 bool validacion_nuevo_pokemon(void);
 bool hay_pokemon_y_entrenador(void);
 void planifico_con_RR(void);
-
+void planificar_cola_ready(void);
 
 //SJF
 void planificar_entrenador_segun_rafaga(void);
 bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador2);
 float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke);
 
+void planifico_con_desalojo(void);
 
 //DEADLOCK
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
@@ -202,6 +207,7 @@ bool hay_deadlock(void);
 void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1);
 void espera_de_deadlock(void);
 bool hay_deadlock_multiple(void);
+void deteccion_y_recuperacion_deadlock();
 
 void manejar_deadlock_multiple();
 void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador1);

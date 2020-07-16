@@ -10,7 +10,7 @@
 
 
 
-
+//TODO arreglar segun algoritmo:
 void variables_globales(){
 	config = leer_config();
 	broker_conectado = false;
@@ -28,6 +28,7 @@ void variables_globales(){
 	entrenadores_en_deadlock = list_create();
 	lista_entrenadores_block_ready = list_create();
 	entrenadores_blocked = queue_create();
+	lista_entrenadores_ready = list_create();
 
 	alpha = leer_alpha();
 
@@ -181,6 +182,10 @@ void algoritmo_aplicado(void){
 		planifico_sin_desalojo();
 		break;
 
+	case SJFCD:
+		planifico_con_desalojo();
+		break;
+
 	 default:
 	       printf("\n Algoritmo no reconocido \n");
 	       break;
@@ -204,12 +209,12 @@ void procedimiento_de_caza(entrenador* un_entrenador){
 
 while(1){
 
-	sem_wait(&(un_entrenador->nuevoPoke));//TODO AGREGAR POST EN FIFO
+	sem_wait(&(un_entrenador->nuevoPoke));
 	sem_wait(&(un_entrenador->sem_entrenador));
 
 	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
-	if(leer_algoritmo_planificacion() == RR){
+	if(leer_algoritmo_planificacion() == RR || leer_algoritmo_planificacion() == SJFCD){
 		mover_entrenador_RR(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
 	}
 	else{
@@ -218,7 +223,7 @@ while(1){
 
 	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
 
-	//TODO delegar:
+
 
 	if(conectarse_con_broker()!=-1){
 		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
@@ -258,7 +263,7 @@ while(1){
 	//libera la ejecucion mientras espera el catch
 	sem_post(&en_ejecucion);
 
-//TODO aca puse que si no se puede conectar se confirme el catch. Ver si es asi
+//Si no se puede conectar se confirma el catch.
 		if(conectarse_con_broker()==-1){
 			confirmacion_de_catch(un_entrenador);
 		}
@@ -289,6 +294,8 @@ void manejar_deadlock(void){
 			entrenador* entrenador0 = list_get(entrenadores_en_deadlock,i); // otro for para comparar con el resto
 			entrenador* entrenador1 = list_get(entrenadores_en_deadlock,j);
 
+		//if(entrenador0->id == entrenador1->id) break;
+
 			nombre_pokemon = list_get(entrenador0->objetivos,0);
 
 			//Si algun pokemon del 1 es el que 0 necesita y viceversa, se planifican:
@@ -297,7 +304,7 @@ void manejar_deadlock(void){
 				nombre_pokemon = list_get(entrenador1->objetivos,0);
 
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
-
+						//TODO
 					if(leer_algoritmo_planificacion() == RR){
 						planificar_deadlock_RR(entrenador0,entrenador1);
 
@@ -309,7 +316,15 @@ void manejar_deadlock(void){
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				//break;
+				entrenador_deadlock+=2;
+
+				break;
+			}
+			else{
+				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
+				entrenador_deadlock+=2;
+				espera_de_deadlock();//TODO
+				break;
 			}
 	}
 }
@@ -348,7 +363,7 @@ while(validacion_nuevo_pokemon()){
 
 	sem_wait(&en_ejecucion);
 
-	//TODO
+
 	//planifico uno en cada ciclo del fifo
 	if(leer_algoritmo_planificacion() == FIFO){
 	planificar_entrenador();
@@ -379,16 +394,41 @@ while(queue_size(entrenadores_ready)>0){
 
 
 //Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
+
 if(validar_deadlock){
 	validar_deadlock=0;
 	sem_wait(&en_ejecucion);
 	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 
+
+	deteccion_y_recuperacion_deadlock();
+
+}
+
+
+
+if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
+
+	pthread_cancel(hilo_servidor);
+	printf("\n FINALIZO EL PROGRAMA \n");
+
+	break;
+}
+
+}
+}
+
+void deteccion_y_recuperacion_deadlock(){
+
 	if(list_size(entrenadores_en_deadlock)>1){
 		log_info(resultado_deadlock,"Se detectó deadlock");
 		cant_deadlocks +=1;
-		manejar_deadlock();
+		//manejar_deadlock();
 		cambio_contexto +=1;
+		pthread_t hilo_deadlock;
+		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
+		pthread_join(hilo_deadlock,NULL);
 
 	}else{
 		log_info(resultado_deadlock,"No se detectó deadlock");
@@ -401,24 +441,10 @@ if(validar_deadlock){
 }
 
 
-if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
-
-
-
-	if(!pthread_cancel(&hilo_servidor)){
-		printf("\n FINALIZO EL PROGRAMA \n ");
-	}
-
-
-	break;
-}
-
-}
-}
 
 //Funcion de deteccion deadlock
 void espera_de_deadlock(void){
-	sleep(10);
+	sleep(25);
 	validar_deadlock = 1;
 }
 
@@ -504,8 +530,12 @@ while(1){
 	while(validacion_nuevo_pokemon()){
 		quantum = leer_quantum();
 
-		planificar_entrenador(); //planifico uno en cada ciclo del fifo
-
+		if(leer_algoritmo_planificacion() == SJFCD){
+				planificar_entrenador_segun_rafaga();
+		}
+		else{
+			planificar_entrenador();
+		}
 		//Seccion critica
 		sem_wait(&en_ejecucion);
 		cambio_contexto +=1;
@@ -531,10 +561,8 @@ while(1){
 		sem_post(&(entrenador_exec->sem_entrenador));
 	}
 
-
-
 	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
-	if(validar_deadlock){
+	if(validar_deadlock && list_is_empty(entrenadores_new)){
 		validar_deadlock=0;
 		sem_wait(&en_ejecucion);
 
@@ -546,7 +574,7 @@ while(1){
 
 			entrenador_deadlock-=1;
 
-			pthread_t hilo_deadlock;
+
 			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
 			sem_post(&en_ejecucion);
 			continue;
@@ -556,15 +584,15 @@ while(1){
 			log_info(resultado_deadlock,"Se detectó deadlock");
 			entrenador_deadlock-=2;
 			cant_deadlocks +=1;
-			//cambio_contexto +=1;
 
-		pthread_t hilo_deadlock;
+
 		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
-				sem_post(&en_ejecucion);
-				continue;
 
+		sem_post(&en_ejecucion);
+		continue;
 
-		}else{
+		}
+	else{
 			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
 
 			//espera 10 segundos y pone el contador validar_deadlock en 1
@@ -574,13 +602,13 @@ while(1){
 		}
 
 		sem_post(&en_ejecucion);
-
-
 	}
 
 
 	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
-		printf("\n FINALIZO EL PROGRAMA \n ");
+
+		pthread_cancel(hilo_servidor);
+		printf("\n FINALIZO EL PROGRAMA \n");
 
 		break;
 	}
@@ -588,6 +616,25 @@ while(1){
 
 }
 }
+
+void planificar_cola_ready(void){
+
+		quantum = leer_quantum();
+
+		entrenador_exec = queue_peek(entrenadores_ready);
+		queue_pop(entrenadores_ready);
+
+		proximo_objetivo = entrenador_exec->objetivo_proximo;
+
+		sem_wait(&en_ejecucion);
+		cambio_contexto +=1;
+		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
+		sem_post(&(entrenador_exec->sem_entrenador));
+
+}
+
+
 
 
 void mover_entrenador_RR(entrenador* entrenador,int x, int y){
@@ -599,14 +646,14 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 
 		if(entrenador->posX < x){
 			entrenador->posX = entrenador->posX + 1;
-			usleep(tiempo);
+			sleep(tiempo);
 			quantum -=1;
 			entrenador->ciclos_cpu += 1;
 			printf("\n El entrenador %d se movio en X hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		if(entrenador->posX > x){
 			entrenador->posX = entrenador->posX -1;
-			usleep(tiempo);
+			sleep(tiempo);
 			quantum -=1;
 			entrenador->ciclos_cpu += 1;
 			printf("\n El entrenador  %d  se movio en X hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
@@ -615,8 +662,13 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 
 		//No tengo mas Quantum, pero mi posicion es distinta
 		if(quantum == 0){
-			queue_push(entrenadores_ready, entrenador);
-			log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+			if(leer_algoritmo_planificacion() == SJFCD){
+				list_add(lista_entrenadores_ready, entrenador);
+			}
+			else{
+				queue_push(entrenadores_ready, entrenador);
+				log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+			}
 			sem_post(&en_ejecucion);
 			sem_wait(&(entrenador->sem_entrenador));
 	}
@@ -628,14 +680,14 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 
 			if(entrenador->posY < y){
 				entrenador->posY = entrenador->posY + 1;
-				usleep(tiempo);
+				sleep(tiempo);
 				quantum -=1;
 				entrenador->ciclos_cpu += 1;
 				printf("\n El entrenador  %d se movio en Y hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
 			}
 			if(entrenador->posY > y){
 				entrenador->posY = entrenador->posY -1;
-				usleep(tiempo);
+				sleep(tiempo);
 				quantum -=1;
 				entrenador->ciclos_cpu += 1;
 				printf("\n El entrenador  %d se movio en Y hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
@@ -643,8 +695,13 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 			}
 			//No tengo mas Quantum, pero mi posicion es distinta
 			if(quantum == 0){
-				queue_push(entrenadores_ready, entrenador);
-				log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+				if(leer_algoritmo_planificacion() == SJFCD){
+					list_add(lista_entrenadores_ready, entrenador);
+				}
+				else{
+					queue_push(entrenadores_ready, entrenador);
+					log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
+				}
 				sem_post(&en_ejecucion);
 				sem_wait(&(entrenador->sem_entrenador));
 		}
@@ -658,9 +715,6 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
-
-
-
 
 	int cpu_a_usar = 5;
 
@@ -719,7 +773,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 
 bool validacion_nuevo_pokemon(void){
-	if(leer_algoritmo_planificacion() == SJFSD){
+	if(leer_algoritmo_planificacion() == SJFSD || leer_algoritmo_planificacion() == SJFCD){
 	return (hay_pokemon_y_entrenador() ||(!queue_is_empty(pokemones_en_el_mapa) && !list_is_empty(lista_entrenadores_block_ready)));
 	}else{
 	return (hay_pokemon_y_entrenador() || (!queue_is_empty(pokemones_en_el_mapa)  && !queue_is_empty(entrenadores_block_ready))    );
@@ -745,7 +799,7 @@ void manejar_deadlock_multiple(){
 							break;
 					}
 					printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-					//break;
+
 				}
 		}
 	}
@@ -764,10 +818,10 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		sem_wait(&en_ejecucion);
 
-		printf("\n ------------ Inicio de operacion de deadlock ------------\n \n");
+		printf("\n ---- Inicio de operacion de deadlock entre entrenadores %d y %d------------\n \n",entrenador0->id,entrenador1->id);
 
-		mover_entrenador_RR(entrenador0,x,y);
-		//mover_entrenador(entrenador0,x,y);
+		//mover_entrenador_RR(entrenador0,x,y);
+		mover_entrenador(entrenador0,x,y);
 
 
 		sleep(leer_retardo_cpu());
@@ -794,10 +848,10 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		nombre_pokemon = list_get(entrenador0->objetivos,0);
 
-		//list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido); TODO ver
+
 		list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
 
-		//TODO
+
 		nombre_pokemon = list_get(entrenador0->pokemones, 0);
 
 		list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
@@ -805,8 +859,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		printf("\n ------ Terminado algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 
-		entrenador0->ciclos_cpu += 5; //Le sumo los 5 ciclos al entrenador por deadlock
-		// entrenador1->ciclos_cpu += 5;
+		entrenador0->ciclos_cpu += 5;
 
 		cant_deadlocks_resueltos += 1;
 
@@ -820,8 +873,6 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 //////////////////////////////////////////////// SJFSD
 
 
-//TODO
-
 void planificar_entrenador_segun_rafaga(void){
 
 	sem_wait(&hay_entrenador);
@@ -831,7 +882,7 @@ void planificar_entrenador_segun_rafaga(void){
 
 	//Juntamos los entrenadores en new y en block_ready, para ver quien esta mas cerca del pokemon
 
-//TODO
+
 	if(!list_is_empty(entrenadores_new)){
 		entrenador_exec = list_get(list_sorted(entrenadores_new,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
 		list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
@@ -859,31 +910,145 @@ void planificar_entrenador_segun_rafaga(void){
 
 	entrenador_exec->rafaga_real = distancia_real;
 
-
-
-
-
-
 	sem_post(&(entrenador_exec->nuevoPoke));
+
 }
 
 bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador2){
 
 	float rafaga1 = calcular_rafaga_siguiente(entrenador1,proximo_objetivo);
 	float rafaga2 = calcular_rafaga_siguiente(entrenador2,proximo_objetivo);
-	bool resultado =  rafaga1 >= rafaga2 ;
+	//bool resultado =  rafaga1 >= rafaga2 ; //TODO aca seria <=?
+	bool resultado =  rafaga1 <= rafaga2 ;
 	return resultado;
 }
 
 float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke){
 	//Rafaga siguiente: alpha*rafaga_estimada_anterior + (1-aplha)*rafaga_real_anterior
-	//TODO
 
 	return un_entrenador->rafaga_estimada * alpha + (1-alpha) * un_entrenador->rafaga_real ;
 }
 
 //////////////////////////////////////////////// SJFCD
 
+void planifico_con_desalojo(void){
+
+while(1){
+	while(validacion_nuevo_pokemon()){
+		quantum = leer_quantum();
+
+		planificar_entrenador_segun_rafaga();
+
+		//Seccion critica
+		sem_wait(&en_ejecucion);
+		cambio_contexto +=1;
+		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
+		sem_post(&(entrenador_exec->sem_entrenador));
+		//Fin de seccion critica
+	}
+
+/*
+	while(!queue_is_empty(entrenadores_ready)){
+		quantum = leer_quantum();
+
+		entrenador_exec = queue_peek(entrenadores_ready);
+		queue_pop(entrenadores_ready);
+
+		proximo_objetivo = entrenador_exec->objetivo_proximo;
+
+		sem_wait(&en_ejecucion);
+		cambio_contexto +=1;
+		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+
+		sem_post(&(entrenador_exec->sem_entrenador));
+	}
+*/
+
+	while(!list_is_empty(lista_entrenadores_ready)){
+		quantum = leer_quantum();
+
+		sem_wait(&en_ejecucion);
+
+		entrenador* anterior_entrenador = entrenador_exec;
+
+		entrenador_exec = list_get(list_sorted(lista_entrenadores_ready,(void*) entrenador_con_menor_rafaga) ,0);
+
+		list_remove_by_condition(lista_entrenadores_ready,(void*)entrenador_en_exec);
+
+		entrenador_exec->rafaga_estimada = calcular_rafaga_siguiente(entrenador_exec,entrenador_exec->objetivo_proximo);
+
+		//float distancia_real = distancia_entrenador_pokemon(entrenador_exec,entrenador_exec->objetivo_proximo);
+
+		//entrenador_exec->rafaga_real = distancia_real;
+
+		if(anterior_entrenador->id != entrenador_exec->id){
+			log_info(cambioDeCola,"cambio a READY a entrenador: %d \n ",anterior_entrenador->id);
+			cambio_contexto +=1;
+			log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
+		}
+
+		sem_post(&(entrenador_exec->sem_entrenador));
+
+
+	}
+
+
+	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
+	if(validar_deadlock && list_is_empty(entrenadores_new)){
+		validar_deadlock=0;
+		sem_wait(&en_ejecucion);
+
+		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+
+		if(hay_deadlock_multiple()){
+
+			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+
+			entrenador_deadlock-=1;
+
+
+			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+			sem_post(&en_ejecucion);
+			continue;
+		}
+
+		if(hay_deadlock()){
+			log_info(resultado_deadlock,"Se detectó deadlock");
+			entrenador_deadlock-=2;
+			cant_deadlocks +=1;
+
+
+		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
+		sem_post(&en_ejecucion);
+		continue;
+
+		}
+	else{
+			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+
+			//espera 10 segundos y pone el contador validar_deadlock en 1
+			pthread_t espera_deadlock;
+			pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
+
+		}
+
+		sem_post(&en_ejecucion);
+	}
+
+
+	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
+
+		pthread_cancel(hilo_servidor);
+		printf("\n FINALIZO EL PROGRAMA \n");
+
+		break;
+	}
+
+
+}
+}
 
 
 /////////////////////////////////////////////////METRICAS
@@ -1017,7 +1182,10 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 	//TODO aca hago que ya no este mas en blocked, sino que en ready
 	//lo saco de blocked???
-	queue_push(entrenadores_ready,un_entrenador);
+	if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready, un_entrenador);
+	else{
+		queue_push(entrenadores_ready,un_entrenador);
+	}
 
 
 	sem_post(&(un_entrenador->espera_de_catch));
@@ -1139,11 +1307,12 @@ bool hay_deadlock_multiple(void){
 
 
 void analizar_proxima_cola(entrenador* un_entrenador){
+
 	if(puede_cazar(un_entrenador)){
 
 		log_info(cambioDeCola,"cambio a BLOCK-READY de entrenador: %d \n ",un_entrenador->id);
 
-		if(leer_algoritmo_planificacion() == SJFSD){
+		if(leer_algoritmo_planificacion() == SJFSD || leer_algoritmo_planificacion() == SJFCD){
 			list_add(lista_entrenadores_block_ready,un_entrenador);
 			}
 
@@ -1210,8 +1379,6 @@ void iniciar_servidor(void)
     freeaddrinfo(servinfo);
 
     while(1){
-    	//TODO
-    	//if(list_size(entrenadores) == list_size(entrenadores_finalizados)) break;
     		esperar_cliente(socket_servidor);
     }
 
@@ -1434,6 +1601,7 @@ void liberar_conexion(int socket_cliente)
  	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;
  	 if(strcmp(algoritmo_planificacion,"RR") == 0) return RR;
  	 if(strcmp(algoritmo_planificacion,"SJFSD") == 0) return SJFSD;
+ 	 if(strcmp(algoritmo_planificacion,"SJFCD") == 0) return SJFCD;
 
  return 0;
  }
