@@ -65,6 +65,8 @@ t_list* entrenadores_new;
 t_list* entrenadores_finalizados;
 t_list* entrenadores_en_deadlock;
 t_list* lista_entrenadores_block_ready;
+t_list* lista_entrenadores_ready;
+
 t_queue* entrenadores_block_ready;
 t_queue* entrenadores_blocked;
 t_queue* entrenadores_ready;
@@ -196,6 +198,7 @@ void planificar_entrenador_segun_rafaga(void);
 bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador2);
 float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke);
 
+void planifico_con_desalojo(void);
 
 //DEADLOCK
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1);
