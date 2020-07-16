@@ -55,8 +55,8 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
-
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
+
 	//iniciar_servidor();
 
 
