@@ -42,6 +42,11 @@ typedef struct {
 	uint32_t idCorrelativo;
 } particion;
 
+typedef struct {
+	particion* particion;
+	uint32_t limite;
+} buddy;
+
 /*typedef struct {
 	buddy* padre;
 	buddy* hijoIzq;
@@ -164,6 +169,15 @@ broker_catch_pokemon* leerdeMemoriaCATCH(particion* part);
 broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part);
 broker_get_pokemon* leerdeMemoriaGET(particion* part);
 broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part);
+
+/* buddy */
+void agregarEnBuddy(buddy* );
+int tamanioBuddy(buddy* );
+void actualizarComoOcupadoEnLista(buddy* );
+void dividirEnDos(buddy* );
+void actualizarTablaParticionesParaBuddy(buddy* ,buddy* ,buddy* );
+t_list* listaTamanioBuddiesPosibles();
+uint32_t tamanioIdealBuddy(uint32_t );
 
 
 
