@@ -123,6 +123,7 @@ sem_t idsDeMensajes;
 sem_t usoMemoria;
 
 sem_t llegadaMensajes;
+sem_t suscripcionACola;
 
 sem_t colaNew;
 sem_t colaAppeared;

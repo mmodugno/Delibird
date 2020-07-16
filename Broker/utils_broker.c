@@ -161,7 +161,9 @@ void process_request(int cod_op, int cliente_fd) {
 					suscriptor->nombreDeSuscriptor,
 					colasDeEnum[(suscriptor->tipoDeCola) - 1]);
 
+			sem_wait(&suscripcionACola);
 			suscribirACola(suscriptor);
+			sem_post(&suscripcionACola);
 
 			free(suscriptor);
 
@@ -547,7 +549,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,
 	if (partElegida != NULL) {
 		datoAAgregar->base = partElegida->base;
 		if (partElegida->tamanioMensaje != datoAAgregar->tamanioMensaje) {
-			partElegida->base = datoAAgregar->base + datoAAgregar->tamanioMensaje - 1;
+			partElegida->base = datoAAgregar->base + datoAAgregar->tamanioMensaje ;
 			if (*baseSig != -1) {
 				partElegida->tamanioMensaje = *baseSig - partElegida->base;
 			} else {
