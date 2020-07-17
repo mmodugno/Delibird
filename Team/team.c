@@ -33,9 +33,8 @@ int main(int argc, char* argv[]){
 	sem_init(&nuevo_pokemon,0,0);
 
 	sem_init(&en_ejecucion,0,1);
+	sem_init(&semaforo_mensaje,0,1);
 
-
-	//float alpha = leer_alpha();
 
 
 
@@ -56,13 +55,14 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
+	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
 	//iniciar_servidor();
 
 
  //PRUEBAS DE TP:
 
-
+/*
 	pokemon* pikachu = hacer_pokemon("Pikachu",9, 9,sizeof("Pikachu"));
 		aparece_nuevo_pokemon(pikachu);
 
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]){
 	pokemon* squirte2 = hacer_pokemon("Squirtle",5,5,sizeof("Squirtle"));
 		aparece_nuevo_pokemon(squirte2);
 
-
+*/
 
 
 
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]){
  	imprimir_metricas();
  	//loggear_metricas();
 
-	terminar_programa();
+	//terminar_programa();
 
 }
 
