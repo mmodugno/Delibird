@@ -12,6 +12,7 @@
 void envioColaNewPokemon() {
 	t_list *usersSinACK ;
 	char* username;
+	particion *mensajeNewEnMemo;
 
 	//TODO ver si este while esta demas
 	//while(1){
@@ -33,7 +34,11 @@ void envioColaNewPokemon() {
 		if (part->tipoMensaje == NEW_POKEMON) {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersSinACK = list_duplicate(part->acknoleged);
+
+			sem_wait(&suscripcionACola);
 			list_iterate(suscriptoresNewPokemon,llenarUserSinACK);
+			sem_post(&suscripcionACola);
+
 			if(usersSinACK->elements_count!=0){
 				return 1;
 			}
@@ -47,7 +52,14 @@ void envioColaNewPokemon() {
 	sem_wait(&usoMemoria);
 
 	//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
-	particion *mensajeNewEnMemo = list_find(tablaDeParticiones,menNewQueFalten);
+	//TODO cambiar esto si es BS
+	if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+		mensajeNewEnMemo = list_find(tablaDeParticiones,menNewQueFalten);
+	}
+	if(!strcmp(algoritmo_memoria,"BS")){
+		//TODO como encontrar el mensaje que le falte mandar (que tabla uso mas que nada)
+
+	}
 
 
 	enviarPorTipo(mensajeNewEnMemo,usersSinACK);
@@ -60,6 +72,8 @@ void envioColaNewPokemon() {
 	//destroy si lo uso fuera del while
 	//list_destroy(usersSinACK);
 
+
+	free(mensajeNewEnMemo);
 	free(username);
 	sem_post(&usoMemoria);
 
@@ -179,6 +193,10 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 			enviar_Cola_New_Pokemon(newAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a %s el mensaje", usersAEnviar);
 		} else {
+			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
+			sem_wait(&suscripcionACola);
+			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,esGameBoy,free);
+			sem_post(&suscripcionACola);
 			log_info(logEnviarNuevo, "No pude enviar el mensaje a %s porque no esta en linea",usersAEnviar);
 		}
 		liberar_conexion(conexionGameboy);
@@ -218,6 +236,10 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a %s el mensaje", usersAEnviar);
 		} else {
+			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
+			sem_wait(&suscripcionACola);
+			list_remove_and_destroy_by_condition(suscriptoresAppearedPokemon,esGameBoy,free);
+			sem_post(&suscripcionACola);
 			log_info(logEnviarNuevo, "No pude enviar el mensaje a %s porque no esta en linea",usersAEnviar);
 		}
 		liberar_conexion(conexionGameboy);
@@ -257,6 +279,10 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a %s el mensaje", usersAEnviar);
 		} else {
+			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
+			sem_wait(&suscripcionACola);
+			list_remove_and_destroy_by_condition(suscriptoresCatchPokemon,esGameBoy,free);
+			sem_post(&suscripcionACola);
 			log_info(logEnviarNuevo, "No pude enviar el mensaje a %s porque no esta en linea",usersAEnviar);
 		}
 		liberar_conexion(conexionGameboy);
@@ -296,6 +322,10 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a %s el mensaje", usersAEnviar);
 		} else {
+			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
+			sem_wait(&suscripcionACola);
+			list_remove_and_destroy_by_condition(suscriptoresCaughtPokemon,esGameBoy,free);
+			sem_post(&suscripcionACola);
 			log_info(logEnviarNuevo, "No pude enviar el mensaje a %s porque no esta en linea",usersAEnviar);
 		}
 		liberar_conexion(conexionGameboy);
@@ -335,6 +365,10 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 			enviar_cola_Get_Pokemon(getAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a %s el mensaje", usersAEnviar);
 		} else {
+			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
+			sem_wait(&suscripcionACola);
+			list_remove_and_destroy_by_condition(suscriptoresGetPokemon,esGameBoy,free);
+			sem_post(&suscripcionACola);
 			log_info(logEnviarNuevo, "No pude enviar el mensaje a %s porque no esta en linea",usersAEnviar);
 		}
 		liberar_conexion(conexionGameboy);
@@ -374,6 +408,10 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a %s el mensaje", usersAEnviar);
 		} else {
+			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
+			sem_wait(&suscripcionACola);
+			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,esGameBoy,free);
+			sem_post(&suscripcionACola);
 			log_info(logEnviarNuevo, "No pude enviar el mensaje a %s porque no esta en linea",usersAEnviar);
 		}
 		liberar_conexion(conexionGameboy);
@@ -617,7 +655,6 @@ t_buffer* serializarMensajeColaLOCALIZED(broker_localized_pokemon* brokerLocaliz
 
 	return buffer;
 }
-
 
 t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar){
 
