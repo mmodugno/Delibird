@@ -141,7 +141,7 @@ void serve_client(int* socket) {
  BROKER__LOCALIZED_POKEMON = 13,
  SUSCRIPCION = 11
  */
-
+//TODO ver quienes necesitan devolver el id
 void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
@@ -415,7 +415,25 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			break;
+		case DESUSCRIBIR:
 
+			suscriptor = deserializar_suscripcion(cliente_fd);
+
+/*
+			log_info(logSuscipcion,
+					"recibi mensaje de desuscripcion de %s a la cola %s",
+					suscriptor->nombreDeSuscriptor,
+					colasDeEnum[(suscriptor->tipoDeCola) - 1]);*/
+
+			sem_wait(&suscripcionACola);
+			desuscribirACola(suscriptor);
+			sem_post(&suscripcionACola);
+
+			free(suscriptor);
+
+			break;
+
+			break;
 		case 0:
 			pthread_exit(NULL);
 			break;
@@ -465,6 +483,47 @@ void suscribirACola(suscriptor* suscriptor){
 			break;
 
 	}
+}
+
+
+
+void desuscribirACola(suscriptor* suscriptor){
+
+
+	/*
+	 *
+	//TODO ver porque no existe el suscriptor
+	bool suscriptorAEliminar(suscriptor* susc){
+		return (!strcmp(susc->nombreDeSuscriptor, suscriptor->nombreDeSuscriptor));
+	}
+
+	switch(suscriptor->tipoDeCola){
+		case NEW_POKEMON:{
+			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,suscriptorAEliminar,free);
+			break;
+		}
+		case APPEARED_POKEMON:{
+			list_remove_and_destroy_by_condition(suscriptoresAppearedPokemon,suscriptorAEliminar,free);
+			break;
+		}
+		case CATCH_POKEMON:{
+
+			list_remove_and_destroy_by_condition(suscriptoresCatchPokemon,suscriptorAEliminar,free);
+			break;
+		}
+		case CAUGHT_POKEMON:{
+			list_remove_and_destroy_by_condition(suscriptoresCaughtPokemon,suscriptorAEliminar,free);
+			break;
+		}
+		case GET_POKEMON:{
+			list_remove_and_destroy_by_condition(suscriptoresGetPokemon,suscriptorAEliminar,free);
+			break;
+		}
+		case LOCALIZED_POKEMON:{
+			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,suscriptorAEliminar,free);
+			break;
+		}
+	}*/
 }
 
 void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uint32_t idCorrelativo, uint32_t tamanioAgregar) {
@@ -877,7 +936,7 @@ int compactarMemoria(){
 			t_list* partOcupadas = list_filter(tablaDeParticiones, partLlenas);
 
 			list_sort(tablaDeParticiones, baseMasChica);
-			//muestra como quedo la tabla de particiones TODO (COMENTAR)
+			//muestra como quedo la tabla de particiones  (COMENTAR)
 			/*
 			 log_info(compactacionMemoria,"antes de compactar la memoria esta asi:");
 			 list_iterate(tablaDeParticiones,mostrarParticiones);*/
@@ -952,7 +1011,7 @@ void terminar_programa() {
 	config_destroy(config);
 }
 
-//TODO ver id correlativo si lo usa
+//ver id correlativo si lo usa
 broker_new_pokemon* leerdeMemoriaNEW(particion* part) {
 
 	int offset = part->base;
@@ -997,7 +1056,7 @@ broker_new_pokemon* leerdeMemoriaNEW(particion* part) {
 	return newEnMemo;
 }
 
-//TODO ver id correlativo si lo usa
+// ver id correlativo si lo usa
 broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part) {
 
 	int offset =part->base;
@@ -1039,7 +1098,7 @@ broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part) {
 	return appEnMemoria;
 }
 
-//TODO ver id correlativo si lo usa
+// ver id correlativo si lo usa
 broker_catch_pokemon* leerdeMemoriaCATCH(particion* part) {
 	int offset =part->base;
 
@@ -1079,7 +1138,7 @@ broker_catch_pokemon* leerdeMemoriaCATCH(particion* part) {
 	return catchEnMemo;
 }
 
-//TODO ver id correlativo si lo usa
+// ver id correlativo si lo usa
 broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part) {
 	int offset =part->base;
 
@@ -1105,7 +1164,7 @@ broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part) {
 	return caughtEnMemo;
 }
 
-//TODO ver id correlativo si lo usa
+// ver id correlativo si lo usa
 broker_get_pokemon* leerdeMemoriaGET(particion* part) {
 	int offset =part->base;
 
@@ -1136,7 +1195,7 @@ broker_get_pokemon* leerdeMemoriaGET(particion* part) {
 	return getEnMemo;
 }
 
-//TODO ver id correlativo si lo usa
+// ver id correlativo si lo usa
 broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part) {
 	int offset =part->base;
 

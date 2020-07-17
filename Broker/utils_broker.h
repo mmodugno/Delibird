@@ -170,6 +170,7 @@ broker_catch_pokemon* leerdeMemoriaCATCH(particion* part);
 broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part);
 broker_get_pokemon* leerdeMemoriaGET(particion* part);
 broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part);
+void desuscribirACola(suscriptor* suscriptor);
 
 /* buddy */
 void agregarEnBuddy(buddy* );

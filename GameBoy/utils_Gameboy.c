@@ -327,62 +327,7 @@ void enviar_GameCard_Get_Pokemon(gameCard_get_pokemon *gameCardGetPokemon,char* 
 
 
 
-//TODO?
-//se podria usar este para no repetir codigo, pero no se me ocurrio cómo
-void enviar_mensaje(char* mensaje, int socket_cliente)
-{
 
-	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
-	paquete_a_enviar->codigo_operacion = MENSAJE;
-
-	t_buffer* buffer = malloc(sizeof(t_buffer));
-	buffer->size=strlen(mensaje)+1;
-	buffer->stream= mensaje;
-
-	paquete_a_enviar->buffer= buffer;
-
-	int tamanio_buffer=0;
-
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
-
-
-	free(bufferStream);
-
-	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
-	//free(buffer->stream);
-	//free(buffer);
-	//free(paquete_a_enviar->buffer->stream);
-	free(paquete_a_enviar->buffer);
-	free(paquete_a_enviar);
-}
-
-//TODO?
-//podriamos modificar este y usar el server que nos dieron para probar los mensajes anteriores
-char* recibir_mensaje(int socket_cliente)
-{
-	t_paquete* paquete_recibido=malloc(sizeof(t_paquete));
-	paquete_recibido->buffer= malloc(sizeof(t_buffer));
-
-	char* mensaje;
-
-
-	recv(socket_cliente,&(paquete_recibido->codigo_operacion),sizeof(op_code),0);
-	recv(socket_cliente,&(paquete_recibido->buffer->size),sizeof(int),0);
-
-	if(paquete_recibido->codigo_operacion == MENSAJE){
-		recv(socket_cliente,(paquete_recibido->buffer->stream),paquete_recibido->buffer->size,0);
-	}
-
-	mensaje = malloc(paquete_recibido->buffer->size);
-	memcpy(mensaje,paquete_recibido->buffer->stream,paquete_recibido->buffer->size);
-
-	free(paquete_recibido->buffer);
-	free(paquete_recibido);
-	return mensaje;
-
-
-}
 
 
 void liberar_conexion(int socket_cliente)
@@ -423,15 +368,14 @@ void iniciar_servidor_gameboy(){
     	esperar_cliente_gameboy(socket_servidor_gameboy);
     }
 
-    //TODO enviar pedido de Desuscripcion o como se escriba
 }
 
 void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Broker al Gameboy para enviarle los mensajes de las colas
 	struct sockaddr_in dir_cliente;
 
-	socklen_t* tam_direccion = sizeof(struct sockaddr_in);
+	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
-	int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion,segundosSuscripcion);
+	int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion,segundosSuscripcion);
 
 	pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente_gameboy); // EL hilo q procesa los mensajes
 	pthread_detach(hiloConexion);
@@ -478,6 +422,7 @@ int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, so
 void serve_client_gameboy(int socket){ // Se reciben los bytes enviados por el Broker
 	int cod_op;
 
+	sem_wait(&llegadaMensajes);
 	int i = recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	//int i = recv(socket, &cod_op, sizeof(op_code));
 
@@ -511,22 +456,33 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
 	char* username;
-
+	uint32_t posiciones;
+	char *posicionesString =string_new();
 	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
 	username = malloc(tamanio_username);
 	recv(cliente_fd, username,tamanio_username,MSG_WAITALL);
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
+	broker_new_pokemon* newRecibido;
+	broker_appeared_pokemon* appearedRecibido;
+	broker_get_pokemon* getRecibido;
+	broker_catch_pokemon* catchRecibido;
+	broker_caught_pokemon* caughtRecibido;
+	broker_localized_pokemon* localizedRecibido;
 
-	//Leo el ID
-	int ID;
-	recv(cliente_fd, &ID, sizeof(uint32_t), MSG_WAITALL);
+	uint32_t id;
 
 	switch (cod_op) {
-		case BROKER__NEW_POKEMON:{
-			broker_new_pokemon* newRecibido;
+		case BROKER__NEW_POKEMON:
+
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			newRecibido = deserializar_new_pokemon(cliente_fd);
+			newRecibido->id = id;
+
+			//TODO porque carajo tira implicit declaration
+			enviarACK(newRecibido->id,conexionBroker,"GAMEBOY");
+
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
-					ID,
+					newRecibido->id,
 					username,
 					newRecibido->datos->tamanioNombre,
 					newRecibido->datos->nombrePokemon,
@@ -536,13 +492,17 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 			free(newRecibido);
 			break;
-		}
-		case BROKER__APPEARED_POKEMON:{
-			broker_appeared_pokemon* appearedRecibido;
+
+		case BROKER__APPEARED_POKEMON:
+
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
+			appearedRecibido->id =id;
+
+			enviarACK(appearedRecibido->id,conexionBroker,"GAMEBOY");
 
 			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d",
-					ID,
+					appearedRecibido,
 					username,
 					appearedRecibido->datos->tamanioNombre,
 					appearedRecibido->datos->nombrePokemon,
@@ -551,26 +511,33 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 			free(appearedRecibido);
 			break;
-		}
-		case BROKER__GET_POKEMON:{
-			broker_get_pokemon* getRecibido;
+
+		case BROKER__GET_POKEMON:
+
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			getRecibido = deserializar_get_pokemon(cliente_fd);
+			getRecibido->id = id;
+			enviarACK(getRecibido->id,conexionBroker,"GAMEBOY");
 
 			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s ",
-					ID,
+					getRecibido->id,
 					username,
 					getRecibido->datos->tamanioNombre,
 					getRecibido->datos->nombrePokemon);
 
 			free(getRecibido);
 			break;
-		}
-		case BROKER__CATCH_POKEMON:{
-			broker_catch_pokemon* catchRecibido;
+
+		case BROKER__CATCH_POKEMON:
+
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			catchRecibido = deserializar_catch_pokemon(cliente_fd);
+			catchRecibido->id = id;
+
+			enviarACK(catchRecibido->id,conexionBroker,"GAMEBOY");
 
 			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d ",
-					ID,
+					catchRecibido->id,
 					username,
 					catchRecibido->datos->tamanioNombre,
 					catchRecibido->datos->nombrePokemon,
@@ -579,20 +546,52 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 			free(catchRecibido);
 			break;
-		}
-		case BROKER__CAUGHT_POKEMON:{
-			broker_caught_pokemon* caughtRecibido;
+
+		case BROKER__CAUGHT_POKEMON:
+
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
+			caughtRecibido->id = id;
+
+			enviarACK(caughtRecibido->id,conexionBroker,"GAMEBOY");
 
 			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON (ID = %d) de %s\n con ID_relativo: %d \n puedoAtraparlo: %d ",
-					ID,
+					caughtRecibido->id,
 					username,
 					caughtRecibido->id_relativo,
 					caughtRecibido->datos->puedoAtraparlo);
 
 			free(caughtRecibido);
 			break;
-		}
+
+		case BROKER__LOCALIZED_POKEMON:
+
+			//TODO probar el localized
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
+			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
+			localizedRecibido->id = id;
+
+			enviarACK(localizedRecibido->id,conexionBroker,"GAMEBOY");
+
+			posiciones = 0;
+			for (posiciones = 0;
+					posiciones < localizedRecibido->datos->cantidadPosiciones;
+					posiciones++) {
+				char* posicion = string_from_format("(%d;%d)",
+						localizedRecibido->datos->posX[posiciones],
+						localizedRecibido->datos->posY[posiciones]);
+				string_append(&posicionesString, posicion);
+			}
+
+			log_info(logMensajeNuevo,
+					"recibi mensaje de LOCALIZED_POKEMON (ID = %d) de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n ",
+					localizedRecibido->id, username, localizedRecibido->datos->tamanioNombre,
+					localizedRecibido->datos->nombrePokemon,
+					localizedRecibido->datos->cantidadPosiciones, posicionesString,
+					localizedRecibido->id_relativo);
+
+			free(localizedRecibido);
+			break;
 		case 0:
 			pthread_exit(NULL);
 		case -1:
@@ -602,4 +601,5 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			flagTerminoSuscripcion = 1;
 			pthread_exit(NULL);
 		}
+	sem_post(&llegadaMensajes);
 }
