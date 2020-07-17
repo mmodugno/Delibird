@@ -1095,6 +1095,7 @@ int conectarse_con_broker(void){
 
 void serve_client(int* socket)
 {
+sem_wait(&sem_conexion);
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
@@ -1186,7 +1187,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	}
 
-
+	sem_post(&sem_conexion);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size)

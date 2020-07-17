@@ -80,9 +80,9 @@ int main(int argc, char* argv[]){
 
 
 
- 	//imprimir_metricas();
+ 	imprimir_metricas();
 
- 	loggear_metricas();
+ 	//loggear_metricas();
 
 	terminar_programa();
 
