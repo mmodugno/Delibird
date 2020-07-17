@@ -12,9 +12,10 @@
 
 //TODO arreglar segun algoritmo:
 void variables_globales(){
-	config = leer_config();
-	broker_conectado = false;
 
+	config = leer_config();
+
+	broker_conectado = false;
 	hacer_entrenadores();
 	calcular_objetivo_global();
 
@@ -22,16 +23,23 @@ void variables_globales(){
 
 	pokemones_atrapados= list_create();
 
-	entrenadores_ready = queue_create();
-	entrenadores_block_ready = queue_create();
+	//Si planifico con FIFO o RR lo hago mediante COLAS
+	if(leer_algoritmo_planificacion() == FIFO || leer_algoritmo_planificacion() == RR){
+		entrenadores_ready = queue_create();
+		entrenadores_block_ready = queue_create();
+	}
+
+	else{ //Si planifico con SJF
+		lista_entrenadores_block_ready = list_create();
+		lista_entrenadores_ready = list_create();
+		alpha = leer_alpha();
+	}
+
+	entrenadores_blocked = queue_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
-	lista_entrenadores_block_ready = list_create();
-	entrenadores_blocked = queue_create();
-	lista_entrenadores_ready = list_create();
 
-	alpha = leer_alpha();
-
+	//Metricas y contador de deadlock:
 	cant_deadlocks = 0;
 	cant_deadlocks_resueltos = 0;
 	entrenador_deadlock=0;
@@ -1395,7 +1403,6 @@ void esperar_cliente(int socket_servidor)
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
-	//log_info(logConexion," se conectaron a broker");
 
 	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
 	pthread_detach(thread);
@@ -1498,6 +1505,7 @@ void* recibir_mensaje(int socket_cliente, int* size)
 
 
 //ESTO ES PARA SER EL CLIENTE
+
 int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
@@ -1525,15 +1533,10 @@ int crear_conexion(char *ip, char* puerto)
 }
 
 
-
 void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
 }
-
-
-
-
 
 
 ///////////////////////////////////////LOGS///////////////////////////////////////
