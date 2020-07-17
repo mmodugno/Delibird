@@ -35,7 +35,7 @@ void variables_globales(){
 		alpha = leer_alpha();
 	}
 
-	entrenadores_blocked = queue_create();
+	entrenadores_blocked = list_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
 
@@ -505,9 +505,9 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
-	//int retardo = leer_retardo_cpu() * 5;
+	int retardo = leer_retardo_cpu() * 5;
 
-	sleep(5); //IRIA sleep(retardo)
+	sleep(retardo); //IRIA sleep(retardo)
 
 	//intercambio
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
@@ -717,7 +717,8 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d \n",entrenador0->id,entrenador1->id);
 
-	mover_entrenador_RR(entrenador0,x,y);
+	mover_entrenador(entrenador0,x,y);
+	//mover_entrenador_RR(entrenador0,x,y);
 
 	int retardo = leer_retardo_cpu(); //*5
 	sleep(retardo); //IRIA sleep(retardo)
@@ -729,7 +730,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 		//printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 
-		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
+		log_info(cambioDeCola,"cambio a READY a entrenador: %d en espera de Intercambio \n ",entrenador0->id);
 
 		queue_push(entrenadores_ready, entrenador0);
 
@@ -1175,8 +1176,10 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 	disminuir_cuantos_puede_cazar(un_entrenador);
 
-	//TODO aca hago que ya no este mas en blocked, sino que en ready
-	//lo saco de blocked???
+	// aca hago que ya no este mas en blocked, sino que en ready
+
+	desbloquear_entrenador(un_entrenador);
+
 	if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready, un_entrenador);
 	else{
 		queue_push(entrenadores_ready,un_entrenador);
@@ -1190,8 +1193,16 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 void denegar_catch(entrenador* un_entrenador){
 	log_info(llegadaDeMensaje,"No se agarró al pokemon %s", un_entrenador->objetivo_proximo->nombre);
+
+	desbloquear_entrenador(un_entrenador);
+
+	if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready, un_entrenador);
+		else{
+			queue_push(entrenadores_ready,un_entrenador);
+		}
+
 	sem_post(&(un_entrenador->espera_de_catch));
-	queue_push(entrenadores_ready,un_entrenador);
+
 }
 
 
@@ -1281,16 +1292,6 @@ bool cumplio_objetivo(entrenador* un_entrenador){
 }
 
 
-void printear_lista_entrenadores(t_list* lista){
-
-	if(list_is_empty(lista)) printf("Lista vacia");
-	for (int i = 0; i < list_size(lista);i++){
-		entrenador* entrenador = list_get(lista,i);
-		printf("  entrenador: %d ",entrenador->id);
-	}
-	printf(" \n  ");
-}
-
 bool hay_deadlock(void){
 
 	return (entrenador_deadlock==2);
@@ -1331,8 +1332,19 @@ void analizar_proxima_cola(entrenador* un_entrenador){
 }
 
 void bloquear_entrenador(entrenador* un_entrenador){
-	queue_push(entrenadores_blocked,un_entrenador);
+	list_add(entrenadores_blocked,un_entrenador);
 	log_info(cambioDeCola,"Cambio a BLOCKED de entrenador: %d \n ",un_entrenador->id);
+}
+
+
+
+void desbloquear_entrenador(entrenador* un_entrenador){
+	entrenador_a_eliminar = un_entrenador;
+	list_remove_by_condition(entrenadores_blocked,(void*)entrenador_eliminado);
+}
+
+bool entrenador_eliminado(entrenador* un_entrenador){
+	return (un_entrenador->id) == (entrenador_a_eliminar->id);
 }
 
 bool hay_pokemon_y_entrenador(){

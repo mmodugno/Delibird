@@ -1,0 +1,596 @@
+[INFO] 12:20:00:600 ERROR EN COMUNICACION/(6454:6462): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:20:25:789 NUEVO MENSAJE/(6454:6471): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+
+[INFO] 12:20:25:790 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:20:25:801 NUEVO MENSAJE/(6454:6475): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 6 
+ posY: 7 
+
+[INFO] 12:20:25:813 NUEVO MENSAJE/(6454:6477): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+
+[INFO] 12:20:25:817 NUEVO MENSAJE/(6454:6479): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+
+[INFO] 12:20:25:823 NUEVO MENSAJE/(6454:6481): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+
+[INFO] 12:20:29:791 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:20:29:792 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:20:30:600 ERROR EN COMUNICACION/(6454:6462): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:20:33:794 CAMBIO DE COLA/(6454:6461): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:20:33:796 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:20:37:797 CAMBIO DE COLA/(6454:6459): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:20:37:797 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:20:41:798 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:20:41:801 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:20:45:802 CAMBIO DE COLA/(6454:6461): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:20:45:803 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:20:49:804 CAMBIO DE COLA/(6454:6459): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:20:49:805 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:20:53:807 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:20:53:807 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:20:57:809 CAMBIO DE COLA/(6454:6461): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:20:57:809 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:21:00:601 ERROR EN COMUNICACION/(6454:6462): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:01:811 CAMBIO DE COLA/(6454:6459): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:21:01:811 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:05:812 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:05:816 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:09:817 CAMBIO DE COLA/(6454:6461): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:21:09:817 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:21:09:817 MOVIMIENTO DE ENTRENADOR/(6454:6459): entrenador 0: se movio a (2,8)
+[INFO] 12:21:09:817 OPERACION ATRAPAR/(6454:6459): ATRAPAR POKEMON: Onix con posicion (2, 8)
+[INFO] 12:21:09:817 ERROR EN COMUNICACION/(6454:6459): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:09:817 CAMBIO DE COLA/(6454:6459): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 12:21:09:817 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:13:819 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:13:821 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:15:821 MOVIMIENTO DE ENTRENADOR/(6454:6461): entrenador 2: se movio a (6,7)
+[INFO] 12:21:15:822 OPERACION ATRAPAR/(6454:6461): ATRAPAR POKEMON: Squirtle con posicion (6, 7)
+[INFO] 12:21:15:822 ERROR EN COMUNICACION/(6454:6461): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:15:822 CAMBIO DE COLA/(6454:6461): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 12:21:15:822 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:21:15:822 CAMBIO DE COLA/(6454:6459): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 12:21:15:822 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:19:824 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:19:824 DETECCION_DEADLOCK/(6454:6463): Inicio de deteccion de deadlock
+[INFO] 12:21:19:824 RESULTADO_DE_DEADLOCK/(6454:6463): No se detectó nuevo deadlock
+[INFO] 12:21:19:824 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:19:825 CAMBIO DE COLA/(6454:6461): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 12:21:19:825 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:21:825 MOVIMIENTO DE ENTRENADOR/(6454:6460): entrenador 1: se movio a (9,9)
+[INFO] 12:21:21:826 OPERACION ATRAPAR/(6454:6460): ATRAPAR POKEMON: Pikachu con posicion (9, 9)
+[INFO] 12:21:21:826 ERROR EN COMUNICACION/(6454:6460): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:21:826 CAMBIO DE COLA/(6454:6460): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:21:21:826 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:23:830 MOVIMIENTO DE ENTRENADOR/(6454:6461): entrenador 2: se movio a (6,6)
+[INFO] 12:21:23:831 OPERACION ATRAPAR/(6454:6461): ATRAPAR POKEMON: Gengar con posicion (6, 6)
+[INFO] 12:21:23:832 ERROR EN COMUNICACION/(6454:6461): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:23:832 CAMBIO DE COLA/(6454:6461): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 12:21:23:832 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:23:833 CAMBIO DE COLA/(6454:6460): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 12:21:23:833 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:27:838 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:27:838 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:27:838 CAMBIO DE COLA/(6454:6461): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 12:21:27:838 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:30:601 ERROR EN COMUNICACION/(6454:6462): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:31:842 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:31:842 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:35:844 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:35:851 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:39:853 CAMBIO DE COLA/(6454:6460): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:21:39:854 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:39:854 MOVIMIENTO DE ENTRENADOR/(6454:6460): entrenador 1: se movio a (5,5)
+[INFO] 12:21:39:854 OPERACION ATRAPAR/(6454:6460): ATRAPAR POKEMON: Squirtle con posicion (5, 5)
+[INFO] 12:21:39:854 ERROR EN COMUNICACION/(6454:6460): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:21:39:854 CAMBIO DE COLA/(6454:6460): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:21:39:855 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:21:39:855 CAMBIO DE COLA/(6454:6460): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 12:21:44:829 DETECCION_DEADLOCK/(6454:6463): Inicio de deteccion de deadlock
+[INFO] 12:21:44:833 RESULTADO_DE_DEADLOCK/(6454:6463): Se detectó deadlock multiple
+[INFO] 12:21:46:848 MOVIMIENTO DE ENTRENADOR/(6454:6509): entrenador 0: se movio a (5,5)
+[INFO] 12:21:48:849 CAMBIO DE COLA/(6454:6509): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:21:48:849 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:21:48:849 CAMBIO DE COLA/(6454:6509): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:21:48:849 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:21:48:849 OPERACION INTERCAMBIO/(6454:6509): intercambio entre entrenadores 0 y 1
+[INFO] 12:21:48:849 CAMBIO DE COLA/(6454:6509): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 12:21:48:849 DETECCION_DEADLOCK/(6454:6463): Inicio de deteccion de deadlock
+[INFO] 12:21:48:849 RESULTADO_DE_DEADLOCK/(6454:6463): Se detectó deadlock
+[INFO] 12:21:48:856 OPERACION INTERCAMBIO/(6454:6511): intercambio entre entrenadores 2 y 1 
+
+[INFO] 12:21:52:858 CAMBIO DE COLA/(6454:6511): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:21:52:865 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:52:865 MOVIMIENTO DE ENTRENADOR/(6454:6511): entrenador 2: se movio a (5,5)
+[INFO] 12:21:54:865 CAMBIO DE COLA/(6454:6511): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:21:54:866 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:54:866 CAMBIO DE COLA/(6454:6511): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:21:54:866 CAMBIO DE COLA/(6454:6463): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:21:54:866 CAMBIO DE COLA/(6454:6511): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 12:21:54:866 CAMBIO DE COLA/(6454:6511): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 12:21:54:866 DETECCION_DEADLOCK/(6454:6463): Inicio de deteccion de deadlock
+[INFO] 12:21:54:866 RESULTADO_DE_DEADLOCK/(6454:6463): No se detectó nuevo deadlock
+[INFO] 12:25:43:204 ERROR EN COMUNICACION/(6606:6614): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:25:50:344 NUEVO MENSAJE/(6606:6635): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+
+[INFO] 12:25:50:349 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:25:50:365 NUEVO MENSAJE/(6606:6638): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 6 
+ posY: 7 
+
+[INFO] 12:25:50:370 NUEVO MENSAJE/(6606:6640): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+
+[INFO] 12:25:50:374 NUEVO MENSAJE/(6606:6642): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+
+[INFO] 12:25:50:377 NUEVO MENSAJE/(6606:6644): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+
+[INFO] 12:25:54:351 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:25:54:351 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:25:58:353 CAMBIO DE COLA/(6606:6613): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:25:58:355 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:26:02:357 CAMBIO DE COLA/(6606:6611): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:26:02:357 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:06:359 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:06:360 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:10:362 CAMBIO DE COLA/(6606:6613): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:26:10:362 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:26:14:249 ERROR EN COMUNICACION/(6606:6614): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:26:14:363 CAMBIO DE COLA/(6606:6611): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:26:14:363 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:18:366 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:18:366 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:22:367 CAMBIO DE COLA/(6606:6613): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:26:22:369 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:26:26:370 CAMBIO DE COLA/(6606:6611): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:26:26:370 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:30:372 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:30:373 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:34:376 CAMBIO DE COLA/(6606:6613): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:26:34:376 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:26:34:376 MOVIMIENTO DE ENTRENADOR/(6606:6611): entrenador 0: se movio a (2,8)
+[INFO] 12:26:34:376 OPERACION ATRAPAR/(6606:6611): ATRAPAR POKEMON: Onix con posicion (2, 8)
+[INFO] 12:26:34:376 ERROR EN COMUNICACION/(6606:6611): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:26:34:376 CAMBIO DE COLA/(6606:6611): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 12:26:34:376 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:38:378 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:38:380 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:40:381 MOVIMIENTO DE ENTRENADOR/(6606:6613): entrenador 2: se movio a (6,7)
+[INFO] 12:26:40:381 OPERACION ATRAPAR/(6606:6613): ATRAPAR POKEMON: Squirtle con posicion (6, 7)
+[INFO] 12:26:40:381 ERROR EN COMUNICACION/(6606:6613): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:26:40:381 CAMBIO DE COLA/(6606:6613): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 12:26:40:381 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:26:40:381 CAMBIO DE COLA/(6606:6611): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 12:26:40:381 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:44:252 ERROR EN COMUNICACION/(6606:6614): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:26:44:382 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:44:382 DETECCION_DEADLOCK/(6606:6615): Inicio de deteccion de deadlock
+[INFO] 12:26:44:382 RESULTADO_DE_DEADLOCK/(6606:6615): No se detectó nuevo deadlock
+[INFO] 12:26:44:382 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:44:382 CAMBIO DE COLA/(6606:6613): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 12:26:44:382 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:46:383 MOVIMIENTO DE ENTRENADOR/(6606:6612): entrenador 1: se movio a (9,9)
+[INFO] 12:26:46:383 OPERACION ATRAPAR/(6606:6612): ATRAPAR POKEMON: Pikachu con posicion (9, 9)
+[INFO] 12:26:46:383 ERROR EN COMUNICACION/(6606:6612): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:26:46:383 CAMBIO DE COLA/(6606:6612): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:26:46:383 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:48:386 MOVIMIENTO DE ENTRENADOR/(6606:6613): entrenador 2: se movio a (6,6)
+[INFO] 12:26:48:386 OPERACION ATRAPAR/(6606:6613): ATRAPAR POKEMON: Gengar con posicion (6, 6)
+[INFO] 12:26:48:388 ERROR EN COMUNICACION/(6606:6613): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:26:48:389 CAMBIO DE COLA/(6606:6613): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 12:26:48:389 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:48:391 CAMBIO DE COLA/(6606:6612): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 12:26:48:391 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:52:393 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:52:393 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:26:52:393 CAMBIO DE COLA/(6606:6613): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 12:26:52:393 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:26:56:396 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:26:56:403 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:27:00:407 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:27:00:408 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:27:04:409 CAMBIO DE COLA/(6606:6612): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:27:04:416 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:27:04:419 MOVIMIENTO DE ENTRENADOR/(6606:6612): entrenador 1: se movio a (5,5)
+[INFO] 12:27:04:419 OPERACION ATRAPAR/(6606:6612): ATRAPAR POKEMON: Squirtle con posicion (5, 5)
+[INFO] 12:27:04:419 ERROR EN COMUNICACION/(6606:6612): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:27:04:419 CAMBIO DE COLA/(6606:6612): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:27:04:419 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:27:04:419 CAMBIO DE COLA/(6606:6612): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 12:27:09:383 DETECCION_DEADLOCK/(6606:6615): Inicio de deteccion de deadlock
+[INFO] 12:27:09:384 RESULTADO_DE_DEADLOCK/(6606:6615): Se detectó deadlock multiple
+[INFO] 12:27:11:397 MOVIMIENTO DE ENTRENADOR/(6606:6669): entrenador 0: se movio a (5,5)
+[INFO] 12:27:13:398 CAMBIO DE COLA/(6606:6669): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:27:13:399 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:27:13:399 CAMBIO DE COLA/(6606:6669): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:27:13:399 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:27:13:399 OPERACION INTERCAMBIO/(6606:6669): intercambio entre entrenadores 0 y 1
+[INFO] 12:27:13:399 CAMBIO DE COLA/(6606:6669): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 12:27:13:399 DETECCION_DEADLOCK/(6606:6615): Inicio de deteccion de deadlock
+[INFO] 12:27:13:399 RESULTADO_DE_DEADLOCK/(6606:6615): Se detectó deadlock
+[INFO] 12:27:13:404 OPERACION INTERCAMBIO/(6606:6671): intercambio entre entrenadores 2 y 1 
+
+[INFO] 12:27:14:253 ERROR EN COMUNICACION/(6606:6614): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:27:17:407 CAMBIO DE COLA/(6606:6671): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:27:17:413 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:27:17:416 MOVIMIENTO DE ENTRENADOR/(6606:6671): entrenador 2: se movio a (5,5)
+[INFO] 12:27:19:416 CAMBIO DE COLA/(6606:6671): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:27:19:417 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:27:19:417 CAMBIO DE COLA/(6606:6671): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:27:19:417 CAMBIO DE COLA/(6606:6615): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:27:19:417 CAMBIO DE COLA/(6606:6671): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 12:27:19:417 CAMBIO DE COLA/(6606:6671): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 12:27:19:419 DETECCION_DEADLOCK/(6606:6615): Inicio de deteccion de deadlock
+[INFO] 12:27:19:421 RESULTADO_DE_DEADLOCK/(6606:6615): No se detectó nuevo deadlock
+[INFO] 12:27:19:422 RESULTADO TEAM/(6606:6606): Ciclos de cpu entrenador 0: 17
+[INFO] 12:27:19:422 RESULTADO TEAM/(6606:6606): Ciclos de cpu entrenador 1: 21
+[INFO] 12:27:19:422 RESULTADO TEAM/(6606:6606): Ciclos de cpu entrenador 2: 17
+[INFO] 12:27:19:422 RESULTADO TEAM/(6606:6606): Ciclos de cpu totales: 55
+[INFO] 12:27:19:422 RESULTADO TEAM/(6606:6606): Cantidad de deadlocks producidos: 1
+[INFO] 12:27:19:422 RESULTADO TEAM/(6606:6606): Cantidad de deadlocks resueltos: 2
+[INFO] 12:28:38:582 ERROR EN COMUNICACION/(6727:6735): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:28:43:730 NUEVO MENSAJE/(6727:6742): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+
+[INFO] 12:28:43:738 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:28:43:748 NUEVO MENSAJE/(6727:6745): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 6 
+ posY: 7 
+
+[INFO] 12:28:43:749 NUEVO MENSAJE/(6727:6747): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+
+[INFO] 12:28:43:750 NUEVO MENSAJE/(6727:6749): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+
+[INFO] 12:28:43:752 NUEVO MENSAJE/(6727:6751): recibi mensaje appeared pokemon de GAMEBOY:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+
+[INFO] 12:28:47:742 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:28:47:742 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:28:51:744 CAMBIO DE COLA/(6727:6734): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:28:51:745 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:28:55:747 CAMBIO DE COLA/(6727:6732): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:28:55:747 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:28:59:748 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:28:59:750 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:03:752 CAMBIO DE COLA/(6727:6734): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:29:03:752 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:29:07:753 CAMBIO DE COLA/(6727:6732): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:29:07:756 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:08:622 ERROR EN COMUNICACION/(6727:6735): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:11:757 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:11:757 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:15:758 CAMBIO DE COLA/(6727:6734): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:29:15:760 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:29:19:762 CAMBIO DE COLA/(6727:6732): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:29:19:762 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:23:764 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:23:766 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:27:767 CAMBIO DE COLA/(6727:6734): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:29:27:767 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:29:27:767 MOVIMIENTO DE ENTRENADOR/(6727:6732): entrenador 0: se movio a (2,8)
+[INFO] 12:29:27:767 OPERACION ATRAPAR/(6727:6732): ATRAPAR POKEMON: Onix con posicion (2, 8)
+[INFO] 12:29:27:767 ERROR EN COMUNICACION/(6727:6732): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:27:767 CAMBIO DE COLA/(6727:6732): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 12:29:27:767 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:31:768 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:31:775 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:33:776 MOVIMIENTO DE ENTRENADOR/(6727:6734): entrenador 2: se movio a (6,7)
+[INFO] 12:29:33:776 OPERACION ATRAPAR/(6727:6734): ATRAPAR POKEMON: Squirtle con posicion (6, 7)
+[INFO] 12:29:33:776 ERROR EN COMUNICACION/(6727:6734): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:33:776 CAMBIO DE COLA/(6727:6734): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 12:29:33:776 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:29:33:776 CAMBIO DE COLA/(6727:6732): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 12:29:33:776 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:37:778 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:37:778 DETECCION_DEADLOCK/(6727:6736): Inicio de deteccion de deadlock
+[INFO] 12:29:37:778 RESULTADO_DE_DEADLOCK/(6727:6736): No se detectó nuevo deadlock
+[INFO] 12:29:37:778 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:37:778 CAMBIO DE COLA/(6727:6734): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 12:29:37:778 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:38:625 ERROR EN COMUNICACION/(6727:6735): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:39:779 MOVIMIENTO DE ENTRENADOR/(6727:6733): entrenador 1: se movio a (9,9)
+[INFO] 12:29:39:779 OPERACION ATRAPAR/(6727:6733): ATRAPAR POKEMON: Pikachu con posicion (9, 9)
+[INFO] 12:29:39:779 ERROR EN COMUNICACION/(6727:6733): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:39:779 CAMBIO DE COLA/(6727:6733): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:29:39:779 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:41:784 MOVIMIENTO DE ENTRENADOR/(6727:6734): entrenador 2: se movio a (6,6)
+[INFO] 12:29:41:785 OPERACION ATRAPAR/(6727:6734): ATRAPAR POKEMON: Gengar con posicion (6, 6)
+[INFO] 12:29:41:785 ERROR EN COMUNICACION/(6727:6734): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:41:785 CAMBIO DE COLA/(6727:6734): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 12:29:41:785 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:41:787 CAMBIO DE COLA/(6727:6733): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 12:29:41:788 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:45:790 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:45:790 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:29:45:791 CAMBIO DE COLA/(6727:6734): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 12:29:45:791 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:49:794 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:49:801 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:53:809 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:53:809 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:57:811 CAMBIO DE COLA/(6727:6733): cambio a READY de entrenador: 1 
+ 
+[INFO] 12:29:57:818 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:57:820 MOVIMIENTO DE ENTRENADOR/(6727:6733): entrenador 1: se movio a (5,5)
+[INFO] 12:29:57:820 OPERACION ATRAPAR/(6727:6733): ATRAPAR POKEMON: Squirtle con posicion (5, 5)
+[INFO] 12:29:57:820 ERROR EN COMUNICACION/(6727:6733): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:29:57:820 CAMBIO DE COLA/(6727:6733): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 12:29:57:820 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 12:29:57:821 CAMBIO DE COLA/(6727:6733): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 12:30:02:780 DETECCION_DEADLOCK/(6727:6736): Inicio de deteccion de deadlock
+[INFO] 12:30:02:781 RESULTADO_DE_DEADLOCK/(6727:6736): Se detectó deadlock multiple
+[INFO] 12:30:04:796 MOVIMIENTO DE ENTRENADOR/(6727:6792): entrenador 0: se movio a (5,5)
+[INFO] 12:30:06:798 CAMBIO DE COLA/(6727:6792): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:30:06:799 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:30:06:799 CAMBIO DE COLA/(6727:6792): cambio a READY de entrenador: 0 
+ 
+[INFO] 12:30:06:799 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 12:30:06:799 OPERACION INTERCAMBIO/(6727:6792): intercambio entre entrenadores 0 y 1
+[INFO] 12:30:06:799 CAMBIO DE COLA/(6727:6792): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 12:30:06:799 DETECCION_DEADLOCK/(6727:6736): Inicio de deteccion de deadlock
+[INFO] 12:30:06:799 RESULTADO_DE_DEADLOCK/(6727:6736): Se detectó deadlock
+[INFO] 12:30:06:805 OPERACION INTERCAMBIO/(6727:6794): intercambio entre entrenadores 2 y 1 
+
+[INFO] 12:30:08:626 ERROR EN COMUNICACION/(6727:6735): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 12:30:08:808 MOVIMIENTO DE ENTRENADOR/(6727:6794): entrenador 2: se movio a (5,5)
+[INFO] 12:30:10:809 CAMBIO DE COLA/(6727:6794): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:30:10:810 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:30:10:810 CAMBIO DE COLA/(6727:6794): cambio a READY de entrenador: 2 
+ 
+[INFO] 12:30:10:810 CAMBIO DE COLA/(6727:6736): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 12:30:10:810 CAMBIO DE COLA/(6727:6794): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 12:30:10:810 CAMBIO DE COLA/(6727:6794): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 12:30:10:810 DETECCION_DEADLOCK/(6727:6736): Inicio de deteccion de deadlock
+[INFO] 12:30:10:810 RESULTADO_DE_DEADLOCK/(6727:6736): No se detectó nuevo deadlock
+[INFO] 12:30:10:811 RESULTADO TEAM/(6727:6727): Ciclos de cpu entrenador 0: 17
+[INFO] 12:30:10:811 RESULTADO TEAM/(6727:6727): Ciclos de cpu entrenador 1: 21
+[INFO] 12:30:10:811 RESULTADO TEAM/(6727:6727): Ciclos de cpu entrenador 2: 17
+[INFO] 12:30:10:811 RESULTADO TEAM/(6727:6727): Ciclos de cpu totales: 55
+[INFO] 12:30:10:811 RESULTADO TEAM/(6727:6727): Cantidad de deadlocks producidos: 1
+[INFO] 12:30:10:811 RESULTADO TEAM/(6727:6727): Cantidad de deadlocks resueltos: 2

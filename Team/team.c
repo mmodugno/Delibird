@@ -80,8 +80,9 @@ int main(int argc, char* argv[]){
 
 
 
- 	imprimir_metricas();
- 	//loggear_metricas();
+ 	//imprimir_metricas();
+
+ 	loggear_metricas();
 
 	terminar_programa();
 
@@ -109,7 +110,7 @@ void terminar_programa(void){
 
 	queue_destroy(pokemones_en_el_mapa);
 
-	queue_destroy(entrenadores_blocked);
+	list_destroy(entrenadores_blocked);
 
 	config_destroy(config);
 
