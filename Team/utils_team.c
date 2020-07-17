@@ -595,7 +595,7 @@ while(1){
 	else{
 			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
 
-			//espera 10 segundos y pone el contador validar_deadlock en 1
+			//espera unos segundos y pone el contador validar_deadlock en 1
 			pthread_t espera_deadlock;
 			pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
 
@@ -616,25 +616,6 @@ while(1){
 
 }
 }
-
-void planificar_cola_ready(void){
-
-		quantum = leer_quantum();
-
-		entrenador_exec = queue_peek(entrenadores_ready);
-		queue_pop(entrenadores_ready);
-
-		proximo_objetivo = entrenador_exec->objetivo_proximo;
-
-		sem_wait(&en_ejecucion);
-		cambio_contexto +=1;
-		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-
-		sem_post(&(entrenador_exec->sem_entrenador));
-
-}
-
-
 
 
 void mover_entrenador_RR(entrenador* entrenador,int x, int y){
@@ -835,7 +816,10 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 			log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
 
+			if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready,entrenador0);
+			else{
 			queue_push(entrenadores_ready, entrenador0);
+			}
 
 			sem_post(&en_ejecucion);
 
@@ -1420,6 +1404,7 @@ void esperar_cliente(int socket_servidor)
 
 void serve_client(int* socket)
 {
+	sem_wait(&semaforo_mensaje);
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
@@ -1427,10 +1412,6 @@ void serve_client(int* socket)
 	process_request(cod_op, *socket);
 }
 
-/*
- * mensajes que recibimos
-	TEAM__APPEARED_POKEMON
-	*/
 
  //ACA RECIBIMOS EL PAQUETE DEPENDIENDO DEL COD DE OPERACION Y HACEMOS ALGUNA ACCION A PARTIR DEL TIPO DE COD DE OPERACION RECIBIDO
 
@@ -1450,7 +1431,7 @@ void process_request(int cod_op, int cliente_fd) {
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 	switch (cod_op) {
 
-	sem_wait(&semaforo_mensaje);
+	//sem_wait(&semaforo_mensaje);
 
 		case TEAM__APPEARED_POKEMON:
 
@@ -1462,9 +1443,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 			aparece_nuevo_pokemon(nuevoPoke);
 
-			printf("nombre poke: %s",nuevoPoke->nombre);
-
 			sem_post(&semaforo_mensaje);
+
 			free(appearedRecibido);
 			break;
 
@@ -1483,6 +1463,7 @@ void process_request(int cod_op, int cliente_fd) {
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
 
+					sem_post(&semaforo_mensaje);
 					sem_post(&semaforo_mensaje);
 					break;
 				}
