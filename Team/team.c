@@ -23,9 +23,6 @@ int main(int argc, char* argv[]){
 	username = "TEAM";
 
 
-	printf(" Arrancando \n \n");
-
-
 	iniciar_logs();
 
 
@@ -44,17 +41,17 @@ int main(int argc, char* argv[]){
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	printf("Algoritmo de planificacion = %s \n \n",algoritmo);
 
-	conectarse_con_broker();
+	//conectarse_con_broker();
+
+	pthread_t hilo_de_conexion_con_broker;
+	pthread_create(&hilo_de_conexion_con_broker,NULL,(void *) conexion_broker,NULL);
 
 
 	pthread_t hilo_principal;
 
-
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
-
-
 
 
  //PRUEBAS DE TP:

@@ -247,7 +247,7 @@ void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 int crear_conexion(char *ip, char* puerto);
 int conectarse_con_broker(void);
-
+void conexion_broker(void);
 
 
 

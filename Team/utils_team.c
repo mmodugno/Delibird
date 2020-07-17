@@ -232,9 +232,11 @@ while(1){
 	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
 
 
+	//LA FUNCION APRA CONECTARSE AL BROKER LA HACE EL HILO DE CONEXION CON BROKER
+	//if(conectarse_con_broker()!=-1){
+		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
 
-	if(conectarse_con_broker()!=-1){
-		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+		if(conexionBroker>0){
 
 		broker_catch_pokemon *catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 		catchAEnviar->datos=malloc(sizeof(catch_pokemon));
@@ -276,10 +278,11 @@ while(1){
 			confirmacion_de_catch(un_entrenador);
 		}
 
+	sem_wait(&(un_entrenador->espera_de_catch));
 
 	sem_wait(&(un_entrenador->sem_entrenador));
 
-	sem_wait(&(un_entrenador->espera_de_catch)); //Espera que le llegue al sistema una respuesta a su catch
+	 //Espera que le llegue al sistema una respuesta a su catch
 
 	if(conectarse_con_broker()==-1){
 	printf("\n Agarró al pokemon %s \n",un_entrenador->objetivo_proximo->nombre);
@@ -495,7 +498,7 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	printf("\n Inicio operacion de deadlock \n ");
 
-
+	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
@@ -712,7 +715,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	sem_wait(&en_ejecucion);
 
-	printf("\n ------------ Inicio de operacion de deadlock ------------\n \n");
+	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d \n",entrenador0->id,entrenador1->id);
 
 	mover_entrenador_RR(entrenador0,x,y);
 
@@ -724,7 +727,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	while(cpu_a_usar > quantum){
 		cpu_a_usar -= quantum;
 
-		printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
+		//printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 
 		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
 
@@ -737,7 +740,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 		quantum = leer_quantum();
 	}
 
-	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
+
 
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
@@ -1377,19 +1380,34 @@ void iniciar_servidor(void)
 }
 
 int conectarse_con_broker(void){
+
 	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-	if(conexionBroker <= 0){
-		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
-		//broker_default();
-		return -1;
-	}
-	else{
-		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
-		return conexionBroker;
-	}
+	if(conexionBroker <= 0){;
+			return -1;
+		}
+		else{
+			return conexionBroker;
+		}
 
 }
 
+
+void conexion_broker(void){
+
+	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+	if(conexionBroker <= 0){
+		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		}
+
+	else{
+		log_info(comunicacion_broker_resultado,"Conectado con Broker");
+	}
+
+	sleep(leer_tiempo_de_reconexion());
+
+	conexion_broker();
+}
 
 
 void esperar_cliente(int socket_servidor)
