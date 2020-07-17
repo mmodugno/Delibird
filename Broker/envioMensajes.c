@@ -458,8 +458,6 @@ void envioColaAppearedPokemon() {
 	sem_wait(&usoMemoria);
 
 
-
-
 	sem_post(&usoMemoria);
 }
 

@@ -93,6 +93,35 @@ void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker){
 	free(paquete_a_enviar);
 }
 
+void enviar_pedido_desuscripcion(suscriptor* suscriptor,int socketDeBroker){
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = DESUSCRIBIR;
+	paquete_a_enviar->tamanio_username= strlen(suscriptor->nombreDeSuscriptor)+1;
+	paquete_a_enviar->username = suscriptor->nombreDeSuscriptor;
+
+	//serializacion de suscriptor
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	serializar_suscriptor(suscriptor,buffer);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socketDeBroker,bufferStream,tamanio_buffer,0);
+
+
+	free(bufferStream);
+
+	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+	//free(buffer->stream);
+	//free(buffer);
+	//free(paquete_a_enviar->buffer->stream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
 void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer)
 {
 	// serializacion

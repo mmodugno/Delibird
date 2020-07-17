@@ -68,7 +68,7 @@ t_list* lista_entrenadores_block_ready;
 t_list* lista_entrenadores_ready;
 
 t_queue* entrenadores_block_ready;
-t_queue* entrenadores_blocked;
+t_list* entrenadores_blocked;
 t_queue* entrenadores_ready;
 
 pthread_t hilo_servidor;
@@ -143,7 +143,7 @@ typedef struct{
 
 entrenador* entrenador_exec;
 pokemon* proximo_objetivo;
-
+entrenador* entrenador_a_eliminar;
 
 //globales
 void variables_globales();
@@ -160,6 +160,8 @@ bool cumplio_objetivo(entrenador* un_entrenador);
 void analizar_proxima_cola(entrenador* un_entrenador);
 void printear_lista_entrenadores(t_list* lista);
 void bloquear_entrenador(entrenador* un_entrenador);
+void desbloquear_entrenador(entrenador* un_entrenador);
+bool entrenador_eliminado(entrenador* un_entrenador);
 
 //POKEMON
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio);
@@ -247,7 +249,7 @@ void process_request(int cod_op, int cliente_fd);
 void serve_client(int *socket);
 int crear_conexion(char *ip, char* puerto);
 int conectarse_con_broker(void);
-
+void conexion_broker(void);
 
 
 

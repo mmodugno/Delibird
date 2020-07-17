@@ -237,6 +237,40 @@ void leerMetadata(){
 
 }
 
+void calcularTamanioMetadata(char* pokemon) {
+
+	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",pokemon);
+
+	t_config* configAux = config_create(path);
+
+	char** bloques = config_get_array_value(configAux,"BLOCKS");
+
+	t_list* listaBloques = crear_lista(bloques);
+
+	int tamanio = 0;
+
+	int i;
+
+	for(i = 0; i < list_size(listaBloques);i++){
+
+
+		char* pathbBLoque = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		int tamanioActual = tamanioArchivoDadoPath(pathbBLoque);
+
+		tamanio = tamanio + tamanioActual;
+
+		}
+
+	modificarArchivoComoConfig(configAux,"SIZE",string_itoa(tamanio));
+
+	config_destroy(configAux);
+
+}
+
+
+
+
 void crearFilesAndBlocks() {
 
 
@@ -280,8 +314,6 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-
-
 	int existe = verificarExistenciaPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
 
@@ -324,6 +356,8 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id_rel);
 	}
+
+	calcularTamanioMetadata(nombrePoke);
 
 	sleep(tiempo_retardo_operacion);
 
@@ -377,6 +411,8 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 	}
 
 	config_destroy(configPath);
+
+	calcularTamanioMetadata(nombrePoke);
 
 }
 
@@ -708,7 +744,6 @@ void buscarYeliminarCeros(t_list* listaBloques){
 		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
 
 		string_append(&todasLasPosiciones,file_memory);
-		//string_append(&todasLasPosiciones,"\n");
 
 		close(fd);
 	}
@@ -724,6 +759,8 @@ void buscarYeliminarCeros(t_list* listaBloques){
 
 
 	char* nuevasPosiciones = listToString(listaTodosPosiciones);
+
+	string_append(&nuevasPosiciones,"\n");
 
 	int cuanto = string_length(nuevasPosiciones);
 
@@ -1152,6 +1189,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	free(registroConNombre);
 
+
 	break;
 
 
@@ -1163,6 +1201,7 @@ void process_request(int cod_op, int cliente_fd) {
 	procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY);
 
 	free(registroConNombre);
+
 
 	break;
 
@@ -1176,6 +1215,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	free(nombre);
 
+
 	break;
 
 	case 0:
@@ -1185,8 +1225,6 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 	}
-
-
 }
 
 void* recibir_mensaje(int socket_cliente, int* size)

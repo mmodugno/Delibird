@@ -33,7 +33,8 @@ typedef enum
 	SUSCRIPCION = 11,
 	ACKNOWLEDGED = 12,
 	BROKER__LOCALIZED_POKEMON=13,
-	TEAM__CAUGHT_POKEMON=14
+	TEAM__CAUGHT_POKEMON=14,
+	DESUSCRIBIR = 15
 	//despues vamos a tener un tipo de mensaje de Gamecard del tipo BROKER_LOCALIZED_POKEMON
 
 }op_code;
@@ -119,5 +120,6 @@ void* serializar_paquete(t_paquete* paquete, int *bytes);
 void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer);
 void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker);
 suscriptor* deserializar_suscripcion(int socket_cliente);
+void enviar_pedido_desuscripcion(suscriptor* suscriptor,int socketDeBroker);
 
 #endif /* UTILS_EN_COMUN_H_ */
