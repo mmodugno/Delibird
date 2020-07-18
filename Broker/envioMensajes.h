@@ -35,4 +35,14 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar);
 void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_list* usersAEnviar);
 
+void envioColaNewPokemon();
+
+//TODO si funciona NEW, replicar
+void envioColaLocalizedPokemon();
+void envioColaAppearedPokemon() ;
+void envioColaCatchPokemon();
+void envioColaCaughtPokemon();
+void envioColaGetPokemon();
+
+
 #endif /* ENVIOMENSAJES_H_ */
