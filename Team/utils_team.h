@@ -117,7 +117,7 @@ typedef struct{
     pokemon* objetivo_proximo;
     int ciclos_cpu;
     sem_t nuevoPoke;
-    uint32_t id_caught;
+    uint32_t id_catch;
 
     float rafaga_estimada;
     float rafaga_real;

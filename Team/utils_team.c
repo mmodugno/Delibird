@@ -71,7 +71,7 @@ void variables_globales(){
 
 	 un_entrenador->id = id_creada;
 
-	 un_entrenador->id_caught = 0;
+	 un_entrenador->id_catch = 0;
 
 	 un_entrenador->rafaga_estimada = leer_estimacion_inicial();
 
@@ -249,7 +249,7 @@ while(1){
 
 		enviar_catch(un_entrenador,catchAEnviar);
 		log_info(llegadaDeMensaje,"del catch que envie su ID es %d",catchAEnviar->id);
-		un_entrenador->id_caught = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
+		un_entrenador->id_catch = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
 
 		un_entrenador->ciclos_cpu += 1;
 
@@ -1498,12 +1498,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 			for(int i = 0; i < list_size(entrenadores);i++){
 				entrenador* un_entrenador = list_get(entrenadores,i);
-				if(un_entrenador->id_caught == id_recibido){
+				if(un_entrenador->id_catch == id_recibido){
 
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
 
-					sem_post(&semaforo_mensaje);
 					sem_post(&semaforo_mensaje);
 					break;
 				}
