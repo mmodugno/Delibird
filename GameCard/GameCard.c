@@ -14,7 +14,7 @@
 
 int main(int argc, char* argv[]){
 
-		if(argc == 1){
+		if(argc  == 1){
 			printf("No hay parametros suficientes");
 			return 2;
 		}
@@ -63,7 +63,11 @@ int main(int argc, char* argv[]){
 
 		//procesarCatchPokemon("Charmander",4,1);
 
-		//procesarGetPokemon("Charmander");
+		//procesarGetPokemon("Charmander");3
+
+		/*pthread_t hilo_servidor;
+
+		pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);*/
 
 		iniciar_servidor();
 

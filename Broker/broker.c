@@ -46,12 +46,12 @@ int main() {
 	almacenadoMemoria = iniciar_logger("Almacenado Memoria", log_file); //debe indicar posicion de inicio de particion
 	eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
 	compactacionMemoria = iniciar_logger("compactacionMemoria", log_file);
+	logEnviarNuevo = iniciar_logger("Enviar Mensaje", log_file);
 
 	//TODO?
 	logConexion = iniciar_logger("Conexion", log_file); //ver bien donde va
 
 	//TODO
-	logEnviarNuevo = iniciar_logger("Enviar Mensaje", log_file);
 	dumpCache = iniciar_logger("dumpCache", log_file);
 
 	iniciarMemoria();
@@ -65,7 +65,25 @@ int main() {
 
 	pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor, NULL);
 
+	pthread_create(&hiloNew_Envio, NULL, (void*) envioColaNewPokemon, NULL);
+
+	/*
+	pthread_create(&hiloAppeared_Envio, NULL, (void*) envioColaAppearedPokemon, NULL);
+	pthread_create(&hiloCatch_Envio, NULL, (void*) envioColaCatchPokemon, NULL);
+	pthread_create(&hiloCaught_Envio, NULL, (void*) envioColaCaughtPokemon, NULL);
+	pthread_create(&hiloGet_Envio, NULL, (void*) envioColaGetPokemon, NULL);
+	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);*/
+
+
 	pthread_join(hiloReciboMensajes, NULL);
+
+	pthread_join(hiloNew_Envio, NULL);
+/*
+	pthread_join(hiloAppeared_Envio, NULL);
+	pthread_join(hiloCatch_Envio, NULL);
+	pthread_join(hiloCaught_Envio, NULL);
+	pthread_join(hiloGet_Envio, NULL);
+	pthread_join(hiloLocalized_Envio, NULL);*/
 
 	//terminar conexiones logs y config
 	terminar_programa();

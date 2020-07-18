@@ -125,6 +125,7 @@ void cerrarArchivoMetadataPoke(t_config* );
 void verificarDirectorioPokemon(char* );
 char* listToString(t_list* );
 void vaciarArchivo(char* );
+void calcularTamanioMetadata(char* );
 
 //////////////////////////CONEXIONES///////////////////////////////////////
 int conectarse_con_broker(void);
