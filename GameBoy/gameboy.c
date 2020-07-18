@@ -341,12 +341,20 @@ int main(int argc, char* argv[]){
 
 
 				//Abro el server de Gameboy para escuchar los msj q me manda Broker
+				liberar_conexion(conexionBroker);
 
 				flagTerminoSuscripcion = 0;
 
 				iniciar_servidor_gameboy();
 
-				enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
+				conexionBroker = crear_conexion(ipBroker,puertoBroker);
+
+				if(conexionBroker <= 0){
+					log_info(logConexion,"no me pude conectar a Broker");
+
+				} else{
+					enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
+				}
 
 				free(meSuscribo);
 

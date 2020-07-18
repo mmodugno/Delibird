@@ -2068,3 +2068,12 @@
  
 [INFO] 12:53:33:548 DETECCION_DEADLOCK/(7117:7122): Inicio de deteccion de deadlock
 [INFO] 12:53:33:548 RESULTADO_DE_DEADLOCK/(7117:7122): No se detectó nuevo deadlock
+[INFO] 16:26:40:376 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:27:10:432 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:27:40:433 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:28:10:434 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:28:40:434 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:29:10:435 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:29:40:436 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:30:10:437 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:30:40:438 ERROR EN COMUNICACION/(4240:4244): No se pudo conectar con Broker,se realizará la operación por default

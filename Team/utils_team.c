@@ -1507,6 +1507,8 @@ void process_request(int cod_op, int cliente_fd) {
 	team_appeared_pokemon* appearedRecibido;
 	team_caught_pokemon* caughtRecibido;
 	broker_localized_pokemon* localizedRecibido;
+	broker_appeared_pokemon* appearedRecibidoBROKER;
+	uint32_t id;
 	char* username;
 
 	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
@@ -1560,13 +1562,28 @@ void process_request(int cod_op, int cliente_fd) {
 
 		case BROKER__LOCALIZED_POKEMON:
 
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
+			localizedRecibido->id= id;
+
+			enviarACK(localizedRecibido->id,cliente_fd,"TEAM");
+
 			//todo
 			//aca no se muy bien que comparación vamos a hacer
 
 
-		break;
+			break;
+		case BROKER__APPEARED_POKEMON:
+			recv(cliente_fd,&(id),sizeof(uint32_t),0);
+			appearedRecibidoBROKER = deserializar_appeared_pokemon(cliente_fd);
+			appearedRecibidoBROKER->id= id;
 
+			enviarACK(appearedRecibidoBROKER->id,cliente_fd,"TEAM");
+
+			//todo
+			//aca no se muy bien que comparación vamos a hacer
+
+			break;
 		case 0:
 			pthread_exit(NULL);
 		case -1:

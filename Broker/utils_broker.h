@@ -130,12 +130,13 @@ sem_t usoMemoria;
 sem_t llegadaMensajes;
 sem_t suscripcionACola;
 
+/*
 sem_t colaNew;
 sem_t colaAppeared;
 sem_t colaCatch;
 sem_t colaCaught;
 sem_t colaLocalized;
-sem_t colaGet;
+sem_t colaGet;*/
 
 
 void agregarAMemoria(void* , uint32_t ,tipoDeCola, uint32_t , uint32_t);

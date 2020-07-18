@@ -31,12 +31,13 @@ int main() {
 	sem_init(&suscripcionACola,0,1);
 
 	//productor-consumidor
+	/*
 	sem_init(&colaNew, 0, 0);
 	sem_init(&colaAppeared, 0, 0);
 	sem_init(&colaCatch, 0, 0);
 	sem_init(&colaCaught, 0, 0);
 	sem_init(&colaLocalized, 0, 0);
-	sem_init(&colaGet, 0, 0);
+	sem_init(&colaGet, 0, 0);*/
 
 
 	//logs implementados
