@@ -492,17 +492,14 @@ void suscribirACola(suscriptor* suscriptor){
 
 
 
-void desuscribirACola(suscriptor* suscriptor){
-
-/*
+void desuscribirACola(suscriptor* suscrip){
 
 	//TODO ver porque no existe el suscriptor
 	bool suscriptorAEliminar(suscriptor* susc){
-		return (!strcmp(susc->nombreDeSuscriptor, suscriptor->nombreDeSuscriptor));
+		return (!strcmp(susc->nombreDeSuscriptor, suscrip->nombreDeSuscriptor));
 	}
 
-
-	switch(suscriptor->tipoDeCola){
+	switch(suscrip->tipoDeCola){
 		case NEW_POKEMON:{
 			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,suscriptorAEliminar,free);
 			break;
@@ -528,7 +525,7 @@ void desuscribirACola(suscriptor* suscriptor){
 			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,suscriptorAEliminar,free);
 			break;
 		}
-	}*/
+	}
 }
 
 void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uint32_t idCorrelativo, uint32_t tamanioAgregar) {
@@ -691,22 +688,22 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,
 void producirUnMensaje(tipoDeCola tipo){
 	switch (tipo) {
 		case NEW_POKEMON:
-			sem_post(&colaNew);
+			//sem_post(&colaNew);
 			break;
 		case APPEARED_POKEMON:
-			sem_post(&colaAppeared);
+			//sem_post(&colaAppeared);
 			break;
 		case CATCH_POKEMON:
-			sem_post(&colaCatch);
+			//sem_post(&colaCatch);
 			break;
 		case CAUGHT_POKEMON:
-			sem_post(&colaCaught);
+			//sem_post(&colaCaught);
 			break;
 		case GET_POKEMON:
-			sem_post(&colaGet);
+			//sem_post(&colaGet);
 			break;
 		case LOCALIZED_POKEMON:
-			sem_post(&colaLocalized);
+			//sem_post(&colaLocalized);
 			break;
 	}
 }
