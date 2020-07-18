@@ -23,9 +23,6 @@ int main(int argc, char* argv[]){
 	username = "TEAM";
 
 
-	printf(" Arrancando \n \n");
-
-
 	iniciar_logs();
 
 
@@ -37,27 +34,24 @@ int main(int argc, char* argv[]){
 
 
 
-
-
 	variables_globales();
-
 
 
 
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 	printf("Algoritmo de planificacion = %s \n \n",algoritmo);
 
-	conectarse_con_broker();
+	//conectarse_con_broker();
+
+	pthread_t hilo_de_conexion_con_broker;
+	pthread_create(&hilo_de_conexion_con_broker,NULL,(void *) conexion_broker,NULL);
 
 
 	pthread_t hilo_principal;
 
-
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
-
-	//iniciar_servidor();
 
 
  //PRUEBAS DE TP:
@@ -87,16 +81,44 @@ int main(int argc, char* argv[]){
 
 
  	imprimir_metricas();
+
  	//loggear_metricas();
 
-	//terminar_programa();
+	terminar_programa();
 
 }
 
 
-    //aca deberiamos poner terminar_programa
+
 void terminar_programa(void){
-	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+
+	destruir_logs();
+
+	if(leer_algoritmo_planificacion() == FIFO || leer_algoritmo_planificacion() == RR){
+		queue_destroy(entrenadores_ready);
+		queue_destroy(entrenadores_block_ready);
+	}
+	else{
+		list_destroy(lista_entrenadores_block_ready);
+		list_destroy(lista_entrenadores_ready);
+	}
+
+	list_destroy(entrenadores);
+	list_destroy(pokemones_atrapados);
+	list_destroy(entrenadores_finalizados);
+	list_destroy(entrenadores_en_deadlock);
+
+	queue_destroy(pokemones_en_el_mapa);
+
+	list_destroy(entrenadores_blocked);
+
+	config_destroy(config);
+
+}
+
+
+
+void destruir_logs(void){
 	log_destroy(cambioDeCola);
 	log_destroy(llegadaDeMensaje);
 	log_destroy(movimiento_entrenador);
@@ -108,19 +130,6 @@ void terminar_programa(void){
 	log_destroy(comunicacion_broker_error);
 	log_destroy(comunicacion_broker_reintento);
 	log_destroy(comunicacion_broker_resultado);
-
-	list_destroy(entrenadores);
-	list_destroy(pokemones_atrapados);
-	list_destroy(entrenadores_finalizados);
-	list_destroy(entrenadores_en_deadlock);
-
-	queue_destroy(pokemones_en_el_mapa);
-	queue_destroy(entrenadores_ready);
-	queue_destroy(entrenadores_block_ready);
-	queue_destroy(entrenadores_blocked);
-
-	config_destroy(config);
-	//liberar_conexion(conexion);
 }
 
 void iniciar_logs(void){

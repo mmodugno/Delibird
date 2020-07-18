@@ -12,9 +12,10 @@
 
 //TODO arreglar segun algoritmo:
 void variables_globales(){
-	config = leer_config();
-	broker_conectado = false;
 
+	config = leer_config();
+
+	broker_conectado = false;
 	hacer_entrenadores();
 	calcular_objetivo_global();
 
@@ -22,16 +23,23 @@ void variables_globales(){
 
 	pokemones_atrapados= list_create();
 
-	entrenadores_ready = queue_create();
-	entrenadores_block_ready = queue_create();
+	//Si planifico con FIFO o RR lo hago mediante COLAS
+	if(leer_algoritmo_planificacion() == FIFO || leer_algoritmo_planificacion() == RR){
+		entrenadores_ready = queue_create();
+		entrenadores_block_ready = queue_create();
+	}
+
+	else{ //Si planifico con SJF
+		lista_entrenadores_block_ready = list_create();
+		lista_entrenadores_ready = list_create();
+		alpha = leer_alpha();
+	}
+
+	entrenadores_blocked = list_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
-	lista_entrenadores_block_ready = list_create();
-	entrenadores_blocked = queue_create();
-	lista_entrenadores_ready = list_create();
 
-	alpha = leer_alpha();
-
+	//Metricas y contador de deadlock:
 	cant_deadlocks = 0;
 	cant_deadlocks_resueltos = 0;
 	entrenador_deadlock=0;
@@ -63,7 +71,7 @@ void variables_globales(){
 
 	 un_entrenador->id = id_creada;
 
-	 un_entrenador->id_caught = 0;
+	 un_entrenador->id_catch = 0;
 
 	 un_entrenador->rafaga_estimada = leer_estimacion_inicial();
 
@@ -224,9 +232,11 @@ while(1){
 	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
 
 
+	//LA FUNCION APRA CONECTARSE AL BROKER LA HACE EL HILO DE CONEXION CON BROKER
+	//if(conectarse_con_broker()!=-1){
+		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
 
-	if(conectarse_con_broker()!=-1){
-		log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
+		if(conexionBroker>0){
 
 		broker_catch_pokemon *catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 		catchAEnviar->datos=malloc(sizeof(catch_pokemon));
@@ -239,7 +249,7 @@ while(1){
 
 		enviar_catch(un_entrenador,catchAEnviar);
 		log_info(llegadaDeMensaje,"del catch que envie su ID es %d",catchAEnviar->id);
-		un_entrenador->id_caught = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
+		un_entrenador->id_catch = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
 
 		un_entrenador->ciclos_cpu += 1;
 
@@ -268,10 +278,11 @@ while(1){
 			confirmacion_de_catch(un_entrenador);
 		}
 
+	sem_wait(&(un_entrenador->espera_de_catch));
 
 	sem_wait(&(un_entrenador->sem_entrenador));
 
-	sem_wait(&(un_entrenador->espera_de_catch)); //Espera que le llegue al sistema una respuesta a su catch
+	 //Espera que le llegue al sistema una respuesta a su catch
 
 	if(conectarse_con_broker()==-1){
 	printf("\n Agarró al pokemon %s \n",un_entrenador->objetivo_proximo->nombre);
@@ -487,16 +498,16 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	printf("\n Inicio operacion de deadlock \n ");
 
-
+	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
-	//int retardo = leer_retardo_cpu() * 5;
+	int retardo = leer_retardo_cpu() * 5;
 
-	sleep(5); //IRIA sleep(retardo)
+	sleep(retardo); //IRIA sleep(retardo)
 
 	//intercambio
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
@@ -704,9 +715,10 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	sem_wait(&en_ejecucion);
 
-	printf("\n ------------ Inicio de operacion de deadlock ------------\n \n");
+	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d \n",entrenador0->id,entrenador1->id);
 
-	mover_entrenador_RR(entrenador0,x,y);
+	mover_entrenador(entrenador0,x,y);
+	//mover_entrenador_RR(entrenador0,x,y);
 
 	int retardo = leer_retardo_cpu(); //*5
 	sleep(retardo); //IRIA sleep(retardo)
@@ -716,9 +728,9 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	while(cpu_a_usar > quantum){
 		cpu_a_usar -= quantum;
 
-		printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
+		//printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 
-		log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
+		log_info(cambioDeCola,"cambio a READY a entrenador: %d en espera de Intercambio \n ",entrenador0->id);
 
 		queue_push(entrenadores_ready, entrenador0);
 
@@ -729,7 +741,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 		quantum = leer_quantum();
 	}
 
-	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
+
 
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
@@ -1078,6 +1090,8 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 	send(conexionBroker,bufferStream,tamanio_buffer,0);
 	//llenamos el ID del catch que enviamos
 	recv(conexionBroker,&(catchAEnviar->id),sizeof(uint32_t),0);
+	//TODO
+	//aca hay que guardar el id que enviamos de catch, tambien hay que hacer un mutex
 
 	free(bufferStream);
 
@@ -1093,7 +1107,7 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 
 
 
-void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
+void enviar_get(entrenador* un_entrenador,broker_get_pokemon *getAEnviar){
 	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
 
@@ -1109,8 +1123,7 @@ void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
 	getAEnviar->datos->tamanioNombre=un_entrenador->objetivo_proximo->tamanio_nombre;
 	getAEnviar->datos->nombrePokemon = malloc(getAEnviar->datos->tamanioNombre);
 	getAEnviar->datos->nombrePokemon = un_entrenador->objetivo_proximo->nombre;
-	getAEnviar->datos->posX = un_entrenador->objetivo_proximo->posX;
-	getAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
+
 
 
 	//serializacion de brokerNewPokemon
@@ -1126,7 +1139,8 @@ void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
 	send(conexionBroker,bufferStream,tamanio_buffer,0);
 	//llenamos el ID del catch que enviamos
 	recv(conexionBroker,&(getAEnviar->id),sizeof(uint32_t),0);
-
+	//TODO
+	//aca hay que guardar el id que enviamos de get, tambien hay que hacer un mutex
 
 
 
@@ -1164,8 +1178,10 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 	disminuir_cuantos_puede_cazar(un_entrenador);
 
-	//TODO aca hago que ya no este mas en blocked, sino que en ready
-	//lo saco de blocked???
+	// aca hago que ya no este mas en blocked, sino que en ready
+
+	desbloquear_entrenador(un_entrenador);
+
 	if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready, un_entrenador);
 	else{
 		queue_push(entrenadores_ready,un_entrenador);
@@ -1179,8 +1195,16 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 
 void denegar_catch(entrenador* un_entrenador){
 	log_info(llegadaDeMensaje,"No se agarró al pokemon %s", un_entrenador->objetivo_proximo->nombre);
+
+	desbloquear_entrenador(un_entrenador);
+
+	if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready, un_entrenador);
+		else{
+			queue_push(entrenadores_ready,un_entrenador);
+		}
+
 	sem_post(&(un_entrenador->espera_de_catch));
-	queue_push(entrenadores_ready,un_entrenador);
+
 }
 
 
@@ -1270,16 +1294,6 @@ bool cumplio_objetivo(entrenador* un_entrenador){
 }
 
 
-void printear_lista_entrenadores(t_list* lista){
-
-	if(list_is_empty(lista)) printf("Lista vacia");
-	for (int i = 0; i < list_size(lista);i++){
-		entrenador* entrenador = list_get(lista,i);
-		printf("  entrenador: %d ",entrenador->id);
-	}
-	printf(" \n  ");
-}
-
 bool hay_deadlock(void){
 
 	return (entrenador_deadlock==2);
@@ -1320,8 +1334,19 @@ void analizar_proxima_cola(entrenador* un_entrenador){
 }
 
 void bloquear_entrenador(entrenador* un_entrenador){
-	queue_push(entrenadores_blocked,un_entrenador);
+	list_add(entrenadores_blocked,un_entrenador);
 	log_info(cambioDeCola,"Cambio a BLOCKED de entrenador: %d \n ",un_entrenador->id);
+}
+
+
+
+void desbloquear_entrenador(entrenador* un_entrenador){
+	entrenador_a_eliminar = un_entrenador;
+	list_remove_by_condition(entrenadores_blocked,(void*)entrenador_eliminado);
+}
+
+bool entrenador_eliminado(entrenador* un_entrenador){
+	return (un_entrenador->id) == (entrenador_a_eliminar->id);
 }
 
 bool hay_pokemon_y_entrenador(){
@@ -1369,19 +1394,34 @@ void iniciar_servidor(void)
 }
 
 int conectarse_con_broker(void){
+
 	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-	if(conexionBroker <= 0){
-		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
-		//broker_default();
-		return -1;
-	}
-	else{
-		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
-		return conexionBroker;
-	}
+	if(conexionBroker <= 0){;
+			return -1;
+		}
+		else{
+			return conexionBroker;
+		}
 
 }
 
+
+void conexion_broker(void){
+
+	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+	if(conexionBroker <= 0){
+		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		}
+
+	else{
+		log_info(comunicacion_broker_resultado,"Conectado con Broker");
+	}
+
+	sleep(leer_tiempo_de_reconexion());
+
+	conexion_broker();
+}
 
 
 void esperar_cliente(int socket_servidor)
@@ -1395,7 +1435,6 @@ void esperar_cliente(int socket_servidor)
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
-	//log_info(logConexion," se conectaron a broker");
 
 	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
 	pthread_detach(thread);
@@ -1420,6 +1459,7 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_username;
 	team_appeared_pokemon* appearedRecibido;
 	team_caught_pokemon* caughtRecibido;
+	broker_localized_pokemon* localizedRecibido;
 	char* username;
 
 	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
@@ -1448,7 +1488,7 @@ void process_request(int cod_op, int cliente_fd) {
 			free(appearedRecibido);
 			break;
 
-		case TEAM__CAUGHT_POKEMON:
+		case BROKER__CAUGHT_POKEMON:
 
 			caughtRecibido = deserializar_team_caught_pokemon(cliente_fd);
 
@@ -1458,21 +1498,27 @@ void process_request(int cod_op, int cliente_fd) {
 
 			for(int i = 0; i < list_size(entrenadores);i++){
 				entrenador* un_entrenador = list_get(entrenadores,i);
-				if(un_entrenador->id_caught == id_recibido){
+				if(un_entrenador->id_catch == id_recibido){
 
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
 
-					sem_post(&semaforo_mensaje);
 					sem_post(&semaforo_mensaje);
 					break;
 				}
 
 			}
 
-
 			break;
 
+		case BROKER__LOCALIZED_POKEMON:
+
+			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
+			//todo
+			//aca no se muy bien que comparación vamos a hacer
+
+
+		break;
 
 		case 0:
 			pthread_exit(NULL);
@@ -1498,6 +1544,7 @@ void* recibir_mensaje(int socket_cliente, int* size)
 
 
 //ESTO ES PARA SER EL CLIENTE
+
 int crear_conexion(char *ip, char* puerto)
 {
 	struct addrinfo hints;
@@ -1525,15 +1572,10 @@ int crear_conexion(char *ip, char* puerto)
 }
 
 
-
 void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
 }
-
-
-
-
 
 
 ///////////////////////////////////////LOGS///////////////////////////////////////

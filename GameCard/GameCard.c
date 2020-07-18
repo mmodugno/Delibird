@@ -14,7 +14,7 @@
 
 int main(int argc, char* argv[]){
 
-		if(argc == 1){
+		if(argc  == 1){
 			printf("No hay parametros suficientes");
 			return 2;
 		}
@@ -26,8 +26,13 @@ int main(int argc, char* argv[]){
 		username = malloc(strlen("GAMECARD"+1));
 		username = "GAMECARD";
 
+		sem_init(&sem_conexion,0,1);
+
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
+
+		printf("Empezo el programa \n");
+
 
 		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
 
@@ -58,7 +63,11 @@ int main(int argc, char* argv[]){
 
 		//procesarCatchPokemon("Charmander",4,1);
 
-		//procesarGetPokemon("Charmander");
+		//procesarGetPokemon("Charmander");3
+
+		/*pthread_t hilo_servidor;
+
+		pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);*/
 
 		iniciar_servidor();
 

@@ -57,6 +57,7 @@ typedef struct {
 t_log* logArchivoAbierto;
 t_log* logFalloConexion;
 
+sem_t sem_conexion;
 
 FILE* metadata;
 FILE* metadataFiles;
@@ -124,6 +125,7 @@ void cerrarArchivoMetadataPoke(t_config* );
 void verificarDirectorioPokemon(char* );
 char* listToString(t_list* );
 void vaciarArchivo(char* );
+void calcularTamanioMetadata(char* );
 
 //////////////////////////CONEXIONES///////////////////////////////////////
 int conectarse_con_broker(void);
@@ -138,6 +140,6 @@ char* deserializar_get_pokemon_Gamecard(int);
 void enviar_appeared(int ,char* , int ,int , int );
 void enviar_caught(int ,uint32_t , uint32_t );
 void enviar_localized(int , char* , uint32_t , uint32_t* , uint32_t* ,uint32_t );
-
+void iniciar_servidor(void);
 
 #endif /* UTILS_GAMECARD_H_ */
