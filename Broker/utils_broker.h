@@ -181,7 +181,15 @@ void dividirEnDos(buddy* );
 void actualizarTablaParticionesParaBuddy(buddy* ,buddy* ,buddy* );
 t_list* listaTamanioBuddiesPosibles();
 uint32_t tamanioIdealBuddy(uint32_t );
-
-
+int posicionBuddyTabla(buddy* );
+void consolidarSiEsPosible(buddy* );
+void consolidarSiEsPosibleADerecha(buddy* );
+void consolidarSiEsPosibleAIzquierda(buddy* );
+bool hayTamanioDisponiblePara(int );
+void consolidarSiEsPosible(buddy* );
+void consolidarSiEsPosibleADerecha(buddy* );
+void consolidarSiEsPosibleAIzquierda(buddy* );
+buddy* seleccionarVictima();
+void eliminarVictima();
 
 #endif /* UTILS_BROKER_H_ */
