@@ -13,6 +13,7 @@ void envioColaNewPokemon() {
 	t_list *usersSinACK;
 	char* username;
 	particion *mensajeNewEnMemo;
+	buddy* mensajeNewEnMemoBuddy;
 
 	//TODO ver si este while esta demas
 	while (1) {
@@ -52,19 +53,24 @@ void envioColaNewPokemon() {
 		}
 
 
+		bool menNewQueFaltenEnBuddy(buddy* unBuddy) {
+			return menNewQueFalten(unBuddy->particion);
+		}
+
 
 		//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 		if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 			sem_wait(&suscripcionACola);
 			mensajeNewEnMemo = list_find(tablaDeParticiones, menNewQueFalten);
 			sem_post(&suscripcionACola);
+			enviarPorTipo(mensajeNewEnMemo, usersSinACK);
 		}
 		if (!strcmp(algoritmo_memoria, "BS")) {
-			//TODO como encontrar el mensaje que le falte mandar (que tabla uso mas que nada)
-
+			sem_wait(&suscripcionACola);
+			mensajeNewEnMemoBuddy = list_find(tablaDeParticiones,menNewQueFaltenEnBuddy);
+			sem_post(&suscripcionACola);
+			enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
 		}
-
-		enviarPorTipo(mensajeNewEnMemo, usersSinACK);
 
 		//nose si list_destroy_and_destroy_elements() eliminaria los username que siguen estando en la de ack de esa part
 

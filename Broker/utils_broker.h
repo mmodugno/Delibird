@@ -175,7 +175,7 @@ void desuscribirACola(suscriptor* suscriptor);
 /* buddy */
 void agregarEnBuddy(buddy* );
 int tamanioBuddy(buddy* );
-void actualizarComoOcupadoEnLista(buddy* );
+void actualizarComoOcupadoEnLista(buddy* , buddy* );
 void dividirEnDos(buddy* );
 void actualizarTablaParticionesParaBuddy(buddy* ,buddy* ,buddy* );
 t_list* listaTamanioBuddiesPosibles();

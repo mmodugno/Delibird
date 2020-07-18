@@ -1498,7 +1498,7 @@ void agregarEnBuddy(buddy* unBuddyParaAgregar){
 					unBuddyParaAgregar->particion->mensaje,
 					unBuddyParaAgregar->particion->tamanioMensaje);
 
-			actualizarComoOcupadoEnLista(buddyMenor);
+			actualizarComoOcupadoEnLista(buddyMenor,unBuddyParaAgregar);
 
 			log_info(almacenadoMemoria,
 					"base: %d libre: %d limite: %d tamanioMensaje: %d",
@@ -1540,7 +1540,7 @@ bool hayTamanioDisponiblePara(int tamanio){
 
 }
 
-void actualizarComoOcupadoEnLista(buddy* unBuddy) {
+void actualizarComoOcupadoEnLista(buddy* unBuddy,buddy* unBuddyParaAgregar) {
 
 	buddy* aComparar;
 
