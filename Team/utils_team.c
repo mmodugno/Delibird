@@ -1299,7 +1299,7 @@ bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador*
 	int dist2 = distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
 
 	bool resultado;
-	if(dist1 == dist2) resultado = false;
+	if(dist1 == dist2) resultado = true;
 	else{
 	 resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
 	}
