@@ -53,13 +53,11 @@ void envioColaNewPokemon() {
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
-
 				if (suscriptoresNewPokemon->elements_count) {
 					mensajeNewEnMemo = list_find(tablaDeParticiones, menNewQueFalten);
 					enviarPorTipo(mensajeNewEnMemo, usersSinACK);
 					list_clean_and_destroy_elements(usersSinACK, free);
 				}
-
 
 			}
 			if (!strcmp(algoritmo_memoria, "BS")) {
