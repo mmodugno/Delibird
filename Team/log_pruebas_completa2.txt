@@ -1,0 +1,786 @@
+[INFO] 17:06:44:666 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:06:44:666 ERROR EN COMUNICACION/(7216:7227): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:06:45:667 CAMBIO DE COLA/(7216:7222): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:06:45:668 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:06:46:668 CAMBIO DE COLA/(7216:7223): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:06:46:668 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:06:47:671 CAMBIO DE COLA/(7216:7224): cambio a READY de entrenador: 2 
+ 
+[INFO] 17:06:47:671 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:06:48:671 CAMBIO DE COLA/(7216:7225): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:06:48:671 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:06:49:672 CAMBIO DE COLA/(7216:7226): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:06:49:672 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:06:49:672 MOVIMIENTO DE ENTRENADOR/(7216:7222): entrenador 0: se movio a (2,2)
+[INFO] 17:06:49:672 OPERACION ATRAPAR/(7216:7222): ATRAPAR POKEMON: Jolteon con posicion (2, 2)
+[INFO] 17:06:49:672 ERROR EN COMUNICACION/(7216:7222): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:06:49:672 CAMBIO DE COLA/(7216:7222): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 17:06:49:673 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:06:50:673 CAMBIO DE COLA/(7216:7223): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:06:50:673 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:06:51:675 CAMBIO DE COLA/(7216:7224): cambio a READY de entrenador: 2 
+ 
+[INFO] 17:06:51:675 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:06:52:676 CAMBIO DE COLA/(7216:7225): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:06:52:676 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:06:53:678 CAMBIO DE COLA/(7216:7226): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:06:53:678 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:06:53:678 CAMBIO DE COLA/(7216:7222): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 17:06:53:678 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:06:54:678 CAMBIO DE COLA/(7216:7223): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:06:54:678 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:06:55:679 CAMBIO DE COLA/(7216:7224): cambio a READY de entrenador: 2 
+ 
+[INFO] 17:06:55:679 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:06:56:680 CAMBIO DE COLA/(7216:7225): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:06:56:680 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:06:57:680 CAMBIO DE COLA/(7216:7226): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:06:57:681 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:06:57:681 MOVIMIENTO DE ENTRENADOR/(7216:7223): entrenador 1: se movio a (4,6)
+[INFO] 17:06:57:681 OPERACION ATRAPAR/(7216:7223): ATRAPAR POKEMON: Flareon con posicion (4, 6)
+[INFO] 17:06:57:681 ERROR EN COMUNICACION/(7216:7223): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:06:57:681 CAMBIO DE COLA/(7216:7223): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 17:06:57:681 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:06:58:682 CAMBIO DE COLA/(7216:7224): cambio a READY de entrenador: 2 
+ 
+[INFO] 17:06:58:682 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:06:58:682 MOVIMIENTO DE ENTRENADOR/(7216:7225): entrenador 3: se movio a (7,1)
+[INFO] 17:06:58:682 OPERACION ATRAPAR/(7216:7225): ATRAPAR POKEMON: Espeon con posicion (7, 1)
+[INFO] 17:06:58:682 ERROR EN COMUNICACION/(7216:7225): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:06:58:682 CAMBIO DE COLA/(7216:7225): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 17:06:58:682 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:06:58:682 MOVIMIENTO DE ENTRENADOR/(7216:7226): entrenador 4: se movio a (4,10)
+[INFO] 17:06:58:682 OPERACION ATRAPAR/(7216:7226): ATRAPAR POKEMON: Vaporeon con posicion (4, 10)
+[INFO] 17:06:58:682 ERROR EN COMUNICACION/(7216:7226): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7226): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7223): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:06:58:683 MOVIMIENTO DE ENTRENADOR/(7216:7224): entrenador 2: se movio a (10,6)
+[INFO] 17:06:58:683 OPERACION ATRAPAR/(7216:7224): ATRAPAR POKEMON: Umbreon con posicion (10, 6)
+[INFO] 17:06:58:683 ERROR EN COMUNICACION/(7216:7224): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7224): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 17:06:58:683 DETECCION_DEADLOCK/(7216:7228): Inicio de deteccion de deadlock
+[INFO] 17:06:58:683 RESULTADO_DE_DEADLOCK/(7216:7228): Se detectó deadlock
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7225): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7226): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 17:06:58:683 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:06:58:691 CAMBIO DE COLA/(7216:7224): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 17:07:14:667 ERROR EN COMUNICACION/(7216:7227): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:07:23:706 DETECCION_DEADLOCK/(7216:7228): Inicio de deteccion de deadlock
+[INFO] 17:07:23:716 RESULTADO_DE_DEADLOCK/(7216:7228): Se detectó deadlock multiple
+[INFO] 17:07:24:727 MOVIMIENTO DE ENTRENADOR/(7216:7240): entrenador 0: se movio a (4,10)
+[INFO] 17:07:25:731 CAMBIO DE COLA/(7216:7240): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:07:25:731 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:07:25:731 CAMBIO DE COLA/(7216:7240): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:07:25:731 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:07:25:732 CAMBIO DE COLA/(7216:7240): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:07:25:732 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:07:25:732 CAMBIO DE COLA/(7216:7240): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:07:25:732 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:07:25:732 OPERACION INTERCAMBIO/(7216:7240): intercambio entre entrenadores 0 y 4
+[INFO] 17:07:25:732 CAMBIO DE COLA/(7216:7240): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 17:07:25:732 DETECCION_DEADLOCK/(7216:7228): Inicio de deteccion de deadlock
+[INFO] 17:07:25:735 RESULTADO_DE_DEADLOCK/(7216:7228): Se detectó deadlock multiple
+[INFO] 17:07:26:751 MOVIMIENTO DE ENTRENADOR/(7216:7241): entrenador 1: se movio a (4,10)
+[INFO] 17:07:27:753 CAMBIO DE COLA/(7216:7241): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7241): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7241): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7241): cambio a READY de entrenador: 1 
+ 
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:07:27:754 OPERACION INTERCAMBIO/(7216:7241): intercambio entre entrenadores 1 y 4
+[INFO] 17:07:27:754 CAMBIO DE COLA/(7216:7241): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 17:07:27:754 DETECCION_DEADLOCK/(7216:7228): Inicio de deteccion de deadlock
+[INFO] 17:07:27:754 RESULTADO_DE_DEADLOCK/(7216:7228): Se detectó deadlock multiple
+[INFO] 17:07:28:776 MOVIMIENTO DE ENTRENADOR/(7216:7242): entrenador 3: se movio a (10,6)
+[INFO] 17:07:29:777 CAMBIO DE COLA/(7216:7242): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:07:29:778 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:07:29:778 CAMBIO DE COLA/(7216:7242): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:07:29:778 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:07:29:778 CAMBIO DE COLA/(7216:7242): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:07:29:778 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:07:29:779 CAMBIO DE COLA/(7216:7242): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:07:29:779 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:07:29:779 OPERACION INTERCAMBIO/(7216:7242): intercambio entre entrenadores 3 y 2
+[INFO] 17:07:29:779 CAMBIO DE COLA/(7216:7242): cambio a EXIT de entrenador: 3 
+ 
+[INFO] 17:07:29:779 DETECCION_DEADLOCK/(7216:7228): Inicio de deteccion de deadlock
+[INFO] 17:07:29:779 RESULTADO_DE_DEADLOCK/(7216:7228): Se detectó deadlock
+[INFO] 17:07:29:792 OPERACION INTERCAMBIO/(7216:7244): intercambio entre entrenadores 4 y 2 
+
+[INFO] 17:07:30:802 MOVIMIENTO DE ENTRENADOR/(7216:7244): entrenador 4: se movio a (10,6)
+[INFO] 17:07:31:807 CAMBIO DE COLA/(7216:7244): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7244): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7244): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7244): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 17:07:31:808 CAMBIO DE COLA/(7216:7228): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:07:31:809 CAMBIO DE COLA/(7216:7244): cambio a EXIT de entrenador: 4 
+ 
+[INFO] 17:07:31:809 CAMBIO DE COLA/(7216:7244): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 17:07:31:809 DETECCION_DEADLOCK/(7216:7228): Inicio de deteccion de deadlock
+[INFO] 17:07:31:809 RESULTADO_DE_DEADLOCK/(7216:7228): No se detectó nuevo deadlock
+[INFO] 17:14:34:191 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:14:34:191 ERROR EN COMUNICACION/(7570:7586): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:14:35:222 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:14:36:223 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:14:37:223 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:14:38:224 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:14:39:226 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:14:39:226 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:14:39:226 MOVIMIENTO DE ENTRENADOR/(7570:7581): entrenador 0: se movio a (2,2)
+[INFO] 17:14:39:226 OPERACION ATRAPAR/(7570:7581): ATRAPAR POKEMON: Jolteon con posicion (2, 2)
+[INFO] 17:14:39:226 ERROR EN COMUNICACION/(7570:7581): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:14:39:226 CAMBIO DE COLA/(7570:7581): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 17:14:39:226 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:14:39:226 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:14:40:228 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:14:40:228 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:14:40:228 CAMBIO DE COLA/(7570:7581): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 17:14:40:228 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:14:40:228 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:14:41:229 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:14:41:229 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:14:42:230 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:14:42:230 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:14:43:231 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:14:43:231 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:14:44:233 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:14:44:233 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:14:45:234 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:14:45:235 MOVIMIENTO DE ENTRENADOR/(7570:7582): entrenador 1: se movio a (4,6)
+[INFO] 17:14:45:235 OPERACION ATRAPAR/(7570:7582): ATRAPAR POKEMON: Flareon con posicion (4, 6)
+[INFO] 17:14:45:235 ERROR EN COMUNICACION/(7570:7582): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7582): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:14:45:235 MOVIMIENTO DE ENTRENADOR/(7570:7584): entrenador 3: se movio a (7,1)
+[INFO] 17:14:45:235 OPERACION ATRAPAR/(7570:7584): ATRAPAR POKEMON: Espeon con posicion (7, 1)
+[INFO] 17:14:45:235 ERROR EN COMUNICACION/(7570:7584): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7584): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:14:45:235 MOVIMIENTO DE ENTRENADOR/(7570:7585): entrenador 4: se movio a (4,10)
+[INFO] 17:14:45:235 OPERACION ATRAPAR/(7570:7585): ATRAPAR POKEMON: Vaporeon con posicion (4, 10)
+[INFO] 17:14:45:235 ERROR EN COMUNICACION/(7570:7585): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:14:45:235 CAMBIO DE COLA/(7570:7585): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7584): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7585): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 17:14:45:236 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:14:45:239 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:14:45:239 CAMBIO DE COLA/(7570:7582): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 17:14:45:239 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:14:45:239 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:14:46:240 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:14:46:240 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock multiple
+[INFO] 17:14:48:245 MOVIMIENTO DE ENTRENADOR/(7570:7593): entrenador 0: se movio a (4,10)
+[INFO] 17:14:49:247 CAMBIO DE COLA/(7570:7593): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:14:49:248 CAMBIO DE COLA/(7570:7593): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:14:49:248 CAMBIO DE COLA/(7570:7593): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:14:49:248 CAMBIO DE COLA/(7570:7593): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:14:49:248 OPERACION INTERCAMBIO/(7570:7593): intercambio entre entrenadores 0 y 4
+[INFO] 17:14:49:249 CAMBIO DE COLA/(7570:7593): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 17:14:49:249 CAMBIO DE COLA/(7570:7587): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:14:49:249 CAMBIO DE COLA/(7570:7587): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:14:50:249 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:14:50:250 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock multiple
+[INFO] 17:14:50:251 MOVIMIENTO DE ENTRENADOR/(7570:7583): entrenador 2: se movio a (10,6)
+[INFO] 17:14:50:251 OPERACION ATRAPAR/(7570:7583): ATRAPAR POKEMON: Umbreon con posicion (10, 6)
+[INFO] 17:14:50:251 ERROR EN COMUNICACION/(7570:7583): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:14:50:251 CAMBIO DE COLA/(7570:7583): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 17:14:50:251 CAMBIO DE COLA/(7570:7583): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 17:14:51:263 MOVIMIENTO DE ENTRENADOR/(7570:7595): entrenador 3: se movio a (10,6)
+[INFO] 17:14:52:266 CAMBIO DE COLA/(7570:7595): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:14:52:268 CAMBIO DE COLA/(7570:7595): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:14:52:269 CAMBIO DE COLA/(7570:7595): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:14:52:269 CAMBIO DE COLA/(7570:7595): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:14:52:271 OPERACION INTERCAMBIO/(7570:7595): intercambio entre entrenadores 3 y 2
+[INFO] 17:14:52:271 CAMBIO DE COLA/(7570:7595): cambio a EXIT de entrenador: 3 
+ 
+[INFO] 17:14:52:271 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:14:52:271 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock multiple
+[INFO] 17:14:53:285 MOVIMIENTO DE ENTRENADOR/(7570:7596): entrenador 4: se movio a (10,6)
+[INFO] 17:14:54:288 CAMBIO DE COLA/(7570:7596): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:14:54:293 CAMBIO DE COLA/(7570:7596): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:14:54:294 CAMBIO DE COLA/(7570:7596): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:14:54:294 CAMBIO DE COLA/(7570:7596): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:14:54:295 OPERACION INTERCAMBIO/(7570:7596): intercambio entre entrenadores 4 y 2
+[INFO] 17:14:54:295 CAMBIO DE COLA/(7570:7596): cambio a EXIT de entrenador: 4 
+ 
+[INFO] 17:14:54:295 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:14:54:296 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock
+[INFO] 17:15:04:221 ERROR EN COMUNICACION/(7570:7586): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:15:19:308 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:15:19:312 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock
+[INFO] 17:15:34:225 ERROR EN COMUNICACION/(7570:7586): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:15:44:329 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:15:44:330 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock
+[INFO] 17:16:04:229 ERROR EN COMUNICACION/(7570:7586): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:16:09:355 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:16:09:360 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock
+[INFO] 17:16:34:232 ERROR EN COMUNICACION/(7570:7586): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:16:34:371 DETECCION_DEADLOCK/(7570:7587): Inicio de deteccion de deadlock
+[INFO] 17:16:34:376 RESULTADO_DE_DEADLOCK/(7570:7587): Se detectó deadlock
+[INFO] 17:17:57:886 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:17:57:896 ERROR EN COMUNICACION/(7683:7699): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:00:901 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:18:03:902 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:18:06:903 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:18:09:904 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:18:12:905 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:18:12:905 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:18:12:905 MOVIMIENTO DE ENTRENADOR/(7683:7694): entrenador 0: se movio a (2,2)
+[INFO] 17:18:12:905 OPERACION ATRAPAR/(7683:7694): ATRAPAR POKEMON: Jolteon con posicion (2, 2)
+[INFO] 17:18:12:905 ERROR EN COMUNICACION/(7683:7694): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:12:905 CAMBIO DE COLA/(7683:7694): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 17:18:12:905 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:18:12:905 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:18:15:906 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:18:15:906 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:18:15:906 CAMBIO DE COLA/(7683:7694): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 17:18:15:906 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:18:15:906 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:18:18:907 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:18:18:907 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:18:21:907 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:18:21:908 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:18:24:909 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:18:24:909 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:18:27:898 ERROR EN COMUNICACION/(7683:7699): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:27:910 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:18:27:910 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:18:30:911 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:18:30:911 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:18:30:911 MOVIMIENTO DE ENTRENADOR/(7683:7695): entrenador 1: se movio a (4,6)
+[INFO] 17:18:30:911 OPERACION ATRAPAR/(7683:7695): ATRAPAR POKEMON: Flareon con posicion (4, 6)
+[INFO] 17:18:30:911 ERROR EN COMUNICACION/(7683:7695): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:30:911 CAMBIO DE COLA/(7683:7695): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 17:18:30:911 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:18:30:911 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:18:30:911 MOVIMIENTO DE ENTRENADOR/(7683:7697): entrenador 3: se movio a (7,1)
+[INFO] 17:18:30:911 OPERACION ATRAPAR/(7683:7697): ATRAPAR POKEMON: Espeon con posicion (7, 1)
+[INFO] 17:18:30:911 ERROR EN COMUNICACION/(7683:7697): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7697): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:18:30:912 MOVIMIENTO DE ENTRENADOR/(7683:7698): entrenador 4: se movio a (4,10)
+[INFO] 17:18:30:912 OPERACION ATRAPAR/(7683:7698): ATRAPAR POKEMON: Vaporeon con posicion (4, 10)
+[INFO] 17:18:30:912 ERROR EN COMUNICACION/(7683:7698): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7698): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7697): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7698): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:18:30:912 CAMBIO DE COLA/(7683:7695): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 17:18:30:913 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:18:30:913 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:18:33:914 DETECCION_DEADLOCK/(7683:7700): Inicio de deteccion de deadlock
+[INFO] 17:18:33:914 RESULTADO_DE_DEADLOCK/(7683:7700): Se detectó deadlock multiple
+[INFO] 17:18:39:918 MOVIMIENTO DE ENTRENADOR/(7683:7714): entrenador 0: se movio a (4,10)
+[INFO] 17:18:42:919 CAMBIO DE COLA/(7683:7714): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:18:42:919 CAMBIO DE COLA/(7683:7714): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:18:42:919 CAMBIO DE COLA/(7683:7714): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:18:42:919 CAMBIO DE COLA/(7683:7714): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:18:42:919 OPERACION INTERCAMBIO/(7683:7714): intercambio entre entrenadores 0 y 4
+[INFO] 17:18:42:920 CAMBIO DE COLA/(7683:7714): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 17:18:42:920 CAMBIO DE COLA/(7683:7700): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:18:42:920 CAMBIO DE COLA/(7683:7700): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:18:45:921 DETECCION_DEADLOCK/(7683:7700): Inicio de deteccion de deadlock
+[INFO] 17:18:45:921 RESULTADO_DE_DEADLOCK/(7683:7700): Se detectó deadlock multiple
+[INFO] 17:18:45:923 MOVIMIENTO DE ENTRENADOR/(7683:7696): entrenador 2: se movio a (10,6)
+[INFO] 17:18:45:923 OPERACION ATRAPAR/(7683:7696): ATRAPAR POKEMON: Umbreon con posicion (10, 6)
+[INFO] 17:18:45:923 ERROR EN COMUNICACION/(7683:7696): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:45:923 CAMBIO DE COLA/(7683:7696): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 17:18:45:924 CAMBIO DE COLA/(7683:7696): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 17:18:48:942 MOVIMIENTO DE ENTRENADOR/(7683:7717): entrenador 3: se movio a (10,6)
+[INFO] 17:18:51:947 CAMBIO DE COLA/(7683:7717): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:18:51:952 CAMBIO DE COLA/(7683:7717): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:18:51:952 CAMBIO DE COLA/(7683:7717): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:18:51:952 CAMBIO DE COLA/(7683:7717): cambio a READY de entrenador: 3 
+ 
+[INFO] 17:18:51:952 OPERACION INTERCAMBIO/(7683:7717): intercambio entre entrenadores 3 y 2
+[INFO] 17:18:51:952 CAMBIO DE COLA/(7683:7717): cambio a EXIT de entrenador: 3 
+ 
+[INFO] 17:18:51:952 DETECCION_DEADLOCK/(7683:7700): Inicio de deteccion de deadlock
+[INFO] 17:18:51:952 RESULTADO_DE_DEADLOCK/(7683:7700): Se detectó deadlock multiple
+[INFO] 17:18:54:959 MOVIMIENTO DE ENTRENADOR/(7683:7724): entrenador 4: se movio a (10,6)
+[INFO] 17:18:57:900 ERROR EN COMUNICACION/(7683:7699): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:18:57:964 CAMBIO DE COLA/(7683:7724): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:18:57:968 CAMBIO DE COLA/(7683:7724): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:18:57:968 CAMBIO DE COLA/(7683:7724): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:18:57:968 CAMBIO DE COLA/(7683:7724): cambio a READY de entrenador: 4 
+ 
+[INFO] 17:18:57:968 OPERACION INTERCAMBIO/(7683:7724): intercambio entre entrenadores 4 y 2
+[INFO] 17:18:57:968 CAMBIO DE COLA/(7683:7724): cambio a EXIT de entrenador: 4 
+ 
+[INFO] 17:18:57:968 DETECCION_DEADLOCK/(7683:7700): Inicio de deteccion de deadlock
+[INFO] 17:18:57:968 RESULTADO_DE_DEADLOCK/(7683:7700): Se detectó deadlock
+[INFO] 17:19:22:980 DETECCION_DEADLOCK/(7683:7700): Inicio de deteccion de deadlock
+[INFO] 17:19:22:981 RESULTADO_DE_DEADLOCK/(7683:7700): Se detectó deadlock
+[INFO] 17:19:41:815 ERROR EN COMUNICACION/(7781:7794): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:19:41:825 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:19:44:826 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:19:47:827 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:19:50:827 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:19:53:828 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:19:56:833 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:19:56:833 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:19:56:835 MOVIMIENTO DE ENTRENADOR/(7781:7789): entrenador 0: se movio a (2,2)
+[INFO] 17:19:56:835 OPERACION ATRAPAR/(7781:7789): ATRAPAR POKEMON: Jolteon con posicion (2, 2)
+[INFO] 17:19:56:835 ERROR EN COMUNICACION/(7781:7789): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:19:56:835 CAMBIO DE COLA/(7781:7789): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 17:19:56:835 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:19:56:836 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:19:59:836 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:19:59:837 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:19:59:837 CAMBIO DE COLA/(7781:7789): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 17:19:59:837 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:19:59:837 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:20:02:837 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:20:02:837 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:20:05:838 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:20:05:838 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:20:08:839 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:20:08:839 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:20:11:817 ERROR EN COMUNICACION/(7781:7794): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:20:11:839 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:20:11:839 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:20:14:843 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:20:14:843 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:20:14:843 MOVIMIENTO DE ENTRENADOR/(7781:7790): entrenador 1: se movio a (4,6)
+[INFO] 17:20:14:843 OPERACION ATRAPAR/(7781:7790): ATRAPAR POKEMON: Flareon con posicion (4, 6)
+[INFO] 17:20:14:843 ERROR EN COMUNICACION/(7781:7790): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:20:14:843 CAMBIO DE COLA/(7781:7790): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 17:20:14:843 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:20:14:843 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:20:14:843 MOVIMIENTO DE ENTRENADOR/(7781:7792): entrenador 3: se movio a (7,1)
+[INFO] 17:20:14:843 OPERACION ATRAPAR/(7781:7792): ATRAPAR POKEMON: Espeon con posicion (7, 1)
+[INFO] 17:20:14:843 ERROR EN COMUNICACION/(7781:7792): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:20:14:843 CAMBIO DE COLA/(7781:7792): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:20:14:844 MOVIMIENTO DE ENTRENADOR/(7781:7793): entrenador 4: se movio a (4,10)
+[INFO] 17:20:14:844 OPERACION ATRAPAR/(7781:7793): ATRAPAR POKEMON: Vaporeon con posicion (4, 10)
+[INFO] 17:20:14:844 ERROR EN COMUNICACION/(7781:7793): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7793): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7792): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7793): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7790): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:20:14:844 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:20:17:845 DETECCION_DEADLOCK/(7781:7795): Inicio de deteccion de deadlock
+[INFO] 17:20:17:845 RESULTADO_DE_DEADLOCK/(7781:7795): Se detectó deadlock multiple
+[INFO] 17:20:23:864 MOVIMIENTO DE ENTRENADOR/(7781:7811): entrenador 0: se movio a (4,10)
+[INFO] 17:20:26:867 CAMBIO DE COLA/(7781:7811): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:20:26:868 CAMBIO DE COLA/(7781:7811): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:20:26:868 CAMBIO DE COLA/(7781:7811): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:20:26:868 CAMBIO DE COLA/(7781:7811): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:20:26:868 OPERACION INTERCAMBIO/(7781:7811): intercambio entre entrenadores 0 y 4
+[INFO] 17:20:26:868 CAMBIO DE COLA/(7781:7811): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 17:20:26:869 CAMBIO DE COLA/(7781:7795): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:20:26:870 CAMBIO DE COLA/(7781:7795): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:20:29:870 DETECCION_DEADLOCK/(7781:7795): Inicio de deteccion de deadlock
+[INFO] 17:20:29:870 RESULTADO_DE_DEADLOCK/(7781:7795): Se detectó deadlock multiple
+[INFO] 17:20:29:875 MOVIMIENTO DE ENTRENADOR/(7781:7791): entrenador 2: se movio a (10,6)
+[INFO] 17:20:29:876 OPERACION ATRAPAR/(7781:7791): ATRAPAR POKEMON: Umbreon con posicion (10, 6)
+[INFO] 17:20:29:876 ERROR EN COMUNICACION/(7781:7791): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:20:29:876 CAMBIO DE COLA/(7781:7791): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 17:20:29:886 CAMBIO DE COLA/(7781:7791): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 17:20:56:578 ERROR EN COMUNICACION/(7868:7881): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:20:56:600 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:20:59:604 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:21:02:604 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:21:05:606 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:21:08:607 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:21:11:609 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:21:11:609 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:21:11:611 MOVIMIENTO DE ENTRENADOR/(7868:7876): entrenador 0: se movio a (2,2)
+[INFO] 17:21:11:611 OPERACION ATRAPAR/(7868:7876): ATRAPAR POKEMON: Jolteon con posicion (2, 2)
+[INFO] 17:21:11:611 ERROR EN COMUNICACION/(7868:7876): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:21:11:611 CAMBIO DE COLA/(7868:7876): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 17:21:11:611 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:21:11:611 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:21:14:612 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:21:14:612 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 17:21:14:612 CAMBIO DE COLA/(7868:7876): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 17:21:14:612 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 0 
+ 
+[INFO] 17:21:14:612 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:21:17:614 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:21:17:614 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:21:20:614 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:21:20:615 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:21:23:616 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:21:23:616 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:21:26:578 ERROR EN COMUNICACION/(7868:7881): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:21:26:618 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:21:26:618 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:21:29:620 MOVIMIENTO DE ENTRENADOR/(7868:7877): entrenador 1: se movio a (4,6)
+[INFO] 17:21:29:620 OPERACION ATRAPAR/(7868:7877): ATRAPAR POKEMON: Flareon con posicion (4, 6)
+[INFO] 17:21:29:620 ERROR EN COMUNICACION/(7868:7877): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7877): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:21:29:620 MOVIMIENTO DE ENTRENADOR/(7868:7879): entrenador 3: se movio a (7,1)
+[INFO] 17:21:29:620 OPERACION ATRAPAR/(7868:7879): ATRAPAR POKEMON: Espeon con posicion (7, 1)
+[INFO] 17:21:29:620 ERROR EN COMUNICACION/(7868:7879): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7879): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:21:29:620 MOVIMIENTO DE ENTRENADOR/(7868:7880): entrenador 4: se movio a (4,10)
+[INFO] 17:21:29:620 OPERACION ATRAPAR/(7868:7880): ATRAPAR POKEMON: Vaporeon con posicion (4, 10)
+[INFO] 17:21:29:620 ERROR EN COMUNICACION/(7868:7880): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7880): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:21:29:620 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7879): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 3 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7877): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 1 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7880): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7882): cambio a READY a entrenador: 4 
+ 
+[INFO] 17:21:29:621 CAMBIO DE COLA/(7868:7882): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 17:21:32:621 DETECCION_DEADLOCK/(7868:7882): Inicio de deteccion de deadlock
+[INFO] 17:21:32:621 RESULTADO_DE_DEADLOCK/(7868:7882): Se detectó deadlock multiple
+[INFO] 17:21:46:339 MOVIMIENTO DE ENTRENADOR/(7868:7878): entrenador 2: se movio a (10,6)
+[INFO] 17:21:46:339 OPERACION ATRAPAR/(7868:7878): ATRAPAR POKEMON: Umbreon con posicion (10, 6)
+[INFO] 17:21:46:339 ERROR EN COMUNICACION/(7868:7878): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:21:46:339 CAMBIO DE COLA/(7868:7878): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 17:21:46:343 CAMBIO DE COLA/(7868:7878): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 17:21:56:670 ERROR EN COMUNICACION/(7868:7881): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:22:15:548 MOVIMIENTO DE ENTRENADOR/(7868:7903): entrenador 0: se movio a (4,10)
+[INFO] 17:22:30:584 ERROR EN COMUNICACION/(7868:7881): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:22:32:193 CAMBIO DE COLA/(7868:7903): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:22:39:794 CAMBIO DE COLA/(7868:7903): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:22:42:394 CAMBIO DE COLA/(7868:7903): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:22:44:913 CAMBIO DE COLA/(7868:7903): cambio a READY de entrenador: 0 
+ 
+[INFO] 17:22:46:442 OPERACION INTERCAMBIO/(7868:7903): intercambio entre entrenadores 0 y 4
+[INFO] 17:23:15:40 ERROR EN COMUNICACION/(7868:7881): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 17:23:38:913 CAMBIO DE COLA/(7868:7903): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 17:23:40:556 DETECCION_DEADLOCK/(7868:7882): Inicio de deteccion de deadlock
+[INFO] 17:23:40:556 RESULTADO_DE_DEADLOCK/(7868:7882): Se detectó deadlock multiple
+[INFO] 17:23:45:284 ERROR EN COMUNICACION/(7868:7881): No se pudo conectar con Broker,se realizará la operación por default

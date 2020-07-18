@@ -1769,3 +1769,10 @@
  
 [INFO] 13:28:17:443 CAMBIO DE COLA/(9105:9160): cambio a EXIT de entrenador: 1 
  
+[INFO] 16:27:36:864 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:28:06:895 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:28:36:895 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:29:06:897 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:29:36:897 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:30:06:898 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
+[INFO] 16:30:36:899 ERROR EN COMUNICACION/(5040:5044): No se pudo conectar con Broker,se realizará la operación por default
