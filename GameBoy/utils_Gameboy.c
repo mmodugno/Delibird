@@ -478,8 +478,9 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			newRecibido = deserializar_new_pokemon(cliente_fd);
 			newRecibido->id = id;
 
-			//TODO porque carajo tira implicit declaration
+
 			enviarACK(newRecibido->id,conexionBroker,"GAMEBOY");
+
 
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
 					newRecibido->id,

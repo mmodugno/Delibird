@@ -25,7 +25,7 @@ void variables_globales(){
 
 	//Si planifico con FIFO o RR lo hago mediante COLAS
 	if(leer_algoritmo_planificacion() == FIFO || leer_algoritmo_planificacion() == RR){
-		entrenadores_ready = queue_create();
+
 		entrenadores_block_ready = queue_create();
 	}
 
@@ -35,6 +35,7 @@ void variables_globales(){
 		alpha = leer_alpha();
 	}
 
+	entrenadores_ready = queue_create();
 	entrenadores_blocked = list_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
@@ -71,7 +72,7 @@ void variables_globales(){
 
 	 un_entrenador->id = id_creada;
 
-	 un_entrenador->id_caught = 0;
+	 un_entrenador->id_catch = 0;
 
 	 un_entrenador->rafaga_estimada = leer_estimacion_inicial();
 
@@ -249,7 +250,7 @@ while(1){
 
 		enviar_catch(un_entrenador,catchAEnviar);
 		log_info(llegadaDeMensaje,"del catch que envie su ID es %d",catchAEnviar->id);
-		un_entrenador->id_caught = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
+		un_entrenador->id_catch = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
 
 		un_entrenador->ciclos_cpu += 1;
 
@@ -327,13 +328,15 @@ void manejar_deadlock(void){
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				entrenador_deadlock+=2;
+				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				break;
 			}
 			else{
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				entrenador_deadlock+=2;
+
+				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
+
 				espera_de_deadlock();//TODO
 				break;
 			}
@@ -405,8 +408,8 @@ while(queue_size(entrenadores_ready)>0){
 
 
 //Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
-
-if(validar_deadlock){
+/*
+if(validar_deadlock && list_is_empty(entrenadores_new)){
 	validar_deadlock=0;
 	sem_wait(&en_ejecucion);
 	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
@@ -416,6 +419,48 @@ if(validar_deadlock){
 
 }
 
+*/
+if(validar_deadlock && list_is_empty(entrenadores_new)){
+		validar_deadlock=0;
+		sem_wait(&en_ejecucion);
+
+		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+
+		if(hay_deadlock_multiple()){
+
+			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+
+			entrenador_deadlock-=1;
+
+
+			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+			sem_post(&en_ejecucion);
+			continue;
+		}
+
+		if(hay_deadlock()){
+			log_info(resultado_deadlock,"Se detectó deadlock");
+			entrenador_deadlock-=2;
+			cant_deadlocks +=1;
+
+
+		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
+		sem_post(&en_ejecucion);
+		continue;
+
+		}
+	else{
+			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+
+			//espera unos segundos y pone el contador validar_deadlock en 1
+			pthread_t espera_deadlock;
+			pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
+
+		}
+
+		sem_post(&en_ejecucion);
+	}
 
 
 if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
@@ -794,7 +839,9 @@ void manejar_deadlock_multiple(){
 					printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
 				}
+			break;
 		}
+
 	}
 
 void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador1){
@@ -990,48 +1037,48 @@ while(1){
 	}
 
 
-	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
 	if(validar_deadlock && list_is_empty(entrenadores_new)){
-		validar_deadlock=0;
-		sem_wait(&en_ejecucion);
+			validar_deadlock=0;
+			sem_wait(&en_ejecucion);
 
-		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+			log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 
-		if(hay_deadlock_multiple()){
+			if(hay_deadlock_multiple()){
 
-			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+				log_info(resultado_deadlock,"Se detectó deadlock multiple");
 
-			entrenador_deadlock-=1;
+				entrenador_deadlock-=1;
 
 
-			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+				pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+				sem_post(&en_ejecucion);
+				continue;
+			}
+
+			if(hay_deadlock()){
+				log_info(resultado_deadlock,"Se detectó deadlock");
+				entrenador_deadlock-=2;
+				cant_deadlocks +=1;
+
+
+			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
 			sem_post(&en_ejecucion);
 			continue;
+
+			}
+		else{
+				log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+
+				//espera unos segundos y pone el contador validar_deadlock en 1
+				pthread_t espera_deadlock;
+				pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
+
+			}
+
+			sem_post(&en_ejecucion);
 		}
 
-		if(hay_deadlock()){
-			log_info(resultado_deadlock,"Se detectó deadlock");
-			entrenador_deadlock-=2;
-			cant_deadlocks +=1;
-
-
-		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
-
-		sem_post(&en_ejecucion);
-		continue;
-
-		}
-	else{
-			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
-
-			//espera 10 segundos y pone el contador validar_deadlock en 1
-			pthread_t espera_deadlock;
-			pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
-
-		}
-
-		sem_post(&en_ejecucion);
-	}
 
 
 	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
@@ -1090,6 +1137,8 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 	send(conexionBroker,bufferStream,tamanio_buffer,0);
 	//llenamos el ID del catch que enviamos
 	recv(conexionBroker,&(catchAEnviar->id),sizeof(uint32_t),0);
+	//TODO
+	//aca hay que guardar el id que enviamos de catch, tambien hay que hacer un mutex
 
 	free(bufferStream);
 
@@ -1105,7 +1154,7 @@ void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
 
 
 
-void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
+void enviar_get(entrenador* un_entrenador,broker_get_pokemon *getAEnviar){
 	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
 
@@ -1121,8 +1170,7 @@ void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
 	getAEnviar->datos->tamanioNombre=un_entrenador->objetivo_proximo->tamanio_nombre;
 	getAEnviar->datos->nombrePokemon = malloc(getAEnviar->datos->tamanioNombre);
 	getAEnviar->datos->nombrePokemon = un_entrenador->objetivo_proximo->nombre;
-	getAEnviar->datos->posX = un_entrenador->objetivo_proximo->posX;
-	getAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
+
 
 
 	//serializacion de brokerNewPokemon
@@ -1138,7 +1186,8 @@ void enviar_get(entrenador* un_entrenador,broker_catch_pokemon *getAEnviar){
 	send(conexionBroker,bufferStream,tamanio_buffer,0);
 	//llenamos el ID del catch que enviamos
 	recv(conexionBroker,&(getAEnviar->id),sizeof(uint32_t),0);
-
+	//TODO
+	//aca hay que guardar el id que enviamos de get, tambien hay que hacer un mutex
 
 
 
@@ -1250,7 +1299,7 @@ bool primer_entrenador_mas_cerca_de_pokemon(entrenador* entrenador1, entrenador*
 	int dist2 = distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
 
 	bool resultado;
-	if(dist1 == dist2) resultado = false;
+	if(dist1 == dist2) resultado = true;
 	else{
 	 resultado = distancia_entrenador_pokemon(entrenador1,proximo_objetivo) <= distancia_entrenador_pokemon(entrenador2,proximo_objetivo);
 	}
@@ -1457,6 +1506,7 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_username;
 	team_appeared_pokemon* appearedRecibido;
 	team_caught_pokemon* caughtRecibido;
+	broker_localized_pokemon* localizedRecibido;
 	char* username;
 
 	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
@@ -1485,7 +1535,7 @@ void process_request(int cod_op, int cliente_fd) {
 			free(appearedRecibido);
 			break;
 
-		case TEAM__CAUGHT_POKEMON:
+		case BROKER__CAUGHT_POKEMON:
 
 			caughtRecibido = deserializar_team_caught_pokemon(cliente_fd);
 
@@ -1495,21 +1545,27 @@ void process_request(int cod_op, int cliente_fd) {
 
 			for(int i = 0; i < list_size(entrenadores);i++){
 				entrenador* un_entrenador = list_get(entrenadores,i);
-				if(un_entrenador->id_caught == id_recibido){
+				if(un_entrenador->id_catch == id_recibido){
 
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
 
-					sem_post(&semaforo_mensaje);
 					sem_post(&semaforo_mensaje);
 					break;
 				}
 
 			}
 
-
 			break;
 
+		case BROKER__LOCALIZED_POKEMON:
+
+			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
+			//todo
+			//aca no se muy bien que comparación vamos a hacer
+
+
+		break;
 
 		case 0:
 			pthread_exit(NULL);

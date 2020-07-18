@@ -26,8 +26,6 @@ broker_get_pokemon* deserializar_get_pokemon(int socket_cliente){
 	getPoke->datos->nombrePokemon = malloc(getPoke->datos->tamanioNombre);
 	recv(socket_cliente , getPoke->datos->nombrePokemon , getPoke->datos->tamanioNombre,0);
 
-
-
 	return getPoke;
 
 

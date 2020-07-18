@@ -177,7 +177,7 @@ void process_request(int cod_op, int cliente_fd) {
 			log_info(logSuscipcion,
 					"recibi mensaje de suscripcion de %s a la cola %s",
 					suscriptor->nombreDeSuscriptor,
-					colasDeEnum[(suscriptor->tipoDeCola) - 1]);
+					colasDeEnum[(suscriptor->tipoDeCola)]);
 
 			sem_wait(&suscripcionACola);
 			suscribirACola(suscriptor);
@@ -263,6 +263,11 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			if (!strcmp(username, "TEAM")) {
+				//TODO ver conexiones con los otros sockets (si les tengo que mandar ID
+				send(cliente_fd, &(getRecibido->id), sizeof(uint32_t), 0);
+			}
 
 			raiz = transformarBrokerGetPokemon(getRecibido, &tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este get a agregar es %d",sizeof(raiz));
@@ -487,13 +492,13 @@ void suscribirACola(suscriptor* suscriptor){
 
 void desuscribirACola(suscriptor* suscriptor){
 
+/*
 
-	/*
-	 *
 	//TODO ver porque no existe el suscriptor
 	bool suscriptorAEliminar(suscriptor* susc){
 		return (!strcmp(susc->nombreDeSuscriptor, suscriptor->nombreDeSuscriptor));
 	}
+
 
 	switch(suscriptor->tipoDeCola){
 		case NEW_POKEMON:{

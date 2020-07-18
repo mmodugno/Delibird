@@ -95,14 +95,14 @@ void terminar_programa(void){
 	destruir_logs();
 
 	if(leer_algoritmo_planificacion() == FIFO || leer_algoritmo_planificacion() == RR){
-		queue_destroy(entrenadores_ready);
+
 		queue_destroy(entrenadores_block_ready);
 	}
 	else{
 		list_destroy(lista_entrenadores_block_ready);
 		list_destroy(lista_entrenadores_ready);
 	}
-
+	queue_destroy(entrenadores_ready);
 	list_destroy(entrenadores);
 	list_destroy(pokemones_atrapados);
 	list_destroy(entrenadores_finalizados);

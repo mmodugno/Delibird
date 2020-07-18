@@ -82,9 +82,9 @@ team_caught_pokemon* deserializar_team_caught_pokemon(int socket_cliente){
 
 	team_caught_pokemon* caughtPokemon = malloc(sizeof(team_caught_pokemon));
 	caughtPokemon->datos = malloc(sizeof(caught_pokemon));
-
-	recv(socket_cliente, &(caughtPokemon->id_relativo),sizeof(uint32_t),0);
+	recv(socket_cliente, &(caughtPokemon->id),sizeof(uint32_t),0);
 	recv(socket_cliente, &(caughtPokemon->datos->puedoAtraparlo),sizeof(uint32_t),0);
+	recv(socket_cliente, &(caughtPokemon->id_relativo),sizeof(uint32_t),0);
 
 	return caughtPokemon;
 }
