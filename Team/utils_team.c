@@ -25,7 +25,7 @@ void variables_globales(){
 
 	//Si planifico con FIFO o RR lo hago mediante COLAS
 	if(leer_algoritmo_planificacion() == FIFO || leer_algoritmo_planificacion() == RR){
-		entrenadores_ready = queue_create();
+
 		entrenadores_block_ready = queue_create();
 	}
 
@@ -35,6 +35,7 @@ void variables_globales(){
 		alpha = leer_alpha();
 	}
 
+	entrenadores_ready = queue_create();
 	entrenadores_blocked = list_create();
 	entrenadores_finalizados = list_create();
 	entrenadores_en_deadlock = list_create();
@@ -327,13 +328,15 @@ void manejar_deadlock(void){
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				entrenador_deadlock+=2;
+				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				break;
 			}
 			else{
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				entrenador_deadlock+=2;
+
+				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
+
 				espera_de_deadlock();//TODO
 				break;
 			}
@@ -405,8 +408,8 @@ while(queue_size(entrenadores_ready)>0){
 
 
 //Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
-
-if(validar_deadlock){
+/*
+if(validar_deadlock && list_is_empty(entrenadores_new)){
 	validar_deadlock=0;
 	sem_wait(&en_ejecucion);
 	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
@@ -416,6 +419,48 @@ if(validar_deadlock){
 
 }
 
+*/
+if(validar_deadlock && list_is_empty(entrenadores_new)){
+		validar_deadlock=0;
+		sem_wait(&en_ejecucion);
+
+		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+
+		if(hay_deadlock_multiple()){
+
+			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+
+			entrenador_deadlock-=1;
+
+
+			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+			sem_post(&en_ejecucion);
+			continue;
+		}
+
+		if(hay_deadlock()){
+			log_info(resultado_deadlock,"Se detectó deadlock");
+			entrenador_deadlock-=2;
+			cant_deadlocks +=1;
+
+
+		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
+		sem_post(&en_ejecucion);
+		continue;
+
+		}
+	else{
+			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+
+			//espera unos segundos y pone el contador validar_deadlock en 1
+			pthread_t espera_deadlock;
+			pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
+
+		}
+
+		sem_post(&en_ejecucion);
+	}
 
 
 if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
@@ -794,7 +839,9 @@ void manejar_deadlock_multiple(){
 					printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
 				}
+			break;
 		}
+
 	}
 
 void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador1){
@@ -990,48 +1037,48 @@ while(1){
 	}
 
 
-	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
 	if(validar_deadlock && list_is_empty(entrenadores_new)){
-		validar_deadlock=0;
-		sem_wait(&en_ejecucion);
+			validar_deadlock=0;
+			sem_wait(&en_ejecucion);
 
-		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+			log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 
-		if(hay_deadlock_multiple()){
+			if(hay_deadlock_multiple()){
 
-			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+				log_info(resultado_deadlock,"Se detectó deadlock multiple");
 
-			entrenador_deadlock-=1;
+				entrenador_deadlock-=1;
 
 
-			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+				pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
+				sem_post(&en_ejecucion);
+				continue;
+			}
+
+			if(hay_deadlock()){
+				log_info(resultado_deadlock,"Se detectó deadlock");
+				entrenador_deadlock-=2;
+				cant_deadlocks +=1;
+
+
+			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+
 			sem_post(&en_ejecucion);
 			continue;
+
+			}
+		else{
+				log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+
+				//espera unos segundos y pone el contador validar_deadlock en 1
+				pthread_t espera_deadlock;
+				pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
+
+			}
+
+			sem_post(&en_ejecucion);
 		}
 
-		if(hay_deadlock()){
-			log_info(resultado_deadlock,"Se detectó deadlock");
-			entrenador_deadlock-=2;
-			cant_deadlocks +=1;
-
-
-		pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
-
-		sem_post(&en_ejecucion);
-		continue;
-
-		}
-	else{
-			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
-
-			//espera 10 segundos y pone el contador validar_deadlock en 1
-			pthread_t espera_deadlock;
-			pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
-
-		}
-
-		sem_post(&en_ejecucion);
-	}
 
 
 	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
