@@ -16,75 +16,73 @@ void envioColaNewPokemon() {
 	particion *mensajeNewEnMemo;
 	buddy* mensajeNewEnMemoBuddy;
 
+	bool esSuscriptor(char* userActual) {
+		return (!strcmp(userActual, username));
+	}
+
+	void llenarUserSinACK(char* userActual) {
+		username = string_duplicate(userActual);
+		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+			list_add(usersSinACK, userActual);
+		}
+	}
+
+	bool menNewQueFalten(particion *part) {
+		if (part->tipoMensaje == NEW_POKEMON) {
+			//me fijo que se hayan mandado a todos los suscriptores
+			usersConACK = list_duplicate(part->acknoleged);
+
+			list_iterate(suscriptoresNewPokemon, llenarUserSinACK);
+
+			if (usersSinACK->elements_count) {
+				return 1;
+			}
+			list_clean(usersSinACK);
+			return 0;
+		}
+		list_clean(usersSinACK);
+		return 0;
+	}
+
 	//TODO ver si este while esta demas
 	while (1) {
 		sem_wait(&suscripcionACola);
-		while (suscriptoresNewPokemon->elements_count > 0) {
+		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
+		if (suscriptoresNewPokemon->elements_count > 0) {
 
 			//sem_wait(&colaNew);
 			sem_wait(&usoMemoria);
 
-			bool esSuscriptor(char* userActual) {
-				return (!strcmp(userActual, username));
-			}
-
-			void llenarUserSinACK(char* userActual) {
-				username = string_duplicate(userActual);
-				if (!list_any_satisfy(usersConACK, esSuscriptor)) {
-					list_add(usersSinACK, userActual);
-				}
-			}
-
-			bool menNewQueFalten(particion *part) {
-				if (part->tipoMensaje == NEW_POKEMON) {
-					//me fijo que se hayan mandado a todos los suscriptores
-					usersConACK = list_duplicate(part->acknoleged);
-
-					list_iterate(suscriptoresNewPokemon, llenarUserSinACK);
-
-					if (usersSinACK->elements_count) {
-						return 1;
-					}
-					list_clean(usersSinACK);
-					return 0;
-				}
-				list_clean(usersSinACK);
-				return 0;
-			}
-
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresNewPokemon->elements_count) {
-					mensajeNewEnMemo = list_find(tablaDeParticiones, menNewQueFalten);
+					mensajeNewEnMemo = list_find(tablaDeParticiones,menNewQueFalten);
 					enviarPorTipo(mensajeNewEnMemo, usersSinACK);
-					list_clean_and_destroy_elements(usersSinACK, free);
+					//list_clean_and_destroy_elements(usersSinACK, free);
 				}
-
-		bool menNewQueFaltenEnBuddy(buddy* unBuddy) {
-			return menNewQueFalten(unBuddy->particion);
-		}
-
-		if (!strcmp(algoritmo_memoria, "BS")) {
-			//sem_wait(&suscripcionACola);
-			mensajeNewEnMemoBuddy = list_find(tablaDeParticiones,menNewQueFaltenEnBuddy);
-			//sem_post(&suscripcionACola);
-			enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
-		}
-
-		//nose si list_destroy_and_destroy_elements() eliminaria los username que siguen estando en la de ack de esa part
-
-
-		//clean si lo voy limpiandocada vez que lo uso
-		list_clean(usersSinACK);
-
-			if (mensajeNewEnMemo != NULL) {
-				//free(mensajeNewEnMemo->timestamp);
-				free(mensajeNewEnMemo);
-				//sem_post(&colaNew);
 			}
+
+			bool menNewQueFaltenEnBuddy(buddy* unBuddy) {
+				return menNewQueFalten(unBuddy->particion);
+			}
+
+			if (!strcmp(algoritmo_memoria, "BS")) {
+				//sem_wait(&suscripcionACola);
+				mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, menNewQueFaltenEnBuddy);
+				//sem_post(&suscripcionACola);
+				enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
+				//list_clean_and_destroy_elements(usersSinACK, free);
+			}
+
+			//nose si list_destroy_and_destroy_elements() eliminaria los username que siguen estando en la de ack de esa part
+
+			//clean si lo voy limpiandocada vez que lo uso
+			list_clean(usersSinACK);
+			list_clean(usersConACK);
+
+
 			//free(username);
 			sem_post(&usoMemoria);
-
 		}
 		sem_post(&suscripcionACola);
 	}
@@ -109,7 +107,7 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 	broker_catch_pokemon* catchEnMemo;
 	broker_caught_pokemon* caughtEnMemo;
 
-	if (partAEnviar != NULL) {
+	if (partAEnviar != NULL && !list_is_empty(usersAEnviar)) {
 		switch (partAEnviar->tipoMensaje) {
 			case NEW_POKEMON:
 				newEnMemo = leerdeMemoriaNEW(partAEnviar);

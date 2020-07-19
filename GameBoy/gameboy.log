@@ -1,83 +1,57 @@
 
-<<<<<<< HEAD
-[INFO] 11:27:58:387 Conexion/(17900:17900): me conecte a Broker exitosamente
-[INFO] 11:29:32:684 Conexion/(18151:18151): me conecte a Gamecard exitosamente
-[INFO] 11:30:49:212 Conexion/(18252:18252): no me pude conectar a Gamecard
-[INFO] 11:32:08:691 Conexion/(18501:18501): me conecte a Gamecard exitosamente
-[INFO] 11:33:29:497 Conexion/(18600:18600): me conecte a Gamecard exitosamente
-[INFO] 11:35:12:601 Conexion/(18777:18777): me conecte a Gamecard exitosamente
-[INFO] 11:36:01:927 Conexion/(18917:18917): me conecte a Gamecard exitosamente
-[INFO] 11:37:00:489 Conexion/(19018:19018): me conecte a Gamecard exitosamente
-[INFO] 11:38:39:548 Conexion/(19143:19143): me conecte a Gamecard exitosamente
-[INFO] 11:38:51:876 Conexion/(19192:19192): me conecte a Gamecard exitosamente
-[INFO] 11:39:14:156 Conexion/(19255:19255): me conecte a Gamecard exitosamente
-[INFO] 11:41:17:506 Conexion/(19414:19414): me conecte a Gamecard exitosamente
-[INFO] 11:44:28:920 Conexion/(19710:19710): me conecte a Gamecard exitosamente
-[INFO] 11:45:41:208 Conexion/(19891:19891): me conecte a Gamecard exitosamente
-[INFO] 11:47:21:60 Conexion/(20004:20004): me conecte a Broker exitosamente
-[INFO] 11:47:39:22 Conexion/(20075:20075): me conecte a Broker exitosamente
-[INFO] 11:48:29:378 Conexion/(20186:20186): no me pude conectar a Gamecard
-[INFO] 11:50:11:605 Conexion/(20287:20287): me conecte a Gamecard exitosamente
-[INFO] 11:52:32:710 Conexion/(20619:20619): me conecte a Gamecard exitosamente
-[INFO] 11:58:26:621 Conexion/(20829:20829): me conecte a Gamecard exitosamente
-[INFO] 12:01:18:231 Conexion/(20919:20919): me conecte a Gamecard exitosamente
-[INFO] 12:11:33:919 Conexion/(21374:21374): me conecte a Gamecard exitosamente
-[INFO] 12:12:27:480 Conexion/(21525:21525): me conecte a Gamecard exitosamente
-[INFO] 13:14:16:607 Conexion/(23189:23189): me conecte a Gamecard exitosamente
-[INFO] 13:15:07:515 Conexion/(23299:23299): me conecte a Gamecard exitosamente
-[INFO] 13:16:42:267 Conexion/(18249:18249): me conecte a Gamecard exitosamente
-[INFO] 13:17:44:380 Conexion/(18357:18357): me conecte a Gamecard exitosamente
-[INFO] 13:18:46:884 Conexion/(18457:18457): me conecte a Gamecard exitosamente
-[INFO] 13:24:52:745 Conexion/(18673:18673): me conecte a Gamecard exitosamente
-[INFO] 13:26:28:452 Conexion/(18789:18789): me conecte a Gamecard exitosamente
-[INFO] 13:27:22:586 Conexion/(18894:18894): me conecte a Gamecard exitosamente
-[INFO] 13:28:33:510 Conexion/(19000:19000): me conecte a Gamecard exitosamente
-[INFO] 13:31:33:327 Conexion/(19223:19223): me conecte a Gamecard exitosamente
-[INFO] 13:32:10:965 Conexion/(19326:19326): me conecte a Gamecard exitosamente
-[INFO] 13:36:24:636 Conexion/(19573:19573): me conecte a Gamecard exitosamente
-[INFO] 13:37:07:201 Conexion/(19026:19026): no me pude conectar a Gamecard
-[INFO] 13:37:45:38 Conexion/(19500:19500): me conecte a Broker exitosamente
-[INFO] 13:38:14:231 Conexion/(19570:19570): me conecte a Broker exitosamente
-[INFO] 14:03:29:570 Conexion/(20615:20615): no me pude conectar a Broker
-[INFO] 19:50:26:611 Conexion/(2955:2955): me conecte a Broker exitosamente
-[INFO] 19:53:31:907 Conexion/(3618:3618): me conecte a Broker exitosamente
-[INFO] 19:55:07:962 Conexion/(3776:3776): no me pude conectar a Broker
-[INFO] 19:55:38:918 Conexion/(3892:3892): me conecte a Broker exitosamente
-[INFO] 19:57:04:112 Conexion/(3949:3949): no me pude conectar a Gamecard
-[INFO] 19:57:16:158 Conexion/(4016:4016): me conecte a Gamecard exitosamente
-[INFO] 19:58:48:92 Conexion/(4118:4118): me conecte a Gamecard exitosamente
-[INFO] 20:03:17:954 Conexion/(4381:4381): me conecte a Gamecard exitosamente
-[INFO] 20:05:25:471 Conexion/(4523:4523): me conecte a Gamecard exitosamente
-[INFO] 20:05:50:656 Conexion/(4599:4599): me conecte a Gamecard exitosamente
-[INFO] 20:06:49:691 Conexion/(4725:4725): me conecte a Gamecard exitosamente
-[INFO] 20:08:21:784 Conexion/(4893:4893): me conecte a Gamecard exitosamente
-[INFO] 20:10:14:546 Conexion/(5056:5056): me conecte a Gamecard exitosamente
-=======
-[INFO] 17:22:43:279 Conexion/(16482:16482): no me pude conectar a Broker
->>>>>>> c3260d5c516f2feab0f080625a8040c07035ff23
-[INFO] 16:50:36:170 Conexion/(11130:11130): me conecte a Broker exitosamente
-[INFO] 16:50:57:874 Suscripcion/(11130:11130): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
-[INFO] 16:53:54:734 Conexion/(11316:11316): me conecte a Broker exitosamente
-[INFO] 16:53:54:734 Suscripcion/(11316:11316): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
-[INFO] 17:14:14:718 Conexion/(12993:12993): me conecte a Broker exitosamente
-[INFO] 17:14:14:724 Suscripcion/(12993:12993): me conecto como modo suscriptor por 15 segundos a New_Pokemon exitosamente
-[INFO] 17:31:56:333 Conexion/(14158:14158): me conecte a Broker exitosamente
-[INFO] 17:31:56:334 Suscripcion/(14158:14158): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 17:35:56:698 Conexion/(14271:14271): me conecte a Broker exitosamente
-[INFO] 17:36:18:669 Suscripcion/(14271:14271): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 17:39:40:460 Conexion/(14552:14552): me conecte a Broker exitosamente
-[INFO] 17:39:40:460 Suscripcion/(14552:14552): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 17:41:35:751 Conexion/(15117:15117): no me pude conectar a Broker
-[INFO] 17:42:17:596 Conexion/(15429:15429): no me pude conectar a Broker
-[INFO] 17:43:18:161 Conexion/(15565:15565): me conecte a Broker exitosamente
-[INFO] 17:43:18:161 Suscripcion/(15565:15565): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 17:45:45:447 Conexion/(16111:16111): no me pude conectar a Broker
-[INFO] 17:46:59:84 Conexion/(16263:16263): me conecte a Broker exitosamente
-[INFO] 17:47:10:645 Suscripcion/(16263:16263): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 17:50:17:360 Conexion/(16527:16527): me conecte a Broker exitosamente
-[INFO] 17:50:27:597 Suscripcion/(16527:16527): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 17:54:13:852 Conexion/(16847:16847): me conecte a Broker exitosamente
-[INFO] 18:06:12:482 Conexion/(4426:4426): me conecte a Broker exitosamente
-[INFO] 18:06:26:995 Suscripcion/(4426:4426): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
-[INFO] 18:09:54:100 Conexion/(4649:4649): me conecte a Broker exitosamente
-[INFO] 18:09:54:104 Suscripcion/(4649:4649): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 16:36:30:62 Conexion/(13412:13412): no me pude conectar a Broker
+[INFO] 16:37:12:940 Conexion/(13475:13475): no me pude conectar a Broker
+[INFO] 16:37:53:228 Conexion/(13607:13607): me conecte a Broker exitosamente
+[INFO] 16:38:01:203 Suscripcion/(13607:13607): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 16:41:20:313 Conexion/(14330:14330): me conecte a Broker exitosamente
+[INFO] 16:41:20:313 Suscripcion/(14330:14330): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 16:41:30:577 Conexion/(14330:14354): se termino la conexion del Gameboy con un mensaje 
+[INFO] 16:43:42:439 Conexion/(14514:14514): me conecte a Broker exitosamente
+[INFO] 16:43:42:439 Suscripcion/(14514:14514): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 16:45:28:673 Conexion/(14663:14663): me conecte a Broker exitosamente
+[INFO] 16:46:32:726 Conexion/(15072:15072): no me pude conectar a Broker
+[INFO] 17:11:03:52 Conexion/(15752:15752): me conecte a Broker exitosamente
+[INFO] 17:11:03:54 Suscripcion/(15752:15752): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 17:11:03:417 Conexion/(15752:15760): se termino la conexion del Gameboy con un mensaje 
+[INFO] 17:13:36:829 Conexion/(15873:15873): me conecte a Broker exitosamente
+[INFO] 17:13:36:830 Suscripcion/(15873:15873): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 17:13:46:536 Conexion/(15873:15884): se termino la conexion del Gameboy con un mensaje 
+[INFO] 17:14:47:148 Conexion/(15975:15975): me conecte a Broker exitosamente
+[INFO] 17:14:47:148 Suscripcion/(15975:15975): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 17:16:21:878 Conexion/(16071:16071): me conecte a Broker exitosamente
+[INFO] 17:16:21:878 Suscripcion/(16071:16071): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 17:17:45:913 Conexion/(16155:16155): me conecte a Broker exitosamente
+[INFO] 17:17:56:251 Suscripcion/(16155:16155): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 17:19:21:752 Conexion/(16291:16291): me conecte a Broker exitosamente
+[INFO] 17:19:28:337 Suscripcion/(16291:16291): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 17:24:20:139 Conexion/(16643:16643): me conecte a Broker exitosamente
+[INFO] 17:24:20:139 Suscripcion/(16643:16643): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:00:14:842 Conexion/(17123:17123): me conecte a Broker exitosamente
+[INFO] 18:00:14:842 Suscripcion/(17123:17123): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:06:56:318 Conexion/(17362:17362): me conecte a Broker exitosamente
+[INFO] 18:06:56:318 Suscripcion/(17362:17362): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:07:32:269 Conexion/(17487:17487): me conecte a Broker exitosamente
+[INFO] 18:07:37:193 Suscripcion/(17487:17487): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:23:28:411 Conexion/(17976:17976): me conecte a Broker exitosamente
+[INFO] 18:23:28:412 Suscripcion/(17976:17976): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:25:17:439 Conexion/(18144:18144): me conecte a Broker exitosamente
+[INFO] 18:25:17:444 Suscripcion/(18144:18144): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:28:22:765 Conexion/(18368:18368): me conecte a Broker exitosamente
+[INFO] 18:28:35:456 Suscripcion/(18368:18368): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:30:05:751 Conexion/(18933:18933): no me pude conectar a Broker
+[INFO] 18:31:28:414 Conexion/(19137:19137): me conecte a Broker exitosamente
+[INFO] 18:31:37:802 Suscripcion/(19137:19137): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:35:22:753 Conexion/(19440:19440): me conecte a Broker exitosamente
+[INFO] 18:35:56:332 Suscripcion/(19440:19440): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:37:58:465 Conexion/(19731:19731): me conecte a Broker exitosamente
+[INFO] 18:38:09:264 Suscripcion/(19731:19731): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:46:01:650 Conexion/(20373:20373): me conecte a Broker exitosamente
+[INFO] 18:46:25:957 Suscripcion/(20373:20373): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:50:28:959 Conexion/(20718:20718): me conecte a Broker exitosamente
+[INFO] 18:50:28:959 Suscripcion/(20718:20718): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:51:33:651 Conexion/(20849:20849): me conecte a Broker exitosamente
+[INFO] 18:52:02:762 Suscripcion/(20849:20849): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:53:48:605 Conexion/(21083:21083): me conecte a Broker exitosamente
+[INFO] 18:53:48:608 Suscripcion/(21083:21083): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente
+[INFO] 18:55:17:488 Conexion/(21635:21635): me conecte a Broker exitosamente
+[INFO] 18:55:17:492 Suscripcion/(21635:21635): me conecto como modo suscriptor por 10 segundos a New_Pokemon exitosamente

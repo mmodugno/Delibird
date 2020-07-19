@@ -58,7 +58,8 @@ t_config* config;
 
 
 pthread_t hiloConexion;
-//pthread_t hiloTimeout;
+pthread_t hiloTimeout;
+int socket_servidor_gameboy;
 
 sem_t llegadaMensajes;
 
@@ -77,12 +78,12 @@ void enviar_Team_Appeared_Pokemon(team_appeared_pokemon *teamAppearedPokemon ,ch
 void enviar_GameCard_New_Pokemon(gameCard_new_pokemon *gameCardNewPokemon ,char* username, int socket_cliente);
 void enviar_GameCard_Catch_Pokemon(gameCard_catch_pokemon *gameCardCatchPokemon ,char* username, int socket_cliente);
 void enviar_GameCard_Get_Pokemon(gameCard_get_pokemon *gameCardGetPokemon ,char* username, int socket_cliente);
-void serve_client_gameboy(int);
+void serve_client_gameboy(int*);
 void iniciar_servidor_gameboy(void);
 //int recvTimeout(int , int* , int , int );
 void process_request_gameboy(int , int );
 //int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, socklen_t *__restrict tam_direccion, int timeOut);
 void esperar_cliente_gameboy(int socket_servidor_gameboy) ;
-void timeOut(int timeOut,int socket_servidor_gameboy );
+void timeOut(int timeOut);
 
 #endif /* UTILS_GAMEBOY_H_ */
