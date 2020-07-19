@@ -87,6 +87,7 @@ void envioColaNewPokemon() {
 
 		}
 		sem_post(&suscripcionACola);
+		}
 	}
 }
 
@@ -872,6 +873,32 @@ void enviar_cola_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon, int soc
 	free(paquete_a_enviar);
 }
 
+void enviar_cola_Localized_Pokemon(broker_localized_pokemon *brokerLocalizedPokemon, int socket_cliente)
+{
+
+	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
+	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
+	paquete_a_enviar->username = "BROKER";
+
+	//serializacion de brokerNewPokemon
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	buffer = serializarMensajeColaLOCALIZED(brokerLocalizedPokemon);
+
+	paquete_a_enviar->buffer= buffer;
+
+	int tamanio_buffer=0;
+
+	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	send(socket_cliente,bufferStream,tamanio_buffer,0);
+
+	free(bufferStream);
+
+	free(paquete_a_enviar->buffer);
+	free(paquete_a_enviar);
+}
+
 void enviar_cola_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokemon, int socket_cliente)
 {
 
@@ -903,33 +930,3 @@ void enviar_cola_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokemon
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Localized_Pokemon(broker_localized_pokemon *brokerLocalizedPokemon, int socket_cliente)
-{
-
-	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
-	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
-	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
-	paquete_a_enviar->username = "BROKER";
-
-	//serializacion de brokerNewPokemon
-	t_buffer* buffer = malloc(sizeof(t_buffer));
-	buffer = serializarMensajeColaLOCALIZED(brokerLocalizedPokemon);
-
-	paquete_a_enviar->buffer= buffer;
-
-	int tamanio_buffer=0;
-
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
-
-	free(bufferStream);
-
-	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
-	//free(buffer->stream);
-	//free(buffer);
-	//free(paquete_a_enviar->buffer->stream);
-
-	free(paquete_a_enviar->buffer);
-	free(paquete_a_enviar);
-}
