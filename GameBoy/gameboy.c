@@ -287,8 +287,7 @@ int main(int argc, char* argv[]){
 
 				suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 				meSuscribo->nombreDeSuscriptor = "GAMEBOY";
-				meSuscribo->tamanioNombreSucriptor = strlen(
-						meSuscribo->nombreDeSuscriptor) + 1;
+				meSuscribo->tamanioNombreSucriptor = strlen(meSuscribo->nombreDeSuscriptor) + 1;
 
 				if (!strcmp(argv[2], "NEW_POKEMON")) {
 					meSuscribo->tipoDeCola = NEW_POKEMON;
@@ -350,7 +349,7 @@ int main(int argc, char* argv[]){
 				conexionBroker = crear_conexion(ipBroker,puertoBroker);
 
 				if(conexionBroker <= 0){
-					log_info(logConexion,"no me pude conectar a Broker");
+					log_info(logConexion,"no me pude conectar a Broker para pedir la desucripcion");
 
 				} else{
 					enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
