@@ -157,6 +157,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	uint32_t ackRecibido;
 	particion* partEncontrada;
+	buddy* buddyEncontrado;
 
 	suscriptor* suscriptor;
 	broker_new_pokemon* newRecibido;
@@ -401,11 +402,17 @@ void process_request(int cod_op, int cliente_fd) {
 				return 0;
 			}
 
+			bool buddyAck(buddy* unBuddy){
+				return partAck(unBuddy->particion);
+			}
 
-			partEncontrada = list_find(tablaDeParticiones, partAck);
 
-			list_add(partEncontrada->acknoleged, username);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")) partEncontrada = list_find(tablaDeParticiones, partAck);
 
+			if(!strcmp(algoritmo_memoria,"BS")) {
+				buddyEncontrado = list_find(tablaDeParticiones,buddyAck);
+				partEncontrada = buddyEncontrado->particion;
+			}
 
 			//si la encontro lo agrega a su tabla de ACK
 			if(partEncontrada!=NULL){
@@ -414,9 +421,6 @@ void process_request(int cod_op, int cliente_fd) {
 			}
 
 			sem_post(&usoMemoria);
-
-			//sem_post(&recibiAcknowledged);
-
 
 			break;
 		case DESUSCRIBIR:
@@ -493,8 +497,8 @@ void suscribirACola(suscriptor* suscriptor){
 void desuscribirACola(suscriptor* suscrip){
 
 	//TODO ver porque no existe el suscriptor
-	bool suscriptorAEliminar(suscriptor* susc){
-		return (!strcmp(susc->nombreDeSuscriptor, suscrip->nombreDeSuscriptor));
+	bool suscriptorAEliminar(char* nombreSus){
+		return (!strcmp(nombreSus, suscrip->nombreDeSuscriptor));
 	}
 
 	switch(suscrip->tipoDeCola){
@@ -533,7 +537,9 @@ void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uin
 		particion *datoAAgregar = crearEntradaParticionBasica(dato, idMensaje,
 				tipoMensaje, idCorrelativo, tamanioAgregar);
 		//uint32_t desplazamiento = 0;
-		particion *particionEncontrada = malloc(sizeof(particion));	//Para el algoritmo FF/BF
+		particion *particionEncontrada = malloc(sizeof(particion));
+
+		//Para el algoritmo FF/BF
 		//particion* particionMasChica = malloc(sizeof(particion));	//Para el algoritmo BF
 
 		if (tamanioAgregar <= tamanio_memoria) {
@@ -1250,176 +1256,6 @@ broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part) {
 	return localizedEnMemo;
 }
 
-/*
-void iniciarBuddySystem() {
-	root = malloc(sizeof(buddy));
-	root->size = tamanio_memoria;
-	root->freeSpace = root->size;
-	root->padre = NULL;
-	root->hijoIzq = NULL;
-	root->hijoDer = NULL;
-	root->next = NULL;
-	root->back = NULL;
-	root->ocupado = false;
-
-	buddy* freeList[cantidadNiveles(root)];
-
-	colaVictimaBuddy = list_create();
-
-	alocarMemoria(7, freeList, cantidadNiveles(root));
-}
-
-void alocarMemoria(int tamNuevoMensaje, buddy* freeList[], cantNivelesTotales) {
-	int nivelMensaje = nivelParticion(tamNuevoMensaje);
-
-	if (freeList[nivelMensaje] != NULL) { //encontre el buddy
-		buddyAAlocar = freeList[nivelMensaje];
-		buddyAAlocar->ocupado = true;
-		buddyAAlocar->freeSpace = buddyAAlocar->size - tamNuevoMensaje;
-
-		//Saco el buddy de la freeList
-		if (freeList[nivelMensaje]->next != NULL) {
-			freeList[nivelMensaje] = freeList[nivelMensaje]->next;
-		} else {
-			freeList[nivelMensaje] = NULL;
-		}
-
-		// Lo agrego a la estructura correspondiente de seleccionDeVictima TODO
-
-	} else {
-		// voy a tener que splitear la memoria y volver a buscar el nodo libre
-		int aux = nivelMensaje + 1;
-		bool spliteado = false;
-
-		while (spliteado != true && aux <= cantNivelesTotales) {
-			if (freeList[aux] != NULL) {
-				splitMemory(freeList[aux]);
-
-				//lo saco de la freeList
-				if (freeList[aux]->next != NULL) {
-					freeList[aux] = freeList[aux]->next;
-				} else {
-					freeList[aux] = NULL;
-				}
-
-				spliteado = true;
-				alocarMemoria(tamNuevoMensaje, freeList, cantNivelesTotales);
-			}
-		}
-
-		if (spliteado == false) {
-			searchAndDestroy(); //busco una victima y la hago boleta. Veo si puedo mergear.
-		}
-
-	}
-}
-
-void seleccionarVictimaFIFO() {
-	buddy* buddyVictima = list_get(colaVictimaBuddy, 0);
-
-	//Si tiene hijos los hago boleta
-	if (tieneHijos(buddyVictima)) {
-		matarHijos(buddyVictima); //Free cada hijo
-	}
-
-	//Aniquilo a la victima
-	eliminarBuddy(buddyVictima);
-
-	//Mergeo en lo posible
-	mergeTree(); //TODO
-}
-
-void mergeTree() {
-	//TODO
-}
-
-bool tieneHijos(buddy* unBuddy) {
-	return (unBuddy->hijoIzq != NULL && unBuddy->hijoDer != NULL);
-}
-
-void matarHijos(buddy* unBuddy) {
-	if (!tieneHijos(unBuddy)) {
-		eliminarBuddy(unBuddy);
-	} else if (unBuddy->hijoIzq != NULL) {
-		matarHijos(unBuddy->hijoIzq);
-	} else if (unBuddy->hijoDer != NULL) {
-		matarHijos(unBuddy->hijoDer);
-	}
-}
-
-void eliminarBuddy(buddy* unBuddy) {
-	free(unBuddy);
-}
-/*
-void splitMemory(buddy* unBuddy) {
-	buddy *nuevoIzq = malloc(sizeof(buddy));
-	buddy *nuevoDer = malloc(sizeof(buddy));
-
-	nuevoIzq->parent = unBuddy;
-	nuevoDer->parent = unBuddy;
-
-	nuevoIzq->size = unBuddy->size / 2;
-	nuevoDer->size = unBuddy->size / 2;
-
-	nuevoIzq->freeSpace = unBuddy->size / 2;
-	nuevoDer->freeSpace = unBuddy->size / 2;
-
-	nuevoIzq->ocupado = false;
-	nuevoDer->ocupado = false;
-
-	nuevoIzq->left = NULL;
-	nuevoIzq->right = NULL;
-
-	nuevoDer->left = NULL;
-	nuevoDer->right = NULL;
-
-	//asigno los hijos al buddy
-	unBuddy->left = nuevoIzq;
-	unBuddy->right = nuevoDer;
-	unBuddy->ocupado = true;
-
-	//agrego los hijos a la freeList
-	int nivelNuevosBuddys = nivelParticion(nuevoIzq->size);
-
-	if (freeList[nivelNuevosBuddys] != NULL) {
-		while (freeList[nivelNuevosBuddys]->next != NULL) {
-			freeList[nivelNuevosBuddys] = freeList[nivelNuevosBuddys]->next;
-		}
-
-		freeList[nivelNuevosBuddys]->next = nuevoIzq;
-		nuevoIzq->back = freeList[nivelNuevosBuddys];
-		nuevoIzq->next = nuevoDer;
-		nuevoDer->back = nuevoIzq;
-		nuevoDer->next = NULL;
-	} else {
-		freeList[nivelNuevosBuddys] = nuevoIzq;
-		nuevoIzq->back = freeList[nivelNuevosBuddys];
-		nuevoIzq->next = nuevoDer;
-		nuevoDer->back = nuevoIzq;
-		nuevoDer->next = NULL;
-	}
-}
-
-int cantidadNiveles(buddy unBuddy) {
-	int valorPotencia = 1;
-	int level = 0;
-	while (valorPotencia < unBuddy->size) {
-		valorPotencia = valorPotencia * 2;
-		level++;
-	}
-	return level;
-}
-
-int nivelParticion(int tamNuevoMensaje) {
-	int valorPotencia = 1;
-	int level = 0;
-	while (valorPotencia < tamNuevoMensaje) {
-		valorPotencia = valorPotencia * 2;
-		level++;
-	}
-	return level;
-}*/
-
 int tamanioBuddy(buddy* unBuddy){
 	return unBuddy->limite - unBuddy->particion->base + 1;
 }
@@ -1555,7 +1391,11 @@ void actualizarComoOcupadoEnLista(buddy* unBuddy,buddy* unBuddyParaAgregar) {
 
 	buddy* buddyQueSustituye = unBuddy;
 
+	buddyQueSustituye->particion->idMensaje = unBuddyParaAgregar->particion->idMensaje;
+
 	buddyQueSustituye->particion->libre = 0;
+
+	buddyQueSustituye->particion->tipoMensaje = unBuddyParaAgregar->particion->tipoMensaje;
 
 	char* horarioActual = temporal_get_string_time();
 
@@ -1918,6 +1758,93 @@ void eliminarVictima(){
 					"se libera la base: %d y limite: %d",
 	aELiminar->particion->base,aELiminar->limite);
 
-	consolidarSiEsPosible(nuevoBuddy);
+	consolidarBuddySystem();
 
 }
+
+
+void consolidarBuddySystem() {
+
+
+	while(list_any_satisfy(tablaDeParticiones,buddyPuedeConsolidar)){
+
+		int i;
+
+		for(i = 0; i < list_size(tablaDeParticiones); i++){
+			consolidarSiEsPosible(list_get(tablaDeParticiones,i));
+		}
+
+	}
+
+
+}
+
+bool buddyPuedeConsolidar(buddy* unBuddy){
+
+	if(posicionBuddyTabla(unBuddy) % 2 == 0){
+		return puedeConsolidarDerecha(unBuddy);
+	} else return puedeConsolidarIzquierda(unBuddy);
+
+}
+
+bool puedeConsolidarDerecha(buddy* unBuddy){
+
+	int posicionBuddy = posicionBuddyTabla(unBuddy);
+
+	int posicionSiguiente = posicionBuddyTabla(unBuddy) + 1;
+
+	buddy* buddySiguiente = list_get(tablaDeParticiones, posicionSiguiente);
+
+	bool ambosLibres(buddy* unBuddy, buddy* otroBuddy) {
+			return unBuddy->particion->libre == 1
+				&& otroBuddy->particion->libre == 1;
+		}
+
+	bool mismoTamanio(buddy* unBuddy, buddy* otroBuddy) {
+		return tamanioBuddy(unBuddy) == tamanioBuddy(otroBuddy);
+	}
+
+	return ambosLibres(unBuddy,buddySiguiente) && mismoTamanio(unBuddy,buddySiguiente);
+
+}
+
+bool puedeConsolidarIzquierda(buddy* unBuddy){
+
+	int posicionBuddy = posicionBuddyTabla(unBuddy);
+
+	int posicionAnterior = posicionBuddyTabla(unBuddy)-1;
+
+	buddy* buddyAnterior = list_get(tablaDeParticiones,posicionAnterior);
+
+		bool ambosLibres(buddy* unBuddy, buddy* otroBuddy){
+				return unBuddy->particion->libre == 1 && otroBuddy->particion->libre == 1 ;
+		}
+
+		bool mismoTamanio(buddy* unBuddy, buddy* otroBuddy){
+				return tamanioBuddy(unBuddy) == tamanioBuddy(otroBuddy);
+		}
+
+	return ambosLibres(unBuddy,buddyAnterior) && mismoTamanio(unBuddy,buddyAnterior);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
