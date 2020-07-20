@@ -29,10 +29,11 @@ int main(int argc, char* argv[]){
 	sem_init(&hay_entrenador,0,0);
 	sem_init(&nuevo_pokemon,0,0);
 
+	sem_init(&mutex_lista,0,1);
 	sem_init(&en_ejecucion,0,1);
 	sem_init(&semaforo_mensaje,0,1);
 
-
+	lista_ids_get = list_create();
 
 	variables_globales();
 
@@ -54,32 +55,23 @@ int main(int argc, char* argv[]){
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
 	//SUSCRIPCION A COLAS SI NOS CONECTAMOS AL BROKER
-	if(conexion_broker){
-
-		suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
-
-		meSuscriboGet->nombreDeSuscriptor = "TEAM";
-		meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
-
-		meSuscriboGet->tipoDeCola = GET_POKEMON;
-
-		enviar_pedido_suscripcion(meSuscriboGet, conexionBroker);
-
-		suscriptor* meSuscriboCaught = malloc(sizeof(suscriptor));
+	//Intentar conectarse al broker TODO
 
 
-		meSuscriboCaught->nombreDeSuscriptor = "TEAM";
-		meSuscriboCaught->tamanioNombreSucriptor = strlen(meSuscriboCaught->nombreDeSuscriptor) + 1;
-
-		meSuscriboCaught->tipoDeCola = CAUGHT_POKEMON;
-
-		enviar_pedido_suscripcion(meSuscriboCaught, conexionBroker);
-
-		free(meSuscriboGet);
-		free(meSuscriboCaught);
+	if(conexionBroker){
 
 
-	}
+suscribirnos_cola_caught();
+suscribirnos_cola_localized();
+
+int j;
+		//Mando un get por cada uno de mis objetivos globales.
+	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
+
+
+//enviar_get()
+
+}
 
  //PRUEBAS DE TP:
 
@@ -122,21 +114,63 @@ int main(int argc, char* argv[]){
 */
 
 
-
-
-
  	pthread_join(hilo_principal,NULL);
-
-
 
  	//imprimir_metricas();
 
  	loggear_metricas();
 
 	terminar_programa();
+}
+
+void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
+
+	//todo ver con chicos
+	broker_get_pokemon* getAEnviar;
+	enviar_get(nombrePoke,getAEnviar);
+
 
 }
 
+void suscribirnos_cola_caught(){
+	int suscripcionCaught;
+	suscriptor* meSuscriboCaught = malloc(sizeof(suscriptor));
+
+
+	meSuscriboCaught->nombreDeSuscriptor = "TEAM";
+	meSuscriboCaught->tamanioNombreSucriptor = strlen(meSuscriboCaught->nombreDeSuscriptor) + 1;
+
+	meSuscriboCaught->tipoDeCola = CAUGHT_POKEMON;
+
+	suscripcionCaught = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+
+	if(suscripcionCaught != -1){
+			enviar_pedido_suscripcion(meSuscriboCaught, suscripcionCaught);
+			liberar_conexion(suscripcionCaught);
+		}
+
+			free(meSuscriboCaught);
+}
+
+void suscribirnos_cola_localized(){
+	suscriptor* meSuscriboLocalized = malloc(sizeof(suscriptor));
+
+	int suscripcionLocalized;
+
+	meSuscriboLocalized->nombreDeSuscriptor = "TEAM";
+	meSuscriboLocalized->tamanioNombreSucriptor = strlen(meSuscriboLocalized->nombreDeSuscriptor) + 1;
+
+	meSuscriboLocalized->tipoDeCola = LOCALIZED_POKEMON;
+
+	suscripcionLocalized = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+	if(suscripcionLocalized != -1){
+		enviar_pedido_suscripcion(meSuscriboLocalized, suscripcionLocalized);
+		liberar_conexion(suscripcionLocalized);
+	}
+	free(meSuscriboLocalized);
+}
 
 
 void terminar_programa(void){

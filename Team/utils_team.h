@@ -60,6 +60,7 @@ t_dictionary* objetivo_global;
 
 t_queue* pokemones_en_el_mapa;
 t_list* pokemones_atrapados;
+t_list* lista_ids_get;
 
 t_list* entrenadores_new;
 t_list* entrenadores_finalizados;
@@ -79,6 +80,7 @@ sem_t en_ejecucion;
 sem_t hay_entrenador;
 sem_t nuevo_pokemon;
 sem_t semaforo_mensaje;
+sem_t mutex_lista;
 
 //Metricas
 int cant_deadlocks;
@@ -251,7 +253,7 @@ int crear_conexion(char *ip, char* puerto);
 int conectarse_con_broker(void);
 void conexion_broker(void);
 
-
+void liberar_conexion(int socket_cliente);
 
 
 //	Metricas
