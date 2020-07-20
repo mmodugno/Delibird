@@ -46,7 +46,9 @@ void envioColaNewPokemon() {
 
 	//TODO ver si este while esta demas
 	while (1) {
+
 		sem_wait(&suscripcionACola);
+
 		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
 		if (suscriptoresNewPokemon->elements_count > 0) {
 
@@ -83,10 +85,9 @@ void envioColaNewPokemon() {
 
 			//free(username);
 			sem_post(&usoMemoria);
-		}
+			}
 		sem_post(&suscripcionACola);
 		}
-	}
 }
 
 //conectarme con cada uno que necesite mandarle
@@ -213,7 +214,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		//liberar_conexion(conexionGamecard);
 	}
 
-
+	//sem_wait(&recibiAcknowledgeg);
 /*
 	liberar_conexion(conexionGameboy);
 	liberar_conexion(conexionTeam);

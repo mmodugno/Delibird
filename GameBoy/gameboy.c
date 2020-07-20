@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
 	//leemos todo el archivo de config
 	leer_config();
 
-
+	pthread_t hiloReciboMensajes;
 	//////////////HACER CONEXION DEPENDIENDO QUE NOS PASEN POR PARAMETRO////////////
 
 
@@ -275,7 +275,6 @@ int main(int argc, char* argv[]){
 
 		conexionBroker = crear_conexion(ipBroker,puertoBroker);
 
-
 		if(conexionBroker <= 0){
 			log_info(logConexion,"no me pude conectar a Broker");
 			return 0;
@@ -284,6 +283,8 @@ int main(int argc, char* argv[]){
 			if (argc == 4) {
 
 				sem_init(&llegadaMensajes,0,1);
+
+				pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor_gameboy, NULL);
 
 				suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 				meSuscribo->nombreDeSuscriptor = "GAMEBOY";
@@ -333,6 +334,7 @@ int main(int argc, char* argv[]){
 					meSuscribo->tipoDeCola = LOCALIZED_POKEMON;
 
 					enviar_pedido_suscripcion(meSuscribo, conexionBroker);
+
 					log_info(logSuscipcion,
 							"me conecto como modo suscriptor por %d segundos a Localized_Pokemon exitosamente",
 							atoi(argv[3]));
@@ -340,20 +342,20 @@ int main(int argc, char* argv[]){
 
 
 				//Abro el server de Gameboy para escuchar los msj q me manda Broker
-				liberar_conexion(conexionBroker);
+				//liberar_conexion(conexionBroker);
 
-				flagTerminoSuscripcion = 0;
+				pthread_join(hiloReciboMensajes,NULL);
 
-				iniciar_servidor_gameboy();
+				enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
 
-				conexionBroker = crear_conexion(ipBroker,puertoBroker);
+				/*conexionBroker = crear_conexion(ipBroker,puertoBroker);
 
 				if(conexionBroker <= 0){
 					log_info(logConexion,"no me pude conectar a Broker para pedir la desucripcion");
 
 				} else{
 					enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
-				}
+				}*/
 
 				free(meSuscribo);
 

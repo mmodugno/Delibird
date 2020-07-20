@@ -121,5 +121,6 @@ void serializar_suscriptor(suscriptor* suscriptor, t_buffer* buffer);
 void enviar_pedido_suscripcion(suscriptor* suscriptor,int socketDeBroker);
 suscriptor* deserializar_suscripcion(int socket_cliente);
 void enviar_pedido_desuscripcion(suscriptor* suscriptor,int socketDeBroker);
+void enviarACK(uint32_t , int , char* );
 
 #endif /* UTILS_EN_COMUN_H_ */

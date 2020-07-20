@@ -398,8 +398,6 @@ void process_request(int cod_op, int cliente_fd) {
 				return 0;
 			}
 
-				uint32_t ackRecibido = deserializarAck(cliente_fd);
-
 			partEncontrada = list_find(tablaDeParticiones, partAck);
 
 			list_add(partEncontrada->acknoleged, username);
@@ -417,6 +415,8 @@ void process_request(int cod_op, int cliente_fd) {
 			}
 
 			sem_post(&usoMemoria);
+
+			//sem_post(&recibiAcknowledged);
 
 
 			break;
@@ -438,7 +438,6 @@ void process_request(int cod_op, int cliente_fd) {
 
 			break;
 
-			break;
 		case 0:
 			pthread_exit(NULL);
 			break;

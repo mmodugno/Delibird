@@ -375,10 +375,6 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 
 	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
-
-
-
-
 	//int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion,segundosSuscripcion);
 	//int socket_cliente_gameboy = accept(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion);
 	int socket_cliente = accept(socket_servidor_gameboy, (void*) &dir_cliente,&tam_direccion);
@@ -386,7 +382,6 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 	/*
 	pthread_create(&hiloTimeout,NULL,(void*)timeOut,&segundosSuscripcion); // EL hilo q procesa los mensajes
 	pthread_detach(hiloTimeout);*/
-
 
 	pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente); // EL hilo q procesa los mensajes
 	pthread_detach(hiloConexion);
@@ -491,7 +486,7 @@ void serve_client_gameboy(int *socket){ // Se reciben los bytes enviados por el 
 
 	sem_wait(&llegadaMensajes);
 
-	int i = recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	//int i = recv(socket, &cod_op, sizeof(op_code));
 
 	if(i <= 0) cod_op = -1;
@@ -517,6 +512,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 	broker_catch_pokemon* catchRecibido;
 	broker_caught_pokemon* caughtRecibido;
 	broker_localized_pokemon* localizedRecibido;
+	int socketParaEnviarACK;
 	//char* mensaje;
 
 	uint32_t id;
@@ -528,8 +524,11 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			newRecibido = deserializar_new_pokemon(cliente_fd);
 			newRecibido->id = id;
 
+			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 
-			enviarACK(newRecibido->id,conexionBroker,"GAMEBOY");
+			enviarACK(newRecibido->id,socketParaEnviarACK,"GAMEBOY");
+
+			liberar_conexion(socketParaEnviarACK);
 
 
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",

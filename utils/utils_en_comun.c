@@ -53,6 +53,9 @@ void enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){
 
 	t_buffer *buffer = malloc(sizeof(t_buffer));
 	buffer->size = sizeof(uint32_t);
+
+	buffer->stream = malloc(buffer->size);
+
 	memcpy(buffer->stream, &acknowledgedID, sizeof(uint32_t));
 	paquete_a_enviar->buffer = buffer;
 	int tamanioBuffer = 0;
