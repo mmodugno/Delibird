@@ -59,7 +59,6 @@ int main() {
 
 	iniciarMemoria();
 
-
 	suscriptoresAppearedPokemon = list_create();
 	suscriptoresCatchPokemon = list_create();
 	suscriptoresCaughtPokemon = list_create();
@@ -70,7 +69,6 @@ int main() {
 	pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor, NULL);
 
 	pthread_create(&hiloNew_Envio, NULL, (void*) envioColaNewPokemon, NULL);
-
 
 	/*
 	pthread_create(&hiloAppeared_Envio, NULL, (void*) envioColaAppearedPokemon, NULL);

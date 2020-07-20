@@ -191,5 +191,9 @@ void consolidarSiEsPosibleADerecha(buddy* );
 void consolidarSiEsPosibleAIzquierda(buddy* );
 buddy* seleccionarVictima();
 void eliminarVictima();
+void consolidarBuddySystem();
+bool buddyPuedeConsolidar(buddy*);
+bool puedeConsolidarDerecha(buddy* );
+bool puedeConsolidarIzquierda(buddy* );
 
 #endif /* UTILS_BROKER_H_ */
