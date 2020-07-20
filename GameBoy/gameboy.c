@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
 	//leemos todo el archivo de config
 	leer_config();
 
-	pthread_t hiloReciboMensajes;
+
 	//////////////HACER CONEXION DEPENDIENDO QUE NOS PASEN POR PARAMETRO////////////
 
 

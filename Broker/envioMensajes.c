@@ -87,7 +87,8 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 			}
 		sem_post(&suscripcionACola);
-		}
+		sleep(10);
+	}
 }
 
 //conectarme con cada uno que necesite mandarle

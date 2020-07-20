@@ -391,6 +391,9 @@ void process_request(int cod_op, int cliente_fd) {
 			log_info(confirmacionRecepcion,
 					"me llego la confirmacion para el ID:%d", ackRecibido);
 
+			//mutex porque manejo algo de memoria
+			sem_wait(&usoMemoria);
+
 			bool partAck(particion *part) {
 				if ((!part->libre) && (ackRecibido == part->idMensaje)) {
 					return 1;
@@ -398,15 +401,11 @@ void process_request(int cod_op, int cliente_fd) {
 				return 0;
 			}
 
+
 			partEncontrada = list_find(tablaDeParticiones, partAck);
 
 			list_add(partEncontrada->acknoleged, username);
 
-			//mutex porque manejo algo de memoria
-			sem_wait(&usoMemoria);
-
-			//busco si hay una particion con ese ID
-			particion* partEncontrada=list_find(tablaDeParticiones,partAck);
 
 			//si la encontro lo agrega a su tabla de ACK
 			if(partEncontrada!=NULL){

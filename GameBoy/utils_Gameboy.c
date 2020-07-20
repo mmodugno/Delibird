@@ -379,7 +379,7 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 	//int socket_cliente_gameboy = accept(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion);
 	int socket_cliente = accept(socket_servidor_gameboy, (void*) &dir_cliente,&tam_direccion);
 
-	/*
+/*
 	pthread_create(&hiloTimeout,NULL,(void*)timeOut,&segundosSuscripcion); // EL hilo q procesa los mensajes
 	pthread_detach(hiloTimeout);*/
 
@@ -460,7 +460,8 @@ void timeOut(int timeOut){
 		free(paquete_a_enviar->buffer);
 		free(paquete_a_enviar);*/
 
-		pthread_cancel(hiloConexion);
+		pthread_cancel(hiloReciboMensajes);
+		//pthread_kill(hiloReciboMensajes,0);
 
 	}
 	if(n == -1){
