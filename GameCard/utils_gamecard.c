@@ -72,13 +72,16 @@ void verificarAperturaArchivo(char* path) {
 int buscarIndicePrimerBloqueLibre(){
 
 	int contador = 1;
-
-	while(!estaVacioConRuta(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador))){
-
+/*
+while(!estaVacioConRuta(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador))){
 	contador++;
+}
+*/
 
-
+	while(bitarray_test_bit(bitArray,contador-1)){
+		contador++;
 	}
+
 
 	char* path = obtener_ruta_bloque(contador);
 
@@ -117,8 +120,6 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
 
-	//FILE* archivoTemporal = fopen(path,"rb+");
-
 	char** bloques;
 
 	t_config* configAux = config_create(path);
@@ -137,7 +138,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		txt_write_in_file(bloqueLibre,registro_a_string(registro));
 
-	//	bitarray_set_bit(bitArray,indiceLibre-1);
+		bitarray_set_bit(bitArray,indiceLibre-1);
 
 		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
 
@@ -180,6 +181,8 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			int indiceSiguienteLibre = buscarIndicePrimerBloqueLibre();
 
+			bitarray_set_bit(bitArray,indiceSiguienteLibre-1);
+
 			char* path = obtener_ruta_bloque(indiceSiguienteLibre);
 
 			FILE* archivoBloqueLibre = txt_open_for_append(path);
@@ -209,7 +212,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
 
-			bitarray_set_bit(bitArray,indiceLibre-1);
+			//bitarray_set_bit(bitArray,indiceLibre-1);
 
 			char* nuevosBloques = agregarBloqueALista(listaBloques,indiceLibre);
 
@@ -312,6 +315,8 @@ void crearBitmap(){
 
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
+sem_wait(&sem_new);
+
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	int existe = verificarExistenciaPokemon(nombrePoke);
@@ -361,7 +366,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	sleep(tiempo_retardo_operacion);
 
-
+	sem_post(&sem_new);
 }
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
@@ -836,11 +841,15 @@ void eliminarBloquesVacios(char* nombrePoke){
 
 	for(i = 0; i < list_size(listaBloques); i++) {
 
-		char* rutaActual = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+		int bloqueAux = atoi(list_get(listaBloques,i));
+		char* rutaActual = obtener_ruta_bloque(bloqueAux);
 
 		if(!estaVacioConRuta(rutaActual)){
 			stringNuevaLista = agregarBloqueALista(nuevaListaBloques,atoi(list_get(listaBloques,i)));
 			list_add(nuevaListaBloques,list_get(listaBloques,i));
+		}
+		else{
+			bitarray_clean_bit(bitArray,bloqueAux);
 		}
 	}
 

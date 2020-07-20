@@ -58,6 +58,7 @@ t_log* logArchivoAbierto;
 t_log* logFalloConexion;
 
 sem_t sem_conexion;
+sem_t sem_new;
 
 FILE* metadata;
 FILE* metadataFiles;
@@ -98,7 +99,6 @@ void procesarCatchPokemon(char* ,uint32_t , uint32_t );
 t_list* obtenerPosiciones(char* nombrePoke);
 int tamanioRegistro(registroDatos* );
 char* registro_a_string(registroDatos* );
-char* buscarPrimerBloqueLibre(void);
 int estaPosicionEnArchivo(uint32_t ,uint32_t ,char* );
 int tamanioArchivoDadoPath(char* );
 int tamanioArchivo(FILE* );

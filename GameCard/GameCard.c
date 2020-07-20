@@ -27,6 +27,7 @@ int main(int argc, char* argv[]){
 		username = "GAMECARD";
 
 		sem_init(&sem_conexion,0,1);
+		sem_init(&sem_new,0,1);
 
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
@@ -59,10 +60,14 @@ int main(int argc, char* argv[]){
 
 
 
-//		procesarNewPokemon("Messi2",registro1);
+		//procesarNewPokemon("Pikachu",registro1);
+		//procesarNewPokemon("Charmander",registro1);
+
 
 		//procesarCatchPokemon("Charmander",4,1);
 
+
+		//procesarNewPokemon("Messi",registro1);
 		//procesarGetPokemon("Charmander");3
 
 		/*pthread_t hilo_servidor;
@@ -107,5 +112,6 @@ void terminar_programa(void){
 	log_destroy(logFalloConexion);
 	config_destroy(config);
 
+	bitarray_destroy(bitArray);
 	//liberar_conexion(conexionBroker);
 }
