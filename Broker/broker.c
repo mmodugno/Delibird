@@ -28,7 +28,12 @@ int main() {
 	sem_init(&idsDeMensajes, 0, 1);
 	sem_init(&usoMemoria, 0, 1);
 	sem_init(&llegadaMensajes,0,1);
-	sem_init(&suscripcionACola,0,1);
+	sem_init(&suscripcionAColaAPPEARED,0,1);
+	sem_init(&suscripcionAColaCATCH,0,1);
+	sem_init(&suscripcionAColaCAUGHT,0,1);
+	sem_init(&suscripcionAColaGET,0,1);
+	sem_init(&suscripcionAColaLOCALIZED,0,1);
+	sem_init(&suscripcionAColaNEW,0,1);
 
 
 	//int prueba = crear_conexion(ip_gameboy,puerto_gameboy);
@@ -70,18 +75,18 @@ int main() {
 
 	pthread_create(&hiloNew_Envio, NULL, (void*) envioColaNewPokemon, NULL);
 
-	/*
+
 	pthread_create(&hiloAppeared_Envio, NULL, (void*) envioColaAppearedPokemon, NULL);
 	pthread_create(&hiloCatch_Envio, NULL, (void*) envioColaCatchPokemon, NULL);
 	pthread_create(&hiloCaught_Envio, NULL, (void*) envioColaCaughtPokemon, NULL);
 	pthread_create(&hiloGet_Envio, NULL, (void*) envioColaGetPokemon, NULL);
-	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);*/
+	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);
 
 	//pthread_join(hiloReciboMensajes, NULL);
 
 	//pthread_join(hiloNew_Envio, NULL);
 
-	sem_t terminoPrograma;
+
 
 	sem_init(&terminoPrograma,0,0);
 

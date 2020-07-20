@@ -47,20 +47,6 @@ typedef struct {
 	uint32_t limite;
 } buddy;
 
-/*typedef struct {
-	buddy* padre;
-	buddy* hijoIzq;
-	buddy* hijoDer;
-	buddy* next;
-	buddy* back;
-	uint32_t size;
-	uint32_t freeSpace;
-	uint32_t lvl;
-	bool ocupado;
-} buddy;
-
-buddy* root;
-buddy* buddyAAlocar;*/
 
 t_list* colaVictimaBuddy;
 
@@ -105,7 +91,6 @@ pthread_t hiloCaught_Envio;
 
 t_list* suscriptoresNewPokemon;
 t_list* suscriptoresAppearedPokemon;
-
 t_list* suscriptoresCatchPokemon;
 t_list* suscriptoresCaughtPokemon;
 t_list* suscriptoresGetPokemon;
@@ -126,9 +111,18 @@ static const char *colasDeEnum[] = { "LIBRE", "NEW_POKEMON", "APPEARED_POKEMON",
 
 sem_t idsDeMensajes;
 sem_t usoMemoria;
+sem_t terminoPrograma;
 
 sem_t llegadaMensajes;
-sem_t suscripcionACola;
+sem_t suscripcionAColaNEW;
+sem_t suscripcionAColaGET;
+sem_t suscripcionAColaCATCH;
+sem_t suscripcionAColaLOCALIZED;
+sem_t suscripcionAColaCAUGHT;
+sem_t suscripcionAColaAPPEARED;
+
+tipoDeCola colaAEliminar;
+suscriptor *susAEliminar;
 
 /*
 sem_t colaNew;

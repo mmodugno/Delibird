@@ -37,7 +37,6 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 
 void envioColaNewPokemon();
 
-//TODO si funciona NEW, replicar
 void envioColaLocalizedPokemon();
 void envioColaAppearedPokemon() ;
 void envioColaCatchPokemon();

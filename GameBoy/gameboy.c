@@ -42,7 +42,8 @@ int main(int argc, char* argv[]){
 
 	pthread_t analizador;
 
-	log_info(logConexion,"Me desconecte broker");
+	//TODO porque esta esto?
+	//log_info(logConexion,"Me desconecte broker");
 
 
 	//////////////HACER CONEXION DEPENDIENDO QUE NOS PASEN POR PARAMETRO////////////

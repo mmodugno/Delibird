@@ -375,49 +375,16 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 
 	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
-	//int socket_cliente_gameboy = acceptConTimeOut(socket_servidor_gameboy, (void*) &dir_cliente, &tam_direccion,segundosSuscripcion);
-	//int socket_cliente_gameboy = accept(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion);
 	int socket_cliente = accept(socket_servidor_gameboy, (void*) &dir_cliente,&tam_direccion);
 
 	sem_post(&recibiConexion);
 
- // EL hilo q procesa los mensajes
-/*
-	pthread_create(&hiloTimeout,NULL,(void*)timeOut,&segundosSuscripcion); // EL hilo q procesa los mensajes
-	pthread_detach(hiloTimeout);*/
-
+	// EL hilo q procesa los mensajes
 	pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente); // EL hilo q procesa los mensajes
 	pthread_detach(hiloConexion);
 
-
-	//TODO
-	//timeOut(segundosSuscripcion);
-/*
-	pthread_create(&hiloTimeout,NULL,(void*)timeOut,&segundosSuscripcion,&socket_cliente); // EL hilo q procesa los mensajes
-	pthread_detach(hiloTimeout);*/
-
-
 }
 /*
-int acceptConTimeOut(int socket_servidor_gameboy, __SOCKADDR_ARG dir_cliente, socklen_t *__restrict tam_direccion, int timeOut){
-
-	fd_set fds;
-	int n;
-	struct timeval tv;
-
-	FD_ZERO(&fds);
-	FD_SET(socket_servidor_gameboy, &fds);
-
-	tv.tv_sec = timeOut;
-	tv.tv_usec = 0;
-
-	n = select(socket_servidor_gameboy+1, &fds, NULL, NULL, &tv);
-	if(n == 0) return -2; //timeout
-	if(n == -1) return -1; // error
-
-	return accept(socket_servidor_gameboy, (void*) &dir_cliente, tam_direccion);
-}*/
-
 void timeOut(int timeOut){
 
 	fd_set fds;
@@ -433,35 +400,7 @@ void timeOut(int timeOut){
 	n = select(socket_servidor_gameboy+1, &fds, NULL, NULL, &tv);
 	if(n == 0){
 		flagTerminoSuscripcion = 1;
-		//TODO
-		//return -2; //timeout
-		//void* terminator;
-		/*
-		t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
-		paquete_a_enviar->codigo_operacion = -1;
-		paquete_a_enviar->tamanio_username =strlen("GAMEBOY")+1;
-		paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
-		strcpy(paquete_a_enviar->username,"GAMEBOY");
 
-		paquete_a_enviar->buffer = malloc(sizeof(t_buffer));
-
-		char* mensaje="TERMINATOR";
-
-		paquete_a_enviar->buffer->size=strlen(mensaje)+1;
-		paquete_a_enviar->buffer->stream= mensaje;
-
-
-		int tamanio_buffer=0;
-
-		void* terminator = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-
-		send(socket_servidor_gameboy,terminator,tamanio_buffer,0);
-
-		free(terminator);
-		free(mensaje);
-		free(paquete_a_enviar->username);
-		free(paquete_a_enviar->buffer);
-		free(paquete_a_enviar);*/
 
 		pthread_cancel(hiloReciboMensajes);
 		//pthread_kill(hiloReciboMensajes,0);
@@ -474,16 +413,8 @@ void timeOut(int timeOut){
 
 	//return 0;
 
-}
+}*/
 
-/*void analizadorTime(int* segundos){
-	// Semaforo de bloqueo, cuando se cnecta el broker, empiezo a contar los segundos.
-	sem_wait(&semaforoTiempo);
-	sleep(segundos * 1000);
-	// Enviar pedido de desuscripcion
-
-	pthread_exit(NULL);
-} */
 
 void serve_client_gameboy(int *socket){ // Se reciben los bytes enviados por el Broker
 	int cod_op;
@@ -530,9 +461,11 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 
-			enviarACK(newRecibido->id,socketParaEnviarACK,"GAMEBOY");
+			if(socketParaEnviarACK!=-1){
+				enviarACK(newRecibido->id,socketParaEnviarACK,"GAMEBOY");
 
-			liberar_conexion(socketParaEnviarACK);
+				liberar_conexion(socketParaEnviarACK);
+			}
 
 
 			log_info(logMensajeNuevo,"recibi mensaje de NEW_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
@@ -553,7 +486,12 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 			appearedRecibido->id =id;
 
-			enviarACK(appearedRecibido->id,conexionBroker,"GAMEBOY");
+			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
+			if(socketParaEnviarACK!=-1){
+				enviarACK(appearedRecibido->id,socketParaEnviarACK,"GAMEBOY");
+				liberar_conexion(socketParaEnviarACK);
+			}
+
 
 			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d",
 					appearedRecibido,
@@ -571,7 +509,12 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			getRecibido = deserializar_get_pokemon(cliente_fd);
 			getRecibido->id = id;
-			enviarACK(getRecibido->id,conexionBroker,"GAMEBOY");
+
+			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
+			if(socketParaEnviarACK!=-1){
+				enviarACK(getRecibido->id,socketParaEnviarACK,"GAMEBOY");
+				liberar_conexion(socketParaEnviarACK);
+			}
 
 			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s ",
 					getRecibido->id,
@@ -588,7 +531,12 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			catchRecibido = deserializar_catch_pokemon(cliente_fd);
 			catchRecibido->id = id;
 
-			enviarACK(catchRecibido->id,conexionBroker,"GAMEBOY");
+			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
+			if(socketParaEnviarACK!= -1){
+				enviarACK(catchRecibido->id,socketParaEnviarACK,"GAMEBOY");
+				liberar_conexion(socketParaEnviarACK);
+			}
+
 
 			log_info(logMensajeNuevo,"recibi mensaje de CATCH_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d ",
 					catchRecibido->id,
@@ -607,7 +555,11 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 			caughtRecibido->id = id;
 
-			enviarACK(caughtRecibido->id,conexionBroker,"GAMEBOY");
+			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
+			if(socketParaEnviarACK!=-1){
+				enviarACK(caughtRecibido->id,socketParaEnviarACK,"GAMEBOY");
+				liberar_conexion(socketParaEnviarACK);
+			}
 
 			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON (ID = %d) de %s\n con ID_relativo: %d \n puedoAtraparlo: %d ",
 					caughtRecibido->id,
@@ -620,12 +572,15 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 		case BROKER__LOCALIZED_POKEMON:
 
-			//TODO probar el localized
 			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 			localizedRecibido->id = id;
 
-			enviarACK(localizedRecibido->id,conexionBroker,"GAMEBOY");
+			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
+			if(socketParaEnviarACK!=-1){
+				enviarACK(localizedRecibido->id,socketParaEnviarACK,"GAMEBOY");
+				liberar_conexion(socketParaEnviarACK);
+			}
 
 			posiciones = 0;
 			for (posiciones = 0;

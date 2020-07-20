@@ -8,7 +8,7 @@
 #include "envioMensajes.h"
 
 
-//TODO terminar esto
+
 void envioColaNewPokemon() {
 	t_list *usersConACK = list_create();
 	t_list *usersSinACK = list_create();
@@ -45,44 +45,35 @@ void envioColaNewPokemon() {
 	}
 
 	bool menNewQueFaltenEnBuddy(buddy* unBuddy) {
-					return menNewQueFalten(unBuddy->particion);
-				}
+		return menNewQueFalten(unBuddy->particion);
+	}
 
-	//TODO ver si este while esta demas
+
 	while (1) {
 
-		sem_wait(&suscripcionACola);
+		sem_wait(&suscripcionAColaNEW);
 
 		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
 		if (suscriptoresNewPokemon->elements_count > 0) {
 
-			//sem_wait(&colaNew);
+
 			sem_wait(&usoMemoria);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresNewPokemon->elements_count) {
-					mensajeNewEnMemo = list_find(tablaDeParticiones,menNewQueFalten);
+					mensajeNewEnMemo = list_find(tablaDeParticiones, menNewQueFalten);
 					enviarPorTipo(mensajeNewEnMemo, usersSinACK);
 					//list_clean_and_destroy_elements(usersSinACK, free);
 				}
 			}
 
-
-
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresNewPokemon->elements_count) {
 
-				mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, menNewQueFaltenEnBuddy);
-
-					if(mensajeNewEnMemoBuddy == NULL){
-					particion* particionNull = NULL;
-					enviarPorTipo(particionNull, usersSinACK);
-					} else {
+					mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, menNewQueFaltenEnBuddy);
 					enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
-					}
-
 
 				}
 				//list_clean_and_destroy_elements(usersSinACK, free);
@@ -94,11 +85,10 @@ void envioColaNewPokemon() {
 			list_clean(usersSinACK);
 			list_clean(usersConACK);
 
-
 			//free(username);
 			sem_post(&usoMemoria);
-			}
-		sem_post(&suscripcionACola);
+		}
+		sem_post(&suscripcionAColaNEW);
 		sleep(1);
 	}
 }
@@ -133,7 +123,6 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 				break;
 			case GET_POKEMON:
 				getEnMemo= leerdeMemoriaGET(partAEnviar);
-
 				enviarASuscriptoresGET(getEnMemo,usersAEnviar);
 
 				free(getEnMemo->datos->nombrePokemon);
@@ -141,7 +130,6 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 				break;
 			case APPEARED_POKEMON:
 				appEnMemo = leerdeMemoriaAPPEARED(partAEnviar);
-
 				enviarASuscriptoresAPPEARED(appEnMemo,usersAEnviar);
 
 				free(appEnMemo->datos->nombrePokemon);
@@ -149,7 +137,6 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 				break;
 			case LOCALIZED_POKEMON:
 				localizedEnMemo = leerdeMemoriaLOCALIZED(partAEnviar);
-
 				enviarASuscriptoresLOCALIZED(localizedEnMemo,usersAEnviar);
 
 				free(localizedEnMemo->datos->posX);
@@ -159,18 +146,13 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 				break;
 			case CATCH_POKEMON:
 				catchEnMemo = leerdeMemoriaCATCH(partAEnviar);
-
-
 				enviarASuscriptoresCATCH(catchEnMemo,usersAEnviar);
-
 				free(catchEnMemo->datos->nombrePokemon);
 				free(catchEnMemo);
 				break;
 			case CAUGHT_POKEMON:
 				caughtEnMemo = leerdeMemoriaCAUGHT(partAEnviar);
-
 				enviarASuscriptoresCAUGHT(caughtEnMemo,usersAEnviar);
-
 				free(caughtEnMemo);
 				break;
 		}
@@ -184,58 +166,29 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_Cola_New_Pokemon(newAEnviar,conexionTeam);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s","NEW_POKEMON");
 			liberar_conexion(conexionTeam);
-		} else {
-			//noSeConecto = 1;
-			//log_info(logEnviarNuevo,"No pude enviar el mensaje a TEAM porque no esta en linea");
 		}
-		//liberar_conexion(conexionTeam);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_Cola_New_Pokemon(newAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s", "NEW_POKEMON");
 			liberar_conexion(conexionGameboy);
-		} else {
-			//noSeConecto = 1;
-			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
-			/*sem_wait(&suscripcionACola);
-			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,esGameBoy,free);
-			sem_post(&suscripcionACola);*/
-			//log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMEBOY porque no esta en linea");
 		}
-		//liberar_conexion(conexionGameboy);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
 		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexionGamecard != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_Cola_New_Pokemon(newAEnviar,conexionGamecard);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje  de la cola %s","NEW_POKEMON");
 			liberar_conexion(conexionGamecard);
-		} else {
-			//noSeConecto=1;
-			//log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMECARD porque no esta en linea");
 		}
-		//liberar_conexion(conexionGamecard);
 	}
-
-	//sem_wait(&recibiAcknowledgeg);
-/*
-	liberar_conexion(conexionGameboy);
-	liberar_conexion(conexionTeam);
-	liberar_conexion(conexionGamecard);
-
-	if (noSeConecto) {
-		sem_post(&colaNew);
-	}*/
 }
 
 void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* usersAEnviar){
@@ -243,41 +196,29 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexionTeam);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s","APPEARED_POKEMON");
-		} else {
-			log_info(logEnviarNuevo,"No pude enviar el mensaje a TEAM porque no esta en linea");
+			liberar_conexion(conexionTeam);
 		}
-		liberar_conexion(conexionTeam);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s","APPEARED_POKEMON");
-		} else {
-			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
-			sem_wait(&suscripcionACola);
-			list_remove_and_destroy_by_condition(suscriptoresAppearedPokemon,esGameBoy,free);
-			sem_post(&suscripcionACola);
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMEBOY porque no esta en linea");
+			liberar_conexion(conexionGameboy);
 		}
-		liberar_conexion(conexionGameboy);
+
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
 		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexionGamecard != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexionGamecard);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola APPEARED_POKEMON");
-		} else {
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMECARD porque no esta en linea");
+			liberar_conexion(conexionGamecard);
 		}
-		liberar_conexion(conexionGamecard);
 	}
 }
 
@@ -286,41 +227,28 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexionTeam);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CATCH_POKEMON");
-		} else {
-			log_info(logEnviarNuevo,"No pude enviar el mensaje a TEAM porque no esta en linea");
+			liberar_conexion(conexionTeam);
 		}
-		liberar_conexion(conexionTeam);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CATCH_POKEMON");
-		} else {
-			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
-			sem_wait(&suscripcionACola);
-			list_remove_and_destroy_by_condition(suscriptoresCatchPokemon,esGameBoy,free);
-			sem_post(&suscripcionACola);
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMEBOY porque no esta en linea");
+			liberar_conexion(conexionGameboy);
 		}
-		liberar_conexion(conexionGameboy);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
 		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexionGamecard != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexionGamecard);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CATCH_POKEMON");
-		} else {
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMECARD porque no esta en linea");
+			liberar_conexion(conexionGamecard);
 		}
-		liberar_conexion(conexionGamecard);
 	}
 }
 
@@ -329,41 +257,28 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionTeam);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CAUGHT_POKEMON");
-		} else {
-			log_info(logEnviarNuevo,"No pude enviar el mensaje a TEAM porque no esta en linea");
+			liberar_conexion(conexionTeam);
 		}
-		liberar_conexion(conexionTeam);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CAUGHT_POKEMON");
-		} else {
-			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
-			sem_wait(&suscripcionACola);
-			list_remove_and_destroy_by_condition(suscriptoresCaughtPokemon,esGameBoy,free);
-			sem_post(&suscripcionACola);
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMEBOY porque no esta en linea");
+			liberar_conexion(conexionGameboy);
 		}
-		liberar_conexion(conexionGameboy);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
 		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexionGamecard != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionGamecard);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CAUGHT_POKEMON");
-		} else {
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMECARD porque no esta en linea");
+			liberar_conexion(conexionGamecard);
 		}
-		liberar_conexion(conexionGamecard);
 	}
 }
 
@@ -372,41 +287,28 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Get_Pokemon(getAEnviar,conexionTeam);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola GET_POKEMON");
-		} else {
-			log_info(logEnviarNuevo,"No pude enviar el mensaje a TEAM porque no esta en linea");
+			liberar_conexion(conexionTeam);
 		}
-		liberar_conexion(conexionTeam);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Get_Pokemon(getAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola GET_POKEMON");
-		} else {
-			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
-			sem_wait(&suscripcionACola);
-			list_remove_and_destroy_by_condition(suscriptoresGetPokemon,esGameBoy,free);
-			sem_post(&suscripcionACola);
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMEBOY porque no esta en linea");
+			liberar_conexion(conexionGameboy);
 		}
-		liberar_conexion(conexionGameboy);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
 		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexionGamecard!= -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Get_Pokemon(getAEnviar,conexionGamecard);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola GET_POKEMON");
-		} else {
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMECARD porque no esta en linea");
+			liberar_conexion(conexionGamecard);
 		}
-		liberar_conexion(conexionGamecard);
 	}
 }
 
@@ -415,95 +317,412 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionTeam);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON");
-		} else {
-			log_info(logEnviarNuevo,"No pude enviar el mensaje a TEAM porque no esta en linea");
+			liberar_conexion(conexionTeam);
 		}
-		liberar_conexion(conexionTeam);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionGameboy);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola LOCALIZED_POKEMON");
-		} else {
-			//si no se puede conectar es que esta muerto, por lo tanto lo sacamos de los suscriptores (lo vamos a probar solo con Gameboy)
-			sem_wait(&suscripcionACola);
-			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,esGameBoy,free);
-			sem_post(&suscripcionACola);
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMEBOY porque no esta en linea");
+			liberar_conexion(conexionGameboy);
 		}
-		liberar_conexion(conexionGameboy);
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
 		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexionGamecard != -1) {
-			//TODO ver como mostrar lo que esta en el paquete, quizas necesitemos el dato para mostrarlo pero es mas complicado
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionGamecard);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola LOCALIZED_POKEMON");
-		} else {
-			log_info(logEnviarNuevo, "No pude enviar el mensaje a GAMECARD porque no esta en linea");
+			liberar_conexion(conexionGamecard);
 		}
-		liberar_conexion(conexionGamecard);
 	}
 
 }
 
 
-//TODO si funciona NEW, replicar
+
 void envioColaGetPokemon() {
-	//sem_wait(&colaGet);
-	sem_wait(&usoMemoria);
+	t_list *usersConACK = list_create();
+	t_list *usersSinACK = list_create();
+	char* username;
+	particion *mensajeGetEnMemo;
+	buddy* mensajeGetEnMemoBuddy;
+
+	bool esSuscriptor(char* userActual) {
+		return (!strcmp(userActual, username));
+	}
+
+	void llenarUserSinACK(char* userActual) {
+		username = string_duplicate(userActual);
+		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+			list_add(usersSinACK, userActual);
+		}
+	}
+
+	bool menGetQueFalten(particion *part) {
+		if (part->tipoMensaje == GET_POKEMON) {
+			//me fijo que se hayan mandado a todos los suscriptores
+			usersConACK = list_duplicate(part->acknoleged);
+
+			list_iterate(suscriptoresGetPokemon, llenarUserSinACK);
+
+			if (usersSinACK->elements_count) {
+				return 1;
+			}
+			list_clean(usersSinACK);
+			return 0;
+		}
+		list_clean(usersSinACK);
+		return 0;
+	}
+
+	bool menGetQueFaltenEnBuddy(buddy* unBuddy) {
+		return menGetQueFalten(unBuddy->particion);
+	}
+
+	while (1) {
+
+		sem_wait(&suscripcionAColaGET);
+
+		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
+		if (suscriptoresGetPokemon->elements_count > 0) {
 
 
+			sem_wait(&usoMemoria);
 
-	sem_post(&usoMemoria);
+			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
+			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
+				if (suscriptoresGetPokemon->elements_count) {
+					mensajeGetEnMemo = list_find(tablaDeParticiones,menGetQueFalten);
+					enviarPorTipo(mensajeGetEnMemo, usersSinACK);
+				}
+			}
+
+			if (!strcmp(algoritmo_memoria, "BS")) {
+				//sem_wait(&suscripcionACola);
+				if (suscriptoresGetPokemon->elements_count) {
+					mensajeGetEnMemoBuddy= list_find(tablaDeParticiones, menGetQueFaltenEnBuddy);
+					enviarPorTipo(mensajeGetEnMemoBuddy->particion,usersSinACK);
+				}
+			}
+
+			//clean si lo voy limpiandocada vez que lo uso
+			list_clean(usersSinACK);
+			list_clean(usersConACK);
+
+			sem_post(&usoMemoria);
+		}
+		sem_post(&suscripcionAColaGET);
+		sleep(1);
+	}
 }
 
-//TODO si funciona NEW, replicar
+
 void envioColaLocalizedPokemon() {
-	//sem_wait(&colaLocalized);
-	sem_wait(&usoMemoria);
+	t_list *usersConACK = list_create();
+	t_list *usersSinACK = list_create();
+	char* username;
+	particion *mensajeLocalizedEnMemo;
+	buddy* mensajeLocalizedEnMemoBuddy;
 
+	bool esSuscriptor(char* userActual) {
+		return (!strcmp(userActual, username));
+	}
 
+	void llenarUserSinACK(char* userActual) {
+		username = string_duplicate(userActual);
+		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+			list_add(usersSinACK, userActual);
+		}
+	}
 
+	bool menLocalizedQueFalten(particion *part) {
+		if (part->tipoMensaje == LOCALIZED_POKEMON) {
+			//me fijo que se hayan mandado a todos los suscriptores
+			usersConACK = list_duplicate(part->acknoleged);
 
-	sem_post(&usoMemoria);
+			list_iterate(suscriptoresLocalizedPokemon, llenarUserSinACK);
+
+			if (usersSinACK->elements_count) {
+				return 1;
+			}
+			list_clean(usersSinACK);
+			return 0;
+		}
+		list_clean(usersSinACK);
+		return 0;
+	}
+
+	bool menLocalizedQueFaltenEnBuddy(buddy* unBuddy) {
+		return menLocalizedQueFalten(unBuddy->particion);
+	}
+
+	while (1) {
+
+		sem_wait(&suscripcionAColaLOCALIZED);
+
+		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
+		if (suscriptoresLocalizedPokemon->elements_count > 0) {
+
+			sem_wait(&usoMemoria);
+
+			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
+			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
+				if (suscriptoresLocalizedPokemon->elements_count) {
+					mensajeLocalizedEnMemo = list_find(tablaDeParticiones,menLocalizedQueFalten);
+					enviarPorTipo(mensajeLocalizedEnMemo, usersSinACK);
+				}
+			}
+
+			if (!strcmp(algoritmo_memoria, "BS")) {
+				//sem_wait(&suscripcionACola);
+				if (suscriptoresLocalizedPokemon->elements_count) {
+					mensajeLocalizedEnMemoBuddy = list_find(tablaDeParticiones,menLocalizedQueFaltenEnBuddy);
+					enviarPorTipo(mensajeLocalizedEnMemoBuddy->particion,usersSinACK);
+				}
+			}
+
+			//clean si lo voy limpiandocada vez que lo uso
+			list_clean(usersSinACK);
+			list_clean(usersConACK);
+
+			sem_post(&usoMemoria);
+		}
+		sem_post(&suscripcionAColaLOCALIZED);
+		sleep(1);
+	}
 }
 
-//TODO si funciona NEW, replicar
+
 void envioColaAppearedPokemon() {
+	t_list *usersConACK = list_create();
+	t_list *usersSinACK = list_create();
+	char* username;
+	particion *mensajeAppearedEnMemo;
+	buddy* mensajeAppearedEnMemoBuddy;
 
-	//sem_wait(&colaAppeared);
-	sem_wait(&usoMemoria);
+	bool esSuscriptor(char* userActual) {
+		return (!strcmp(userActual, username));
+	}
 
+	void llenarUserSinACK(char* userActual) {
+		username = string_duplicate(userActual);
+		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+			list_add(usersSinACK, userActual);
+		}
+	}
 
-	sem_post(&usoMemoria);
+	bool menAppearedQueFalten(particion *part) {
+		if (part->tipoMensaje == APPEARED_POKEMON) {
+			//me fijo que se hayan mandado a todos los suscriptores
+			usersConACK = list_duplicate(part->acknoleged);
+
+			list_iterate(suscriptoresAppearedPokemon, llenarUserSinACK);
+
+			if (usersSinACK->elements_count) {
+				return 1;
+			}
+			list_clean(usersSinACK);
+			return 0;
+		}
+		list_clean(usersSinACK);
+		return 0;
+	}
+
+	bool menAppearedQueFaltenEnBuddy(buddy* unBuddy) {
+		return menAppearedQueFalten(unBuddy->particion);
+	}
+
+	while (1) {
+
+		sem_wait(&suscripcionAColaAPPEARED);
+
+		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
+		if (suscriptoresAppearedPokemon->elements_count > 0) {
+
+			sem_wait(&usoMemoria);
+
+			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
+			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
+				if (suscriptoresAppearedPokemon->elements_count) {
+					mensajeAppearedEnMemo = list_find(tablaDeParticiones, menAppearedQueFalten);
+					enviarPorTipo(mensajeAppearedEnMemo, usersSinACK);
+				}
+			}
+
+			if (!strcmp(algoritmo_memoria, "BS")) {
+				//sem_wait(&suscripcionACola);
+				if (suscriptoresAppearedPokemon->elements_count) {
+					mensajeAppearedEnMemoBuddy = list_find(tablaDeParticiones, menAppearedQueFaltenEnBuddy);
+					enviarPorTipo(mensajeAppearedEnMemoBuddy->particion,usersSinACK);
+				}
+			}
+
+			//clean si lo voy limpiandocada vez que lo uso
+			list_clean(usersSinACK);
+			list_clean(usersConACK);
+
+			sem_post(&usoMemoria);
+		}
+		sem_post(&suscripcionAColaAPPEARED);
+		sleep(1);
+	}
 }
 
-//TODO si funciona NEW, replicar
+
 void envioColaCatchPokemon() {
-	//sem_wait(&colaCatch);
-	sem_wait(&usoMemoria);
+	t_list *usersConACK = list_create();
+	t_list *usersSinACK = list_create();
+	char* username;
+	particion *mensajeCatchEnMemo;
+	buddy* mensajeCatchEnMemoBuddy;
 
+	bool esSuscriptor(char* userActual) {
+		return (!strcmp(userActual, username));
+	}
 
+	void llenarUserSinACK(char* userActual) {
+		username = string_duplicate(userActual);
+		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+			list_add(usersSinACK, userActual);
+		}
+	}
 
-	sem_post(&usoMemoria);
+	bool menCatchQueFalten(particion *part) {
+		if (part->tipoMensaje == CATCH_POKEMON) {
+			//me fijo que se hayan mandado a todos los suscriptores
+			usersConACK = list_duplicate(part->acknoleged);
+
+			list_iterate(suscriptoresCatchPokemon, llenarUserSinACK);
+
+			if (usersSinACK->elements_count) {
+				return 1;
+			}
+			list_clean(usersSinACK);
+			return 0;
+		}
+		list_clean(usersSinACK);
+		return 0;
+	}
+
+	bool menCatchQueFaltenEnBuddy(buddy* unBuddy) {
+		return menCatchQueFalten(unBuddy->particion);
+	}
+
+	while (1) {
+
+		sem_wait(&suscripcionAColaCATCH);
+
+		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
+		if (suscriptoresCatchPokemon->elements_count > 0) {
+
+			sem_wait(&usoMemoria);
+
+			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
+			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
+				if (suscriptoresCatchPokemon->elements_count) {
+					mensajeCatchEnMemo = list_find(tablaDeParticiones, menCatchQueFalten);
+					enviarPorTipo(mensajeCatchEnMemo, usersSinACK);
+				}
+			}
+
+			if (!strcmp(algoritmo_memoria, "BS")) {
+				//sem_wait(&suscripcionACola);
+				if (suscriptoresCatchPokemon->elements_count) {
+					mensajeCatchEnMemoBuddy = list_find(tablaDeParticiones, menCatchQueFaltenEnBuddy);
+					enviarPorTipo(mensajeCatchEnMemoBuddy->particion, usersSinACK);
+				}
+			}
+
+			//clean si lo voy limpiandocada vez que lo uso
+			list_clean(usersSinACK);
+			list_clean(usersConACK);
+
+			sem_post(&usoMemoria);
+		}
+		sem_post(&suscripcionAColaCATCH);
+		sleep(1);
+	}
 }
 
-//TODO si funciona NEW, replicar
+
 void envioColaCaughtPokemon() {
-	//sem_wait(&colaCaught);
-	sem_wait(&usoMemoria);
+	t_list *usersConACK = list_create();
+	t_list *usersSinACK = list_create();
+	char* username;
+	particion *mensajeCaughtEnMemo;
+	buddy* mensajeCaughtEnMemoBuddy;
 
+	bool esSuscriptor(char* userActual) {
+		return (!strcmp(userActual, username));
+	}
 
+	void llenarUserSinACK(char* userActual) {
+		username = string_duplicate(userActual);
+		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+			list_add(usersSinACK, userActual);
+		}
+	}
 
-	sem_post(&usoMemoria);
+	bool menCaughtQueFalten(particion *part) {
+		if (part->tipoMensaje == CAUGHT_POKEMON) {
+			//me fijo que se hayan mandado a todos los suscriptores
+			usersConACK = list_duplicate(part->acknoleged);
+
+			list_iterate(suscriptoresCaughtPokemon, llenarUserSinACK);
+
+			if (usersSinACK->elements_count) {
+				return 1;
+			}
+			list_clean(usersSinACK);
+			return 0;
+		}
+		list_clean(usersSinACK);
+		return 0;
+	}
+
+	bool menCaughtQueFaltenEnBuddy(buddy* unBuddy) {
+		return menCaughtQueFalten(unBuddy->particion);
+	}
+
+	while (1) {
+
+		sem_wait(&suscripcionAColaCAUGHT);
+
+		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
+		if (suscriptoresCaughtPokemon->elements_count > 0) {
+
+			sem_wait(&usoMemoria);
+
+			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
+			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
+				if (suscriptoresCaughtPokemon->elements_count) {
+					mensajeCaughtEnMemo = list_find(tablaDeParticiones, menCaughtQueFalten);
+					enviarPorTipo(mensajeCaughtEnMemo, usersSinACK);
+				}
+			}
+
+			if (!strcmp(algoritmo_memoria, "BS")) {
+				//sem_wait(&suscripcionACola);
+				if (suscriptoresCaughtPokemon->elements_count) {
+					mensajeCaughtEnMemoBuddy = list_find(tablaDeParticiones, menCaughtQueFaltenEnBuddy);
+					enviarPorTipo(mensajeCaughtEnMemoBuddy->particion, usersSinACK);
+				}
+			}
+
+			//clean si lo voy limpiandocada vez que lo uso
+			list_clean(usersSinACK);
+			list_clean(usersConACK);
+
+			sem_post(&usoMemoria);
+		}
+		sem_post(&suscripcionAColaCAUGHT);
+		sleep(1);
+	}
 }
 
 
@@ -863,7 +1082,7 @@ void enviar_cola_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon, int soc
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
 
-	//serializacion de brokerNewPokemon
+
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaCATCH(brokerCatchPokemon);
 
@@ -894,7 +1113,7 @@ void enviar_cola_Localized_Pokemon(broker_localized_pokemon *brokerLocalizedPoke
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
 
-	//serializacion de brokerNewPokemon
+
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaLOCALIZED(brokerLocalizedPokemon);
 
@@ -920,7 +1139,7 @@ void enviar_cola_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokemon
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
 
-	//serializacion de brokerNewPokemon
+
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaAPPEARED(brokerAppearedPokemon);
 

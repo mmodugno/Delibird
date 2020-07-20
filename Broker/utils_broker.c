@@ -180,9 +180,7 @@ void process_request(int cod_op, int cliente_fd) {
 					suscriptor->nombreDeSuscriptor,
 					colasDeEnum[(suscriptor->tipoDeCola)]);
 
-			sem_wait(&suscripcionACola);
 			suscribirACola(suscriptor);
-			sem_post(&suscripcionACola);
 
 			free(suscriptor);
 
@@ -389,8 +387,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			ackRecibido = deserializarAck(cliente_fd);
-			log_info(confirmacionRecepcion,
-					"me llego la confirmacion para el ID:%d", ackRecibido);
+			/*log_info(confirmacionRecepcion,
+					"me llego la confirmacion para el ID:%d", ackRecibido);*/
 
 			//mutex porque manejo algo de memoria
 			sem_wait(&usoMemoria);
@@ -433,9 +431,9 @@ void process_request(int cod_op, int cliente_fd) {
 					suscriptor->nombreDeSuscriptor,
 					colasDeEnum[(suscriptor->tipoDeCola) - 1]);*/
 
-			sem_wait(&suscripcionACola);
+
 			desuscribirACola(suscriptor);
-			sem_post(&suscripcionACola);
+
 
 			free(suscriptor);
 
@@ -468,25 +466,47 @@ void* recibir_mensaje(int socket_cliente, int* size) {
 	return buffer;
 }
 
-void suscribirACola(suscriptor* suscriptor){
-	switch(suscriptor->tipoDeCola){
+bool esSuscriptor(char* suscAct){
+	return !strcmp(suscAct,susAEliminar->nombreDeSuscriptor);
+}
+
+void eliminarDeACK(particion* part){
+	if(part->tipoMensaje == colaAEliminar){
+		list_remove_and_destroy_by_condition(part->acknoleged,esSuscriptor,free);
+	}
+}
+
+void suscribirACola(suscriptor* suscrip){
+	switch(suscrip->tipoDeCola){
 		case NEW_POKEMON:
-			list_add(suscriptoresNewPokemon,(char*) suscriptor->nombreDeSuscriptor);
+			sem_wait(&suscripcionAColaNEW);
+			list_add(suscriptoresNewPokemon,(char*) suscrip->nombreDeSuscriptor);
+			sem_post(&suscripcionAColaNEW);
 			break;
 		case APPEARED_POKEMON:
-			list_add(suscriptoresAppearedPokemon,(char*) suscriptor->nombreDeSuscriptor);
+			sem_wait(&suscripcionAColaAPPEARED);
+			list_add(suscriptoresAppearedPokemon,(char*) suscrip->nombreDeSuscriptor);
+			sem_post(&suscripcionAColaAPPEARED);
 			break;
 		case CATCH_POKEMON:
-			list_add(suscriptoresCatchPokemon,(char*) suscriptor->nombreDeSuscriptor);
+			sem_wait(&suscripcionAColaCATCH);
+			list_add(suscriptoresCatchPokemon,(char*) suscrip->nombreDeSuscriptor);
+			sem_post(&suscripcionAColaCATCH);
 			break;
 		case CAUGHT_POKEMON:
-			list_add(suscriptoresCaughtPokemon,(char*) suscriptor->nombreDeSuscriptor);
+			sem_wait(&suscripcionAColaCAUGHT);
+			list_add(suscriptoresCaughtPokemon,(char*) suscrip->nombreDeSuscriptor);
+			sem_post(&suscripcionAColaCAUGHT);
 			break;
 		case GET_POKEMON:
-			list_add(suscriptoresGetPokemon,(char*) suscriptor->nombreDeSuscriptor);
+			sem_wait(&suscripcionAColaGET);
+			list_add(suscriptoresGetPokemon,(char*) suscrip->nombreDeSuscriptor);
+			sem_post(&suscripcionAColaGET);
 			break;
 		case LOCALIZED_POKEMON:
-			list_add(suscriptoresLocalizedPokemon,(char*) suscriptor->nombreDeSuscriptor);
+			sem_wait(&suscripcionAColaLOCALIZED);
+			list_add(suscriptoresLocalizedPokemon,(char*) suscrip->nombreDeSuscriptor);
+			sem_post(&suscripcionAColaLOCALIZED);
 			break;
 
 	}
@@ -496,35 +516,77 @@ void suscribirACola(suscriptor* suscriptor){
 
 void desuscribirACola(suscriptor* suscrip){
 
-	//TODO ver porque no existe el suscriptor
+
+
 	bool suscriptorAEliminar(char* nombreSus){
 		return (!strcmp(nombreSus, suscrip->nombreDeSuscriptor));
 	}
 
 	switch(suscrip->tipoDeCola){
 		case NEW_POKEMON:{
+			sem_wait(&suscripcionAColaNEW);
 			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,suscriptorAEliminar,free);
+			sem_wait(&usoMemoria);
+			colaAEliminar = NEW_POKEMON;
+			susAEliminar = suscrip;
+			list_iterate(tablaDeParticiones,eliminarDeACK);
+			sem_post(&usoMemoria);
+			sem_post(&suscripcionAColaNEW);
 			break;
 		}
 		case APPEARED_POKEMON:{
+			sem_wait(&suscripcionAColaAPPEARED);
 			list_remove_and_destroy_by_condition(suscriptoresAppearedPokemon,suscriptorAEliminar,free);
+			sem_wait(&usoMemoria);
+			colaAEliminar = APPEARED_POKEMON;
+			susAEliminar = suscrip;
+			list_iterate(tablaDeParticiones,eliminarDeACK);
+			sem_post(&usoMemoria);
+			sem_post(&suscripcionAColaAPPEARED);
 			break;
 		}
 		case CATCH_POKEMON:{
-
+			sem_wait(&suscripcionAColaCATCH);
 			list_remove_and_destroy_by_condition(suscriptoresCatchPokemon,suscriptorAEliminar,free);
+			sem_wait(&usoMemoria);
+			colaAEliminar = CATCH_POKEMON;
+			susAEliminar = suscrip;
+			list_iterate(tablaDeParticiones,eliminarDeACK);
+			sem_post(&usoMemoria);
+			sem_post(&suscripcionAColaCATCH);
 			break;
 		}
 		case CAUGHT_POKEMON:{
+			sem_wait(&suscripcionAColaCAUGHT);
 			list_remove_and_destroy_by_condition(suscriptoresCaughtPokemon,suscriptorAEliminar,free);
+			sem_wait(&usoMemoria);
+			colaAEliminar = CAUGHT_POKEMON;
+			susAEliminar = suscrip;
+			list_iterate(tablaDeParticiones,eliminarDeACK);
+			sem_post(&usoMemoria);
+			sem_post(&suscripcionAColaCAUGHT);
 			break;
 		}
 		case GET_POKEMON:{
+			sem_wait(&suscripcionAColaGET);
 			list_remove_and_destroy_by_condition(suscriptoresGetPokemon,suscriptorAEliminar,free);
+			sem_wait(&usoMemoria);
+			colaAEliminar = GET_POKEMON;
+			susAEliminar = suscrip;
+			list_iterate(tablaDeParticiones,eliminarDeACK);
+			sem_post(&usoMemoria);
+			sem_post(&suscripcionAColaGET);
 			break;
 		}
 		case LOCALIZED_POKEMON:{
+			sem_wait(&suscripcionAColaLOCALIZED);
 			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,suscriptorAEliminar,free);
+			sem_wait(&usoMemoria);
+			colaAEliminar = LOCALIZED_POKEMON;
+			susAEliminar = suscrip;
+			list_iterate(tablaDeParticiones,eliminarDeACK);
+			sem_post(&usoMemoria);
+			sem_post(&suscripcionAColaLOCALIZED);
 			break;
 		}
 	}
@@ -1361,6 +1423,7 @@ bool hayTamanioDisponiblePara(int tamanio){
 		return unBuddy->particion->libre;
 	}
 
+	//TODO comente esto porque no se si lo usaban
 	t_list* listaLibres = list_filter(tablaDeParticiones,estaLibre);
 
 	t_list* listaTamaniosLibres = list_map(tablaDeParticiones,tamanioBuddy);
@@ -1789,7 +1852,8 @@ bool buddyPuedeConsolidar(buddy* unBuddy){
 
 bool puedeConsolidarDerecha(buddy* unBuddy){
 
-	int posicionBuddy = posicionBuddyTabla(unBuddy);
+	//TODO esto lo comente porque no lo usaban
+	//int posicionBuddy = posicionBuddyTabla(unBuddy);
 
 	int posicionSiguiente = posicionBuddyTabla(unBuddy) + 1;
 
@@ -1809,8 +1873,8 @@ bool puedeConsolidarDerecha(buddy* unBuddy){
 }
 
 bool puedeConsolidarIzquierda(buddy* unBuddy){
-
-	int posicionBuddy = posicionBuddyTabla(unBuddy);
+	//TODO esto lo comente porque no lo usaban
+	//int posicionBuddy = posicionBuddyTabla(unBuddy);
 
 	int posicionAnterior = posicionBuddyTabla(unBuddy)-1;
 
