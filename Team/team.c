@@ -75,9 +75,9 @@ int main(int argc, char* argv[]){
 */
 
 	//	PRUEBAS COMPLETAS DE TP
+
 /*
 
-*/
 	pokemon* jolteon = hacer_pokemon("Jolteon",2,2,sizeof("Jolteon"));
 		aparece_nuevo_pokemon(jolteon);
 
@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
 
 	pokemon* vaporeon = hacer_pokemon("Vaporeon",4,10,sizeof("Vaporeon"));
 		aparece_nuevo_pokemon(vaporeon);
-
+*/
 
 
 
@@ -102,9 +102,9 @@ int main(int argc, char* argv[]){
 
 
 
- 	imprimir_metricas();
+ 	//imprimir_metricas();
 
- 	//loggear_metricas();
+ 	loggear_metricas();
 
 	terminar_programa();
 
