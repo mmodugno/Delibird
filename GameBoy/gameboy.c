@@ -31,6 +31,19 @@ int main(int argc, char* argv[]){
 	//leemos todo el archivo de config
 	leer_config();
 
+	sem_init(&recibiConexion,0,0);
+
+	void analizadorTime(){
+		//ponerSemaforoPAraCuandoSeCOnecteBroker
+		sem_wait(&recibiConexion);
+		sleep(segundosSuscripcion);
+		pthread_kill(hiloConexion,0);
+	}
+
+	pthread_t analizador;
+
+	log_info(logConexion,"Me desconecte broker");
+
 
 	//////////////HACER CONEXION DEPENDIENDO QUE NOS PASEN POR PARAMETRO////////////
 
@@ -284,6 +297,8 @@ int main(int argc, char* argv[]){
 
 				sem_init(&llegadaMensajes,0,1);
 
+				pthread_create(&analizador,NULL,(void*)analizadorTime,NULL);
+
 				pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor_gameboy, NULL);
 
 				suscriptor* meSuscribo = malloc(sizeof(suscriptor));
@@ -342,9 +357,12 @@ int main(int argc, char* argv[]){
 
 
 				//Abro el server de Gameboy para escuchar los msj q me manda Broker
-				//liberar_conexion(conexionBroker);
+				liberar_conexion(conexionBroker);
 
-				pthread_join(hiloReciboMensajes,NULL);
+				pthread_join(analizador,NULL);
+//				pthread_join(hiloReciboMensajes,NULL);
+
+				conexionBroker = crear_conexion(ipBroker,puertoBroker);
 
 				enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
 
@@ -361,8 +379,6 @@ int main(int argc, char* argv[]){
 
 			}
 		}
-
-
 
 
 	}

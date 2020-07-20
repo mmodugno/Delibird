@@ -44,6 +44,10 @@ void envioColaNewPokemon() {
 		return 0;
 	}
 
+	bool menNewQueFaltenEnBuddy(buddy* unBuddy) {
+					return menNewQueFalten(unBuddy->particion);
+				}
+
 	//TODO ver si este while esta demas
 	while (1) {
 
@@ -64,15 +68,23 @@ void envioColaNewPokemon() {
 				}
 			}
 
-			bool menNewQueFaltenEnBuddy(buddy* unBuddy) {
-				return menNewQueFalten(unBuddy->particion);
-			}
+
 
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
+				if (suscriptoresNewPokemon->elements_count) {
+
 				mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, menNewQueFaltenEnBuddy);
-				//sem_post(&suscripcionACola);
-				enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
+
+					if(mensajeNewEnMemoBuddy == NULL){
+					particion* particionNull = NULL;
+					enviarPorTipo(particionNull, usersSinACK);
+					} else {
+					enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
+					}
+
+
+				}
 				//list_clean_and_destroy_elements(usersSinACK, free);
 			}
 
@@ -87,7 +99,7 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 			}
 		sem_post(&suscripcionACola);
-		sleep(10);
+		sleep(1);
 	}
 }
 
