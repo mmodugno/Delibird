@@ -858,7 +858,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		sem_wait(&en_ejecucion);
 
-		printf("\n ---- Inicio de operacion de deadlock entre entrenadores %d y %d------------\n \n",entrenador0->id,entrenador1->id);
+		log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
 
 		//mover_entrenador_RR(entrenador0,x,y);
 		mover_entrenador(entrenador0,x,y);
@@ -871,9 +871,8 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 		while(cpu_a_usar > quantum){
 			cpu_a_usar -= quantum;
 
-			printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
 
-			log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador0->id);
+			log_info(cambioDeCola,"cambio a READY a entrenador: %d en espera de Intercambio \n ",entrenador0->id);
 
 			if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready,entrenador0);
 			else{
@@ -887,13 +886,12 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 			quantum = leer_quantum();
 		}
 
-		log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
 
 		nombre_pokemon = list_get(entrenador0->objetivos,0);
 
 
 		list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
-
+		list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
 
 		nombre_pokemon = list_get(entrenador0->pokemones, 0);
 
@@ -962,7 +960,8 @@ bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador
 	float rafaga1 = calcular_rafaga_siguiente(entrenador1,proximo_objetivo);
 	float rafaga2 = calcular_rafaga_siguiente(entrenador2,proximo_objetivo);
 	//bool resultado =  rafaga1 >= rafaga2 ; //TODO aca seria <=?
-	bool resultado =  rafaga1 <= rafaga2 ;
+	//bool resultado =  rafaga1 <= rafaga2 ;
+	bool resultado =  rafaga1 < rafaga2 ;
 	return resultado;
 }
 
@@ -1058,10 +1057,11 @@ while(1){
 			if(hay_deadlock()){
 				log_info(resultado_deadlock,"Se detectó deadlock");
 				entrenador_deadlock-=2;
-				cant_deadlocks +=1;
+
 
 
 			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock,NULL);
+			cant_deadlocks +=1;
 
 			sem_post(&en_ejecucion);
 			continue;
