@@ -53,6 +53,33 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
+	//SUSCRIPCION A COLAS SI NOS CONECTAMOS AL BROKER
+	if(conexion_broker){
+
+		suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
+
+		meSuscriboGet->nombreDeSuscriptor = "TEAM";
+		meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
+
+		meSuscriboGet->tipoDeCola = GET_POKEMON;
+
+		enviar_pedido_suscripcion(meSuscriboGet, conexionBroker);
+
+		suscriptor* meSuscriboCaught = malloc(sizeof(suscriptor));
+
+
+		meSuscriboCaught->nombreDeSuscriptor = "TEAM";
+		meSuscriboCaught->tamanioNombreSucriptor = strlen(meSuscriboCaught->nombreDeSuscriptor) + 1;
+
+		meSuscriboCaught->tipoDeCola = CAUGHT_POKEMON;
+
+		enviar_pedido_suscripcion(meSuscriboCaught, conexionBroker);
+
+		free(meSuscriboGet);
+		free(meSuscriboCaught);
+
+
+	}
 
  //PRUEBAS DE TP:
 
