@@ -20,7 +20,8 @@
 void imprimir_metricas(void);
 void loggear_metricas(void);
 void destruir_logs(void);
-
+void suscribirnos_cola_caught();
+void suscribirnos_cola_localized();
 void iniciar_logs(void);
 void terminar_programa(void);
 #endif /* TEAM_TEAMH */
