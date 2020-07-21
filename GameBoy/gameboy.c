@@ -31,8 +31,9 @@ int main(int argc, char* argv[]){
 	//leemos todo el archivo de config
 	leer_config();
 
-	sem_init(&recibiConexion,0,0);
+	//sem_init(&recibiConexion,0,0);
 
+	/*
 	void analizadorTime(){
 		//ponerSemaforoPAraCuandoSeCOnecteBroker
 		sem_wait(&recibiConexion);
@@ -40,7 +41,7 @@ int main(int argc, char* argv[]){
 		pthread_kill(hiloConexion,0);
 	}
 
-	pthread_t analizador;
+	pthread_t analizador;*/
 
 	//TODO porque esta esto?
 	//log_info(logConexion,"Me desconecte broker");
@@ -298,9 +299,9 @@ int main(int argc, char* argv[]){
 
 				sem_init(&llegadaMensajes,0,1);
 
-				pthread_create(&analizador,NULL,(void*)analizadorTime,NULL);
+				//pthread_create(&analizador,NULL,(void*)analizadorTime,NULL);
 
-				pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor_gameboy, NULL);
+				//pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor_gameboy, NULL);
 
 				suscriptor* meSuscribo = malloc(sizeof(suscriptor));
 				meSuscribo->nombreDeSuscriptor = "GAMEBOY";
@@ -360,21 +361,26 @@ int main(int argc, char* argv[]){
 				//Abro el server de Gameboy para escuchar los msj q me manda Broker
 				liberar_conexion(conexionBroker);
 
-				pthread_join(analizador,NULL);
-//				pthread_join(hiloReciboMensajes,NULL);
+				flagTerminoSuscripcion = 0;
+
+				iniciar_servidor_gameboy();
+
+				//pthread_join(analizador,NULL);
+
+				//pthread_join(hiloReciboMensajes,NULL);
+
+				//conexionBroker = crear_conexion(ipBroker,puertoBroker);
+
+				//enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
 
 				conexionBroker = crear_conexion(ipBroker,puertoBroker);
-
-				enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
-
-				/*conexionBroker = crear_conexion(ipBroker,puertoBroker);
 
 				if(conexionBroker <= 0){
 					log_info(logConexion,"no me pude conectar a Broker para pedir la desucripcion");
 
 				} else{
 					enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
-				}*/
+				}
 
 				free(meSuscribo);
 
