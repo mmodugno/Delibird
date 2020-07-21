@@ -58,8 +58,9 @@ t_log* logArchivoAbierto;
 t_log* logFalloConexion;
 
 sem_t sem_conexion;
-sem_t sem_new;
+sem_t sem_escritura;
 sem_t sem_mensaje;
+sem_t mutex_bit_array;
 
 FILE* metadata;
 FILE* metadataFiles;
@@ -94,6 +95,7 @@ void agregarBloqueParaPokemon(char* ,int );
 int verificarExistenciaPokemon(char* );
 void procesarNewPokemon(char*, registroDatos* );
 void procesarCatchPokemon(char* ,uint32_t , uint32_t );
+
 
 ////////// REGISTROS Y BLOQUES
 
@@ -142,5 +144,9 @@ void enviar_appeared(int ,char* , int ,int , int );
 void enviar_caught(int ,uint32_t , uint32_t );
 void enviar_localized(int , char* , uint32_t , uint32_t* , uint32_t* ,uint32_t );
 void iniciar_servidor(void);
+void actualizar_bitmap();
+void inicializar_bitmap();
+void inicializar_bitarray();
+
 
 #endif /* UTILS_GAMECARD_H_ */
