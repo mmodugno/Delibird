@@ -851,7 +851,7 @@ void eliminarBloquesVacios(char* nombrePoke){
 			list_add(nuevaListaBloques,list_get(listaBloques,i));
 		}
 		else{
-			bitarray_clean_bit(bitArray,bloqueAux);
+					bitarray_clean_bit(bitArray,bloqueAux-1);
 		}
 	}
 
@@ -1143,7 +1143,7 @@ int conectarse_con_broker(void){
 
 void serve_client(int* socket)
 {
-	sem_wait(&sem_mensaje);
+	//sem_wait(&sem_mensaje);
 	int cod_op;
 
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
@@ -1238,7 +1238,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 	}
-	sem_post(&sem_mensaje);
+	//sem_post(&sem_mensaje);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size)
