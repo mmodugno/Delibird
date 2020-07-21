@@ -28,6 +28,7 @@
 #include<commons/temporal.h>
 #include<signal.h>
 #include<semaphore.h>
+#include <signal.h>
 
 //ID	Base	tamaño de mensaje	Mensaje	Fecha(creacion/uso)
 typedef struct {

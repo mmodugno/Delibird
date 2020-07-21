@@ -10,11 +10,12 @@
 
 #include "envioMensajes.h"
 
-t_log* iniciar_logger(char*, char* archivoLog);
+t_log* iniciar_logger(char*, char* );
 void leer_config(void);
 //void terminar_programa(int,int,int, t_log*,t_log*,t_log*,t_log*, t_config*);
 
-int crear_conexion(char* ip, char* puerto);
+int crear_conexion(char* , char* );
+void my_handler(int );
 //void enviar_mensaje(char* mensaje, int socket_cliente);
 //void iniciarmemoria();
 //char* recibir_mensaje(int socket_cliente);

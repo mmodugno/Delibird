@@ -24,6 +24,9 @@ int main() {
 
 	leer_config();
 
+	signal(SIGUSR1, my_handler);
+	signal(SIGINT, my_handler);
+
 	//mutex
 	sem_init(&idsDeMensajes, 0, 1);
 	sem_init(&usoMemoria, 0, 1);
@@ -98,7 +101,7 @@ int main() {
 	*/
 
 	//terminar conexiones logs y config
-	terminar_programa();
+	//terminar_programa();
 	return EXIT_SUCCESS;
 
 }
@@ -140,6 +143,25 @@ void leer_config(void) {
 
 }
 
+
+void my_handler(int signum)
+{
+    if (signum == SIGUSR1)
+    {
+    	sem_wait(&usoMemoria);
+        log_info(dumpCache,"voy a escribir un dump de la cache!");
+
+        //TODO escribir archivo
+
+        sem_post(&usoMemoria);
+    }
+    if(signum == SIGINT){
+    	sem_wait(&usoMemoria);
+    	terminar_programa();
+    	sem_post(&terminoPrograma);
+    	sem_post(&usoMemoria);
+    }
+}
 /*
  * t_log* logConexion;
  t_log* logSuscipcion;
