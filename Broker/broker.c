@@ -74,8 +74,6 @@ int main() {
 	pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor, NULL);
 
 	pthread_create(&hiloNew_Envio, NULL, (void*) envioColaNewPokemon, NULL);
-
-
 	pthread_create(&hiloAppeared_Envio, NULL, (void*) envioColaAppearedPokemon, NULL);
 	pthread_create(&hiloCatch_Envio, NULL, (void*) envioColaCatchPokemon, NULL);
 	pthread_create(&hiloCaught_Envio, NULL, (void*) envioColaCaughtPokemon, NULL);
@@ -84,7 +82,12 @@ int main() {
 
 	//pthread_join(hiloReciboMensajes, NULL);
 
-	//pthread_join(hiloNew_Envio, NULL);
+	pthread_detach(hiloNew_Envio);
+	pthread_detach(hiloAppeared_Envio);
+	pthread_detach(hiloCatch_Envio);
+	pthread_detach(hiloCaught_Envio);
+	pthread_detach(hiloGet_Envio);
+	pthread_detach(hiloLocalized_Envio);
 
 
 
@@ -92,11 +95,7 @@ int main() {
 
 	sem_wait(&terminoPrograma);
 /*
-	pthread_join(hiloAppeared_Envio, NULL);
-	pthread_join(hiloCatch_Envio, NULL);
-	pthread_join(hiloCaught_Envio, NULL);
-	pthread_join(hiloGet_Envio, NULL);
-	pthread_join(hiloLocalized_Envio, NULL);*/
+	*/
 
 	//terminar conexiones logs y config
 	terminar_programa();
