@@ -296,7 +296,6 @@ void crearFilesAndBlocks() {
 
 void crearBitmap(){
 
-
 	FILE* bitmap = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin");
 
 	fseek(bitmap,0,SEEK_END);
@@ -370,12 +369,15 @@ sem_wait(&sem_new);
 }
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
+
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	t_config* configPath = config_create(path);
 
 	verificarDirectorioPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
+
+
+	t_config* configPath = config_create(path);
 
 	int cantidad = -1;
 	registroDatos* regAux = hacerRegistro(posX,posY,cantidad);
@@ -1142,6 +1144,7 @@ int conectarse_con_broker(void){
 void serve_client(int* socket)
 {
 	int cod_op;
+
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
@@ -1306,6 +1309,7 @@ registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
 registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
 
 	registroConNombre* registroConNombre = malloc(sizeof(registroConNombre));
+	registroConNombre->registro = malloc(sizeof(registroDatos));
 
 	int tamanioNombre;
 

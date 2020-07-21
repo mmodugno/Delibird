@@ -59,6 +59,7 @@ t_log* logFalloConexion;
 
 sem_t sem_conexion;
 sem_t sem_new;
+sem_t llegoMensaje;
 
 FILE* metadata;
 FILE* metadataFiles;

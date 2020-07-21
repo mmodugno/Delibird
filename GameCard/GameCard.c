@@ -21,6 +21,8 @@ int main(int argc, char* argv[]){
 
 		nombreConfig = argv[1];
 
+		sem_init(&llegoMensaje,0,1);
+
 		leer_config();
 
 		username = malloc(strlen("GAMECARD"+1));
@@ -64,7 +66,7 @@ int main(int argc, char* argv[]){
 		//procesarNewPokemon("Charmander",registro1);
 
 
-		//procesarCatchPokemon("Charmander",4,1);
+//		procesarCatchPokemon("Charmander",413,17);
 
 
 		//procesarNewPokemon("Messi",registro1);
