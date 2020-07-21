@@ -30,6 +30,7 @@ int main(int argc, char* argv[]){
 
 		sem_init(&sem_conexion,0,1);
 
+		sem_init(&mutex_bit_array,0,1);
 
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
@@ -45,7 +46,12 @@ int main(int argc, char* argv[]){
 
 		crearFilesAndBlocks();
 
-		crearBitmap();
+		sem_init(&sem_escritura,0,1);
+
+		inicializar_bitmap();
+
+		inicializar_bitarray();
+
 
 		//t_list* listaAux = list_create();
 
@@ -56,7 +62,7 @@ int main(int argc, char* argv[]){
 
 		//verificarDirectorioPokemon("Pikachu");
 
-		registroDatos* registro1 = hacerRegistro(4,1,1);
+		//registroDatos* registro1 = hacerRegistro(4,1,1);
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
@@ -66,7 +72,7 @@ int main(int argc, char* argv[]){
 		//procesarNewPokemon("Charmander",registro1);
 
 
-//		procesarCatchPokemon("Charmander",413,17);
+		//procesarCatchPokemon("Charmander",413,17);
 
 
 		//procesarNewPokemon("Messi",registro1);
@@ -75,6 +81,14 @@ int main(int argc, char* argv[]){
 		/*pthread_t hilo_servidor;
 
 		pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);*/
+
+		int i;
+
+		for(i = 0; i < bitarray_get_max_bit(bitArray);i++){
+			if(bitarray_test_bit(bitArray,i) == 0){
+				printf("Libre en: %d \n",i);
+			}
+		}
 
 		iniciar_servidor();
 
@@ -110,9 +124,12 @@ t_log* iniciar_logger(char* tipoDeProceso){
 
 
 void terminar_programa(void){
+
 	log_destroy(logArchivoAbierto);
 	log_destroy(logFalloConexion);
 	config_destroy(config);
+
+	//munmap(bmap, size);
 
 	bitarray_destroy(bitArray);
 	//liberar_conexion(conexionBroker);

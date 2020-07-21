@@ -138,7 +138,15 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		txt_write_in_file(bloqueLibre,registro_a_string(registro));
 
+		sem_wait(&mutex_bit_array);
+
 		bitarray_set_bit(bitArray,indiceLibre-1);
+
+		actualizar_bitmap();
+
+		sem_post(&mutex_bit_array);
+
+		msync(bitArray->bitarray,1,MS_SYNC);
 
 		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
 
@@ -271,8 +279,31 @@ void calcularTamanioMetadata(char* pokemon) {
 
 }
 
+void inicializar_bitarray() {
+	//loggear_trace(string_from_format("Inicializando bitarray"));
+	FILE* archivo_bitmap = fopen("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "r");
 
+	char* bitmap = malloc(cantidadBloques/8 + 1);
+	int resultado_read = 0;
 
+	while(!resultado_read)
+	resultado_read = fread(bitmap, sizeof(char), sizeof(char)*(cantidadBloques/8)+1, archivo_bitmap);
+
+	bitmap[cantidadBloques/8] = 0;
+	bitArray = bitarray_create_with_mode(bitmap, cantidadBloques/8, LSB_FIRST);
+	fclose(archivo_bitmap);
+
+}
+
+void inicializar_bitmap() {
+
+	if(estaVacioConRuta("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin")) {
+		FILE* archivo_bitmap = fopen("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "w+");
+		fclose(archivo_bitmap);
+		truncate("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin",cantidadBloques/8); //te deja el archivo completo en cero.
+	}
+
+}
 
 void crearFilesAndBlocks() {
 
@@ -312,8 +343,13 @@ void crearBitmap(){
 
 }
 
-void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
+void actualizar_bitmap() {
+	FILE* bitmap = fopen("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "wb+");
+	fwrite(bitArray->bitarray, sizeof(char),sizeof(char) * bitArray->size, bitmap);
+	fclose(bitmap);
+}
 
+void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -335,6 +371,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	}
 
 
+	sem_wait(&sem_escritura);
 
 	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,registro);
 
@@ -342,6 +379,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 	registrarPokemon(nombrePoke,registro);
 	}
 
+	sem_post(&sem_escritura);
 
 	t_config* configPath = config_create(path);
 
@@ -370,6 +408,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 
+
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 
@@ -384,6 +423,8 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 
 	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
 
+	sem_wait(&sem_escritura);
+
 	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,regAux);
 
 	uint32_t resultado;
@@ -396,7 +437,16 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 		resultado = 1;
 	}
 
+
+	sem_wait(&mutex_bit_array);
+
 	eliminarBloquesVacios(nombrePoke);
+
+	actualizar_bitmap();
+
+	sem_post(&mutex_bit_array);
+
+	sem_post(&sem_escritura);
 
 	//TODO ver id
 	uint32_t id_rel = 2;
