@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
 
 		nombreConfig = argv[1];
 
-		sem_init(&llegoMensaje,0,1);
+		sem_init(&sem_mensaje,0,1);
 
 		leer_config();
 
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
 		username = "GAMECARD";
 
 		sem_init(&sem_conexion,0,1);
-		sem_init(&sem_new,0,1);
+
 
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");

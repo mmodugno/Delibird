@@ -314,7 +314,7 @@ void crearBitmap(){
 
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
-sem_wait(&sem_new);
+
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
@@ -365,7 +365,7 @@ sem_wait(&sem_new);
 
 	sleep(tiempo_retardo_operacion);
 
-	sem_post(&sem_new);
+
 }
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
@@ -1143,6 +1143,7 @@ int conectarse_con_broker(void){
 
 void serve_client(int* socket)
 {
+	sem_wait(&sem_mensaje);
 	int cod_op;
 
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
@@ -1237,6 +1238,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 	}
+	sem_post(&sem_mensaje);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size)
