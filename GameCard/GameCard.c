@@ -21,12 +21,15 @@ int main(int argc, char* argv[]){
 
 		nombreConfig = argv[1];
 
+		sem_init(&sem_mensaje,0,1);
+
 		leer_config();
 
 		username = malloc(strlen("GAMECARD"+1));
 		username = "GAMECARD";
 
 		sem_init(&sem_conexion,0,1);
+
 
 		logArchivoAbierto = iniciar_logger("ARCHIVO ABIERTO");
 		logFalloConexion = iniciar_logger("FALLO CONEXION");
@@ -59,10 +62,14 @@ int main(int argc, char* argv[]){
 
 
 
-//		procesarNewPokemon("Messi2",registro1);
+		//procesarNewPokemon("Pikachu",registro1);
+		//procesarNewPokemon("Charmander",registro1);
 
-		//procesarCatchPokemon("Charmander",4,1);
 
+//		procesarCatchPokemon("Charmander",413,17);
+
+
+		//procesarNewPokemon("Messi",registro1);
 		//procesarGetPokemon("Charmander");3
 
 		/*pthread_t hilo_servidor;
@@ -107,5 +114,6 @@ void terminar_programa(void){
 	log_destroy(logFalloConexion);
 	config_destroy(config);
 
+	bitarray_destroy(bitArray);
 	//liberar_conexion(conexionBroker);
 }

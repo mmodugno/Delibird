@@ -72,13 +72,16 @@ void verificarAperturaArchivo(char* path) {
 int buscarIndicePrimerBloqueLibre(){
 
 	int contador = 1;
-
-	while(!estaVacioConRuta(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador))){
-
+/*
+while(!estaVacioConRuta(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Blocks/%d.bin",contador))){
 	contador++;
+}
+*/
 
-
+	while(bitarray_test_bit(bitArray,contador-1)){
+		contador++;
 	}
+
 
 	char* path = obtener_ruta_bloque(contador);
 
@@ -117,8 +120,6 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
 
-	//FILE* archivoTemporal = fopen(path,"rb+");
-
 	char** bloques;
 
 	t_config* configAux = config_create(path);
@@ -137,7 +138,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		txt_write_in_file(bloqueLibre,registro_a_string(registro));
 
-	//	bitarray_set_bit(bitArray,indiceLibre-1);
+		bitarray_set_bit(bitArray,indiceLibre-1);
 
 		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
 
@@ -180,6 +181,8 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			int indiceSiguienteLibre = buscarIndicePrimerBloqueLibre();
 
+			bitarray_set_bit(bitArray,indiceSiguienteLibre-1);
+
 			char* path = obtener_ruta_bloque(indiceSiguienteLibre);
 
 			FILE* archivoBloqueLibre = txt_open_for_append(path);
@@ -209,7 +212,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			txt_write_in_file(bloqueLibre,string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
 
-			bitarray_set_bit(bitArray,indiceLibre-1);
+			//bitarray_set_bit(bitArray,indiceLibre-1);
 
 			char* nuevosBloques = agregarBloqueALista(listaBloques,indiceLibre);
 
@@ -293,7 +296,6 @@ void crearFilesAndBlocks() {
 
 void crearBitmap(){
 
-
 	FILE* bitmap = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin");
 
 	fseek(bitmap,0,SEEK_END);
@@ -311,6 +313,8 @@ void crearBitmap(){
 }
 
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
+
+
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
@@ -365,12 +369,15 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 }
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
+
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	t_config* configPath = config_create(path);
 
 	verificarDirectorioPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
+
+
+	t_config* configPath = config_create(path);
 
 	int cantidad = -1;
 	registroDatos* regAux = hacerRegistro(posX,posY,cantidad);
@@ -836,11 +843,15 @@ void eliminarBloquesVacios(char* nombrePoke){
 
 	for(i = 0; i < list_size(listaBloques); i++) {
 
-		char* rutaActual = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+		int bloqueAux = atoi(list_get(listaBloques,i));
+		char* rutaActual = obtener_ruta_bloque(bloqueAux);
 
 		if(!estaVacioConRuta(rutaActual)){
 			stringNuevaLista = agregarBloqueALista(nuevaListaBloques,atoi(list_get(listaBloques,i)));
 			list_add(nuevaListaBloques,list_get(listaBloques,i));
+		}
+		else{
+			bitarray_clean_bit(bitArray,bloqueAux);
 		}
 	}
 
@@ -1132,7 +1143,9 @@ int conectarse_con_broker(void){
 
 void serve_client(int* socket)
 {
+	sem_wait(&sem_mensaje);
 	int cod_op;
+
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
@@ -1225,6 +1238,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 	}
+	sem_post(&sem_mensaje);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size)
@@ -1297,6 +1311,7 @@ registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
 registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
 
 	registroConNombre* registroConNombre = malloc(sizeof(registroConNombre));
+	registroConNombre->registro = malloc(sizeof(registroDatos));
 
 	int tamanioNombre;
 
