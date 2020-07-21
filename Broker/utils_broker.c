@@ -719,7 +719,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,
 					datoAAgregar->base, datoAAgregar->tamanioMensaje,
 					datoAAgregar->timestamp);
 
-		producirUnMensaje(datoAAgregar->tipoMensaje);
+		//producirUnMensaje(datoAAgregar->tipoMensaje);
 		//para ver como esta la memoria (COMENTAR)
 /*
 		log_info(almacenadoMemoria,"la memoria quedo asi: ");
@@ -751,6 +751,7 @@ void agregarTablaParticionesYMemoria(particion *datoAAgregar,
 	//list_iterate(tablaDeParticiones, mostrarParticiones);
 }
 
+/*
 void producirUnMensaje(tipoDeCola tipo){
 	switch (tipo) {
 		case NEW_POKEMON:
@@ -772,7 +773,7 @@ void producirUnMensaje(tipoDeCola tipo){
 			//sem_post(&colaLocalized);
 			break;
 	}
-}
+}*/
 
 void algoritmoReemplazo(){
 

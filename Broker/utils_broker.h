@@ -157,7 +157,7 @@ void formarPosiciones(char* ,localized_pokemon* );
 void eliminarParticion(particion * part);
 void reservarMemoria(char** , size_t );
 char* mostrarPosiciones(localized_pokemon* );
-void producirUnMensaje(tipoDeCola tipo);
+//void producirUnMensaje(tipoDeCola tipo);
 void terminar_programa();
 broker_new_pokemon* leerdeMemoriaNEW(particion* part);
 broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part);
