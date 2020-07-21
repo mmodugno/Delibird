@@ -364,9 +364,9 @@ void iniciar_servidor_gameboy(){
 
     freeaddrinfo(servinfo);
 
-    while(flagTerminoSuscripcion == 0){
-    	esperar_cliente_gameboy(socket_servidor_gameboy);
-    }
+    //while(flagTerminoSuscripcion == 0){
+	esperar_cliente_gameboy(socket_servidor_gameboy);
+    //}
 
 }
 
@@ -375,17 +375,49 @@ void esperar_cliente_gameboy(int socket_servidor_gameboy) { //Se conecta el Brok
 
 	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
-	int socket_cliente = accept(socket_servidor_gameboy, (void*) &dir_cliente,&tam_direccion);
+	fd_set fds, fdsCopia;
+	int n;
+	int i;
+	struct timeval tv;
 
-	sem_post(&recibiConexion);
+	FD_ZERO(&fds);
+	FD_SET(socket_servidor_gameboy, &fds);
+
+	tv.tv_sec = segundosSuscripcion;
+	tv.tv_usec = 0;
+
+	while (flagTerminoSuscripcion == 0) {
+		fdsCopia = fds;
+		n = select(FD_SETSIZE, &fdsCopia, NULL, NULL, &tv);
+		if (n == 0) {
+			flagTerminoSuscripcion = 1;
+		} else {
+			for (i = 0; i < FD_SETSIZE; i++) {
+				if (FD_ISSET(i, &fdsCopia)) {
+					if (i == socket_servidor_gameboy) {
+						int socket_cliente = accept(socket_servidor_gameboy,(void*) &dir_cliente, &tam_direccion);
+						FD_SET(socket_cliente, &fds);
+					} else {
+						serve_client_gameboy(&i);
+						FD_CLR(i, &fds);
+
+					}
+				}
+			}
+		}
+
+	}
+
+	//sem_post(&recibiConexion);
 
 	// EL hilo q procesa los mensajes
-	pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente); // EL hilo q procesa los mensajes
-	pthread_detach(hiloConexion);
+	/*
+	 pthread_create(&hiloConexion,NULL,(void*)serve_client_gameboy,&socket_cliente); // EL hilo q procesa los mensajes
+	 pthread_detach(hiloConexion);*/
 
 }
 /*
-void timeOut(int timeOut){
+void timeOut(){
 
 	fd_set fds;
 	int n;
@@ -394,7 +426,7 @@ void timeOut(int timeOut){
 	FD_ZERO(&fds);
 	FD_SET(socket_servidor_gameboy, &fds);
 
-	tv.tv_sec = timeOut;
+	tv.tv_sec = segundosSuscripcion;
 	tv.tv_usec = 0;
 
 	n = select(socket_servidor_gameboy+1, &fds, NULL, NULL, &tv);
@@ -402,7 +434,7 @@ void timeOut(int timeOut){
 		flagTerminoSuscripcion = 1;
 
 
-		pthread_cancel(hiloReciboMensajes);
+		//pthread_cancel(hiloReciboMensajes);
 		//pthread_kill(hiloReciboMensajes,0);
 
 	}
