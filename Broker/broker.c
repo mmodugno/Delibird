@@ -58,11 +58,7 @@ int main() {
 	eliminacionMemoria = iniciar_logger("Eliminacion Pariticion Memoria",log_file); //debe indicar posicion de inicio
 	compactacionMemoria = iniciar_logger("compactacionMemoria", log_file);
 	logEnviarNuevo = iniciar_logger("Enviar Mensaje", log_file);
-
-	//TODO?
 	logConexion = iniciar_logger("Conexion", log_file); //ver bien donde va
-
-	//TODO
 	dumpCache = iniciar_logger("dumpCache", log_file);
 
 	iniciarMemoria();

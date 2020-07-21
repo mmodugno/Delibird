@@ -138,6 +138,8 @@ void esperar_cliente(int socket_servidor) {
 				if(i==socket_servidor){
 					int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 					FD_SET(socket_cliente,&socket_actual);
+
+					//log_info(logConexion,"recibi una nueva conexion");
 					/*
 					if(socket_cliente>max_cantidad_deSockets){
 						max_cantidad_deSockets = socket_cliente;
@@ -192,6 +194,8 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t posiciones;
 	char* posicionesString = string_new();
 	void *raiz;
+
+	log_info(logConexion,"recibi una nueva conexion de %s",username);
 
 	uint32_t ackRecibido;
 	particion* partEncontrada;
@@ -463,11 +467,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 			suscriptor = deserializar_suscripcion(cliente_fd);
 
-/*
+
 			log_info(logSuscipcion,
 					"recibi mensaje de desuscripcion de %s a la cola %s",
 					suscriptor->nombreDeSuscriptor,
-					colasDeEnum[(suscriptor->tipoDeCola) - 1]);*/
+					colasDeEnum[(suscriptor->tipoDeCola)]);
 
 
 			desuscribirACola(suscriptor);
