@@ -200,7 +200,3 @@ void suscribirnos_cola_get() {
 	free(meSuscriboGet);
 }
 
-void liberar_conexion(int socket_cliente)
-{
-	close(socket_cliente);
-}
