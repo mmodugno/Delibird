@@ -90,11 +90,13 @@ int main(int argc, char* argv[]){
 			}
 		}
 
-		iniciar_servidor();
-
 		suscribirnos_cola_catch();
 		suscribirnos_cola_new();
 		suscribirnos_cola_get();
+
+		iniciar_servidor();
+
+
 
 
 		printf(" \n Terminado  \n" );
@@ -156,8 +158,8 @@ void suscribirnos_cola_catch(){
 
 
 	if(suscripcionGet != -1){
-			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-			liberar_conexion(suscripcionGet);
+		enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+		liberar_conexion(suscripcionGet);
 		}
 			free(meSuscriboGet);
 }
@@ -176,8 +178,8 @@ void suscribirnos_cola_new(){
 
 
 	if(suscripcionNew != -1){
-			enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
-			liberar_conexion(suscripcionNew);
+		enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
+		liberar_conexion(suscripcionNew);
 		}
 			free(meSuscriboNew);
 }
@@ -196,8 +198,8 @@ void suscribirnos_cola_get(){
 
 
 	if(suscripcionGet != -1){
-			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-			liberar_conexion(suscripcionGet);
+	enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+	liberar_conexion(suscripcionGet);
 		}
 			free(meSuscriboGet);
 }

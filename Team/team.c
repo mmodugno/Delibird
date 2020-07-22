@@ -52,26 +52,27 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
+	conexion_broker();
+
+		if(conexionBroker){
+
+		suscribirnos_cola_caught();
+		suscribirnos_cola_localized();
+
+		int j;
+
+		//Mando un get por cada uno de mis objetivos globales.
+		dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
+
+	}
+
+
+
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
 	//SUSCRIPCION A COLAS SI NOS CONECTAMOS AL BROKER
 	//Intentar conectarse al broker TODO
 
-
-	if(conexionBroker){
-
-
-suscribirnos_cola_caught();
-suscribirnos_cola_localized();
-
-int j;
-		//Mando un get por cada uno de mis objetivos globales.
-	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
-
-
-//enviar_get()
-
-}
 
  //PRUEBAS DE TP:
 
@@ -128,7 +129,6 @@ void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
 	//todo ver con chicos
 	broker_get_pokemon* getAEnviar;
 	enviar_get(nombrePoke,getAEnviar);
-
 
 }
 
