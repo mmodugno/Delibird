@@ -397,9 +397,10 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 
-		int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+		//int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-		enviar_appeared(conexionBroker,nombrePoke,registro->posX,registro->posY,id);
+		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
+		liberar_conexion(conexion);
 	}
 
 	calcularTamanioMetadata(nombrePoke);
@@ -468,6 +469,7 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY, int id)
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 		enviar_caught(conexion,resultado,id);
+		liberar_conexion(conexion);
 	}
 
 	config_destroy(configPath);
@@ -476,9 +478,9 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY, int id)
 
 }
 
-void procesarGetPokemon(char* nombrePoke,int id){
+void procesarGetPokemon(char* nombrePoke, int id) {
 
-	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+	char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	verificarAperturaArchivo(path);
 
@@ -496,38 +498,37 @@ void procesarGetPokemon(char* nombrePoke,int id){
 
 	int conexion = conectarse_con_broker();
 
-	if(conexion < 0){
-			log_info(logFalloConexion,"Fallo conexion con Broker");
+	if (conexion < 0) {
+		log_info(logFalloConexion, "Fallo conexion con Broker");
+	} else {
+
+		if (list_is_empty(listaRegistros)) {
+			uint32_t* posicionesX;
+			uint32_t* posicionesY;
+
+			enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY,id);
 		} else {
 
-			if(list_is_empty(listaRegistros)) {
-				uint32_t* posicionesX;
-				uint32_t* posicionesY;
+			uint32_t paresDePosiciones = list_size(listaRegistros);
 
-				enviar_localized(conexion,nombrePoke,0,posicionesX,posicionesY,id);
-				} else {
+			int i = 0;
 
-					uint32_t paresDePosiciones = list_size(listaRegistros);
+			uint32_t posicionesX[paresDePosiciones];
+			uint32_t posicionesY[paresDePosiciones];
 
-					int i = 0;
+			for (i = 0; i < paresDePosiciones; i++) {
 
-					uint32_t posicionesX[paresDePosiciones];
-					uint32_t posicionesY[paresDePosiciones];
+				registroDatos* registro = list_get(listaRegistros, i);
 
-					for(i = 0; i < paresDePosiciones;i ++) {
+				posicionesX[i] = registro->posX;
+				posicionesY[i] = registro->posY;
 
-						registroDatos* registro = list_get(listaRegistros,i);
+			}
 
-						posicionesX[i] = registro->posX;
-						posicionesY[i] = registro->posY;
-
-					}
-
-					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id);
-				}
-
+			enviar_localized(conexion, nombrePoke, paresDePosiciones,posicionesX, posicionesY, id);
 		}
-
+		liberar_conexion(conexion);
+	}
 }
 
 int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){
@@ -1173,10 +1174,12 @@ void iniciar_servidor(void)
 
     freeaddrinfo(servinfo);
 
-    while(1){
+    esperar_cliente(socket_servidor);
+
+    /*while(1){
     	esperar_cliente(socket_servidor);
 
-    }
+    }*/
 
 }
 
@@ -1209,18 +1212,55 @@ void esperar_cliente(int socket_servidor)
 {
 	struct sockaddr_in dir_cliente;
 	//poner en globales si es necesario
-
-	pthread_t thread;
-
-
 	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
+
+	int i;
+	fd_set socket_actual,socket_listo;
+
+	//pthread_t thread;
+
+	FD_ZERO(&socket_actual);
+	FD_SET(socket_servidor,&socket_actual);
+
+	//max_cantidad_deSockets = socket_servidor;
+
+	while(1){
+		socket_listo = socket_actual;
+
+		if(select(FD_SETSIZE,&socket_listo,NULL,NULL,NULL)<0){
+			perror("select error");
+			exit(EXIT_FAILURE);
+		}
+
+		for(i=0;i<FD_SETSIZE;i++){
+			if(FD_ISSET(i,&socket_listo)){
+				if(i==socket_servidor){
+					int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
+					FD_SET(socket_cliente,&socket_actual);
+
+					//log_info(logConexion,"recibi una nueva conexion");
+					/*
+					if(socket_cliente>max_cantidad_deSockets){
+						max_cantidad_deSockets = socket_cliente;
+					}*/
+				}
+				else{
+					serve_client(&i);
+					FD_CLR(i,&socket_actual);
+				}
+			}
+		}
+	}
+
+
+	/*
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
 	//log_info(logConexion," se conectaron a broker");
 
 	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
-	pthread_detach(thread);
+	pthread_detach(thread);*/
 
 }
 
@@ -1304,21 +1344,22 @@ void process_request(int cod_op, int cliente_fd) {
 
 		recv(cliente_fd,&id,sizeof(uint32_t),0);
 
-				registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
+		registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
 
-				envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+		envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-				if(envio_de_ack != -1){
+		if(envio_de_ack != -1){
 
-				enviarACK(id,envio_de_ack,"GAMECARD");
-				liberar_conexion(envio_de_ack);
-				}
-
-
-				procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro,id);
+		enviarACK(id,envio_de_ack,"GAMECARD");
+		liberar_conexion(envio_de_ack);
+		}
 
 
-				free(registroConNombre);
+
+		procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro,id);
+
+
+		free(registroConNombre);
 
 		break;
 
@@ -1415,7 +1456,7 @@ int crear_conexion(char *ip, char* puerto)
 	return socket_cliente;
 }
 
-
+/*
 void conectarse_con_broker(void){
 
 	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
@@ -1429,7 +1470,7 @@ void conectarse_con_broker(void){
 
 
 
-}
+}*/
 
 
 //////////////////////////////////////SERIALIZACIONES Y DESERIALIZACIONES///////////////
@@ -1581,8 +1622,11 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 	brokerLocalizedPokemon->datos->tamanioNombre = strlen(nombre)+1;
 	brokerLocalizedPokemon->datos->nombrePokemon = nombre;
 	brokerLocalizedPokemon->datos->cantidadPosiciones = paresDePosiciones;
-	brokerLocalizedPokemon->datos->posX = posicionesX;
-	brokerLocalizedPokemon->datos->posY = posicionesY;
+	if(paresDePosiciones!=0){
+		brokerLocalizedPokemon->datos->posX = posicionesX;
+		brokerLocalizedPokemon->datos->posY = posicionesY;
+	}
+
 
 	serializar_broker_localized_pokemon(brokerLocalizedPokemon,buffer);
 
