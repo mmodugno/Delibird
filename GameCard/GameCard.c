@@ -53,6 +53,10 @@ int main(int argc, char* argv[]){
 		inicializar_bitarray();
 
 
+		pthread_t hilo_de_conexion_con_broker;
+		pthread_create(&hilo_de_conexion_con_broker,NULL,(void *) conectarse_con_broker,NULL);
+
+
 		//t_list* listaAux = list_create();
 
 		//list_add(listaAux,"1");

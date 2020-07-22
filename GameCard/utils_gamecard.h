@@ -66,6 +66,8 @@ sem_t mutex_bit_array;
 FILE* metadata;
 FILE* metadataFiles;
 
+int conexionBroker;
+
 t_bitarray* bitArray;
 
 t_config* config;

@@ -397,7 +397,9 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 
-		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
+		int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+		enviar_appeared(conexionBroker,nombrePoke,registro->posX,registro->posY,id);
 	}
 
 	calcularTamanioMetadata(nombrePoke);
@@ -1412,6 +1414,23 @@ int crear_conexion(char *ip, char* puerto)
 
 	return socket_cliente;
 }
+
+
+void conectarse_con_broker(void){
+
+	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+	if(conexionBroker <= 0){
+
+		sleep(leer_tiempo_de_reconexion());
+
+		conexion_broker();
+	}
+
+
+
+}
+
 
 //////////////////////////////////////SERIALIZACIONES Y DESERIALIZACIONES///////////////
 
