@@ -203,13 +203,13 @@ void terminar_programa(void){
 		liberar_conexion(conexion);
 	}
 
-	int conexion = conectarse_con_broker();
+	conexion = conectarse_con_broker();
 	if(conexion > 0){
 		enviar_pedido_desuscripcion( meSuscriboLocalized,conexion);
 		liberar_conexion(conexion);
 	}
 
-	int conexion = conectarse_con_broker();
+	conexion = conectarse_con_broker();
 	if(conexion > 0){
 		enviar_pedido_desuscripcion( meSuscriboAppeared,conexion);
 		liberar_conexion(conexion);

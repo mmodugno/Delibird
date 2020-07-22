@@ -1696,7 +1696,7 @@ void liberar_conexion(int socket_cliente)
  t_log* iniciar_log(char* proceso){
 	t_config* config = leer_config();
 	char* archivo = config_get_string_value(config,"LOG_FILE");
-   	return log_create(archivo,proceso,0,LOG_LEVEL_INFO);
+   	return log_create(archivo,proceso,1,LOG_LEVEL_INFO);
  }
 
 

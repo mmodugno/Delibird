@@ -297,7 +297,7 @@ void serializar_broker_localized_pokemon(broker_localized_pokemon* brokerLocPoke
 	//3. uint32_t cantidadPosiciones;
 	//4. uint32_t* posX;
 	//5. uint32_t* posY;
-	//6. uint32_t idCorrelativo;
+	//6. uint32_t id_relativo;
 
 	uint32_t posiciones = 0 ;
 

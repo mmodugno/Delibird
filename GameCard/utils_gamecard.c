@@ -647,9 +647,71 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	//si la lista es vacia
 
 	if(list_is_empty(listaBloques)) {
+
 	return yaRegistrado;
 	}
 
+	if(list_size(listaBloques)==1){
+		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		int fd = open(primerFd,O_RDWR);
+
+		struct stat sb;
+		fstat(fd,&sb);
+
+		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+
+		char* conjuntoConKey = malloc(sb.st_size);
+
+		strcpy(conjuntoConKey,file_memory);
+
+		char* keyCompleta = string_new();
+
+		string_append(&keyCompleta,key);
+
+		if(string_contains(conjuntoConKey,keyCompleta)){
+
+		char** bloques;
+
+		char* nuevoConjunto = string_new();
+
+		bloques = string_split(conjuntoConKey,"\n");
+		int k;
+		int tamanio = tamanio_array(bloques);
+
+		for(k=0;k < tamanio;k++){
+
+			if(string_contains(bloques[k],key)){
+
+					int valor = (registro->cantidad);
+
+					registroDatos* reg = string_a_registro(bloques[k]);
+					reg->cantidad = reg->cantidad + valor;
+
+					bloques[k] = registro_a_string(reg);
+
+					string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
+
+					yaRegistrado = 1;
+
+				} else {
+
+					string_append(&nuevoConjunto,bloques[k]);
+
+					if(k != tamanio-1){
+						string_append(&nuevoConjunto,"\n");
+
+					}
+
+				}
+			}
+
+			write(fd,nuevoConjunto,sb.st_size);
+		}
+
+	close(fd);
+
+	}
 	//si no esta cortado
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
@@ -1383,17 +1445,18 @@ void process_request(int cod_op, int cliente_fd) {
 	case BROKER__CATCH_POKEMON:
 
 		recv(cliente_fd,&id,sizeof(uint32_t),0);
+		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
 
-			envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+		envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-			if(envio_de_ack != -1){
+		if(envio_de_ack != -1){
 
-			enviarACK(id,envio_de_ack,"GAMECARD");
-			liberar_conexion(envio_de_ack);
-			}
+		enviarACK(id,envio_de_ack,"GAMECARD");
+		liberar_conexion(envio_de_ack);
+		}
 
-			registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
+
 
 
 			procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY,id);
@@ -1574,7 +1637,7 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 	brokerAppearedPokemon->datos->nombrePokemon = nombrePokemon;
 	brokerAppearedPokemon->datos->posX = posX;
 	brokerAppearedPokemon->datos->posY = posY;
-	brokerAppearedPokemon->id = id;
+	brokerAppearedPokemon->id_relativo = id;
 
 	serializar_broker_appeared_pokemon(brokerAppearedPokemon,buffer);
 
@@ -1605,7 +1668,7 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id){
 
 	brokerCaughtPokemon->datos->puedoAtraparlo = resultado;
 
-	brokerCaughtPokemon->id = id;
+	brokerCaughtPokemon->id_relativo = id;
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	serializar_broker_caught_pokemon(brokerCaughtPokemon,buffer);
@@ -1635,7 +1698,7 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 
 	broker_localized_pokemon* brokerLocalizedPokemon = malloc(sizeof(broker_appeared_pokemon));
 	brokerLocalizedPokemon->datos = malloc(sizeof(localized_pokemon));
-	brokerLocalizedPokemon->id = id;
+	brokerLocalizedPokemon->id_relativo = id;
 	brokerLocalizedPokemon->datos->tamanioNombre = strlen(nombre)+1;
 	brokerLocalizedPokemon->datos->nombrePokemon = nombre;
 	brokerLocalizedPokemon->datos->cantidadPosiciones = paresDePosiciones;
