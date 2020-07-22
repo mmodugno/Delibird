@@ -59,6 +59,7 @@ int main(int argc, char* argv[]){
 
 		suscribirnos_cola_caught();
 		suscribirnos_cola_localized();
+		suscribirnos_cola_appeared();
 
 		//int j;
 
@@ -136,7 +137,7 @@ void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
 
 void suscribirnos_cola_caught() {
 	int suscripcionCaught;
-	suscriptor* meSuscriboCaught = malloc(sizeof(suscriptor));
+	meSuscriboCaught = malloc(sizeof(suscriptor));
 
 	meSuscriboCaught->nombreDeSuscriptor = "TEAM";
 	meSuscriboCaught->tamanioNombreSucriptor = strlen(meSuscriboCaught->nombreDeSuscriptor) + 1;
@@ -154,7 +155,7 @@ void suscribirnos_cola_caught() {
 }
 
 void suscribirnos_cola_localized(){
-	suscriptor* meSuscriboLocalized = malloc(sizeof(suscriptor));
+	 meSuscriboLocalized = malloc(sizeof(suscriptor));
 
 	int suscripcionLocalized;
 
@@ -172,8 +173,48 @@ void suscribirnos_cola_localized(){
 	free(meSuscriboLocalized);
 }
 
+void suscribirnos_cola_appeared() {
+
+	int suscripcionAppeared;
+
+	meSuscriboAppeared = malloc(sizeof(suscriptor));
+
+	meSuscriboAppeared->nombreDeSuscriptor = "TEAM";
+	meSuscriboAppeared->tamanioNombreSucriptor = strlen(meSuscriboAppeared->nombreDeSuscriptor) + 1;
+
+	meSuscriboAppeared->tipoDeCola = APPEARED_POKEMON;
+
+	suscripcionAppeared = crear_conexion(IP_BROKER, PUERTO_BROKER);
+
+	if (suscripcionAppeared != -1) {
+		enviar_pedido_suscripcion(meSuscriboAppeared, suscripcionAppeared);
+		liberar_conexion(suscripcionAppeared);
+	}
+	free(meSuscriboAppeared);
+}
+
 
 void terminar_programa(void){
+
+	int conexion = conectarse_con_broker();
+
+	if(conexion > 0){
+		enviar_pedido_desuscripcion( meSuscriboCaught,conexion);
+		liberar_conexion(conexion);
+	}
+
+	int conexion = conectarse_con_broker();
+	if(conexion > 0){
+		enviar_pedido_desuscripcion( meSuscriboLocalized,conexion);
+		liberar_conexion(conexion);
+	}
+
+	int conexion = conectarse_con_broker();
+	if(conexion > 0){
+		enviar_pedido_desuscripcion( meSuscriboAppeared,conexion);
+		liberar_conexion(conexion);
+	}
+
 
 	destruir_logs();
 
@@ -196,6 +237,8 @@ void terminar_programa(void){
 	list_destroy(entrenadores_blocked);
 
 	config_destroy(config);
+
+
 
 }
 
