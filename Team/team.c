@@ -247,15 +247,15 @@ void imprimir_metricas(void){
 
 void loggear_metricas(void){
 
-
-	for(int i= 0; i < list_size(entrenadores); i++){
+int i;
+	for( i= 0; i < list_size(entrenadores); i++){
 			entrenador* entrenador = list_get(entrenadores, i);
 			log_info(resultado,"Ciclos de cpu entrenador %d: %d", entrenador->id, entrenador->ciclos_cpu);
 		}
-
+int j;
 	int cpu_totales = 0;
-		for(int i= 0; i < list_size(entrenadores); i++){
-		entrenador* entrenador = list_get(entrenadores, i);
+		for(j= 0; i < list_size(entrenadores); j++){
+		entrenador* entrenador = list_get(entrenadores, j);
 		cpu_totales += entrenador->ciclos_cpu;
 		}
 

@@ -94,8 +94,8 @@ void variables_globales(){
 void sacar_pokemones_repetidos(t_list* objetivos, t_list* pokemones){
 
 	t_list* pokemones_aux = pokemones;
-
-	for(int i = 0; i < list_size(pokemones_aux);i++){
+int i;
+	for(i = 0; i < list_size(pokemones_aux);i++){
 		nombre_pokemon = list_get(pokemones_aux,i);
 
 		if(list_any_satisfy(objetivos, (void*) pokemon_repetido)){
@@ -116,8 +116,8 @@ void hacer_entrenadores(void){
 	 t_list* pokemones = obtener_lista_pokemones();
 	 t_list* objetivos = obtener_lista_objetivos();
 
-
-	 for(int i=0 ; i< list_size(posiciones) ; i++){
+int i;
+	 for(i=0 ; i< list_size(posiciones) ; i++){
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i),i);
 		list_add(entrenadores,entrenador_listo);
 		list_add(entrenadores_new,entrenador_listo);
@@ -142,12 +142,13 @@ void calcular_objetivo_global(void){
 
 	objetivo_global = dictionary_create();
 	printf("Objetivo Global Inicial:  ");
-	for(int i = 0; i < list_size(entrenadores);i++){
+	int i,j;
+	for( i = 0; i < list_size(entrenadores);i++){
 		//agarro el primer entrenador:
 		entrenador* un_entrenador = list_get(entrenadores,i);
 
 
-		for(int j = 0; j< list_size(un_entrenador->objetivos);j++){
+		for(j = 0; j< list_size(un_entrenador->objetivos);j++){
 			//pongo sus objetivos en el dictionary:
 			char* pokemon_a_agregar = list_get(un_entrenador->objetivos,j);
 			agregar_un_objetivo(pokemon_a_agregar);
@@ -300,9 +301,9 @@ while(1){
 
 //CONDICION DE DEADLOCK, PARA TODOS LOS ALGORITMOS
 void manejar_deadlock(void){
-
-	for(int i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
-		for(int j = 1; j < (list_size(entrenadores_en_deadlock)); j++){
+int i,j;
+	for(i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
+		for(j = 1; j < (list_size(entrenadores_en_deadlock)); j++){
 			entrenador* entrenador0 = list_get(entrenadores_en_deadlock,i); // otro for para comparar con el resto
 			entrenador* entrenador1 = list_get(entrenadores_en_deadlock,j);
 
@@ -821,9 +822,9 @@ bool validacion_nuevo_pokemon(void){
 
 
 void manejar_deadlock_multiple(){
-
-	for(int i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
-			for(int j = 1; j < (list_size(entrenadores_en_deadlock)); j++){
+int i,j;
+	for(i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
+			for(j = 1; j < (list_size(entrenadores_en_deadlock)); j++){
 				entrenador* entrenador0 = list_get(entrenadores_en_deadlock,i); // otro for para comparar con el resto
 				entrenador* entrenador1 = list_get(entrenadores_en_deadlock,j);
 
@@ -1097,7 +1098,8 @@ while(1){
 /////////////////////////////////////////////////METRICAS
 
 void cpu_por_entrenador(void){
-	for(int i= 0; i < list_size(entrenadores); i++){
+	int i;
+	for (i= 0; i < list_size(entrenadores); i++){
 		entrenador* entrenador = list_get(entrenadores, i);
 		printf("Ciclos de cpu entrenador %d: %d \n", entrenador->id, entrenador->ciclos_cpu);
 	}
@@ -1105,7 +1107,8 @@ void cpu_por_entrenador(void){
 void cpu_team(void){
 
 	int cpu_totales = 0;
-	for(int i= 0; i < list_size(entrenadores); i++){
+	int i;
+	for(i= 0; i < list_size(entrenadores); i++){
 	entrenador* entrenador = list_get(entrenadores, i);
 	cpu_totales += entrenador->ciclos_cpu;
 	}
@@ -1563,8 +1566,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 			//Comparo entre los IDS de los entrenadores si existe el recibido
 			uint32_t id_recibido = caughtRecibido->id_relativo;
-
-			for(int i = 0; i < list_size(entrenadores);i++){
+			int i;
+			for(i = 0; i < list_size(entrenadores);i++){
 				entrenador* un_entrenador = list_get(entrenadores,i);
 				if(un_entrenador->id_catch == id_recibido){
 
