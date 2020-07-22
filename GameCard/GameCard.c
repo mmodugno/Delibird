@@ -154,7 +154,7 @@ void suscribirnos_cola_catch() {
 	meSuscriboGet->tamanioNombreSucriptor = strlen(
 			meSuscriboGet->nombreDeSuscriptor) + 1;
 
-	meSuscriboGet->tipoDeCola = CAUGHT_POKEMON;
+	meSuscriboGet->tipoDeCola = CATCH_POKEMON;
 
 	suscripcionGet = crear_conexion(IP_BROKER, PUERTO_BROKER);
 

@@ -1439,9 +1439,11 @@ void iniciar_servidor(void)
 
     freeaddrinfo(servinfo);
 
+    esperar_cliente(socket_servidor);
+/*
     while(1){
     		esperar_cliente(socket_servidor);
-    }
+    }*/
 
 }
 
@@ -1481,16 +1483,54 @@ void esperar_cliente(int socket_servidor)
 {
 	struct sockaddr_in dir_cliente;
 	//poner en globales si es necesario
-	pthread_t thread;
+	//pthread_t thread;
 
 
 	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
 
-	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
+	//int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
+	int i;
+		//int max_cantidad_deSockets = 0;
 
+	fd_set socket_actual,socket_listo;
+
+	FD_ZERO(&socket_actual);
+	FD_SET(socket_servidor,&socket_actual);
+
+	//max_cantidad_deSockets = socket_servidor;
+
+	while(1){
+		socket_listo = socket_actual;
+
+		if(select(FD_SETSIZE,&socket_listo,NULL,NULL,NULL)<0){
+			perror("select error");
+			exit(EXIT_FAILURE);
+		}
+
+		for(i=0;i<FD_SETSIZE;i++){
+			if(FD_ISSET(i,&socket_listo)){
+				if(i==socket_servidor){
+					int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
+					FD_SET(socket_cliente,&socket_actual);
+
+					//log_info(logConexion,"recibi una nueva conexion");
+					/*
+					if(socket_cliente>max_cantidad_deSockets){
+						max_cantidad_deSockets = socket_cliente;
+					}*/
+				}
+				else{
+					serve_client(&i);
+					FD_CLR(i,&socket_actual);
+				}
+			}
+		}
+	}
+
+/*
 	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
-	pthread_detach(thread);
+	pthread_detach(thread);*/
 
 }
 
@@ -1594,6 +1634,7 @@ void process_request(int cod_op, int cliente_fd) {
 			liberar_conexion(envio_de_ack);
 			}
 
+			id = localizedRecibido->id_relativo;
 
 			sem_wait(&mutex_lista);
 //TODO
