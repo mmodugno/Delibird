@@ -30,23 +30,6 @@
 
 #include"datos_team.h"
 
-//LOGS:
-
-t_log* cambioDeCola;
-t_log* movimiento_entrenador;
-t_log* llegadaDeMensaje;
-t_log* resultado;
-t_log* comunicacion_broker_error;
-t_log* operacion_de_atrapar;
-t_log* operacion_de_intercambio;
-t_log* inicio_deadlock;
-t_log* resultado_deadlock;
-t_log* comunicacion_broker_reintento;
-t_log* comunicacion_broker_resultado;
-
-char* username;
-
-t_config* config;
 
 #define IP_TEAM "127.0.0.2"
 #define PUERTO_TEAM "5002"
@@ -54,49 +37,7 @@ t_config* config;
 #define IP_BROKER "127.0.0.1"
 #define PUERTO_BROKER "5003"
 
-t_config* leer_config(void);
-t_list* entrenadores;
-t_dictionary* objetivo_global;
 
-t_queue* pokemones_en_el_mapa;
-t_list* pokemones_atrapados;
-t_list* lista_ids_get;
-
-t_list* entrenadores_new;
-t_list* entrenadores_finalizados;
-t_list* entrenadores_en_deadlock;
-t_list* lista_entrenadores_block_ready;
-t_list* lista_entrenadores_ready;
-
-t_queue* entrenadores_block_ready;
-t_list* entrenadores_blocked;
-t_queue* entrenadores_ready;
-
-pthread_t hilo_servidor;
-
-char* nombre_pokemon;
-char* archivo_config;
-sem_t en_ejecucion;
-sem_t hay_entrenador;
-sem_t nuevo_pokemon;
-sem_t semaforo_mensaje;
-sem_t mutex_lista;
-
-//Metricas
-int cant_deadlocks;
-int cant_deadlocks_resueltos;
-int cambio_contexto;
-
-int alpha;
-
-bool broker_conectado;
-
-int conexionBroker;
-int quantum;
-int entrenador_deadlock;
-int validar_deadlock;
-
-pthread_t hilo_deadlock;
 
 typedef struct{
     char* nombre;
@@ -141,7 +82,65 @@ typedef struct{
 	entrenador* segundo;
 }par_entrenadores;
 
+//LOGS:
+t_log* cambioDeCola;
+t_log* movimiento_entrenador;
+t_log* llegadaDeMensaje;
+t_log* resultado;
+t_log* comunicacion_broker_error;
+t_log* operacion_de_atrapar;
+t_log* operacion_de_intercambio;
+t_log* inicio_deadlock;
+t_log* resultado_deadlock;
+t_log* comunicacion_broker_reintento;
+t_log* comunicacion_broker_resultado;
 
+//CONFIG:
+
+t_config* config;
+char* archivo_config;
+int alpha;
+char* username;
+int quantum;
+
+//PLANIFICACION
+t_list* entrenadores;
+t_dictionary* objetivo_global;
+t_queue* pokemones_en_el_mapa;
+t_list* pokemones_atrapados;
+t_list* lista_ids_get;
+t_list* entrenadores_new;
+t_list* entrenadores_finalizados;
+t_list* entrenadores_en_deadlock;
+t_list* lista_entrenadores_block_ready;
+t_list* lista_entrenadores_ready;
+t_queue* entrenadores_block_ready;
+t_list* entrenadores_blocked;
+t_queue* entrenadores_ready;
+char* nombre_pokemon;
+int entrenador_deadlock;
+int validar_deadlock;
+
+
+pthread_t hilo_servidor;
+
+
+//SEMAFOROS
+sem_t en_ejecucion;
+sem_t hay_entrenador;
+sem_t nuevo_pokemon;
+sem_t semaforo_mensaje;
+sem_t mutex_lista;
+
+//METRICAS
+int cant_deadlocks;
+int cant_deadlocks_resueltos;
+int cambio_contexto;
+
+
+
+int conexionBroker;
+pthread_t hilo_deadlock;
 
 entrenador* entrenador_exec;
 pokemon* proximo_objetivo;

@@ -10,13 +10,13 @@
 
 
 
-//TODO arreglar segun algoritmo:
+
 void variables_globales(){
 
 	config = leer_config();
 
-	//broker_conectado = false;
 	hacer_entrenadores();
+
 	calcular_objetivo_global();
 
 	pokemones_en_el_mapa = queue_create();
@@ -128,7 +128,7 @@ int i;
  }
 
 
- pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio){
+pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio){
 	 pokemon* poke = malloc(sizeof(pokemon));
 	 poke->nombre = nombre;
 	 poke->posX = posX;
@@ -164,16 +164,13 @@ void calcular_objetivo_global(void){
 
 
 
-
-//La función que se pasa por paremtro recibe (char* key, void* value)
-
 void agregar_un_objetivo(char* pokemon_a_agregar){
 
 	if(dictionary_has_key(objetivo_global, pokemon_a_agregar)){ //si el pokemon ya estaba en el diccionario, le sumo 1 a su cantidad
 		dictionary_put(objetivo_global,pokemon_a_agregar, dictionary_get(objetivo_global,pokemon_a_agregar)+1);
 	}
 	else{
-		dictionary_put(objetivo_global, pokemon_a_agregar,(void*)1); // 1 o puntero??
+		dictionary_put(objetivo_global, pokemon_a_agregar,(void *)1);
 
 	}
 }
@@ -256,10 +253,6 @@ while(1){
 		un_entrenador->ciclos_cpu += 1;
 
 
-		//TODO
-		//recibimos el caught del catch ese, esperar hasta que se terminen de codear los mensajes de las colas
-		//la funcion para recibir el caught tiene que ver que sea el mismo id del catch que enviamos
-
 		//libero la conexion con el broker
 		close(conexionBroker);
 	}else{
@@ -317,7 +310,7 @@ int i,j;
 				nombre_pokemon = list_get(entrenador1->objetivos,0);
 
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
-						//TODO
+
 					if(leer_algoritmo_planificacion() == RR){
 						planificar_deadlock_RR(entrenador0,entrenador1);
 
@@ -338,7 +331,7 @@ int i,j;
 
 				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
-				espera_de_deadlock();//TODO
+				espera_de_deadlock();
 				break;
 			}
 	}
@@ -960,7 +953,7 @@ bool entrenador_con_menor_rafaga(entrenador* entrenador1, entrenador* entrenador
 
 	float rafaga1 = calcular_rafaga_siguiente(entrenador1,proximo_objetivo);
 	float rafaga2 = calcular_rafaga_siguiente(entrenador2,proximo_objetivo);
-	//bool resultado =  rafaga1 >= rafaga2 ; //TODO aca seria <=?
+	//bool resultado =  rafaga1 >= rafaga2 ;
 	//bool resultado =  rafaga1 <= rafaga2 ;
 	bool resultado =  rafaga1 < rafaga2 ;
 	return resultado;
@@ -1104,6 +1097,7 @@ void cpu_por_entrenador(void){
 		printf("Ciclos de cpu entrenador %d: %d \n", entrenador->id, entrenador->ciclos_cpu);
 	}
 }
+
 void cpu_team(void){
 
 	int cpu_totales = 0;
@@ -1142,6 +1136,7 @@ void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar)
 		send(socketAEnviar, bufferStream, tamanio_buffer, 0);
 		//llenamos el ID del catch que enviamos
 		recv(socketAEnviar, &(catchAEnviar->id), sizeof(uint32_t), 0);
+
 		//TODO
 		//aca hay que guardar el id que enviamos de catch, tambien hay que hacer un mutex
 
@@ -1160,11 +1155,10 @@ void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar)
 }
 
 
-
 void enviar_get(char* nombrePokemon, broker_get_pokemon *getAEnviar) {
-	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
-	//TODO REVISAR
+
+//TODO revisar bien el get y su rta del id.
 
 	int socketAEnviar = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
@@ -1194,23 +1188,20 @@ void enviar_get(char* nombrePokemon, broker_get_pokemon *getAEnviar) {
 				&tamanio_buffer);
 
 		send(socketAEnviar, bufferStream, tamanio_buffer, 0);
+
 		//llenamos el ID del catch que enviamos
 		recv(socketAEnviar, &(getAEnviar->id), sizeof(uint32_t), 0);
-		//TODO
+
 
 		sem_wait(&mutex_lista);
 
 		int id = getAEnviar->id;
-		list_add(lista_ids_get, id);
+		list_add(lista_ids_get, (void *)id);
 
 		sem_post(&mutex_lista);
 
 		free(bufferStream);
 
-		//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
-		//free(buffer->stream);
-		//free(buffer);
-		//free(paquete_a_enviar->buffer->stream);
 
 		free(paquete_a_enviar->buffer);
 		free(paquete_a_enviar);
@@ -1271,7 +1262,6 @@ void denegar_catch(entrenador* un_entrenador){
 
 
 
-
 /////////////////////////////////////////FUNCIONES AUX//////////////////////////////////////////////////////
 
 
@@ -1304,7 +1294,7 @@ bool pokemon_repetido(char* nombre){
 	return !strcmp(nombre,nombre_pokemon);
 }
 
-bool puede_cazar(entrenador* entrenador){        //Cambiar a cuando el entrenador termine su exc
+bool puede_cazar(entrenador* entrenador){
 	return entrenador->cuantos_puede_cazar > 0;
 }
 
@@ -1515,7 +1505,6 @@ void serve_client(int* socket)
 }
 
 
- //ACA RECIBIMOS EL PAQUETE DEPENDIENDO DEL COD DE OPERACION Y HACEMOS ALGUNA ACCION A PARTIR DEL TIPO DE COD DE OPERACION RECIBIDO
 
 void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_buffer;
@@ -1607,8 +1596,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			sem_wait(&mutex_lista);
-
-			if(list_any_satisfy(lista_ids_get,esIDRecibido)){
+//TODO
+			if(list_any_satisfy(lista_ids_get,(void*) esIDRecibido)){
 
 				int i;
 				//Hacemos un appeared por cada pokemon que nos mandan
@@ -1707,7 +1696,7 @@ void liberar_conexion(int socket_cliente)
  t_log* iniciar_log(char* proceso){
 	t_config* config = leer_config();
 	char* archivo = config_get_string_value(config,"LOG_FILE");
-   	return log_create(archivo,proceso,true,LOG_LEVEL_INFO);
+   	return log_create(archivo,proceso,0,LOG_LEVEL_INFO);
  }
 
 
@@ -1742,7 +1731,8 @@ void liberar_conexion(int socket_cliente)
  	int puerto_broker = config_get_int_value(config,"PUERTO_BROKER");
  	  return puerto_broker;
  }
- int leer_algoritmo_planificacion(void){
+
+int leer_algoritmo_planificacion(void){
  	 char* algoritmo_planificacion = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
 
  	 if(strcmp(algoritmo_planificacion,"FIFO") == 0) return FIFO;

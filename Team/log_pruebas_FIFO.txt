@@ -1,2 +1,0 @@
-[INFO] 00:49:25:823 ERROR EN COMUNICACION/(19482:19491): No se pudo conectar con Broker,se realizará la operación por default
-[INFO] 00:50:16:931 RESULTADO DE COMUNICACION/(19544:19552): Conectado con Broker
