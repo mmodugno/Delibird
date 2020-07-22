@@ -22,7 +22,16 @@ void loggear_metricas(void);
 void destruir_logs(void);
 void suscribirnos_cola_caught();
 void suscribirnos_cola_localized();
+void suscribirnos_cola_appeared();
 void iniciar_logs(void);
 void terminar_programa(void);
 void enviar_get_por_objetivo(char* ,void* );
+suscriptor* meSuscriboCaught;
+suscriptor* meSuscriboLocalized;
+suscriptor* meSuscriboAppeared;
+
+
+
+
+
 #endif /* TEAM_TEAMH */

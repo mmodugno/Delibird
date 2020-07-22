@@ -101,8 +101,6 @@ int main(int argc, char* argv[]){
 		iniciar_servidor();
 
 
-
-
 		printf(" \n Terminado  \n" );
 
 		terminar_programa();
@@ -203,4 +201,7 @@ void suscribirnos_cola_get() {
 	}
 	free(meSuscriboGet);
 }
+
+
+
 
