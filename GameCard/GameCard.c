@@ -130,7 +130,7 @@ void leer_config(void){
 t_log* iniciar_logger(char* tipoDeProceso){
 
 	//preguntar por el tipo de LOG_LEVEL
-	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
+	return log_create("gamecard.log",tipoDeProceso,0,LOG_LEVEL_INFO);
 }
 
 

@@ -148,6 +148,7 @@ entrenador* entrenador_a_eliminar;
 
 //globales
 void variables_globales();
+t_config* leer_config(void);
 
 //ENTRENADOR
 entrenador* configurar_entrenador(char* posicion,char* pokemonsconfig, char* objetivosconfig,int id);
