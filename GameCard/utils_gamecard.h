@@ -18,6 +18,7 @@ char* username;
 
 #include "utils_en_comun.h"
 #include "datos_broker.h"
+#include "datos_gamecard.h"
 
 #include <pthread.h>
 #include <sys/mman.h>

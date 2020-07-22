@@ -1549,9 +1549,9 @@ void process_request(int cod_op, int cliente_fd) {
 			break;
 
 		case BROKER__CAUGHT_POKEMON:
+			//recv(cliente_fd,&(id),sizeof(uint32_t),0);
 
 			caughtRecibido = deserializar_team_caught_pokemon(cliente_fd);
-
 
 			//Comparo entre los IDS de los entrenadores si existe el recibido
 			uint32_t id_recibido = caughtRecibido->id_relativo;
@@ -1576,6 +1576,7 @@ void process_request(int cod_op, int cliente_fd) {
 				}
 
 			}
+			free(caughtRecibido);
 
 			break;
 
@@ -1606,7 +1607,7 @@ void process_request(int cod_op, int cliente_fd) {
 				}
 
 			}
-
+			free(localizedRecibido);
 			sem_post(&mutex_lista);
 			//aca no se muy bien que comparación vamos a hacer
 			break;

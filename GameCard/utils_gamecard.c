@@ -1225,7 +1225,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
-
+	int envio_de_ack;
+	//uint32_t id;
+	gameCard_catch_pokemon* catchRecibido;
+	gameCard_get_pokemon* getRecibido;
+	gameCard_new_pokemon* newRecibido;
 
 	char* username;
 
@@ -1278,8 +1282,71 @@ void process_request(int cod_op, int cliente_fd) {
 
 	free(nombre);
 
+	break;
+
+
+	//MENSAJES DESDE EL BROKER
+	//TODO
+
+	case BROKER__NEW_POKEMON:
+
+				newRecibido = deserializar_new_pokemon_Gamecard(cliente_fd);
+
+				envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+				if(envio_de_ack != -1){
+
+				enviarACK(newRecibido->id_relativo,envio_de_ack,"GAMECARD");
+				liberar_conexion(envio_de_ack);
+				}
+
+				registroDatos* registro = hacerRegistro(newRecibido->datos->posX,newRecibido->datos->posY,newRecibido->datos->cantidadPokemon);
+
+				procesarNewPokemon(newRecibido->datos->nombrePokemon,registro);
+
+				free(newRecibido);
+				free(registro);
+
+		break;
+
+	case BROKER__CATCH_POKEMON:
+
+			catchRecibido = deserializar_catch_pokemon_Gamecard(cliente_fd);
+
+
+			envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+			if(envio_de_ack != -1){
+
+			enviarACK(catchRecibido->id_relativo,envio_de_ack,"GAMECARD");
+			liberar_conexion(envio_de_ack);
+			}
+
+			procesarCatchPokemon(catchRecibido->datos->nombrePokemon,catchRecibido->datos->posX,catchRecibido->datos->posY);
+
+
+			free(catchRecibido);
 
 	break;
+
+	case BROKER__GET_POKEMON:
+
+					getRecibido = deserializar_new_pokemon_Gamecard(cliente_fd);
+
+					envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+					if(envio_de_ack != -1){
+
+					//TODO que devolvemos como ack?
+					enviarACK(getRecibido,envio_de_ack,"GAMECARD");
+					liberar_conexion(envio_de_ack);
+					}
+
+					procesarGetPokemon(getRecibido->datos->nombrePokemon);
+
+					free(getRecibido);
+			break;
+
 
 	case 0:
 	pthread_exit(NULL);
