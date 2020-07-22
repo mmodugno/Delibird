@@ -230,7 +230,7 @@ int main(int argc, char* argv[]){
 				newPokemon->datos->posX = atoi(argv[4]);
 				newPokemon->datos->posY = atoi(argv[5]);
 				newPokemon->datos->cantidadPokemon = atoi(argv[6]);
-				newPokemon->id_relativo = atoi(argv[7]);
+				newPokemon->id = atoi(argv[7]);
 
 				enviar_GameCard_New_Pokemon(newPokemon,"GAMEBOY",conexionGamecard);
 
@@ -251,7 +251,7 @@ int main(int argc, char* argv[]){
 
 				catchPokemon->datos->posX = atoi(argv[4]);
 				catchPokemon->datos->posY = atoi(argv[5]);
-				catchPokemon->id_relativo = atoi(argv[6]);
+				catchPokemon->id = atoi(argv[6]);
 
 				enviar_GameCard_Catch_Pokemon(catchPokemon,"GAMEBOY",conexionGamecard);
 				//log_info(logEnviarNuevo,"Mensaje Catch Pokemon a GameCard");
@@ -271,6 +271,7 @@ int main(int argc, char* argv[]){
 
 				getPokemon->datos->nombrePokemon = argv[3];
 				getPokemon->datos->tamanioNombre = strlen(getPokemon->datos->nombrePokemon)+1;
+				getPokemon->id = atoi(argv[4]);
 
 				enviar_GameCard_Get_Pokemon(getPokemon,"GAMEBOY",conexionGamecard);
 

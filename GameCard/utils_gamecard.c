@@ -1225,6 +1225,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
+	int id;
 
 
 	char* username;
@@ -1246,7 +1247,10 @@ void process_request(int cod_op, int cliente_fd) {
 	case GAMECARD__NEW_POKEMON:
 
 
+
+	recv(cliente_fd,&id,sizeof(uint32_t),0);
 	registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
+	//TODO guardar este id para que el appeared de este mensaje tenga el id_relativo que id
 
 	procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro);
 
@@ -1259,8 +1263,10 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__CATCH_POKEMON:
 
+	recv(cliente_fd,&id,sizeof(uint32_t),0);
 	registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
+	//TODO guardar este id para que el CAUGHT de este mensaje tenga el id_relativo que id
 	procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY);
 
 	free(registroConNombre);
@@ -1272,8 +1278,10 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__GET_POKEMON:
 
+	recv(cliente_fd,&id,sizeof(uint32_t),0);
 	nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
 
+	//TODO guardar este id para que el Localized de este mensaje tenga el id_relativo que id
 	procesarGetPokemon(nombre);
 
 	free(nombre);
@@ -1333,6 +1341,7 @@ int crear_conexion(char *ip, char* puerto)
 
 registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
 
+
 	registroConNombre* registroConName = malloc(sizeof(registroConNombre));
 	registroConName->registro = malloc(sizeof(registroDatos));
 
@@ -1360,6 +1369,7 @@ registroConNombre* deserializar_new_pokemon_Gamecard(int socket_cliente){
 
 registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
 
+
 	registroConNombre* registroConNombre = malloc(sizeof(registroConNombre));
 	registroConNombre->registro = malloc(sizeof(registroDatos));
 
@@ -1381,7 +1391,8 @@ registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
 
 }
 
-char* deserializar_get_pokemon_Gamecard(int socket_cliente){
+char* deserializar_get_pokemon_Gamecard(int socket_cliente,int id){
+
 
 	int tamanioNombre;
 
