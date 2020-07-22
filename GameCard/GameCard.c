@@ -92,6 +92,11 @@ int main(int argc, char* argv[]){
 
 		iniciar_servidor();
 
+		suscribirnos_cola_catch();
+		suscribirnos_cola_new();
+		suscribirnos_cola_get();
+
+
 		printf(" \n Terminado  \n" );
 
 		terminar_programa();
@@ -133,4 +138,66 @@ void terminar_programa(void){
 
 	bitarray_destroy(bitArray);
 	//liberar_conexion(conexionBroker);
+}
+
+
+//  cola de mensajes NEW_POKEMON, CATCH_POKEMON  y GET_POKEMON.
+void suscribirnos_cola_catch(){
+	int suscripcionGet;
+	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
+
+
+	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
+	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
+
+	meSuscriboGet->tipoDeCola = CAUGHT_POKEMON;
+
+	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+
+	if(suscripcionGet != -1){
+			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+			liberar_conexion(suscripcionGet);
+		}
+			free(meSuscriboGet);
+}
+
+void suscribirnos_cola_new(){
+	int suscripcionNew;
+	suscriptor* meSuscriboNew = malloc(sizeof(suscriptor));
+
+
+	meSuscriboNew->nombreDeSuscriptor = "GAMECARD";
+	meSuscriboNew->tamanioNombreSucriptor = strlen(meSuscriboNew->nombreDeSuscriptor) + 1;
+
+	meSuscriboNew->tipoDeCola = NEW_POKEMON;
+
+	suscripcionNew = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+
+	if(suscripcionNew != -1){
+			enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
+			liberar_conexion(suscripcionNew);
+		}
+			free(meSuscriboNew);
+}
+
+void suscribirnos_cola_get(){
+	int suscripcionGet;
+	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
+
+
+	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
+	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
+
+	meSuscriboGet->tipoDeCola = GET_POKEMON;
+
+	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+
+	if(suscripcionGet != -1){
+			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+			liberar_conexion(suscripcionGet);
+		}
+			free(meSuscriboGet);
 }

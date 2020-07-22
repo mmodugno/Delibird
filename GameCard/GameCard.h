@@ -14,5 +14,8 @@
 
 void leer_config(void);
 void terminar_programa(void);
+void suscribirnos_cola_catch(void);
+void suscribirnos_cola_new(void);
+void suscribirnos_cola_get(void);
 
 #endif /* GAMECARD_H_ */
