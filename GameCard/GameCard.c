@@ -144,62 +144,63 @@ void terminar_programa(void){
 
 
 //  cola de mensajes NEW_POKEMON, CATCH_POKEMON  y GET_POKEMON.
-void suscribirnos_cola_catch(){
+void suscribirnos_cola_catch() {
 	int suscripcionGet;
 	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
 
-
 	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
-	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
+	meSuscriboGet->tamanioNombreSucriptor = strlen(
+			meSuscriboGet->nombreDeSuscriptor) + 1;
 
 	meSuscriboGet->tipoDeCola = CAUGHT_POKEMON;
 
-	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionGet = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
-
-	if(suscripcionGet != -1){
+	if (suscripcionGet != -1) {
 		enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
 		liberar_conexion(suscripcionGet);
-		}
-			free(meSuscriboGet);
+	}
+	free(meSuscriboGet);
 }
 
-void suscribirnos_cola_new(){
+void suscribirnos_cola_new() {
 	int suscripcionNew;
 	suscriptor* meSuscriboNew = malloc(sizeof(suscriptor));
-
 
 	meSuscriboNew->nombreDeSuscriptor = "GAMECARD";
 	meSuscriboNew->tamanioNombreSucriptor = strlen(meSuscriboNew->nombreDeSuscriptor) + 1;
 
 	meSuscriboNew->tipoDeCola = NEW_POKEMON;
 
-	suscripcionNew = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionNew = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
-
-	if(suscripcionNew != -1){
+	if (suscripcionNew != -1) {
 		enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
 		liberar_conexion(suscripcionNew);
-		}
-			free(meSuscriboNew);
+	}
+	free(meSuscriboNew);
 }
 
-void suscribirnos_cola_get(){
+void suscribirnos_cola_get() {
 	int suscripcionGet;
 	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
 
-
 	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
-	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
+	meSuscriboGet->tamanioNombreSucriptor = strlen(
+			meSuscriboGet->nombreDeSuscriptor) + 1;
 
 	meSuscriboGet->tipoDeCola = GET_POKEMON;
 
-	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionGet = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
+	if (suscripcionGet != -1) {
+		enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+		liberar_conexion(suscripcionGet);
+	}
+	free(meSuscriboGet);
+}
 
-	if(suscripcionGet != -1){
-	enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-	liberar_conexion(suscripcionGet);
-		}
-			free(meSuscriboGet);
+void liberar_conexion(int socket_cliente)
+{
+	close(socket_cliente);
 }

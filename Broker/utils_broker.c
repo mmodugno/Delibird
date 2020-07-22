@@ -345,8 +345,7 @@ void process_request(int cod_op, int cliente_fd) {
 				send(cliente_fd, &(catchRecibido->id), sizeof(uint32_t), 0);
 			}
 
-			raiz = transformarBrokerCatchPokemon(catchRecibido,
-					&tamanioAgregar);
+			raiz = transformarBrokerCatchPokemon(catchRecibido,&tamanioAgregar);
 			//log_info(logMensajeNuevo,"lo que vale este catch a agregar es %d",sizeof(raiz));
 			agregarAMemoria(raiz, catchRecibido->id, CATCH_POKEMON, 0,
 					tamanioAgregar);

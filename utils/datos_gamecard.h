@@ -11,16 +11,17 @@
 #include "utils_en_comun.h"
 
 typedef struct {
-	uint32_t id_relativo;
+	uint32_t id;
 	new_pokemon* datos;
 } gameCard_new_pokemon;
 
 typedef struct {
-	uint32_t id_relativo;
+	uint32_t id;
 	catch_pokemon* datos;
 } gameCard_catch_pokemon;
 
 typedef struct {
+	uint32_t id;
 	get_pokemon* datos;
 } gameCard_get_pokemon;
 
