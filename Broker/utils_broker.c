@@ -297,10 +297,6 @@ void process_request(int cod_op, int cliente_fd) {
 
 			getRecibido = deserializar_get_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,
-					"recibi mensaje de GET_POKEMON de %s\n con tamanio: %d \n nombre: %s ",
-					username, getRecibido->datos->tamanioNombre,
-					getRecibido->datos->nombrePokemon);
 
 			//mutex
 			sem_wait(&idsDeMensajes);
@@ -308,6 +304,10 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON(ID:%d) de %s\n con tamanio: %d \n nombre: %s ",
+								getRecibido->id,username, getRecibido->datos->tamanioNombre,
+								getRecibido->datos->nombrePokemon);
 
 			if (!strcmp(username, "TEAM")) {
 				//TODO ver conexiones con los otros sockets (si les tengo que mandar ID
@@ -331,11 +331,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 			catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,
-					"recibi mensaje de CATCH_POKEMON de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d ",
-					username, catchRecibido->datos->tamanioNombre,
-					catchRecibido->datos->nombrePokemon, catchRecibido->datos->posX,
-					catchRecibido->datos->posY);
+
 
 			//mutex
 			sem_wait(&idsDeMensajes);
@@ -343,6 +339,11 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			log_info(logMensajeNuevo, "recibi mensaje de CATCH_POKEMON(ID:%d) de %s\n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d ",
+								catchRecibido->id,username, catchRecibido->datos->tamanioNombre,
+								catchRecibido->datos->nombrePokemon, catchRecibido->datos->posX,
+								catchRecibido->datos->posY);
 
 			if (!strcmp(username, "TEAM")) {
 				//TODO ver conexiones con los otros sockets (si les tengo que mandar ID
@@ -366,16 +367,17 @@ void process_request(int cod_op, int cliente_fd) {
 
 			caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,
-					"recibi mensaje de CAUGHT_POKEMON de %s\n con ID_relativo: %d \n puedoAtraparlo: %d ",
-					username, caughtRecibido->id_relativo,
-					caughtRecibido->datos->puedoAtraparlo);
+
 			//mutex
 			sem_wait(&idsDeMensajes);
 			caughtRecibido->id = idGlobales;
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			log_info(logMensajeNuevo, "recibi mensaje de CAUGHT_POKEMON(ID:%d) de %s\n con ID_relativo: %d \n puedoAtraparlo: %d ",
+									caughtRecibido->id,username, caughtRecibido->id_relativo,
+									caughtRecibido->datos->puedoAtraparlo);
 
 			raiz = transformarBrokerCaughtPokemon(caughtRecibido,
 					&tamanioAgregar);
@@ -400,9 +402,7 @@ void process_request(int cod_op, int cliente_fd) {
 				 string_append(&posicionesString,posicion);
 			 }
 
-			 log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n "
-						 ,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,posicionesString,
-						 localizedRecibido->id_relativo);
+
 
 			 /*log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n con ID_relativo: %d \n "
 					 ,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,
@@ -414,6 +414,10 @@ void process_request(int cod_op, int cliente_fd) {
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			log_info(logMensajeNuevo,"recibi mensaje de LOCALIZED_POKEMON(ID:%d) de %s\n con tamanio: %d\n nombre: %s\n cantidadPosiciones: %d\n y Posiciones(x,y): %s\n con ID_relativo: %d \n ",
+									localizedRecibido->id,username,localizedRecibido->datos->tamanioNombre, localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->cantidadPosiciones,posicionesString,
+									localizedRecibido->id_relativo);
 
 			raiz = transformarBrokerLocalizedPokemon(localizedRecibido,
 					&tamanioAgregar);
