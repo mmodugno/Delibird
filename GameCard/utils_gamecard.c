@@ -1391,7 +1391,7 @@ registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
 
 }
 
-char* deserializar_get_pokemon_Gamecard(int socket_cliente,int id){
+char* deserializar_get_pokemon_Gamecard(int socket_cliente){
 
 
 	int tamanioNombre;

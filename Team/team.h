@@ -24,4 +24,5 @@ void suscribirnos_cola_caught();
 void suscribirnos_cola_localized();
 void iniciar_logs(void);
 void terminar_programa(void);
+void enviar_get_por_objetivo(char* ,void* );
 #endif /* TEAM_TEAMH */

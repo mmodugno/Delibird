@@ -54,12 +54,12 @@ int main(int argc, char* argv[]){
 
 	conexion_broker();
 
-		if(conexionBroker){
+	if(conexionBroker){
 
 		suscribirnos_cola_caught();
 		suscribirnos_cola_localized();
 
-		int j;
+		//int j;
 
 		//Mando un get por cada uno de mis objetivos globales.
 		dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
@@ -127,30 +127,29 @@ int main(int argc, char* argv[]){
 void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
 
 	//todo ver con chicos
-	broker_get_pokemon* getAEnviar;
+	broker_get_pokemon* getAEnviar= malloc(sizeof(broker_get_pokemon));
+	getAEnviar->datos = malloc(sizeof(get_pokemon));
 	enviar_get(nombrePoke,getAEnviar);
 
 }
 
-void suscribirnos_cola_caught(){
+void suscribirnos_cola_caught() {
 	int suscripcionCaught;
 	suscriptor* meSuscriboCaught = malloc(sizeof(suscriptor));
-
 
 	meSuscriboCaught->nombreDeSuscriptor = "TEAM";
 	meSuscriboCaught->tamanioNombreSucriptor = strlen(meSuscriboCaught->nombreDeSuscriptor) + 1;
 
 	meSuscriboCaught->tipoDeCola = CAUGHT_POKEMON;
 
-	suscripcionCaught = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionCaught = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
+	if (suscripcionCaught != -1) {
+		enviar_pedido_suscripcion(meSuscriboCaught, suscripcionCaught);
+		liberar_conexion(suscripcionCaught);
+	}
 
-	if(suscripcionCaught != -1){
-			enviar_pedido_suscripcion(meSuscriboCaught, suscripcionCaught);
-			liberar_conexion(suscripcionCaught);
-		}
-
-			free(meSuscriboCaught);
+	free(meSuscriboCaught);
 }
 
 void suscribirnos_cola_localized(){

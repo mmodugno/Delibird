@@ -1166,7 +1166,6 @@ void enviar_get(char* nombrePokemon,broker_get_pokemon *getAEnviar){
 	paquete_a_enviar->username = username;
 
 
-
 	getAEnviar->datos->tamanioNombre = strlen(nombrePokemon)+1;
 	getAEnviar->datos->nombrePokemon = malloc(getAEnviar->datos->tamanioNombre);
 	getAEnviar->datos->nombrePokemon = nombrePokemon;
@@ -1464,15 +1463,16 @@ void conexion_broker(void){
 
 	if(conexionBroker <= 0){
 		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
-		}
+		sleep(leer_tiempo_de_reconexion());
+
+		conexion_broker();
+	}
 
 	else{
 		log_info(comunicacion_broker_resultado,"Conectado con Broker");
 	}
 
-	sleep(leer_tiempo_de_reconexion());
 
-	conexion_broker();
 }
 
 
