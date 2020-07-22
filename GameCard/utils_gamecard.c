@@ -482,53 +482,70 @@ void procesarGetPokemon(char* nombrePoke, int id) {
 
 	char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	verificarAperturaArchivo(path);
+	int fd = open(path, O_RDWR);
+	if (fd < 0) {
 
-	t_list* listaRegistros = obtenerPosiciones(nombrePoke);
+		int conexion = conectarse_con_broker();
 
-	//sleep(tiempo_retardo_operacion);
-
-	t_config* configPath = config_create(path);
-
-	cerrarArchivoMetadataPoke(configPath);
-
-	config_destroy(configPath);
-
-	//int id = 3;
-
-	int conexion = conectarse_con_broker();
-
-	if (conexion < 0) {
-		log_info(logFalloConexion, "Fallo conexion con Broker");
-	} else {
-
-		if (list_is_empty(listaRegistros)) {
+		if (conexion < 0) {
+			log_info(logFalloConexion, "Fallo conexion con Broker");
+		} else {
 			uint32_t* posicionesX;
 			uint32_t* posicionesY;
 
-			enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY,id);
+			enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY, id);
+		}
+	} else {
+		verificarAperturaArchivo(path);
+
+		t_list* listaRegistros = obtenerPosiciones(nombrePoke);
+
+		//sleep(tiempo_retardo_operacion);
+
+		t_config* configPath = config_create(path);
+
+		cerrarArchivoMetadataPoke(configPath);
+
+		config_destroy(configPath);
+
+		//int id = 3;
+
+		int conexion = conectarse_con_broker();
+
+		if (conexion < 0) {
+			log_info(logFalloConexion, "Fallo conexion con Broker");
 		} else {
 
-			uint32_t paresDePosiciones = list_size(listaRegistros);
+			if (list_is_empty(listaRegistros)) {
+				uint32_t* posicionesX;
+				uint32_t* posicionesY;
 
-			int i = 0;
+				enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY, id);
+			} else {
 
-			uint32_t posicionesX[paresDePosiciones];
-			uint32_t posicionesY[paresDePosiciones];
+				uint32_t paresDePosiciones = list_size(listaRegistros);
 
-			for (i = 0; i < paresDePosiciones; i++) {
+				int i = 0;
 
-				registroDatos* registro = list_get(listaRegistros, i);
+				uint32_t posicionesX[paresDePosiciones];
+				uint32_t posicionesY[paresDePosiciones];
 
-				posicionesX[i] = registro->posX;
-				posicionesY[i] = registro->posY;
+				for (i = 0; i < paresDePosiciones; i++) {
 
+					registroDatos* registro = list_get(listaRegistros, i);
+
+					posicionesX[i] = registro->posX;
+					posicionesY[i] = registro->posY;
+
+				}
+
+				enviar_localized(conexion, nombrePoke, paresDePosiciones, posicionesX, posicionesY, id);
 			}
-
-			enviar_localized(conexion, nombrePoke, paresDePosiciones,posicionesX, posicionesY, id);
+			liberar_conexion(conexion);
 		}
-		liberar_conexion(conexion);
 	}
+	close(fd);
+
 }
 
 int estaPosicionEnArchivo(uint32_t posX,uint32_t posY,char* path){

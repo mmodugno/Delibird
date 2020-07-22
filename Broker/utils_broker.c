@@ -232,17 +232,19 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			newRecibido = deserializar_new_pokemon(cliente_fd);
-			log_info(logMensajeNuevo,
-					"recibi mensaje de NEW_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
-					username, newRecibido->datos->tamanioNombre,
-					newRecibido->datos->nombrePokemon, newRecibido->datos->posX,
-					newRecibido->datos->posY, newRecibido->datos->cantidadPokemon);
+
 			//mutex
 			sem_wait(&idsDeMensajes);
 			newRecibido->id = idGlobales;
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			log_info(logMensajeNuevo,
+								"recibi mensaje de NEW_POKEMON(ID:%d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n cantidad de pokemones: %d",
+								newRecibido->id,username, newRecibido->datos->tamanioNombre,
+								newRecibido->datos->nombrePokemon, newRecibido->datos->posX,
+								newRecibido->datos->posY, newRecibido->datos->cantidadPokemon);
 
 			raiz = transformarBrokerNewPokemon(newRecibido, &tamanioAgregar);
 
@@ -262,18 +264,20 @@ void process_request(int cod_op, int cliente_fd) {
 
 			appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
-			log_info(logMensajeNuevo,
-					"recibi mensaje de APPEARED_POKEMON de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d",
-					username, appearedRecibido->datos->tamanioNombre,
-					appearedRecibido->datos->nombrePokemon,
-					appearedRecibido->datos->posX, appearedRecibido->datos->posY,
-					appearedRecibido->id_relativo);
+
 			//mutex
 			sem_wait(&idsDeMensajes);
 			appearedRecibido->id = idGlobales;
 			idGlobales++;
 			sem_post(&idsDeMensajes);
 			//mutex
+
+			log_info(logMensajeNuevo,
+							"recibi mensaje de APPEARED_POKEMON(ID:%d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d",
+							appearedRecibido->id,username, appearedRecibido->datos->tamanioNombre,
+							appearedRecibido->datos->nombrePokemon,
+							appearedRecibido->datos->posX, appearedRecibido->datos->posY,
+							appearedRecibido->id_relativo);
 
 			raiz = transformarBrokerAppearedPokemon(appearedRecibido,
 					&tamanioAgregar);
