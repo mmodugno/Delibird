@@ -52,9 +52,10 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
-	conexion_broker();
+	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
 	if(conexionBroker){
+
 
 		suscribirnos_cola_caught();
 		suscribirnos_cola_localized();

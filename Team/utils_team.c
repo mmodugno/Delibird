@@ -15,7 +15,7 @@ void variables_globales(){
 
 	config = leer_config();
 
-	broker_conectado = false;
+	//broker_conectado = false;
 	hacer_entrenadores();
 	calcular_objetivo_global();
 
@@ -1114,97 +1114,105 @@ void cpu_team(void){
 
 ////////////////////////////////////RESPUESTAS DEL CAUGHT
 
-void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar){
+void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar) {
 	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
+	int socketAEnviar = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
-	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
-	paquete_a_enviar->codigo_operacion = BROKER__CATCH_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen(username)+1;
-	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
-	paquete_a_enviar->username = username;
+	if (socketAEnviar) {
 
-	//serializacion de brokerNewPokemon
-	t_buffer* buffer = malloc(sizeof(t_buffer));
-	serializar_broker_catch_pokemon(catchAEnviar,buffer);
+		t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+		paquete_a_enviar->codigo_operacion = BROKER__CATCH_POKEMON;
+		paquete_a_enviar->tamanio_username = strlen(username) + 1;
+		paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
+		paquete_a_enviar->username = username;
 
+		//serializacion de brokerNewPokemon
+		t_buffer* buffer = malloc(sizeof(t_buffer));
+		serializar_broker_catch_pokemon(catchAEnviar, buffer);
 
-	paquete_a_enviar->buffer= buffer;
+		paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+		int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(conexionBroker,bufferStream,tamanio_buffer,0);
-	//llenamos el ID del catch que enviamos
-	recv(conexionBroker,&(catchAEnviar->id),sizeof(uint32_t),0);
-	//TODO
-	//aca hay que guardar el id que enviamos de catch, tambien hay que hacer un mutex
+		void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+		send(socketAEnviar, bufferStream, tamanio_buffer, 0);
+		//llenamos el ID del catch que enviamos
+		recv(socketAEnviar, &(catchAEnviar->id), sizeof(uint32_t), 0);
+		//TODO
+		//aca hay que guardar el id que enviamos de catch, tambien hay que hacer un mutex
 
-	free(bufferStream);
+		free(bufferStream);
 
-	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
-	//free(buffer->stream);
-	//free(buffer);
-	//free(paquete_a_enviar->buffer->stream);
+		//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+		//free(buffer->stream);
+		//free(buffer);
+		//free(paquete_a_enviar->buffer->stream);
 
-	free(paquete_a_enviar->buffer);
-	free(paquete_a_enviar);
+		free(paquete_a_enviar->buffer);
+		free(paquete_a_enviar);
+		liberar_conexion(socketAEnviar);
+	}
 
 }
 
 
 
-void enviar_get(char* nombrePokemon,broker_get_pokemon *getAEnviar){
+void enviar_get(char* nombrePokemon, broker_get_pokemon *getAEnviar) {
 	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
-//TODO REVISAR
+	//TODO REVISAR
 
-	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
-	paquete_a_enviar->codigo_operacion = BROKER__GET_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen(username)+1;
-	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
-	paquete_a_enviar->username = username;
+	int socketAEnviar = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
+	if (socketAEnviar) {
 
-	getAEnviar->datos->tamanioNombre = strlen(nombrePokemon)+1;
-	getAEnviar->datos->nombrePokemon = malloc(getAEnviar->datos->tamanioNombre);
-	getAEnviar->datos->nombrePokemon = nombrePokemon;
+		t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
+		paquete_a_enviar->codigo_operacion = BROKER__GET_POKEMON;
+		paquete_a_enviar->tamanio_username = strlen(username) + 1;
+		paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
+		paquete_a_enviar->username = username;
 
+		getAEnviar->datos->tamanioNombre = strlen(nombrePokemon) + 1;
+		getAEnviar->datos->nombrePokemon = malloc(
+				getAEnviar->datos->tamanioNombre);
+		getAEnviar->datos->nombrePokemon = nombrePokemon;
 
+		//serializacion de brokerNewPokemon
+		t_buffer* buffer = malloc(sizeof(t_buffer));
 
-	//serializacion de brokerNewPokemon
-	t_buffer* buffer = malloc(sizeof(t_buffer));
+		serializar_broker_get_pokemon(getAEnviar, buffer);
 
-	serializar_broker_get_pokemon(getAEnviar,buffer);
+		paquete_a_enviar->buffer = buffer;
 
-	paquete_a_enviar->buffer= buffer;
+		int tamanio_buffer = 0;
 
-	int tamanio_buffer=0;
+		void* bufferStream = serializar_paquete(paquete_a_enviar,
+				&tamanio_buffer);
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+		send(socketAEnviar, bufferStream, tamanio_buffer, 0);
+		//llenamos el ID del catch que enviamos
+		recv(socketAEnviar, &(getAEnviar->id), sizeof(uint32_t), 0);
+		//TODO
 
-	send(conexionBroker,bufferStream,tamanio_buffer,0);
-	//llenamos el ID del catch que enviamos
-	recv(conexionBroker,&(getAEnviar->id),sizeof(uint32_t),0);
-	//TODO
+		sem_wait(&mutex_lista);
 
-	sem_wait(&mutex_lista);
+		int id = getAEnviar->id;
+		list_add(lista_ids_get, id);
 
-	int id = getAEnviar->id;
-	list_add(lista_ids_get,id);
+		sem_post(&mutex_lista);
 
-	sem_post(&mutex_lista);
+		free(bufferStream);
 
-	free(bufferStream);
+		//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
+		//free(buffer->stream);
+		//free(buffer);
+		//free(paquete_a_enviar->buffer->stream);
 
-	//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
-	//free(buffer->stream);
-	//free(buffer);
-	//free(paquete_a_enviar->buffer->stream);
-
-	free(paquete_a_enviar->buffer);
-	free(paquete_a_enviar);
-
+		free(paquete_a_enviar->buffer);
+		free(paquete_a_enviar);
+		liberar_conexion(socketAEnviar);
+	}
 
 }
 
