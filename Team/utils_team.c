@@ -348,6 +348,7 @@ void planificar_entrenador(void){
 	if(!list_is_empty(entrenadores_new)){
 	entrenador_exec = list_get(list_sorted(entrenadores_new,(void*) primer_entrenador_mas_cerca_de_pokemon) ,0);
 	list_remove_by_condition(entrenadores_new,(void*)entrenador_en_exec);
+
 	}
 	else{
 		entrenador_exec = queue_peek(entrenadores_block_ready);
@@ -1137,16 +1138,11 @@ void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar)
 		//llenamos el ID del catch que enviamos
 		recv(socketAEnviar, &(catchAEnviar->id), sizeof(uint32_t), 0);
 
-		//TODO
-		//aca hay que guardar el id que enviamos de catch, tambien hay que hacer un mutex
+
+		//nos guardamos el id en el entrenador
+
 
 		free(bufferStream);
-
-		//estos no hacen falta porque no pedimos memoria de stream, el buffer y paquete_a_enviar->buffer son lo mismo
-		//free(buffer->stream);
-		//free(buffer);
-		//free(paquete_a_enviar->buffer->stream);
-
 		free(paquete_a_enviar->buffer);
 		free(paquete_a_enviar);
 		liberar_conexion(socketAEnviar);
@@ -1156,9 +1152,6 @@ void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar)
 
 
 void enviar_get(char* nombrePokemon, broker_get_pokemon *getAEnviar) {
-
-
-//TODO revisar bien el get y su rta del id.
 
 	int socketAEnviar = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
@@ -1645,7 +1638,7 @@ void process_request(int cod_op, int cliente_fd) {
 			id = localizedRecibido->id_relativo;
 
 			sem_wait(&mutex_lista);
-//TODO
+
 			if(list_any_satisfy(lista_ids_get,(void*) esIDRecibido)){
 
 			log_info(llegadaDeMensaje,"recibi mensaje LOCALIZED de BROKER con id: %d, nombre: %s, y cantidad de posiciones %d:\n"

@@ -72,8 +72,7 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
-	//SUSCRIPCION A COLAS SI NOS CONECTAMOS AL BROKER
-	//Intentar conectarse al broker TODO
+
 
 
  //PRUEBAS DE TP:
@@ -128,7 +127,7 @@ int main(int argc, char* argv[]){
 
 void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
 
-	//todo ver con chicos
+
 	broker_get_pokemon* getAEnviar= malloc(sizeof(broker_get_pokemon));
 	getAEnviar->datos = malloc(sizeof(get_pokemon));
 	enviar_get(nombrePoke,getAEnviar);
