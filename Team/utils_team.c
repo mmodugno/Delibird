@@ -9,7 +9,7 @@
 #include"utils_en_comun.h"
 
 
-
+pthread_mutex_t llegadaMensajesTHREAD = PTHREAD_MUTEX_INITIALIZER;
 
 void variables_globales(){
 
@@ -1529,12 +1529,15 @@ void esperar_cliente(int socket_servidor)
 
 void serve_client(int* socket)
 {
-	sem_wait(&semaforo_mensaje);
+	//sem_wait(&semaforo_mensaje);
+	pthread_mutex_lock(&llegadaMensajesTHREAD);
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
 	process_request(cod_op, *socket);
+	pthread_mutex_unlock(&llegadaMensajesTHREAD);
+	//sem_post(&semaforo_mensaje);
 }
 
 
@@ -1687,7 +1690,7 @@ void process_request(int cod_op, int cliente_fd) {
 		case -1:
 			pthread_exit(NULL);
 		}
-	sem_post(&semaforo_mensaje);
+
 
 }
 
