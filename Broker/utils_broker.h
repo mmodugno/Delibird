@@ -81,7 +81,7 @@ t_config* config;
 void *memoria;
 
 //hilos para Recibir Mensajes
-pthread_t thread;
+//pthread_t thread;
 pthread_t hiloReciboMensajes;
 
 //hilos para Enviar Mensajes
@@ -116,7 +116,7 @@ sem_t idsDeMensajes;
 sem_t usoMemoria;
 sem_t terminoPrograma;
 
-sem_t llegadaMensajes;
+//sem_t llegadaMensajes;
 
 sem_t suscripcionAColaNEW;
 sem_t suscripcionAColaGET;
