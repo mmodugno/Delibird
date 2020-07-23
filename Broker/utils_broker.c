@@ -139,7 +139,7 @@ void serve_client(int* socket)
 		cod_op = -1;
 	process_request(cod_op, *socket);
 
-	liberar_conexion(*socket);
+	//liberar_conexion(*socket);
 	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	//sem_post(&llegadaMensajes);
 }
@@ -471,6 +471,7 @@ void process_request(int cod_op, int cliente_fd) {
 			free(suscriptor);
 			pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
+
 			break;
 
 		case 0:
@@ -486,7 +487,9 @@ void process_request(int cod_op, int cliente_fd) {
 		//free(posYString);
 		//free(posicionesString);
 
+
 	}
+	//pthread_exit(EXIT_SUCCESS);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size) {

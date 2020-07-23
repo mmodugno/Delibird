@@ -75,23 +75,23 @@ int main() {
 	suscriptoresNewPokemon = list_create();
 
 	pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor, NULL);
-
+/*
 	pthread_create(&hiloNew_Envio, NULL, (void*) envioColaNewPokemon, NULL);
 	pthread_create(&hiloAppeared_Envio, NULL, (void*) envioColaAppearedPokemon, NULL);
 	pthread_create(&hiloCatch_Envio, NULL, (void*) envioColaCatchPokemon, NULL);
 	pthread_create(&hiloCaught_Envio, NULL, (void*) envioColaCaughtPokemon, NULL);
 	pthread_create(&hiloGet_Envio, NULL, (void*) envioColaGetPokemon, NULL);
-	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);
+	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);*/
 
 	pthread_detach(hiloReciboMensajes);
-
+/*
 	pthread_detach(hiloNew_Envio);
 	pthread_detach(hiloAppeared_Envio);
 	pthread_detach(hiloCatch_Envio);
 	pthread_detach(hiloCaught_Envio);
 	pthread_detach(hiloGet_Envio);
 	pthread_detach(hiloLocalized_Envio);
-
+*/
 	//iniciar_servidor();
 
 
