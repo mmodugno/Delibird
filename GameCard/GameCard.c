@@ -53,10 +53,6 @@ int main(int argc, char* argv[]){
 		inicializar_bitarray();
 
 
-		pthread_t hilo_de_conexion_con_broker;
-		pthread_create(&hilo_de_conexion_con_broker,NULL,(void *) conectarse_con_broker,NULL);
-
-
 		//t_list* listaAux = list_create();
 
 		//list_add(listaAux,"1");
@@ -78,39 +74,27 @@ int main(int argc, char* argv[]){
 
 		//procesarCatchPokemon("Charmander",413,17);
 
-		//uint32_t id_relativo = 42;
-		//procesarNewPokemon("Messi",registro1,id_relativo);
 
-		/*int nuevoenvio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-		if(nuevoenvio_de_ack != -1){
-
-			enviarACK(id_relativo,nuevoenvio_de_ack,username);
-			//procesarCatchPokemon("Messi",4,1,id_relativo);
-
-		}
-		liberar_conexion(nuevoenvio_de_ack);*/
+		//procesarNewPokemon("Messi",registro1);
 		//procesarGetPokemon("Charmander");3
 
-		/*
-		pthread_t hilo_servidor;
+		/*pthread_t hilo_servidor;
 
 		pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);*/
 
-/*
 		int i;
 
 		for(i = 0; i < bitarray_get_max_bit(bitArray);i++){
 			if(bitarray_test_bit(bitArray,i) == 0){
 				printf("Libre en: %d \n",i);
 			}
-		}*/
-
-		suscribirnos_cola_catch();
-		suscribirnos_cola_new();
-		suscribirnos_cola_get();
+		}
 
 		iniciar_servidor();
+
+		//suscribirnos_cola_catch();
+		//suscribirnos_cola_new();
+		//suscribirnos_cola_get();
 
 
 		printf(" \n Terminado  \n" );
@@ -140,7 +124,7 @@ void leer_config(void){
 t_log* iniciar_logger(char* tipoDeProceso){
 
 	//preguntar por el tipo de LOG_LEVEL
-	return log_create("gamecard.log",tipoDeProceso,0,LOG_LEVEL_INFO);
+	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
 }
 
 
@@ -158,61 +142,62 @@ void terminar_programa(void){
 
 
 //  cola de mensajes NEW_POKEMON, CATCH_POKEMON  y GET_POKEMON.
-void suscribirnos_cola_catch() {
+void suscribirnos_cola_catch(){
 	int suscripcionGet;
 	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
+
 
 	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
 	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
 
-	meSuscriboGet->tipoDeCola = CATCH_POKEMON;
+	meSuscriboGet->tipoDeCola = CAUGHT_POKEMON;
 
-	suscripcionGet = crear_conexion(IP_BROKER, PUERTO_BROKER);
+	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-	if (suscripcionGet != -1) {
-		enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-		liberar_conexion(suscripcionGet);
-	}
-	free(meSuscriboGet);
+
+	if(suscripcionGet != -1){
+			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+			close(suscripcionGet);
+		}
+			free(meSuscriboGet);
 }
 
-void suscribirnos_cola_new() {
+void suscribirnos_cola_new(){
 	int suscripcionNew;
 	suscriptor* meSuscriboNew = malloc(sizeof(suscriptor));
+
 
 	meSuscriboNew->nombreDeSuscriptor = "GAMECARD";
 	meSuscriboNew->tamanioNombreSucriptor = strlen(meSuscriboNew->nombreDeSuscriptor) + 1;
 
 	meSuscriboNew->tipoDeCola = NEW_POKEMON;
 
-	suscripcionNew = crear_conexion(IP_BROKER, PUERTO_BROKER);
+	suscripcionNew = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-	if (suscripcionNew != -1) {
-		enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
-		liberar_conexion(suscripcionNew);
-	}
-	free(meSuscriboNew);
+
+	if(suscripcionNew != -1){
+			enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
+			close(suscripcionNew);
+		}
+			free(meSuscriboNew);
 }
 
-void suscribirnos_cola_get() {
+void suscribirnos_cola_get(){
 	int suscripcionGet;
 	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
 
+
 	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
-	meSuscriboGet->tamanioNombreSucriptor = strlen(
-			meSuscriboGet->nombreDeSuscriptor) + 1;
+	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
 
 	meSuscriboGet->tipoDeCola = GET_POKEMON;
 
-	suscripcionGet = crear_conexion(IP_BROKER, PUERTO_BROKER);
+	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-	if (suscripcionGet != -1) {
-		enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-		liberar_conexion(suscripcionGet);
-	}
-	free(meSuscriboGet);
+
+	if(suscripcionGet != -1){
+			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
+			close(suscripcionGet);
+		}
+			free(meSuscriboGet);
 }
-
-
-
-

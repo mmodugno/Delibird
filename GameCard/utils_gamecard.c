@@ -7,8 +7,6 @@
 
 #include"utils_gamecard.h"
 
-pthread_mutex_t llegadaMensajesTHREAD = PTHREAD_MUTEX_INITIALIZER;
-
 
 int verificarExistenciaPokemon(char* nombrePoke) {
 
@@ -351,7 +349,7 @@ void actualizar_bitmap() {
 	fclose(bitmap);
 }
 
-void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
+void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -373,7 +371,6 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 	}
 
 
-
 	sem_wait(&sem_escritura);
 
 	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,registro);
@@ -393,19 +390,15 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 	int conexion = conectarse_con_broker();
 
 	//TODO revisar
-	//uint32_t id = 1;
+	uint32_t id_rel = 1; //para que no me tire error nomas
 
 	if(conexion < 0){
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 
-		//int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
-
+		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id_rel);
 	}
 
-	liberar_conexion(conexion);
 	calcularTamanioMetadata(nombrePoke);
 
 	sleep(tiempo_retardo_operacion);
@@ -413,7 +406,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 
 }
 
-void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY, int id){
+void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -456,7 +449,7 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY, int id)
 	sem_post(&sem_escritura);
 
 	//TODO ver id
-
+	uint32_t id_rel = 2;
 
 	sleep(tiempo_retardo_operacion);
 
@@ -471,87 +464,66 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY, int id)
 	if(conexion < 0){
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
-		enviar_caught(conexion,resultado,id);
-
+		enviar_caught(conexion,resultado,id_rel);
 	}
 
-	liberar_conexion(conexion);
 	config_destroy(configPath);
 
 	calcularTamanioMetadata(nombrePoke);
 
 }
 
-void procesarGetPokemon(char* nombrePoke, int id) {
+void procesarGetPokemon(char* nombrePoke){
 
-	char* path = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	int fd = open(path, O_RDWR);
-	if (fd < 0) {
+	verificarAperturaArchivo(path);
 
-		int conexion = conectarse_con_broker();
+	t_list* listaRegistros = obtenerPosiciones(nombrePoke);
 
-		if (conexion < 0) {
-			log_info(logFalloConexion, "Fallo conexion con Broker");
-			liberar_conexion(conexion);
-		} else {
-			uint32_t* posicionesX;
-			uint32_t* posicionesY;
+	//sleep(tiempo_retardo_operacion);
 
-			enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY, id);
-			liberar_conexion(conexion);
-		}
-	} else {
-		verificarAperturaArchivo(path);
+	t_config* configPath = config_create(path);
 
-		t_list* listaRegistros = obtenerPosiciones(nombrePoke);
+	cerrarArchivoMetadataPoke(configPath);
 
-		//sleep(tiempo_retardo_operacion);
+	config_destroy(configPath);
 
-		t_config* configPath = config_create(path);
+	int id_rel = 3;
 
-		cerrarArchivoMetadataPoke(configPath);
+	int conexion = conectarse_con_broker();
 
-		config_destroy(configPath);
-
-		//int id = 3;
-
-		int conexion = conectarse_con_broker();
-
-		if (conexion < 0) {
-			log_info(logFalloConexion, "Fallo conexion con Broker");
-			liberar_conexion(conexion);
+	if(conexion < 0){
+			log_info(logFalloConexion,"Fallo conexion con Broker");
 		} else {
 
-			if (list_is_empty(listaRegistros)) {
+			if(list_is_empty(listaRegistros)) {
 				uint32_t* posicionesX;
 				uint32_t* posicionesY;
 
-				enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY, id);
-			} else {
+				enviar_localized(conexion,nombrePoke,0,posicionesX,posicionesY,id_rel);
+				} else {
 
-				uint32_t paresDePosiciones = list_size(listaRegistros);
+					uint32_t paresDePosiciones = list_size(listaRegistros);
 
-				int i = 0;
+					int i = 0;
 
-				uint32_t posicionesX[paresDePosiciones];
-				uint32_t posicionesY[paresDePosiciones];
+					uint32_t posicionesX[paresDePosiciones];
+					uint32_t posicionesY[paresDePosiciones];
 
-				for (i = 0; i < paresDePosiciones; i++) {
+					for(i = 0; i < paresDePosiciones;i ++) {
 
-					registroDatos* registro = list_get(listaRegistros, i);
+						registroDatos* registro = list_get(listaRegistros,i);
 
-					posicionesX[i] = registro->posX;
-					posicionesY[i] = registro->posY;
+						posicionesX[i] = registro->posX;
+						posicionesY[i] = registro->posY;
 
+					}
+
+					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id_rel);
 				}
 
-				enviar_localized(conexion, nombrePoke, paresDePosiciones, posicionesX, posicionesY, id);
-			}
-			liberar_conexion(conexion);
 		}
-	}
-	close(fd);
 
 }
 
@@ -654,71 +626,9 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	//si la lista es vacia
 
 	if(list_is_empty(listaBloques)) {
-
 	return yaRegistrado;
 	}
 
-	if(list_size(listaBloques)==1){
-		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
-
-		int fd = open(primerFd,O_RDWR);
-
-		struct stat sb;
-		fstat(fd,&sb);
-
-		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
-
-		char* conjuntoConKey = malloc(sb.st_size);
-
-		strcpy(conjuntoConKey,file_memory);
-
-		char* keyCompleta = string_new();
-
-		string_append(&keyCompleta,key);
-
-		if(string_contains(conjuntoConKey,keyCompleta)){
-
-		char** bloques;
-
-		char* nuevoConjunto = string_new();
-
-		bloques = string_split(conjuntoConKey,"\n");
-		int k;
-		int tamanio = tamanio_array(bloques);
-
-		for(k=0;k < tamanio;k++){
-
-			if(string_contains(bloques[k],key)){
-
-					int valor = (registro->cantidad);
-
-					registroDatos* reg = string_a_registro(bloques[k]);
-					reg->cantidad = reg->cantidad + valor;
-
-					bloques[k] = registro_a_string(reg);
-
-					string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
-
-					yaRegistrado = 1;
-
-				} else {
-
-					string_append(&nuevoConjunto,bloques[k]);
-
-					if(k != tamanio-1){
-						string_append(&nuevoConjunto,"\n");
-
-					}
-
-				}
-			}
-
-			write(fd,nuevoConjunto,sb.st_size);
-		}
-
-	close(fd);
-
-	}
 	//si no esta cortado
 	while(yaRegistrado == 0 && i < list_size(listaBloques)){
 
@@ -1260,8 +1170,6 @@ void iniciar_servidor(void)
 
     freeaddrinfo(servinfo);
 
-    //esperar_cliente(socket_servidor);
-
     while(1){
     	esperar_cliente(socket_servidor);
 
@@ -1270,15 +1178,15 @@ void iniciar_servidor(void)
 }
 
 int conectarse_con_broker(void){
-	int conexion = crear_conexion(IP_BROKER,PUERTO_BROKER);
-	if(conexion <= 0){
+	int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	if(conexionBroker <= 0){
 		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
 		//broker_default();
 		return -1;
 	}
 	else{
 		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
-		return conexion;
+		return conexionBroker;
 	}
 
 }
@@ -1298,49 +1206,11 @@ void esperar_cliente(int socket_servidor)
 {
 	struct sockaddr_in dir_cliente;
 	//poner en globales si es necesario
-	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
+
 	pthread_t thread;
-/*
-	int i;
-	fd_set socket_actual,socket_listo;
-
-	//pthread_t thread;
-
-	FD_ZERO(&socket_actual);
-	FD_SET(socket_servidor,&socket_actual);
-
-	//max_cantidad_deSockets = socket_servidor;
-
-	while(1){
-		socket_listo = socket_actual;
-
-		if(select(FD_SETSIZE,&socket_listo,NULL,NULL,NULL)<0){
-			perror("select error");
-			exit(EXIT_FAILURE);
-		}
-
-		for(i=0;i<FD_SETSIZE;i++){
-			if(FD_ISSET(i,&socket_listo)){
-				if(i==socket_servidor){
-					int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
-					FD_SET(socket_cliente,&socket_actual);
-
-					//log_info(logConexion,"recibi una nueva conexion");
-
-					if(socket_cliente>max_cantidad_deSockets){
-						max_cantidad_deSockets = socket_cliente;
-					}
-				}
-				else{
-					serve_client(&i);
-					FD_CLR(i,&socket_actual);
-				}
-			}
-		}
-	}*/
 
 
-
+	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
@@ -1355,10 +1225,6 @@ void process_request(int cod_op, int cliente_fd) {
 
 	uint32_t tamanio_buffer;
 	uint32_t tamanio_username;
-
-	int envio_de_ack;
-	int nuevoenvio_de_ack;
-
 	int id;
 
 
@@ -1380,18 +1246,16 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__NEW_POKEMON:
 
-	pthread_mutex_lock(&llegadaMensajesTHREAD);
+
 
 	recv(cliente_fd,&id,sizeof(uint32_t),0);
-
 	registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
 	//TODO guardar este id para que el appeared de este mensaje tenga el id_relativo que id
 
-	procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro,id);
+	procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro);
 
 	free(registroConNombre);
 
-	pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
 	break;
 
@@ -1399,114 +1263,31 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__CATCH_POKEMON:
 
-	pthread_mutex_lock(&llegadaMensajesTHREAD);
-
 	recv(cliente_fd,&id,sizeof(uint32_t),0);
-
 	registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
 	//TODO guardar este id para que el CAUGHT de este mensaje tenga el id_relativo que id
-	procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY,id);
+	procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY);
 
 	free(registroConNombre);
 
-	pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
 	break;
 
 
 
 	case GAMECARD__GET_POKEMON:
 
-		pthread_mutex_lock(&llegadaMensajesTHREAD);
-
 	recv(cliente_fd,&id,sizeof(uint32_t),0);
 	nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
 
 	//TODO guardar este id para que el Localized de este mensaje tenga el id_relativo que id
-	procesarGetPokemon(nombre,id);
+	procesarGetPokemon(nombre);
 
 	free(nombre);
-	pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
+
 	break;
-
-
-	//MENSAJES DESDE EL BROKER
-	//TODO
-
-	case BROKER__NEW_POKEMON:
-
-		pthread_mutex_lock(&llegadaMensajesTHREAD);
-
-		recv(cliente_fd,&id,sizeof(uint32_t),0);
-
-		registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
-
-		envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-		if(envio_de_ack != -1){
-
-		enviarACK(id,envio_de_ack,"GAMECARD");
-
-		}
-		liberar_conexion(envio_de_ack);
-
-
-		procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro,id);
-
-
-		free(registroConNombre);
-		pthread_mutex_unlock(&llegadaMensajesTHREAD);
-		break;
-
-	case BROKER__CATCH_POKEMON:
-
-
-		pthread_mutex_lock(&llegadaMensajesTHREAD);
-
-		recv(cliente_fd,&id,sizeof(uint32_t),0);
-
-		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
-
-
-		nuevoenvio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-		if(nuevoenvio_de_ack != -1){
-
-			enviarACK(id,nuevoenvio_de_ack,"GAMECARD");
-
-		}
-		liberar_conexion(nuevoenvio_de_ack);
-
-		procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY,id);
-
-		free(registroConNombre);
-		pthread_mutex_unlock(&llegadaMensajesTHREAD);
-	break;
-
-	case BROKER__GET_POKEMON:
-
-		pthread_mutex_lock(&llegadaMensajesTHREAD);
-
-
-		recv(cliente_fd,&id,sizeof(uint32_t),0);
-
-		nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
-
-		envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-		if(envio_de_ack != -1){
-
-		//TODO que devolvemos como ack?
-		enviarACK(id,envio_de_ack,"GAMECARD");
-
-		}
-		liberar_conexion(envio_de_ack);
-
-		procesarGetPokemon(nombre,id);
-		pthread_mutex_unlock(&llegadaMensajesTHREAD);
-		free(nombre);
-			break;
-
 
 	case 0:
 	pthread_exit(NULL);
@@ -1555,23 +1336,6 @@ int crear_conexion(char *ip, char* puerto)
 
 	return socket_cliente;
 }
-
-/*
-void conectarse_con_broker(void){
-
-	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-	if(conexionBroker <= 0){
-
-		sleep(leer_tiempo_de_reconexion());
-
-		conexion_broker();
-	}
-
-
-
-}*/
-
 
 //////////////////////////////////////SERIALIZACIONES Y DESERIALIZACIONES///////////////
 
@@ -1629,7 +1393,6 @@ registroConNombre* deserializar_catch_pokemon_Gamecard(int socket_cliente){
 
 char* deserializar_get_pokemon_Gamecard(int socket_cliente){
 
-
 	int tamanioNombre;
 
     recv(socket_cliente,&(tamanioNombre),sizeof(uint32_t),0);
@@ -1642,7 +1405,7 @@ char* deserializar_get_pokemon_Gamecard(int socket_cliente){
 
 }
 
-void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, int id) {
+void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, int id_rel) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__APPEARED_POKEMON;
@@ -1657,7 +1420,7 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 	brokerAppearedPokemon->datos->nombrePokemon = nombrePokemon;
 	brokerAppearedPokemon->datos->posX = posX;
 	brokerAppearedPokemon->datos->posY = posY;
-	brokerAppearedPokemon->id_relativo = id;
+	brokerAppearedPokemon->id_relativo = id_rel;
 
 	serializar_broker_appeared_pokemon(brokerAppearedPokemon,buffer);
 
@@ -1675,7 +1438,7 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 
 }
 
-void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id){
+void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id_rel){
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__CAUGHT_POKEMON;
@@ -1688,7 +1451,7 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id){
 
 	brokerCaughtPokemon->datos->puedoAtraparlo = resultado;
 
-	brokerCaughtPokemon->id_relativo = id;
+	//brokerCaughtPokemon->id_relativo = id_rel;
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	serializar_broker_caught_pokemon(brokerCaughtPokemon,buffer);
@@ -1707,7 +1470,7 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id){
 	free(paquete_a_enviar);
 }
 
-void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosiciones, uint32_t* posicionesX, uint32_t* posicionesY,uint32_t id) {
+void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosiciones, uint32_t* posicionesX, uint32_t* posicionesY,uint32_t id_rel) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
@@ -1718,15 +1481,12 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 
 	broker_localized_pokemon* brokerLocalizedPokemon = malloc(sizeof(broker_appeared_pokemon));
 	brokerLocalizedPokemon->datos = malloc(sizeof(localized_pokemon));
-	brokerLocalizedPokemon->id_relativo = id;
+	brokerLocalizedPokemon->id_relativo = id_rel;
 	brokerLocalizedPokemon->datos->tamanioNombre = strlen(nombre)+1;
 	brokerLocalizedPokemon->datos->nombrePokemon = nombre;
 	brokerLocalizedPokemon->datos->cantidadPosiciones = paresDePosiciones;
-	if(paresDePosiciones!=0){
-		brokerLocalizedPokemon->datos->posX = posicionesX;
-		brokerLocalizedPokemon->datos->posY = posicionesY;
-	}
-
+	brokerLocalizedPokemon->datos->posX = posicionesX;
+	brokerLocalizedPokemon->datos->posY = posicionesY;
 
 	serializar_broker_localized_pokemon(brokerLocalizedPokemon,buffer);
 
@@ -1741,9 +1501,4 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 	free(brokerLocalizedPokemon->datos);
 	free(paquete_a_enviar->buffer);
 	free(paquete_a_enviar);
-}
-
-void liberar_conexion(int socket_cliente)
-{
-	close(socket_cliente);
 }

@@ -18,7 +18,6 @@ char* username;
 
 #include "utils_en_comun.h"
 #include "datos_broker.h"
-#include "datos_gamecard.h"
 
 #include <pthread.h>
 #include <sys/mman.h>
@@ -66,8 +65,6 @@ sem_t mutex_bit_array;
 FILE* metadata;
 FILE* metadataFiles;
 
-int conexionBroker;
-
 t_bitarray* bitArray;
 
 t_config* config;
@@ -83,7 +80,6 @@ char *nombreConfig;
 char* punto_montaje;
 char* ipBroker;
 
-
 ////////// CONFIGURACIONES INICIALES
 void crearDirectorio(char*  ,char* );
 void crearBitmap(void);
@@ -97,8 +93,8 @@ void modificarArchivoComoConfig(t_config* ,char* ,char* );
 void registrarPokemon(char* , registroDatos* );
 void agregarBloqueParaPokemon(char* ,int );
 int verificarExistenciaPokemon(char* );
-void procesarNewPokemon(char*, registroDatos* ,int);
-void procesarCatchPokemon(char* ,uint32_t , uint32_t,int );
+void procesarNewPokemon(char*, registroDatos* );
+void procesarCatchPokemon(char* ,uint32_t , uint32_t );
 
 
 ////////// REGISTROS Y BLOQUES
@@ -116,7 +112,7 @@ int sumarSiEstaEnBloque(t_list* ,registroDatos*);
 bool tieneCantidadCero(char*);
 void buscarYeliminarCeros(t_list*);
 void eliminarBloquesVacios(char* );
-void procesarGetPokemon(char* ,int);
+void procesarGetPokemon(char* );
 
 ///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
 
@@ -143,7 +139,6 @@ void* recibir_mensaje(int , int*);
 int crear_conexion(char *, char*);
 registroConNombre* deserializar_new_pokemon_Gamecard(int);
 registroConNombre* deserializar_catch_pokemon_Gamecard(int);
-char* deserializar_get_pokemon_Gamecard(int);
 void enviar_appeared(int ,char* , int ,int , int );
 void enviar_caught(int ,uint32_t , uint32_t );
 void enviar_localized(int , char* , uint32_t , uint32_t* , uint32_t* ,uint32_t );
@@ -151,7 +146,7 @@ void iniciar_servidor(void);
 void actualizar_bitmap();
 void inicializar_bitmap();
 void inicializar_bitarray();
-void liberar_conexion(int socket_cliente);
+char* deserializar_get_pokemon_Gamecard(int);
 
 
 #endif /* UTILS_GAMECARD_H_ */
