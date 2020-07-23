@@ -4,6 +4,12 @@
  *  Created on: 15 jun. 2020
  *      Author: utnso
  */
+/*
+ * utils_gamecard.c
+ *
+ *  Created on: 15 jun. 2020
+ *      Author: utnso
+ */
 
 #include"utils_gamecard.h"
 
@@ -279,75 +285,6 @@ void calcularTamanioMetadata(char* pokemon) {
 
 }
 
-void inicializar_bitarray() {
-	//loggear_trace(string_from_format("Inicializando bitarray"));
-	FILE* archivo_bitmap = fopen("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "r");
-
-	char* bitmap = malloc(cantidadBloques/8 + 1);
-	int resultado_read = 0;
-
-	while(!resultado_read)
-	resultado_read = fread(bitmap, sizeof(char), sizeof(char)*(cantidadBloques/8)+1, archivo_bitmap);
-
-	bitmap[cantidadBloques/8] = 0;
-	bitArray = bitarray_create_with_mode(bitmap, cantidadBloques/8, LSB_FIRST);
-	fclose(archivo_bitmap);
-
-}
-
-void inicializar_bitmap() {
-
-	if(estaVacioConRuta("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin")) {
-		FILE* archivo_bitmap = fopen("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "w+");
-		fclose(archivo_bitmap);
-		truncate("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin",cantidadBloques/8); //te deja el archivo completo en cero.
-	}
-
-}
-
-void crearFilesAndBlocks() {
-
-
-	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass","/Files");
-
-	metadataFiles = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Metadata.bin");
-
-	if(estaVacio(metadataFiles)){
-
-	txt_write_in_file(metadataFiles,"DIRECTORY=Y");
-
-	txt_close_file(metadataFiles);
-
-	}
-
-	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass","/Blocks");
-
-
-}
-
-void crearBitmap(){
-
-	FILE* bitmap = txt_open_for_append("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin");
-
-	fseek(bitmap,0,SEEK_END);
-
-	if(ftell(bitmap) == 0){
-
-	char* puntero_a_bits = malloc(1);
-
-	bitArray = bitarray_create_with_mode(puntero_a_bits,cantidadBloques/8,LSB_FIRST);
-
-	}
-
-	txt_close_file(bitmap);
-
-}
-
-void actualizar_bitmap() {
-	FILE* bitmap = fopen("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "wb+");
-	fwrite(bitArray->bitarray, sizeof(char),sizeof(char) * bitArray->size, bitmap);
-	fclose(bitmap);
-}
 
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
@@ -1137,6 +1074,92 @@ void vaciarArchivo(char* ruta) {
 
 }
 
+
+///////////////////////////////////////   BITARRAY   ///////////////////////////////////////
+
+void inicializar_bitarray() {
+	//loggear_trace(string_from_format("Inicializando bitarray"));
+	FILE* archivo_bitmap = fopen(
+			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "r");
+
+	char* bitmap = malloc(cantidadBloques / 8 + 1);
+	int resultado_read = 0;
+
+	while (!resultado_read)
+		resultado_read = fread(bitmap, sizeof(char),
+				sizeof(char) * (cantidadBloques / 8) + 1, archivo_bitmap);
+
+	bitmap[cantidadBloques / 8] = 0;
+	bitArray = bitarray_create_with_mode(bitmap, cantidadBloques / 8,
+			LSB_FIRST);
+	fclose(archivo_bitmap);
+
+}
+
+void inicializar_bitmap() {
+
+	if (estaVacioConRuta(
+			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin")) {
+		FILE* archivo_bitmap = fopen(
+				"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin",
+				"w+");
+		fclose(archivo_bitmap);
+		truncate("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin",
+				cantidadBloques / 8); //te deja el archivo completo en cero.
+	}
+
+}
+
+void crearFilesAndBlocks() {
+
+	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass", "/Files");
+
+	metadataFiles = txt_open_for_append(
+			"/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Metadata.bin");
+
+	if (estaVacio(metadataFiles)) {
+
+		txt_write_in_file(metadataFiles, "DIRECTORY=Y");
+
+		txt_close_file(metadataFiles);
+
+	}
+
+	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass", "/Blocks");
+
+}
+
+void crearBitmap() {
+
+	FILE* bitmap = txt_open_for_append(
+			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin");
+
+	fseek(bitmap, 0, SEEK_END);
+
+	if (ftell(bitmap) == 0) {
+
+		char* puntero_a_bits = malloc(1);
+
+		bitArray = bitarray_create_with_mode(puntero_a_bits,
+				cantidadBloques / 8, LSB_FIRST);
+
+	}
+
+	txt_close_file(bitmap);
+
+}
+
+void actualizar_bitmap() {
+	FILE* bitmap = fopen(
+			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "wb+");
+	fwrite(bitArray->bitarray, sizeof(char), sizeof(char) * bitArray->size,
+			bitmap);
+	fclose(bitmap);
+}
+
+
+
+
 ///////////////////////////////////////CONEXIONES///////////////////////////////////////
 
 
@@ -1502,3 +1525,4 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 	free(paquete_a_enviar->buffer);
 	free(paquete_a_enviar);
 }
+

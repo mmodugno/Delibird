@@ -4,6 +4,12 @@
  *  Created on: 15 jun. 2020
  *      Author: utnso
  */
+/*
+ * utils_gamecard.h
+ *
+ *  Created on: 15 jun. 2020
+ *      Author: utnso
+ */
 
 #ifndef UTILS_GAMECARD_H_
 #define UTILS_GAMECARD_H_
@@ -114,6 +120,14 @@ void buscarYeliminarCeros(t_list*);
 void eliminarBloquesVacios(char* );
 void procesarGetPokemon(char* );
 
+////////// BITARRAY
+void inicializar_bitarray();
+void inicializar_bitmap();
+void crearFilesAndBlocks() ;
+void crearBitmap();
+void actualizar_bitmap();
+
+
 ///////////////////////////FUNCIONES AUXILIARES//////////////////////////////
 
 t_list* crear_lista(char** array);
@@ -150,3 +164,4 @@ char* deserializar_get_pokemon_Gamecard(int);
 
 
 #endif /* UTILS_GAMECARD_H_ */
+

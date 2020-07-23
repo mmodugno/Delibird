@@ -8,7 +8,6 @@
  ============================================================================
  */
 
-
 #include"GameCard.h"
 
 
@@ -56,11 +55,8 @@ int main(int argc, char* argv[]){
 		//t_list* listaAux = list_create();
 
 		//list_add(listaAux,"1");
-		//ist_add(listaAux,"2");
+		//list_add(listaAux,"2");
 
-		//buscarYeliminarCeros(listaAux);
-
-		//verificarDirectorioPokemon("Pikachu");
 
 		//registroDatos* registro1 = hacerRegistro(4,1,1);
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
@@ -82,24 +78,30 @@ int main(int argc, char* argv[]){
 
 		pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);*/
 
+		/*
 		int i;
 
-		for(i = 0; i < bitarray_get_max_bit(bitArray);i++){
+		for(i = 0; i < 100 ;i++){
 			if(bitarray_test_bit(bitArray,i) == 0){
 				printf("Libre en: %d \n",i);
 			}
 		}
+		*/
+
+
+
+
+		int conexion = crear_conexion(IP_BROKER,PUERTO_BROKER);
+		if(conexion != -1){
+
+		suscribirnos_cola_catch();
+		suscribirnos_cola_new();
+		suscribirnos_cola_get();
+
+		}
+
 
 		iniciar_servidor();
-
-		//suscribirnos_cola_catch();
-		//suscribirnos_cola_new();
-		//suscribirnos_cola_get();
-
-
-		printf(" \n Terminado  \n" );
-
-		terminar_programa();
 
 }
 
@@ -125,19 +127,6 @@ t_log* iniciar_logger(char* tipoDeProceso){
 
 	//preguntar por el tipo de LOG_LEVEL
 	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
-}
-
-
-void terminar_programa(void){
-
-	log_destroy(logArchivoAbierto);
-	log_destroy(logFalloConexion);
-	config_destroy(config);
-
-	//munmap(bmap, size);
-
-	bitarray_destroy(bitArray);
-	//liberar_conexion(conexionBroker);
 }
 
 
