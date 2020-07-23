@@ -117,6 +117,7 @@ sem_t usoMemoria;
 sem_t terminoPrograma;
 
 sem_t llegadaMensajes;
+
 sem_t suscripcionAColaNEW;
 sem_t suscripcionAColaGET;
 sem_t suscripcionAColaCATCH;
@@ -145,7 +146,7 @@ void esperar_cliente(int);
 void* recibir_mensaje(int socket_cliente, int* size);
 int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
-void* serve_client(int *);
+void serve_client(int* );
 void devolver_mensaje(void* payload, int size, int socket_cliente);
 void suscribirACola(suscriptor* suscriptor);
 particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,

@@ -7,6 +7,8 @@
 
 #include "utils_broker.h"
 
+pthread_mutex_t llegadaMensajesTHREAD = PTHREAD_MUTEX_INITIALIZER;
+
 void mostrarParticiones(particion* unaParticion) {
 	if (unaParticion != NULL) {
 		//este no funciona
@@ -75,68 +77,68 @@ uint32_t deserializarAck(int socket_cliente) {
 	return idAck;
 }
 
-void iniciar_servidor(void) {
+void iniciar_servidor(void)
+{
 	int socket_servidor;
 
-	struct addrinfo hints, *servinfo, *p;
+    struct addrinfo hints, *servinfo, *p;
 
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
 
-	getaddrinfo(ip_broker, puerto_broker, &hints, &servinfo);
 
-	for (p = servinfo; p != NULL; p = p->ai_next) {
-		if ((socket_servidor = socket(p->ai_family, p->ai_socktype,
-				p->ai_protocol)) == -1)
-			continue;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE;
 
-		if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
-			close(socket_servidor);
-			continue;
-		}
-		break;
-	}
+    getaddrinfo(ip_broker, puerto_broker, &hints, &servinfo);
+
+    for (p=servinfo; p != NULL; p = p->ai_next)
+    {
+        if ((socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
+            continue;
+
+        if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
+            close(socket_servidor);
+            continue;
+        }
+        break;
+    }
 
 	listen(socket_servidor, SOMAXCONN);
 
-	freeaddrinfo(servinfo);
+    freeaddrinfo(servinfo);
 
-	//esperar_cliente(socket_servidor);
+    while(1){
+    	esperar_cliente(socket_servidor);
 
-	flagTermino =1;
+    }
 
-	while (flagTermino) {
-		esperar_cliente(socket_servidor);
-	}
 }
 
-void esperar_cliente(int socket_servidor) {
+void esperar_cliente(int socket_servidor)
+{
 	struct sockaddr_in dir_cliente;
 
-	socklen_t tam_direccion = sizeof(struct sockaddr_in);
+	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
-
-	pthread_create(&thread, NULL, (void*) serve_client, &socket_cliente);
+	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
 	pthread_detach(thread);
 
 }
 
-void* serve_client(int *socket) {
-
-	sem_wait(&llegadaMensajes);
-	int cod_op = 0;
+void serve_client(int* socket)
+{
+	//sem_wait(&llegadaMensajes);
+	pthread_mutex_lock(&llegadaMensajesTHREAD);
+	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
-	if (i != 4){
+	if(i <= 0)
 		cod_op = -1;
-	}
 	process_request(cod_op, *socket);
-	//liberar_conexion(*socket);
-	sem_post(&llegadaMensajes);
-	return NULL;
+	pthread_mutex_unlock(&llegadaMensajesTHREAD);
+	//sem_post(&llegadaMensajes);
 }
 
 /*

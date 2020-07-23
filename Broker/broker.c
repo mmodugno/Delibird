@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+
 int main() {
 
 	/*
@@ -37,6 +39,8 @@ int main() {
 	sem_init(&suscripcionAColaGET,0,1);
 	sem_init(&suscripcionAColaLOCALIZED,0,1);
 	sem_init(&suscripcionAColaNEW,0,1);
+
+
 
 
 	//int prueba = crear_conexion(ip_gameboy,puerto_gameboy);
