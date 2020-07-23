@@ -1432,11 +1432,11 @@ void iniciar_servidor(void)
 
     freeaddrinfo(servinfo);
 
-    esperar_cliente(socket_servidor);
-/*
+    //esperar_cliente(socket_servidor);
+
     while(1){
     		esperar_cliente(socket_servidor);
-    }*/
+    }
 
 }
 
@@ -1476,13 +1476,13 @@ void esperar_cliente(int socket_servidor)
 {
 	struct sockaddr_in dir_cliente;
 	//poner en globales si es necesario
-	//pthread_t thread;
+	pthread_t thread;
 
 
 	socklen_t  tam_direccion = sizeof(struct sockaddr_in);
 
-	//int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
-
+	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
+/*
 	int i;
 		//int max_cantidad_deSockets = 0;
 
@@ -1508,10 +1508,10 @@ void esperar_cliente(int socket_servidor)
 					FD_SET(socket_cliente,&socket_actual);
 
 					//log_info(logConexion,"recibi una nueva conexion");
-					/*
+
 					if(socket_cliente>max_cantidad_deSockets){
 						max_cantidad_deSockets = socket_cliente;
-					}*/
+					}
 				}
 				else{
 					serve_client(&i);
@@ -1519,11 +1519,11 @@ void esperar_cliente(int socket_servidor)
 				}
 			}
 		}
-	}
+	}*/
 
-/*
+
 	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
-	pthread_detach(thread);*/
+	pthread_detach(thread);
 
 }
 

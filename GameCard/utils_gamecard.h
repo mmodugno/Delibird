@@ -83,6 +83,7 @@ char *nombreConfig;
 char* punto_montaje;
 char* ipBroker;
 
+
 ////////// CONFIGURACIONES INICIALES
 void crearDirectorio(char*  ,char* );
 void crearBitmap(void);
@@ -151,5 +152,6 @@ void actualizar_bitmap();
 void inicializar_bitmap();
 void inicializar_bitarray();
 void liberar_conexion(int socket_cliente);
+
 
 #endif /* UTILS_GAMECARD_H_ */
