@@ -1558,6 +1558,8 @@ void process_request(int cod_op, int cliente_fd) {
 	char* username;
 	int envio_de_ack;
 
+	char* resolucionCatch;
+
 	bool esIDRecibido(uint32_t idIterado){
 		return (idIterado == id);
 	}
@@ -1600,9 +1602,15 @@ void process_request(int cod_op, int cliente_fd) {
 				entrenador* un_entrenador = list_get(entrenadores,i);
 				if(un_entrenador->id_catch == id_recibido){
 
+				if(caughtRecibido->datos->puedoAtraparlo){
+					resolucionCatch = "se confirma el catch";
+				}
+				else{ resolucionCatch = "se deniega el catch"; }
+
+			log_info(llegadaDeMensaje,"recibi mensaje CAUGHT de BROKER con id %d: y %s \n",caughtRecibido->id_relativo,resolucionCatch);
+
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
-
 
 					envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
@@ -1640,9 +1648,13 @@ void process_request(int cod_op, int cliente_fd) {
 //TODO
 			if(list_any_satisfy(lista_ids_get,(void*) esIDRecibido)){
 
+			log_info(llegadaDeMensaje,"recibi mensaje LOCALIZED de BROKER con id: %d, nombre: %s, y cantidad de posiciones %d:\n"
+			,id, localizedRecibido->datos->nombrePokemon, localizedRecibido->datos->cantidadPosiciones);
+
 				int i;
 				//Hacemos un appeared por cada pokemon que nos mandan
 				for(i = 0; i < localizedRecibido->datos->cantidadPosiciones;i++){
+
 					nuevoPoke = hacer_pokemon(localizedRecibido->datos->nombrePokemon,localizedRecibido->datos->posX[i],localizedRecibido->datos->posY[i],localizedRecibido->datos->tamanioNombre);
 					aparece_nuevo_pokemon(nuevoPoke);
 				}
@@ -1665,6 +1677,9 @@ void process_request(int cod_op, int cliente_fd) {
 			enviarACK(appearedRecibidoBROKER->id,envio_de_ack,"TEAM");
 			liberar_conexion(envio_de_ack);
 			}
+
+			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de BROKER:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n",
+			appearedRecibidoBROKER->datos->tamanioNombre, appearedRecibidoBROKER->datos->nombrePokemon, appearedRecibidoBROKER->datos->posX, appearedRecibidoBROKER->datos->posY);
 
 			nuevoPoke = hacer_pokemon(appearedRecibidoBROKER->datos->nombrePokemon,appearedRecibidoBROKER->datos->posX,appearedRecibidoBROKER->datos->posY,appearedRecibidoBROKER->datos->tamanioNombre);
 
