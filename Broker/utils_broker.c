@@ -103,11 +103,13 @@ void iniciar_servidor(void) {
 
 	freeaddrinfo(servinfo);
 
-	esperar_cliente(socket_servidor);
-	/*
-	while (1) {
+	//esperar_cliente(socket_servidor);
+
+	flagTermino =1;
+
+	while (flagTermino) {
 		esperar_cliente(socket_servidor);
-	}*/
+	}
 }
 
 void esperar_cliente(int socket_servidor) {
@@ -115,60 +117,26 @@ void esperar_cliente(int socket_servidor) {
 
 	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
-	int i;
-	//int max_cantidad_deSockets = 0;
-
-	fd_set socket_actual,socket_listo;
-
-	FD_ZERO(&socket_actual);
-	FD_SET(socket_servidor,&socket_actual);
-
-	//max_cantidad_deSockets = socket_servidor;
-
-	while(1){
-		socket_listo = socket_actual;
-
-		if(select(FD_SETSIZE,&socket_listo,NULL,NULL,NULL)<0){
-			perror("select error");
-			exit(EXIT_FAILURE);
-		}
-
-		for(i=0;i<FD_SETSIZE;i++){
-			if(FD_ISSET(i,&socket_listo)){
-				if(i==socket_servidor){
-					int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
-					FD_SET(socket_cliente,&socket_actual);
-
-					//log_info(logConexion,"recibi una nueva conexion");
-					/*
-					if(socket_cliente>max_cantidad_deSockets){
-						max_cantidad_deSockets = socket_cliente;
-					}*/
-				}
-				else{
-					serve_client(&i);
-					FD_CLR(i,&socket_actual);
-				}
-			}
-		}
-	}
+	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
 
-
-/*
 	pthread_create(&thread, NULL, (void*) serve_client, &socket_cliente);
-	pthread_detach(thread);*/
+	pthread_detach(thread);
 
 }
 
-void serve_client(int* socket) {
+void* serve_client(int *socket) {
 
 	sem_wait(&llegadaMensajes);
 	int cod_op = 0;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
-	if (i <= 0)
+	if (i != 4){
 		cod_op = -1;
+	}
 	process_request(cod_op, *socket);
+	//liberar_conexion(*socket);
+	sem_post(&llegadaMensajes);
+	return NULL;
 }
 
 /*
@@ -195,7 +163,8 @@ void process_request(int cod_op, int cliente_fd) {
 	char* posicionesString = string_new();
 	void *raiz;
 
-	log_info(logConexion,"recibi una nueva conexion de %s",username);
+	//log_info(logConexion,"recibi una nueva conexion de %s",username);
+
 
 	uint32_t ackRecibido;
 	particion* partEncontrada;
@@ -436,14 +405,17 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 			ackRecibido = deserializarAck(cliente_fd);
-			/*log_info(confirmacionRecepcion,
-					"me llego la confirmacion para el ID:%d", ackRecibido);*/
+
+			//TODO comentar esto
+			/*
+			log_info(confirmacionRecepcion,
+					"me llego la confirmacion para el ID:%d pero todavia no busque", ackRecibido);*/
 
 			//mutex porque manejo algo de memoria
 			sem_wait(&usoMemoria);
 
 			bool partAck(particion *part) {
-				if ((!part->libre) && (ackRecibido == part->idMensaje)) {
+				if (/*(!part->libre) &&*/ (ackRecibido == part->idMensaje)) {
 					return 1;
 				}
 				return 0;
@@ -452,7 +424,9 @@ void process_request(int cod_op, int cliente_fd) {
 			bool buddyAck(buddy* unBuddy){
 				return partAck(unBuddy->particion);
 			}
-
+			/*
+			//TODO comentar, muestra lo que esta en memoria
+			list_iterate(tablaDeParticiones,mostrarParticiones);*/
 
 			if(!strcmp(algoritmo_memoria,"PARTICIONES")) partEncontrada = list_find(tablaDeParticiones, partAck);
 
@@ -502,7 +476,6 @@ void process_request(int cod_op, int cliente_fd) {
 		//free(posicionesString);
 
 	}
-	sem_post(&llegadaMensajes);
 }
 
 void* recibir_mensaje(int socket_cliente, int* size) {

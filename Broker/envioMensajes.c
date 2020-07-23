@@ -58,6 +58,7 @@ void envioColaNewPokemon() {
 
 
 			sem_wait(&usoMemoria);
+			list_sort(tablaDeParticiones,baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
@@ -89,19 +90,19 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaNEW);
-		sleep(1);
+		sleep(3);
 	}
 }
 
 //conectarme con cada uno que necesite mandarle
 bool esTeam(char* username){
-	return string_contains(username,"TEAM");
+	return !strcmp(username,"TEAM");
 }
 bool esGameCard(char* username){
-	return string_contains(username,"GAMECARD");
+	return !strcmp(username,"GAMECARD");
 }
 bool esGameBoy(char* username){
-	return string_contains(username,"GAMEBOY");
+	return !strcmp(username,"GAMEBOY");
 }
 
 void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
@@ -167,7 +168,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar,conexionTeam);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s","NEW_POKEMON");
+			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s con id: %d","NEW_POKEMON",newAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
 	}
@@ -176,17 +177,17 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar,conexionGameboy);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s", "NEW_POKEMON");
+			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s con id: %d", "NEW_POKEMON",newAEnviar->id);
 			liberar_conexion(conexionGameboy);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
-		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexionGamecard != -1) {
-			enviar_Cola_New_Pokemon(newAEnviar,conexionGamecard);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje  de la cola %s","NEW_POKEMON");
-			liberar_conexion(conexionGamecard);
+		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
+		if (conexion != -1) {
+			enviar_Cola_New_Pokemon(newAEnviar,conexion);
+			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje  de la cola %s con id: %d","NEW_POKEMON",newAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
@@ -197,7 +198,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexionTeam);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s","APPEARED_POKEMON");
+			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s con id: %d","APPEARED_POKEMON",appAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
 	}
@@ -206,18 +207,18 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexionGameboy);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s","APPEARED_POKEMON");
+			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s con id: %d","APPEARED_POKEMON",appAEnviar->id);
 			liberar_conexion(conexionGameboy);
 		}
 
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
-		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexionGamecard != -1) {
-			enviar_cola_Appeared_Pokemon(appAEnviar,conexionGamecard);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola APPEARED_POKEMON");
-			liberar_conexion(conexionGamecard);
+		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
+		if (conexion != -1) {
+			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
+			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola APPEARED_POKEMON con id: %d",appAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
@@ -228,7 +229,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexionTeam);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CATCH_POKEMON");
+			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
 	}
@@ -237,17 +238,17 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexionGameboy);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CATCH_POKEMON");
+			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
 			liberar_conexion(conexionGameboy);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
-		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexionGamecard != -1) {
-			enviar_cola_Catch_Pokemon(catchAEnviar,conexionGamecard);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CATCH_POKEMON");
-			liberar_conexion(conexionGamecard);
+		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
+		if (conexion != -1) {
+			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
+			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
@@ -258,7 +259,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionTeam);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CAUGHT_POKEMON");
+			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
 	}
@@ -267,17 +268,17 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionGameboy);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CAUGHT_POKEMON");
+			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
 			liberar_conexion(conexionGameboy);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
-		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexionGamecard != -1) {
-			enviar_cola_Caught_Pokemon(caughtAEnviar,conexionGamecard);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CAUGHT_POKEMON");
-			liberar_conexion(conexionGamecard);
+		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
+		if (conexion != -1) {
+			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
+			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
@@ -288,7 +289,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
 			enviar_cola_Get_Pokemon(getAEnviar,conexionTeam);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola GET_POKEMON");
+			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
 	}
@@ -297,17 +298,17 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
 			enviar_cola_Get_Pokemon(getAEnviar,conexionGameboy);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola GET_POKEMON");
+			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
 			liberar_conexion(conexionGameboy);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
-		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexionGamecard!= -1) {
-			enviar_cola_Get_Pokemon(getAEnviar,conexionGamecard);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola GET_POKEMON");
-			liberar_conexion(conexionGamecard);
+		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
+		if (conexion!= -1) {
+			enviar_cola_Get_Pokemon(getAEnviar,conexion);
+			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
@@ -318,7 +319,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionTeam);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON");
+			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
 	}
@@ -327,17 +328,17 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionGameboy);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola LOCALIZED_POKEMON");
+			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
 			liberar_conexion(conexionGameboy);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, esGameCard)){
 		//conexion con GAMECARD
-		conexionGamecard = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexionGamecard != -1) {
-			enviar_cola_Localized_Pokemon(localizedAEnviar,conexionGamecard);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola LOCALIZED_POKEMON");
-			liberar_conexion(conexionGamecard);
+		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
+		if (conexion != -1) {
+			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
+			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 
@@ -393,6 +394,7 @@ void envioColaGetPokemon() {
 
 
 			sem_wait(&usoMemoria);
+			list_sort(tablaDeParticiones,baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
@@ -417,7 +419,7 @@ void envioColaGetPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaGET);
-		sleep(1);
+		sleep(3);
 	}
 }
 
@@ -469,6 +471,7 @@ void envioColaLocalizedPokemon() {
 		if (suscriptoresLocalizedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
+			list_sort(tablaDeParticiones,baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
@@ -493,7 +496,7 @@ void envioColaLocalizedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaLOCALIZED);
-		sleep(1);
+		sleep(3);
 	}
 }
 
@@ -545,6 +548,7 @@ void envioColaAppearedPokemon() {
 		if (suscriptoresAppearedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
+			list_sort(tablaDeParticiones,baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
@@ -569,7 +573,7 @@ void envioColaAppearedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaAPPEARED);
-		sleep(1);
+		sleep(3);
 	}
 }
 
@@ -622,6 +626,8 @@ void envioColaCatchPokemon() {
 
 			sem_wait(&usoMemoria);
 
+			list_sort(tablaDeParticiones,baseMasChica);
+
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCatchPokemon->elements_count) {
@@ -645,7 +651,7 @@ void envioColaCatchPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCATCH);
-		sleep(1);
+		sleep(3);
 	}
 }
 
@@ -698,6 +704,7 @@ void envioColaCaughtPokemon() {
 
 			sem_wait(&usoMemoria);
 
+			list_sort(tablaDeParticiones,baseMasChica);
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCaughtPokemon->elements_count) {
@@ -721,7 +728,7 @@ void envioColaCaughtPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCAUGHT);
-		sleep(1);
+		sleep(3);
 	}
 }
 

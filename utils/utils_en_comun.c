@@ -49,6 +49,7 @@ void enviarACK(uint32_t acknowledgedID, int socketDeBroker, char* username){
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = ACKNOWLEDGED;
 	paquete_a_enviar->tamanio_username= strlen(username)+1;
+	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = username;
 
 	t_buffer *buffer = malloc(sizeof(t_buffer));

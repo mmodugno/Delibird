@@ -78,21 +78,33 @@ int main(int argc, char* argv[]){
 
 		//procesarCatchPokemon("Charmander",413,17);
 
+		//uint32_t id_relativo = 42;
+		//procesarNewPokemon("Messi",registro1,id_relativo);
 
-		//procesarNewPokemon("Messi",registro1);
+		/*int nuevoenvio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+		if(nuevoenvio_de_ack != -1){
+
+			enviarACK(id_relativo,nuevoenvio_de_ack,username);
+			//procesarCatchPokemon("Messi",4,1,id_relativo);
+
+		}
+		liberar_conexion(nuevoenvio_de_ack);*/
 		//procesarGetPokemon("Charmander");3
 
-		/*pthread_t hilo_servidor;
+		/*
+		pthread_t hilo_servidor;
 
 		pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);*/
 
+/*
 		int i;
 
 		for(i = 0; i < bitarray_get_max_bit(bitArray);i++){
 			if(bitarray_test_bit(bitArray,i) == 0){
 				printf("Libre en: %d \n",i);
 			}
-		}
+		}*/
 
 		suscribirnos_cola_catch();
 		suscribirnos_cola_new();
@@ -151,8 +163,7 @@ void suscribirnos_cola_catch() {
 	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
 
 	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
-	meSuscriboGet->tamanioNombreSucriptor = strlen(
-			meSuscriboGet->nombreDeSuscriptor) + 1;
+	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
 
 	meSuscriboGet->tipoDeCola = CATCH_POKEMON;
 

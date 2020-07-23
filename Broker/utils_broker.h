@@ -73,6 +73,8 @@ uint32_t frecuencia_compactacion;
 uint32_t frecuencia;
 char* log_file;
 
+int flagTermino;
+
 
 t_config* config;
 
@@ -143,7 +145,7 @@ void esperar_cliente(int);
 void* recibir_mensaje(int socket_cliente, int* size);
 int recibir_operacion(int);
 void process_request(int cod_op, int cliente_fd);
-void serve_client(int *socket);
+void* serve_client(int *);
 void devolver_mensaje(void* payload, int size, int socket_cliente);
 void suscribirACola(suscriptor* suscriptor);
 particion* crearEntradaParticionBasica(void * dato, uint32_t idMensaje,
@@ -167,6 +169,8 @@ broker_caught_pokemon* leerdeMemoriaCAUGHT(particion* part);
 broker_get_pokemon* leerdeMemoriaGET(particion* part);
 broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part);
 void desuscribirACola(suscriptor* suscriptor);
+void liberar_conexion(int socket_cliente);
+
 
 /* buddy */
 void agregarEnBuddy(buddy* );
@@ -190,5 +194,6 @@ void consolidarBuddySystem();
 bool buddyPuedeConsolidar(buddy*);
 bool puedeConsolidarDerecha(buddy* );
 bool puedeConsolidarIzquierda(buddy* );
+bool baseMasChica(particion *, particion* );
 
 #endif /* UTILS_BROKER_H_ */

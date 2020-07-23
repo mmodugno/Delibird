@@ -400,9 +400,10 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 		//int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
 		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
-		liberar_conexion(conexion);
+
 	}
 
+	liberar_conexion(conexion);
 	calcularTamanioMetadata(nombrePoke);
 
 	sleep(tiempo_retardo_operacion);
@@ -469,9 +470,10 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY, int id)
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 		enviar_caught(conexion,resultado,id);
-		liberar_conexion(conexion);
+
 	}
 
+	liberar_conexion(conexion);
 	config_destroy(configPath);
 
 	calcularTamanioMetadata(nombrePoke);
@@ -489,11 +491,13 @@ void procesarGetPokemon(char* nombrePoke, int id) {
 
 		if (conexion < 0) {
 			log_info(logFalloConexion, "Fallo conexion con Broker");
+			liberar_conexion(conexion);
 		} else {
 			uint32_t* posicionesX;
 			uint32_t* posicionesY;
 
 			enviar_localized(conexion, nombrePoke, 0, posicionesX, posicionesY, id);
+			liberar_conexion(conexion);
 		}
 	} else {
 		verificarAperturaArchivo(path);
@@ -514,6 +518,7 @@ void procesarGetPokemon(char* nombrePoke, int id) {
 
 		if (conexion < 0) {
 			log_info(logFalloConexion, "Fallo conexion con Broker");
+			liberar_conexion(conexion);
 		} else {
 
 			if (list_is_empty(listaRegistros)) {
@@ -1263,15 +1268,15 @@ void iniciar_servidor(void)
 }
 
 int conectarse_con_broker(void){
-	int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-	if(conexionBroker <= 0){
+	int conexion = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	if(conexion <= 0){
 		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
 		//broker_default();
 		return -1;
 	}
 	else{
 		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
-		return conexionBroker;
+		return conexion;
 	}
 
 }
@@ -1349,6 +1354,7 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_username;
 
 	int envio_de_ack;
+	int nuevoenvio_de_ack;
 
 	int id;
 
@@ -1430,9 +1436,9 @@ void process_request(int cod_op, int cliente_fd) {
 		if(envio_de_ack != -1){
 
 		enviarACK(id,envio_de_ack,"GAMECARD");
-		liberar_conexion(envio_de_ack);
-		}
 
+		}
+		liberar_conexion(envio_de_ack);
 
 
 		procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro,id);
@@ -1445,24 +1451,22 @@ void process_request(int cod_op, int cliente_fd) {
 	case BROKER__CATCH_POKEMON:
 
 		recv(cliente_fd,&id,sizeof(uint32_t),0);
+
 		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
 
-		envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
+		nuevoenvio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-		if(envio_de_ack != -1){
+		if(nuevoenvio_de_ack != -1){
 
-		enviarACK(id,envio_de_ack,"GAMECARD");
-		liberar_conexion(envio_de_ack);
+			enviarACK(id,nuevoenvio_de_ack,"GAMECARD");
+
 		}
+		liberar_conexion(nuevoenvio_de_ack);
 
+		procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY,id);
 
-
-
-			procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY,id);
-
-
-			free(registroConNombre);
+		free(registroConNombre);
 
 	break;
 
@@ -1478,13 +1482,13 @@ void process_request(int cod_op, int cliente_fd) {
 
 		//TODO que devolvemos como ack?
 		enviarACK(id,envio_de_ack,"GAMECARD");
-		liberar_conexion(envio_de_ack);
-		}
 
+		}
+		liberar_conexion(envio_de_ack);
 
 		procesarGetPokemon(nombre,id);
 
-					free(registroConNombre);
+					free(nombre);
 			break;
 
 
