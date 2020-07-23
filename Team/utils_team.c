@@ -228,7 +228,7 @@ while(1){
 		mover_entrenador(un_entrenador,un_entrenador->objetivo_proximo->posX,un_entrenador->objetivo_proximo->posY);
 	}
 
-	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d)",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
+	log_info(operacion_de_atrapar,"ATRAPAR POKEMON: %s con posicion (%d, %d) \n",un_entrenador->objetivo_proximo ->nombre,un_entrenador->objetivo_proximo ->posX,un_entrenador->objetivo_proximo ->posY);
 
 
 	//LA FUNCION APRA CONECTARSE AL BROKER LA HACE EL HILO DE CONEXION CON BROKER
@@ -247,7 +247,7 @@ while(1){
 		catchAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
 
 		enviar_catch(un_entrenador,catchAEnviar);
-		log_info(llegadaDeMensaje,"del catch que envie su ID es %d",catchAEnviar->id);
+		log_info(llegadaDeMensaje,"del catch que envie su ID es %d \n",catchAEnviar->id);
 		un_entrenador->id_catch = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
 
 		un_entrenador->ciclos_cpu += 1;
@@ -256,7 +256,7 @@ while(1){
 		//libero la conexion con el broker
 		close(conexionBroker);
 	}else{
-		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default \n");
 	}
 
 
@@ -402,19 +402,7 @@ while(queue_size(entrenadores_ready)>0){
 }
 
 
-//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
-/*
-if(validar_deadlock && list_is_empty(entrenadores_new)){
-	validar_deadlock=0;
-	sem_wait(&en_ejecucion);
-	log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
 
-
-	deteccion_y_recuperacion_deadlock();
-
-}
-
-*/
 if(validar_deadlock && list_is_empty(entrenadores_new)){
 		validar_deadlock=0;
 		sem_wait(&en_ejecucion);
@@ -423,7 +411,7 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 
 		if(hay_deadlock_multiple()){
 
-			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+			log_info(resultado_deadlock,"Se detectó deadlock multiple \n");
 
 			entrenador_deadlock-=1;
 
@@ -434,7 +422,7 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 		}
 
 		if(hay_deadlock()){
-			log_info(resultado_deadlock,"Se detectó deadlock");
+			log_info(resultado_deadlock,"Se detectó deadlock \n");
 			entrenador_deadlock-=2;
 			cant_deadlocks +=1;
 
@@ -446,7 +434,7 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 
 		}
 	else{
-			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+			log_info(resultado_deadlock,"No se detectó nuevo deadlock \n");
 
 			//espera unos segundos y pone el contador validar_deadlock en 1
 			pthread_t espera_deadlock;
@@ -472,7 +460,7 @@ if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 void deteccion_y_recuperacion_deadlock(){
 
 	if(list_size(entrenadores_en_deadlock)>1){
-		log_info(resultado_deadlock,"Se detectó deadlock");
+		log_info(resultado_deadlock,"Se detectó deadlock \n");
 		cant_deadlocks +=1;
 		//manejar_deadlock();
 		cambio_contexto +=1;
@@ -482,7 +470,7 @@ void deteccion_y_recuperacion_deadlock(){
 		pthread_join(hilo_deadlock,NULL);
 
 	}else{
-		log_info(resultado_deadlock,"No se detectó deadlock");
+		log_info(resultado_deadlock,"No se detectó deadlock \n");
 	}
 
 	sem_post(&en_ejecucion);
@@ -538,7 +526,7 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	printf("\n Inicio operacion de deadlock \n ");
 
-	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
+	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d \n",entrenador0->id,entrenador1->id);
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
@@ -621,7 +609,7 @@ while(1){
 
 		if(hay_deadlock_multiple()){
 
-			log_info(resultado_deadlock,"Se detectó deadlock multiple");
+			log_info(resultado_deadlock,"Se detectó deadlock multiple ");
 
 			entrenador_deadlock-=1;
 
@@ -632,7 +620,7 @@ while(1){
 		}
 
 		if(hay_deadlock()){
-			log_info(resultado_deadlock,"Se detectó deadlock");
+			log_info(resultado_deadlock,"Se detectó deadlock \n");
 			entrenador_deadlock-=2;
 			cant_deadlocks +=1;
 
@@ -644,7 +632,7 @@ while(1){
 
 		}
 	else{
-			log_info(resultado_deadlock,"No se detectó nuevo deadlock");
+			log_info(resultado_deadlock,"No se detectó nuevo deadlock \n");
 
 			//espera unos segundos y pone el contador validar_deadlock en 1
 			pthread_t espera_deadlock;
@@ -681,14 +669,14 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 			sleep(tiempo);
 			quantum -=1;
 			entrenador->ciclos_cpu += 1;
-			printf("\n El entrenador %d se movio en X hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
+			log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		if(entrenador->posX > x){
 			entrenador->posX = entrenador->posX -1;
 			sleep(tiempo);
 			quantum -=1;
 			entrenador->ciclos_cpu += 1;
-			printf("\n El entrenador  %d  se movio en X hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
+			log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		}
 
@@ -715,15 +703,14 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 				sleep(tiempo);
 				quantum -=1;
 				entrenador->ciclos_cpu += 1;
-				printf("\n El entrenador  %d se movio en Y hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
+				log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 			}
 			if(entrenador->posY > y){
 				entrenador->posY = entrenador->posY -1;
 				sleep(tiempo);
 				quantum -=1;
 				entrenador->ciclos_cpu += 1;
-				printf("\n El entrenador  %d se movio en Y hasta: (%d,%d) \n ",entrenador->id,entrenador->posX,entrenador->posY);
-			}
+				log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);}
 			}
 			//No tengo mas Quantum, pero mi posicion es distinta
 			if(quantum == 0){
@@ -739,7 +726,7 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 		}
 
 		}
-	log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
+
 }
 
 
@@ -1458,14 +1445,14 @@ void conexion_broker(void){
 	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
 	if(conexionBroker <= 0){
-		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
+		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default \n");
 		sleep(leer_tiempo_de_reconexion());
 
 		conexion_broker();
 	}
 
 	else{
-		log_info(comunicacion_broker_resultado,"Conectado con Broker");
+		log_info(comunicacion_broker_resultado,"Conectado con Broker \n");
 	}
 
 
@@ -1530,13 +1517,13 @@ void esperar_cliente(int socket_servidor)
 void serve_client(int* socket)
 {
 	//sem_wait(&semaforo_mensaje);
-	pthread_mutex_lock(&llegadaMensajesTHREAD);
+	//pthread_mutex_lock(&llegadaMensajesTHREAD);
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
 	process_request(cod_op, *socket);
-	pthread_mutex_unlock(&llegadaMensajesTHREAD);
+	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	//sem_post(&semaforo_mensaje);
 }
 
@@ -1575,6 +1562,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 		case TEAM__APPEARED_POKEMON:
 
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
+
 			appearedRecibido = deserializar_team_appeared_pokemon(cliente_fd);
 
 			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de %s:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n",username, appearedRecibido->datos->tamanioNombre, appearedRecibido->datos->nombrePokemon, appearedRecibido->datos->posX, appearedRecibido->datos->posY);
@@ -1582,12 +1571,15 @@ void process_request(int cod_op, int cliente_fd) {
 			nuevoPoke = hacer_pokemon(appearedRecibido->datos->nombrePokemon,appearedRecibido->datos->posX,appearedRecibido->datos->posY,appearedRecibido->datos->tamanioNombre);
 
 			aparece_nuevo_pokemon(nuevoPoke);
+		free(appearedRecibido);
 
-			free(appearedRecibido);
+			pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
 			break;
 
 		case BROKER__CAUGHT_POKEMON:
 			//recv(cliente_fd,&(id),sizeof(uint32_t),0);
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 			caughtRecibido = deserializar_team_caught_pokemon(cliente_fd);
 
@@ -1622,9 +1614,12 @@ void process_request(int cod_op, int cliente_fd) {
 			}
 			free(caughtRecibido);
 
+			pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
 			break;
 
 		case BROKER__LOCALIZED_POKEMON:
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			localizedRecibido = deserializar_localized_pokemon(cliente_fd);
@@ -1659,9 +1654,14 @@ void process_request(int cod_op, int cliente_fd) {
 			free(localizedRecibido);
 			sem_post(&mutex_lista);
 			//aca no se muy bien que comparación vamos a hacer
+			pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
 			break;
 
 		case BROKER__APPEARED_POKEMON:
+
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
+
 			recv(cliente_fd,&(id),sizeof(uint32_t),0);
 			appearedRecibidoBROKER = deserializar_appeared_pokemon(cliente_fd);
 			appearedRecibidoBROKER->id= id;
@@ -1682,6 +1682,7 @@ void process_request(int cod_op, int cliente_fd) {
 			aparece_nuevo_pokemon(nuevoPoke);
 
 			free(appearedRecibidoBROKER);
+			pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
 			break;
 

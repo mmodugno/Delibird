@@ -7,6 +7,8 @@
 
 #include"utils_gamecard.h"
 
+pthread_mutex_t llegadaMensajesTHREAD = PTHREAD_MUTEX_INITIALIZER;
+
 
 int verificarExistenciaPokemon(char* nombrePoke) {
 
@@ -1378,7 +1380,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__NEW_POKEMON:
 
-
+	pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 	recv(cliente_fd,&id,sizeof(uint32_t),0);
 
@@ -1389,12 +1391,15 @@ void process_request(int cod_op, int cliente_fd) {
 
 	free(registroConNombre);
 
+	pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
 	break;
 
 
 
 	case GAMECARD__CATCH_POKEMON:
+
+	pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 	recv(cliente_fd,&id,sizeof(uint32_t),0);
 
@@ -1405,12 +1410,14 @@ void process_request(int cod_op, int cliente_fd) {
 
 	free(registroConNombre);
 
-
+	pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	break;
 
 
 
 	case GAMECARD__GET_POKEMON:
+
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 	recv(cliente_fd,&id,sizeof(uint32_t),0);
 	nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
@@ -1419,7 +1426,7 @@ void process_request(int cod_op, int cliente_fd) {
 	procesarGetPokemon(nombre,id);
 
 	free(nombre);
-
+	pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	break;
 
 
@@ -1427,6 +1434,8 @@ void process_request(int cod_op, int cliente_fd) {
 	//TODO
 
 	case BROKER__NEW_POKEMON:
+
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 		recv(cliente_fd,&id,sizeof(uint32_t),0);
 
@@ -1446,10 +1455,13 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 		free(registroConNombre);
-
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
 
 	case BROKER__CATCH_POKEMON:
+
+
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 		recv(cliente_fd,&id,sizeof(uint32_t),0);
 
@@ -1468,10 +1480,13 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY,id);
 
 		free(registroConNombre);
-
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	break;
 
 	case BROKER__GET_POKEMON:
+
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
+
 
 		recv(cliente_fd,&id,sizeof(uint32_t),0);
 
@@ -1488,8 +1503,8 @@ void process_request(int cod_op, int cliente_fd) {
 		liberar_conexion(envio_de_ack);
 
 		procesarGetPokemon(nombre,id);
-
-					free(nombre);
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
+		free(nombre);
 			break;
 
 

@@ -296,7 +296,7 @@ int i;
 		}
 int j;
 	int cpu_totales = 0;
-		for(j= 0; i < list_size(entrenadores); j++){
+		for(j= 0; j < list_size(entrenadores); j++){
 		entrenador* entrenador = list_get(entrenadores, j);
 		cpu_totales += entrenador->ciclos_cpu;
 		}
