@@ -22,7 +22,7 @@ void envioColaNewPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK,(void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -32,7 +32,7 @@ void envioColaNewPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresNewPokemon, llenarUserSinACK);
+			list_iterate(suscriptoresNewPokemon, (void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -58,12 +58,12 @@ void envioColaNewPokemon() {
 
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresNewPokemon->elements_count) {
-					mensajeNewEnMemo = list_find(tablaDeParticiones, menNewQueFalten);
+					mensajeNewEnMemo = list_find(tablaDeParticiones, (void*) menNewQueFalten);
 					enviarPorTipo(mensajeNewEnMemo, usersSinACK);
 					//list_clean_and_destroy_elements(usersSinACK, free);
 				}
@@ -73,7 +73,7 @@ void envioColaNewPokemon() {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresNewPokemon->elements_count) {
 
-					mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, menNewQueFaltenEnBuddy);
+					mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, (void*) menNewQueFaltenEnBuddy);
 					enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
 
 				}
@@ -163,7 +163,7 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar){
 	//uint32_t noSeConecto = 0;
 
-	if (list_any_satisfy(usersAEnviar, esTeam)){
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)){
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
@@ -172,7 +172,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
@@ -181,7 +181,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
@@ -193,7 +193,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 }
 
 void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar, esTeam)){
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)){
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
@@ -202,7 +202,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
@@ -212,7 +212,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		}
 
 	}
-	if (list_any_satisfy(usersAEnviar, esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
@@ -224,7 +224,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 }
 
 void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar, esTeam)){
+	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
@@ -233,7 +233,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameBoy)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
@@ -242,7 +242,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameCard)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
@@ -254,7 +254,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 }
 
 void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar, esTeam)){
+	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
@@ -263,7 +263,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameBoy)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
@@ -272,7 +272,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameCard)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
@@ -284,7 +284,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 }
 
 void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar, esTeam)){
+	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
@@ -293,7 +293,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameBoy)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
@@ -302,7 +302,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion!= -1) {
@@ -314,7 +314,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 }
 
 void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar, esTeam)){
+	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
 		if (conexionTeam != -1) {
@@ -323,7 +323,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameBoy)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
 		//conexion con GAMEBOY
 		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
 		if (conexionGameboy != -1) {
@@ -332,7 +332,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, esGameCard)){
+	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
@@ -359,7 +359,7 @@ void envioColaGetPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK,(void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -369,7 +369,7 @@ void envioColaGetPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresGetPokemon, llenarUserSinACK);
+			list_iterate(suscriptoresGetPokemon,(void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -394,12 +394,12 @@ void envioColaGetPokemon() {
 
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresGetPokemon->elements_count) {
-					mensajeGetEnMemo = list_find(tablaDeParticiones,menGetQueFalten);
+					mensajeGetEnMemo = list_find(tablaDeParticiones,(void*) menGetQueFalten);
 					enviarPorTipo(mensajeGetEnMemo, usersSinACK);
 				}
 			}
@@ -407,7 +407,7 @@ void envioColaGetPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresGetPokemon->elements_count) {
-					mensajeGetEnMemoBuddy= list_find(tablaDeParticiones, menGetQueFaltenEnBuddy);
+					mensajeGetEnMemoBuddy= list_find(tablaDeParticiones, (void*) menGetQueFaltenEnBuddy);
 					enviarPorTipo(mensajeGetEnMemoBuddy->particion,usersSinACK);
 				}
 			}
@@ -437,7 +437,7 @@ void envioColaLocalizedPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK, (void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -447,7 +447,7 @@ void envioColaLocalizedPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresLocalizedPokemon, llenarUserSinACK);
+			list_iterate(suscriptoresLocalizedPokemon,(void*)  llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -471,12 +471,12 @@ void envioColaLocalizedPokemon() {
 		if (suscriptoresLocalizedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresLocalizedPokemon->elements_count) {
-					mensajeLocalizedEnMemo = list_find(tablaDeParticiones,menLocalizedQueFalten);
+					mensajeLocalizedEnMemo = list_find(tablaDeParticiones,(void*)  menLocalizedQueFalten);
 					enviarPorTipo(mensajeLocalizedEnMemo, usersSinACK);
 				}
 			}
@@ -484,7 +484,7 @@ void envioColaLocalizedPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresLocalizedPokemon->elements_count) {
-					mensajeLocalizedEnMemoBuddy = list_find(tablaDeParticiones,menLocalizedQueFaltenEnBuddy);
+					mensajeLocalizedEnMemoBuddy = list_find(tablaDeParticiones,(void*) menLocalizedQueFaltenEnBuddy);
 					enviarPorTipo(mensajeLocalizedEnMemoBuddy->particion,usersSinACK);
 				}
 			}
@@ -514,7 +514,7 @@ void envioColaAppearedPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK, (void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -524,7 +524,7 @@ void envioColaAppearedPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresAppearedPokemon, llenarUserSinACK);
+			list_iterate(suscriptoresAppearedPokemon, (void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -548,12 +548,12 @@ void envioColaAppearedPokemon() {
 		if (suscriptoresAppearedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresAppearedPokemon->elements_count) {
-					mensajeAppearedEnMemo = list_find(tablaDeParticiones, menAppearedQueFalten);
+					mensajeAppearedEnMemo = list_find(tablaDeParticiones, (void*) menAppearedQueFalten);
 					enviarPorTipo(mensajeAppearedEnMemo, usersSinACK);
 				}
 			}
@@ -561,7 +561,7 @@ void envioColaAppearedPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresAppearedPokemon->elements_count) {
-					mensajeAppearedEnMemoBuddy = list_find(tablaDeParticiones, menAppearedQueFaltenEnBuddy);
+					mensajeAppearedEnMemoBuddy = list_find(tablaDeParticiones,(void*) menAppearedQueFaltenEnBuddy);
 					enviarPorTipo(mensajeAppearedEnMemoBuddy->particion,usersSinACK);
 				}
 			}
@@ -591,7 +591,7 @@ void envioColaCatchPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK, (void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -601,7 +601,7 @@ void envioColaCatchPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresCatchPokemon, llenarUserSinACK);
+			list_iterate(suscriptoresCatchPokemon, (void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -626,12 +626,12 @@ void envioColaCatchPokemon() {
 
 			sem_wait(&usoMemoria);
 
-			list_sort(tablaDeParticiones,baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCatchPokemon->elements_count) {
-					mensajeCatchEnMemo = list_find(tablaDeParticiones, menCatchQueFalten);
+					mensajeCatchEnMemo = list_find(tablaDeParticiones, (void*) menCatchQueFalten);
 					enviarPorTipo(mensajeCatchEnMemo, usersSinACK);
 				}
 			}
@@ -639,7 +639,7 @@ void envioColaCatchPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresCatchPokemon->elements_count) {
-					mensajeCatchEnMemoBuddy = list_find(tablaDeParticiones, menCatchQueFaltenEnBuddy);
+					mensajeCatchEnMemoBuddy = list_find(tablaDeParticiones, (void*) menCatchQueFaltenEnBuddy);
 					enviarPorTipo(mensajeCatchEnMemoBuddy->particion, usersSinACK);
 				}
 			}
@@ -669,7 +669,7 @@ void envioColaCaughtPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK, esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK, (void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -679,7 +679,7 @@ void envioColaCaughtPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresCaughtPokemon, llenarUserSinACK);
+			list_iterate(suscriptoresCaughtPokemon, (void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -704,11 +704,11 @@ void envioColaCaughtPokemon() {
 
 			sem_wait(&usoMemoria);
 
-			list_sort(tablaDeParticiones,baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCaughtPokemon->elements_count) {
-					mensajeCaughtEnMemo = list_find(tablaDeParticiones, menCaughtQueFalten);
+					mensajeCaughtEnMemo = list_find(tablaDeParticiones, (void*) menCaughtQueFalten);
 					enviarPorTipo(mensajeCaughtEnMemo, usersSinACK);
 				}
 			}
@@ -716,7 +716,7 @@ void envioColaCaughtPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresCaughtPokemon->elements_count) {
-					mensajeCaughtEnMemoBuddy = list_find(tablaDeParticiones, menCaughtQueFaltenEnBuddy);
+					mensajeCaughtEnMemoBuddy = list_find(tablaDeParticiones, (void*) menCaughtQueFaltenEnBuddy);
 					enviarPorTipo(mensajeCaughtEnMemoBuddy->particion, usersSinACK);
 				}
 			}

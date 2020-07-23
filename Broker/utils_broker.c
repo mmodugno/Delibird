@@ -428,10 +428,10 @@ void process_request(int cod_op, int cliente_fd) {
 			//TODO comentar, muestra lo que esta en memoria
 			list_iterate(tablaDeParticiones,mostrarParticiones);*/
 
-			if(!strcmp(algoritmo_memoria,"PARTICIONES")) partEncontrada = list_find(tablaDeParticiones, partAck);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")) partEncontrada = list_find(tablaDeParticiones, (void*) partAck);
 
 			if(!strcmp(algoritmo_memoria,"BS")) {
-				buddyEncontrado = list_find(tablaDeParticiones,buddyAck);
+				buddyEncontrado = list_find(tablaDeParticiones,(void*) buddyAck);
 				partEncontrada = buddyEncontrado->particion;
 			}
 
@@ -494,7 +494,7 @@ bool esSuscriptor(char* suscAct){
 
 void eliminarDeACK(particion* part){
 	if(part->tipoMensaje == colaAEliminar){
-		list_remove_and_destroy_by_condition(part->acknoleged,esSuscriptor,free);
+		list_remove_and_destroy_by_condition(part->acknoleged,(void*) esSuscriptor,free);
 	}
 }
 
@@ -547,66 +547,66 @@ void desuscribirACola(suscriptor* suscrip){
 	switch(suscrip->tipoDeCola){
 		case NEW_POKEMON:{
 			sem_wait(&suscripcionAColaNEW);
-			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,suscriptorAEliminar,free);
+			list_remove_and_destroy_by_condition(suscriptoresNewPokemon,(void*) suscriptorAEliminar,free);
 			sem_wait(&usoMemoria);
 			colaAEliminar = NEW_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,eliminarDeACK);
+			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaNEW);
 			break;
 		}
 		case APPEARED_POKEMON:{
 			sem_wait(&suscripcionAColaAPPEARED);
-			list_remove_and_destroy_by_condition(suscriptoresAppearedPokemon,suscriptorAEliminar,free);
+			list_remove_and_destroy_by_condition(suscriptoresAppearedPokemon,(void*) suscriptorAEliminar,free);
 			sem_wait(&usoMemoria);
 			colaAEliminar = APPEARED_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,eliminarDeACK);
+			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaAPPEARED);
 			break;
 		}
 		case CATCH_POKEMON:{
 			sem_wait(&suscripcionAColaCATCH);
-			list_remove_and_destroy_by_condition(suscriptoresCatchPokemon,suscriptorAEliminar,free);
+			list_remove_and_destroy_by_condition(suscriptoresCatchPokemon,(void*) suscriptorAEliminar,free);
 			sem_wait(&usoMemoria);
 			colaAEliminar = CATCH_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,eliminarDeACK);
+			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaCATCH);
 			break;
 		}
 		case CAUGHT_POKEMON:{
 			sem_wait(&suscripcionAColaCAUGHT);
-			list_remove_and_destroy_by_condition(suscriptoresCaughtPokemon,suscriptorAEliminar,free);
+			list_remove_and_destroy_by_condition(suscriptoresCaughtPokemon,(void*)suscriptorAEliminar,free);
 			sem_wait(&usoMemoria);
 			colaAEliminar = CAUGHT_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,eliminarDeACK);
+			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaCAUGHT);
 			break;
 		}
 		case GET_POKEMON:{
 			sem_wait(&suscripcionAColaGET);
-			list_remove_and_destroy_by_condition(suscriptoresGetPokemon,suscriptorAEliminar,free);
+			list_remove_and_destroy_by_condition(suscriptoresGetPokemon,(void*) suscriptorAEliminar,free);
 			sem_wait(&usoMemoria);
 			colaAEliminar = GET_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,eliminarDeACK);
+			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaGET);
 			break;
 		}
 		case LOCALIZED_POKEMON:{
 			sem_wait(&suscripcionAColaLOCALIZED);
-			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,suscriptorAEliminar,free);
+			list_remove_and_destroy_by_condition(suscriptoresLocalizedPokemon,(void*) suscriptorAEliminar,free);
 			sem_wait(&usoMemoria);
 			colaAEliminar = LOCALIZED_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,eliminarDeACK);
+			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaLOCALIZED);
 			break;
@@ -695,16 +695,16 @@ void algoritmoBestFit(particion *datoAAgregar, particion *particionChica) {
 		}
 		return 0;
 	}
+//Me parece que es list_sorted.
+	list_sort(tablaDeParticiones, (void*) baseMasChica);
 
-	list_sort(tablaDeParticiones, baseMasChica);
-
-	t_list* tablaParticionesLibres = list_filter(tablaDeParticiones,particionLibreQueEntre);
+	t_list* tablaParticionesLibres = list_filter(tablaDeParticiones,(void*)particionLibreQueEntre);
 	particionChica = list_get(tablaParticionesLibres, 0);
 
-	list_iterate(tablaParticionesLibres, particionMasChica);
+	list_iterate(tablaParticionesLibres, (void*) particionMasChica);
 
 	if (particionChica != NULL) {
-		list_find(tablaDeParticiones, partSiguienteALibre);
+		list_find(tablaDeParticiones, (void*) partSiguienteALibre);
 	}
 
 	//si encontro una partcion en toda la memoria
@@ -821,7 +821,7 @@ void algoritmoReemplazo(){
 		return !(part->libre);
 	}
 
-	t_list *tablaParticionesLlenas = list_filter(tablaDeParticiones, partLlenas);
+	t_list *tablaParticionesLlenas = list_filter(tablaDeParticiones, (void*) partLlenas);
 	particion* partAEliminar = list_get(tablaParticionesLlenas, 0);
 
 	bool particionesAnt(particion* part) {
@@ -875,18 +875,18 @@ void algoritmoReemplazo(){
 	}
 
 	//se elije cual es la particion que vamos a eliminar (la mas vieja, ya sea para LRU o FIFO
-	list_iterate(tablaParticionesLlenas, partMasVieja);
+	list_iterate(tablaParticionesLlenas, (void*) partMasVieja);
 
 	//ordenamos todas las pariciones por sus bases
-	list_sort(tablaDeParticiones, baseMasChica);
+	list_sort(tablaDeParticiones, (void*) baseMasChica);
 
-	particion *partSig = list_find(tablaDeParticiones, partSiguienteALibre);
+	particion *partSig = list_find(tablaDeParticiones, (void*) partSiguienteALibre);
 
-	t_list *particionesAnteriores = list_filter(tablaDeParticiones,particionesAnt);
+	t_list *particionesAnteriores = list_filter(tablaDeParticiones,(void*) particionesAnt);
 
-	list_sort(particionesAnteriores, baseMasChica);
+	list_sort(particionesAnteriores, (void*) baseMasChica);
 
-	list_iterate(particionesAnteriores, particionAnterior);
+	list_iterate(particionesAnteriores,(void*) particionAnterior);
 
 	if (partAEliminar != NULL) {
 
@@ -904,7 +904,7 @@ void algoritmoReemplazo(){
 
 		//saco la particion a eliminar de la tabla de particiones
 		baseAEliminar = partAEliminar->base;
-		partAEliminar = list_remove_by_condition(tablaDeParticiones,particionConEsaBase);
+		partAEliminar = list_remove_by_condition(tablaDeParticiones,(void*) particionConEsaBase);
 
 		//consolidacion
 		if (partSig != NULL) {
@@ -912,14 +912,14 @@ void algoritmoReemplazo(){
 				partNueva->tamanioMensaje += partSig->tamanioMensaje;
 				//eliminar partSig de la Tabla de Particiones
 				baseAEliminar = partSig->base;
-				list_remove_and_destroy_by_condition(tablaDeParticiones,particionConEsaBase, free);
+				list_remove_and_destroy_by_condition(tablaDeParticiones,(void*) particionConEsaBase, free);
 			}
 		}
 		if (partAnt != NULL) {
 			if (partAnt->libre) {
 				//eliminar partAnt de la Tabla de Particiones
 				baseAEliminar = partAnt->base;
-				partAnt = list_remove_by_condition(tablaDeParticiones,particionConEsaBase);
+				partAnt = list_remove_by_condition(tablaDeParticiones,(void*) particionConEsaBase);
 				//sumamos el tamaño de esa particion anterior LIBRE
 				partNueva->tamanioMensaje += partAnt->tamanioMensaje;
 				//movemos la Base a esa
@@ -977,11 +977,11 @@ void algoritmoFirstFit(particion *datoAAgregar, particion *particionEncontrada) 
 		return (partic == particionEncontrada);
 	}
 
-	list_sort(tablaDeParticiones, baseMasChica);
-	particionEncontrada = list_find(tablaDeParticiones, primeroLibreQueEntre);
+	list_sort(tablaDeParticiones, (void*) baseMasChica);
+	particionEncontrada = list_find(tablaDeParticiones, (void*) primeroLibreQueEntre);
 
 	if (particionEncontrada) {
-		list_find(tablaDeParticiones, partSiguienteALibre);
+		list_find(tablaDeParticiones, (void*) partSiguienteALibre);
 	}
 
 	//si encontro una partcion en toda la memoria
@@ -1011,7 +1011,7 @@ int compactarMemoria(){
 	//nos fijamos la frecuencia
 	if (frecuencia == frecuencia_compactacion) {
 		frecuencia = 0;
-		if(list_count_satisfying(tablaDeParticiones, partLibres) != 0){
+		if(list_count_satisfying(tablaDeParticiones, (void*) partLibres) != 0){
 			uint32_t baseAOcupar = 0;
 			uint32_t cantLibres = 0;
 
@@ -1024,24 +1024,24 @@ int compactarMemoria(){
 						part->tamanioMensaje);
 			}
 
-			t_list* partOcupadas = list_filter(tablaDeParticiones, partLlenas);
+			t_list* partOcupadas = list_filter(tablaDeParticiones, (void*) partLlenas);
 
-			list_sort(tablaDeParticiones, baseMasChica);
+			list_sort(tablaDeParticiones,(void*) baseMasChica);
 			//muestra como quedo la tabla de particiones  (COMENTAR)
 			/*
 			 log_info(compactacionMemoria,"antes de compactar la memoria esta asi:");
 			 list_iterate(tablaDeParticiones,mostrarParticiones);*/
 
 			//ordenamos las bases ocupadas
-			list_sort(partOcupadas, baseMasChica);
+			list_sort(partOcupadas, (void*) baseMasChica);
 			//cambiamos las bases ocupadas para que esten todas juntas
-			list_iterate(partOcupadas, cambiarBases);
+			list_iterate(partOcupadas, (void*) cambiarBases);
 
 			//destruir y liberar todas las particiones libres
-			cantLibres = list_count_satisfying(tablaDeParticiones, partLibres);
+			cantLibres = list_count_satisfying(tablaDeParticiones, (void*) partLibres);
 
 			while (cantLibres > 0) {
-				list_remove_and_destroy_by_condition(tablaDeParticiones,partLibres, free);
+				list_remove_and_destroy_by_condition(tablaDeParticiones,(void*) partLibres, free);
 				cantLibres--;
 			}
 
@@ -1391,9 +1391,9 @@ void agregarEnBuddy(buddy* unBuddyParaAgregar){
 		return unBuddy->particion->libre;
 	}
 
-	t_list* buddiesLibres = list_filter(buddiesTotales,estaLibre);
+	t_list* buddiesLibres = list_filter(buddiesTotales,(void*) estaLibre);
 
-	t_list* buddiesQueMeSirven = list_filter(buddiesLibres,mayorOIgualAtamanioIdeal);
+	t_list* buddiesQueMeSirven = list_filter(buddiesLibres,(void*) mayorOIgualAtamanioIdeal);
 
 	if (list_size(buddiesQueMeSirven) != 0) {
 
@@ -1447,15 +1447,15 @@ bool hayTamanioDisponiblePara(int tamanio){
 	}
 
 	//TODO comente esto porque no se si lo usaban
-	t_list* listaLibres = list_filter(tablaDeParticiones,estaLibre);
+	t_list* listaLibres = list_filter(tablaDeParticiones,(void*) estaLibre);
 
-	t_list* listaTamaniosLibres = list_map(tablaDeParticiones,tamanioBuddy);
+	t_list* listaTamaniosLibres = list_map(tablaDeParticiones,(void*) tamanioBuddy);
 
 	bool mayorOigualQueTamanioBuscado(int tamanioParaComparar) {
 		return tamanioParaComparar >= tamanio;
 	}
 
-	return list_any_satisfy(listaTamaniosLibres, mayorOigualQueTamanioBuscado);
+	return list_any_satisfy(listaTamaniosLibres, (void*) mayorOigualQueTamanioBuscado);
 
 }
 
@@ -1538,11 +1538,11 @@ t_list* listaTamanioBuddiesPosibles() {
 	int tamanioInicial = tamanio_memoria;
 
 	while(tamanioInicial != tamanio_minimo_particion){
-		list_add(posiblesTamanios,tamanioInicial);
+		list_add(posiblesTamanios,(void*) tamanioInicial);
 		tamanioInicial = tamanioInicial / 2;
 	}
 
-	list_add(posiblesTamanios,tamanioInicial);
+	list_add(posiblesTamanios,(void*) tamanioInicial);
 
 	return posiblesTamanios;
 
@@ -1556,7 +1556,7 @@ uint32_t tamanioIdealBuddy(uint32_t tamanio) {
 		 return tamanioAcomparar >= tamanio;
 	}
 
-	t_list* dondeEntra = list_filter(tamanioBuddies,buddyEsMasGrandeTamanioMensaje);
+	t_list* dondeEntra = list_filter(tamanioBuddies,(void*) buddyEsMasGrandeTamanioMensaje);
 
 	uint32_t minimo = list_get(dondeEntra,0);
 	uint32_t i = 0;
@@ -1585,7 +1585,7 @@ int posicionBuddyTabla(buddy* buddyAconsiderar) {
 		return baseAbuscar == unBuddy->particion->base;
 	}
 
-	t_list* listaBases = list_map(tablaDeParticiones,base);
+	t_list* listaBases = list_map(tablaDeParticiones,(void*) base);
 
 	int i = 0; //posicion del buddy a considerar
 
@@ -1757,7 +1757,7 @@ buddy* seleccionarVictima(){
 	int milAct;
 	int milElim;
 
-	t_list *tablaParticionesLlenas = list_filter(tablaDeParticiones,buddyLleno);
+	t_list *tablaParticionesLlenas = list_filter(tablaDeParticiones,(void*) buddyLleno);
 
 	buddy* buddyAEliminar = list_get(tablaParticionesLlenas, 0);
 
@@ -1795,7 +1795,7 @@ buddy* seleccionarVictima(){
 			}
 		}
 
-		list_iterate(tablaParticionesLlenas, partMasVieja);
+		list_iterate(tablaParticionesLlenas,(void*) partMasVieja);
 
 
 		return buddyAEliminar;
@@ -1852,7 +1852,7 @@ void eliminarVictima(){
 void consolidarBuddySystem() {
 
 
-	while(list_any_satisfy(tablaDeParticiones,buddyPuedeConsolidar)){
+	while(list_any_satisfy(tablaDeParticiones, (void*) buddyPuedeConsolidar)){
 
 		int i;
 
