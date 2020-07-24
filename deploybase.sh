@@ -38,6 +38,8 @@ cd
 
 # ________________ Carpeta tp
 
+mkdir Escritorio
+
 if test -d /home/utnso/Escritorio/tp-2020-1c-The-X-Team/; then
     sudo rm -r /home/utnso/Escritorio/tp-2020-1c-The-X-Team
 
