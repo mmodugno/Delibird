@@ -16,7 +16,7 @@
 
 int verificarExistenciaPokemon(char* nombrePoke) {
 
-	char* path = "/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/";
+	char* path = "/home/utnso/PuntoMontaje/TallGrass/Files/";
 
 	char* archivo = "/Metadata.bin";
 
@@ -257,7 +257,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 void leerMetadata(){
 
 
-	t_config* configAux = config_create("/home/utnso/Escritorio/PuntoMontaje/Metadata/Metadata.bin");
+	t_config* configAux = config_create("/home/utnso/PuntoMontaje/Metadata/Metadata.bin");
 
 	tamanioBloques =  config_get_int_value(configAux,"BLOCK_SIZE");
 	cantidadBloques = config_get_int_value(configAux,"BLOCKS");
@@ -268,7 +268,7 @@ void leerMetadata(){
 
 void calcularTamanioMetadata(char* pokemon) {
 
-	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",pokemon);
+	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",pokemon);
 
 	t_config* configAux = config_create(path);
 
@@ -301,7 +301,7 @@ void calcularTamanioMetadata(char* pokemon) {
 void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 
 
-	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	int existe = verificarExistenciaPokemon(nombrePoke);
 	verificarAperturaArchivo(path);
@@ -361,7 +361,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
 
-	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 
 	verificarDirectorioPokemon(nombrePoke);
@@ -426,7 +426,7 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
 void procesarGetPokemon(char* nombrePoke, int id){
 
-	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	t_list* listaRegistros;
 
@@ -526,7 +526,7 @@ int tamanioRestante(FILE* arch) {
 void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
 
-	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+	t_config* configPoke = config_create(string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
 
 	char** bloques = config_get_array_value(configPoke,"BLOCKS");
 
@@ -545,7 +545,7 @@ t_list* obtenerPosiciones(char* nombrePoke){
 
 	int j = 0;
 
-	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+	t_config* configPoke = config_create(string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
 
 	char** bloques = config_get_array_value(configPoke,"BLOCKS");
 
@@ -903,7 +903,7 @@ char* listToString(t_list* lista) {
 
 void eliminarBloquesVacios(char* nombrePoke){
 
-	t_config* configPoke = config_create(string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+	t_config* configPoke = config_create(string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
 
 	char** bloques = config_get_array_value(configPoke,"BLOCKS");
 
@@ -1138,7 +1138,7 @@ void cerrarArchivoMetadataPoke(t_config* configPoke){
 
 void verificarDirectorioPokemon(char* nombrePoke){
 
-	char* ruta = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+	char* ruta = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	int f = open(ruta,O_RDWR);
 
@@ -1167,7 +1167,7 @@ void vaciarArchivo(char* ruta) {
 void inicializar_bitarray() {
 	//loggear_trace(string_from_format("Inicializando bitarray"));
 	FILE* archivo_bitmap = fopen(
-			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "r");
+			"/home/utnso/PuntoMontaje/Metadata/Bitmap.bin", "r");
 
 	char* bitmap = malloc(cantidadBloques / 8 + 1);
 	int resultado_read = 0;
@@ -1186,12 +1186,12 @@ void inicializar_bitarray() {
 void inicializar_bitmap() {
 
 	if (estaVacioConRuta(
-			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin")) {
+			"/home/utnso/PuntoMontaje/Metadata/Bitmap.bin")) {
 		FILE* archivo_bitmap = fopen(
-				"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin",
+				"/home/utnso/PuntoMontaje/Metadata/Bitmap.bin",
 				"w+");
 		fclose(archivo_bitmap);
-		truncate("/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin",
+		truncate("/home/utnso/PuntoMontaje/Metadata/Bitmap.bin",
 				cantidadBloques / 8); //te deja el archivo completo en cero.
 	}
 
@@ -1199,10 +1199,10 @@ void inicializar_bitmap() {
 
 void crearFilesAndBlocks() {
 
-	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass", "/Files");
+	crearDirectorio("/home/utnso/PuntoMontaje/TallGrass", "/Files");
 
 	metadataFiles = txt_open_for_append(
-			"/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/Metadata.bin");
+			"/home/utnso/PuntoMontaje/TallGrass/Files/Metadata.bin");
 
 	if (estaVacio(metadataFiles)) {
 
@@ -1212,14 +1212,14 @@ void crearFilesAndBlocks() {
 
 	}
 
-	crearDirectorio("/home/utnso/Escritorio/PuntoMontaje/TallGrass", "/Blocks");
+	crearDirectorio("/home/utnso/PuntoMontaje/TallGrass", "/Blocks");
 
 }
 
 void crearBitmap() {
 
 	FILE* bitmap = txt_open_for_append(
-			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin");
+			"/home/utnso/PuntoMontaje/Metadata/Bitmap.bin");
 
 	fseek(bitmap, 0, SEEK_END);
 
@@ -1238,7 +1238,7 @@ void crearBitmap() {
 
 void actualizar_bitmap() {
 	FILE* bitmap = fopen(
-			"/home/utnso/Escritorio/PuntoMontaje/Metadata/Bitmap.bin", "wb+");
+			"/home/utnso/PuntoMontaje/Metadata/Bitmap.bin", "wb+");
 	fwrite(bitArray->bitarray, sizeof(char), sizeof(char) * bitArray->size,
 			bitmap);
 	fclose(bitmap);
@@ -1293,7 +1293,7 @@ void iniciar_servidor(void)
 }
 
 int conectarse_con_broker(void){
-	int conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	int conexionBroker = crear_conexion(ipBroker,puertoBroker);
 	if(conexionBroker <= 0){
 		//log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default");
 		//broker_default();
@@ -1408,7 +1408,7 @@ void process_request(int cod_op, int cliente_fd) {
 		printf("Recibo new de broker \n");
 		fflush(stdout);
 
-		int envio_de_ack = crear_conexion(IP_BROKER, PUERTO_BROKER);
+		int envio_de_ack = crear_conexion(ipBroker,puertoBroker);
 
 		if (envio_de_ack != -1) {
 
@@ -1444,7 +1444,7 @@ void process_request(int cod_op, int cliente_fd) {
 		printf("Recibo get de broker \n");
 		fflush(stdout);
 
-		int envio_de_ack_get = crear_conexion(IP_BROKER, PUERTO_BROKER);
+		int envio_de_ack_get = crear_conexion(ipBroker,puertoBroker);
 
 		if (envio_de_ack_get != -1) {
 
@@ -1479,7 +1479,7 @@ void process_request(int cod_op, int cliente_fd) {
 		printf("Recibo catch de broker \n");
 		fflush(stdout);
 
-		int envio_de_ack_catch = crear_conexion(IP_BROKER, PUERTO_BROKER);
+		int envio_de_ack_catch = crear_conexion(ipBroker,puertoBroker);
 
 		if (envio_de_ack_catch != -1) {
 

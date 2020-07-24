@@ -20,9 +20,15 @@ int main(int argc, char* argv[]){
 
 		nombreConfig = argv[1];
 
+
+
+
 		sem_init(&sem_mensaje,0,1);
 
 		leer_config();
+
+
+
 
 		username = malloc(strlen("GAMECARD"+1));
 		username = "GAMECARD";
@@ -37,7 +43,7 @@ int main(int argc, char* argv[]){
 		printf("Empezo el programa \n");
 
 
-		crearDirectorio("/home/utnso/Escritorio/","PuntoMontaje");
+		crearDirectorio("/home/utnso/","PuntoMontaje");
 
 		leerMetadata();
 
@@ -116,7 +122,12 @@ void leer_config(void){
 
 	ipBroker = config_get_string_value(config,"IP_BROKER");
 
-	puertoBroker = config_get_int_value(config,"PUERTO_BROKER");
+	puertoBroker = config_get_string_value(config,"PUERTO_BROKER");
+
+	ipGamecard = config_get_string_value(config,"IP_GAMECARD");
+	puertoGamecard = config_get_string_value(config,"PUERTO_GAMECARD");
+
+
 }
 
 
@@ -137,7 +148,7 @@ void suscribirnos_cola_catch(){
 
 	meSuscriboGet->tipoDeCola = CATCH_POKEMON;
 
-	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionGet = crear_conexion(ipBroker,puertoBroker);
 
 	if(suscripcionGet != -1){
 			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
@@ -161,7 +172,7 @@ void suscribirnos_cola_new(){
 
 
 
-	suscripcionNew = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionNew = crear_conexion(ipBroker,puertoBroker);
 
 
 	if(suscripcionNew != -1){
@@ -184,7 +195,7 @@ void suscribirnos_cola_get(){
 
 	meSuscriboGet->tipoDeCola = GET_POKEMON;
 
-	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
+	suscripcionGet = crear_conexion(ipBroker,puertoBroker);
 
 
 	if(suscripcionGet != -1){
