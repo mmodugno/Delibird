@@ -143,7 +143,7 @@ void serve_client(int* socket)
 		cod_op = -1;
 	process_request(cod_op, *socket);
 
-	liberar_conexion(*socket);
+	//liberar_conexion(*socket);
 	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	//sem_post(&llegadaMensajes);
 }
@@ -558,9 +558,14 @@ bool esSuscriptor(char* suscAct){
 
 void eliminarDeACK(particion* part){
 	if(part->tipoMensaje == colaAEliminar){
-		list_remove_and_destroy_by_condition(part->acknoleged,(void*) esSuscriptor,free);
+		list_remove_by_condition(part->acknoleged,(void*) esSuscriptor);
 	}
 }
+
+void eliminarDeACKBuddy(buddy* unBuddy){
+	eliminarDeACK(unBuddy->particion);
+}
+
 
 void suscribirACola(suscriptor* suscrip){
 	switch(suscrip->tipoDeCola){
@@ -613,7 +618,12 @@ void desuscribirACola(suscriptor* suscrip){
 			sem_wait(&usoMemoria);
 			colaAEliminar = NEW_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			}
+			if(!strcmp(algoritmo_memoria,"BS")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACKBuddy);
+			}
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaNEW);
 			break;
@@ -624,7 +634,13 @@ void desuscribirACola(suscriptor* suscrip){
 			sem_wait(&usoMemoria);
 			colaAEliminar = APPEARED_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			}
+			if(!strcmp(algoritmo_memoria,"BS")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACKBuddy);
+			}
+
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaAPPEARED);
 			break;
@@ -635,7 +651,12 @@ void desuscribirACola(suscriptor* suscrip){
 			sem_wait(&usoMemoria);
 			colaAEliminar = CATCH_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			}
+			if(!strcmp(algoritmo_memoria,"BS")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACKBuddy);
+			}
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaCATCH);
 			break;
@@ -646,7 +667,12 @@ void desuscribirACola(suscriptor* suscrip){
 			sem_wait(&usoMemoria);
 			colaAEliminar = CAUGHT_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			}
+			if(!strcmp(algoritmo_memoria,"BS")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACKBuddy);
+			}
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaCAUGHT);
 			break;
@@ -657,7 +683,12 @@ void desuscribirACola(suscriptor* suscrip){
 			sem_wait(&usoMemoria);
 			colaAEliminar = GET_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			}
+			if(!strcmp(algoritmo_memoria,"BS")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACKBuddy);
+			}
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaGET);
 			break;
@@ -668,7 +699,12 @@ void desuscribirACola(suscriptor* suscrip){
 			sem_wait(&usoMemoria);
 			colaAEliminar = LOCALIZED_POKEMON;
 			susAEliminar = suscrip;
-			list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACK);
+			}
+			if(!strcmp(algoritmo_memoria,"BS")){
+				list_iterate(tablaDeParticiones,(void*) eliminarDeACKBuddy);
+			}
 			sem_post(&usoMemoria);
 			sem_post(&suscripcionAColaLOCALIZED);
 			break;
