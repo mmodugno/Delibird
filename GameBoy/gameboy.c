@@ -361,7 +361,7 @@ int main(int argc, char* argv[]){
 
 
 				//Abro el server de Gameboy para escuchar los msj q me manda Broker
-				liberar_conexion(conexionBroker);
+				//liberar_conexion(conexionBroker);
 
 				flagTerminoSuscripcion = 0;
 
@@ -382,7 +382,7 @@ int main(int argc, char* argv[]){
 
 				} else{
 					enviar_pedido_desuscripcion(meSuscribo,conexion);
-					liberar_conexion(conexion);
+					//liberar_conexion(conexion);
 				}
 
 				free(meSuscribo);
@@ -439,7 +439,7 @@ void terminar_programa(){
 
 	config_destroy(config);
 
-	liberar_conexion(conexionBroker);
-	liberar_conexion(conexionGamecard);
-	liberar_conexion(conexionTeam);
+	//liberar_conexion(conexionBroker);
+	//liberar_conexion(conexionGamecard);
+	//liberar_conexion(conexionTeam);
 }

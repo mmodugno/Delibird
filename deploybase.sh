@@ -14,7 +14,7 @@ cd
 
 git clone https://github.com/sisoputnfrba/so-commons-library.git
 cd so-commons-library/
-sudo make install
+    sudo make install
 
 cd
 
@@ -38,26 +38,33 @@ cd
 
 # ________________ Carpeta tp
 
-if test -d /home/utnso/tp-2020-1c-The-X-Team/; then
-    sudo rm -r /home/utnso/tp-2020-1c-The-X-Team
+
+
+if test -d /home/utnso/Escritorio/tp-2020-1c-The-X-Team/; then
+    sudo rm -r /home/utnso/Escritorio/tp-2020-1c-The-X-Team
 
 fi
 
+mkdir Escritorio
 
-cp -r tp-2020-1c-The-X-Team /home/utnso/tp-2020-1c-The-X-Team
+cp -r tp-2020-1c-The-X-Team/ /home/utnso/Escritorio/tp-2020-1c-The-X-Team
 
 
 
 # ________________ Shared Library
 
-cd /home/utnso/tp-2020-1c-The-X-Team/utils/Debug
+cd /home/utnso/Escritorio/tp-2020-1c-The-X-Team/utils/Debug
 
 make all
 
 
 #_________________ GameBoy
 
-cd /home/utnso/tp-2020-1c-The-X-Team/GameBoy/Debug
+cd /home/utnso/Escritorio/tp-2020-1c-The-X-Team/GameBoy/Debug
+
+make all
+
+cd ..
 
 if test -e gameboy.config; then
     rm gameboy.config
@@ -74,14 +81,18 @@ LOG_FILE=/home/utnso/gameboy.log" >> gameboy.config
 #Ya estamos en la carpeta del debug, entonces compilamos gameboy desde aca:
 
 
-make clean
-make all
+#make clean
+#make all
 
 
 #__________________ GameCard
 
 
 cd /home/utnso/tp-2020-1c-The-X-Team/GameCard/Debug
+
+make all
+
+cd ..
 
 if test -e gamecard.config; then
     rm gamecard.config
@@ -98,8 +109,8 @@ PUERTO_BROKER=6009\n" >> gamecard.config
 
 #cd ../../Debug
 
-make clean
-make all
+#make clean
+#make all
 
 #__________________ Teams
 
@@ -113,7 +124,7 @@ cd ../../
 
 cp Team/ Team_RR
 
-cd /home/utnso/tp-2020-1c-The-X-Team/Team/Debug
+cd /home/utnso/tp-2020-1c-The-X-Team/Team
 
 
 if test -e pruebas_FIFO.config; then
