@@ -21,6 +21,8 @@ int main(int argc, char* argv[]){
 		printf("No hay parametros suficientes\n");
 		return 2;
 	}
+	//leemos todo el archivo de config
+	leer_config();
 
 	logConexion=iniciar_logger("Conexion");
 	logSuscipcion=iniciar_logger("Suscripcion");
@@ -28,8 +30,7 @@ int main(int argc, char* argv[]){
 	//logEnviarNuevo= iniciar_logger("Enviar Mensaje");
 
 
-	//leemos todo el archivo de config
-	leer_config();
+
 
 	//sem_init(&recibiConexion,0,0);
 
