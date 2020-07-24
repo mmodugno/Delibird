@@ -406,7 +406,7 @@ int main(int argc, char* argv[]){
 t_log* iniciar_logger(char* tipoDeProceso){
 
 	//preguntar por el tipo de LOG_LEVEL
-	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
+	return log_create(log_file,tipoDeProceso,0,LOG_LEVEL_INFO);
 }
 
 
@@ -421,6 +421,9 @@ void leer_config(void){
 	puertoBroker = config_get_string_value(config,"PUERTO_BROKER");
 	puertoGamecard = config_get_string_value(config,"PUERTO_GAMECARD");
 	puertoTeam = config_get_string_value(config,"PUERTO_TEAM");
+
+	log_file= config_get_string_value(config,"LOG_FILE");
+
 
 }
 

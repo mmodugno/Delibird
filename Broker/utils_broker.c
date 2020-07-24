@@ -142,7 +142,7 @@ void serve_client(int* socket)
 		cod_op = -1;
 	process_request(cod_op, *socket);
 
-	liberar_conexion(*socket);
+	//liberar_conexion(*socket);
 	pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	//sem_post(&llegadaMensajes);
 }
@@ -194,7 +194,7 @@ void process_request(int cod_op, int cliente_fd) {
 			case SUSCRIPCION:
 				//pthread_mutex_lock(&llegadaMensajesTHREAD);
 
-				sleep(3);
+				//sleep(3);
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
@@ -487,6 +487,8 @@ void process_request(int cod_op, int cliente_fd) {
 				pthread_exit(NULL);
 				break;
 			case -1:
+
+				log_info(almacenadoMemoria,"recibi un menos uno");
 				pthread_exit(NULL);
 				break;
 

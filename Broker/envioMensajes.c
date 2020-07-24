@@ -90,7 +90,7 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaNEW);
-		sleep(3);
+		sleep(1);
 	}
 }
 
@@ -419,7 +419,7 @@ void envioColaGetPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaGET);
-		sleep(3);
+		sleep(1);
 	}
 }
 
@@ -496,7 +496,7 @@ void envioColaLocalizedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaLOCALIZED);
-		sleep(3);
+		sleep(1);
 	}
 }
 
@@ -573,7 +573,7 @@ void envioColaAppearedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaAPPEARED);
-		sleep(3);
+		sleep(1);
 	}
 }
 
@@ -651,7 +651,7 @@ void envioColaCatchPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCATCH);
-		sleep(3);
+		sleep(1);
 	}
 }
 
@@ -728,7 +728,7 @@ void envioColaCaughtPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCAUGHT);
-		sleep(3);
+		sleep(1);
 	}
 }
 
