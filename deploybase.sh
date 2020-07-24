@@ -110,9 +110,9 @@ make all
 
 cd ../../
 
-cp Team/ Team_RR
+cp -R Team/ Team_RR
 
-cd /home/utnso/tp-2020-1c-The-X-Team/Team
+cd /home/utnso/tp-2020-1c-The-X-Team/Team/Debug
 
 
 if test -e pruebas_FIFO.config; then
@@ -133,7 +133,7 @@ PUERTO_BROKER=5003\n
 LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_FIFO.txt\n" >> pruebas_FIFO.config
 
 
-cd ../Team_RR/
+cd ../../Team_RR/Debug
 
 
 if test -e pruebas_RR.config; then
