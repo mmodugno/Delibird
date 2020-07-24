@@ -94,9 +94,9 @@ int main(int argc, char* argv[]){
 		int conexion = crear_conexion(IP_BROKER,PUERTO_BROKER);
 		if(conexion != -1){
 
-		suscribirnos_cola_catch();
-		suscribirnos_cola_new();
-		suscribirnos_cola_get();
+			suscribirnos_cola_catch();
+			suscribirnos_cola_new();
+			suscribirnos_cola_get();
 
 		}
 
