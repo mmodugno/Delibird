@@ -215,15 +215,13 @@ void my_handler(int signum)
 
         //TODO quizas es mejor leer por config
         strcpy(path, "/home/utnso/cache.txt");
-        FILE *cache = txt_open_for_append(path);
-
-
-
+        FILE* cache = txt_open_for_append(path);
 
 		txt_write_in_file(cache,"-----------------------------------------");
 		numeroDePARTICION =1;
 		char* tiempo = temporal_get_string_time();
-		txt_write_in_file(cache,"Dump: %s",tiempo);
+		char* tiempoParaArchivo = string_from_format("Dump: %s",tiempo);
+		txt_write_in_file(cache,tiempoParaArchivo);
 		txt_close_file(cache);
 
 		if(!strcmp(algoritmo_memoria,"PARTICIONES")){
@@ -235,7 +233,7 @@ void my_handler(int signum)
 		}
 
 
-		FILE *cache = txt_open_for_append(path);
+		cache = txt_open_for_append(path);
 		txt_write_in_file(cache,"-----------------------------------------");
 		txt_close_file(cache);
 
