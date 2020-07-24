@@ -336,7 +336,7 @@ void liberar_conexion(int socket_cliente)
 }
 
 void iniciar_servidor_gameboy(){
-	//int socket_servidor_gameboy;
+	int socket_servidor_gameboy;
 	char* ip_gameboy = "127.0.0.9";
 	char* puerto_gameboy = "5009";
 
@@ -348,6 +348,9 @@ void iniciar_servidor_gameboy(){
     hints.ai_flags = AI_PASSIVE;
 
     getaddrinfo(ip_gameboy, puerto_gameboy, &hints, &servinfo);
+
+    int activado = 1;
+	setsockopt(socket_servidor_gameboy,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
 
     for (p=servinfo; p != NULL; p = p->ai_next) {
         if ((socket_servidor_gameboy = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)

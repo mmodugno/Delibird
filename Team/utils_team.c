@@ -1403,6 +1403,10 @@ void iniciar_servidor(void)
 
     getaddrinfo(IP_TEAM, PUERTO_TEAM, &hints, &servinfo);
 
+    int activado = 1;
+   	setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
+
+
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
         if ((socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)

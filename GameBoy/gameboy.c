@@ -374,13 +374,14 @@ int main(int argc, char* argv[]){
 
 				//enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
 
-				conexionBroker = crear_conexion(ipBroker,puertoBroker);
+				int conexion = crear_conexion(ipBroker,puertoBroker);
 
-				if(conexionBroker <= 0){
+				if(conexion <= 0){
 					log_info(logConexion,"no me pude conectar a Broker para pedir la desucripcion");
 
 				} else{
-					enviar_pedido_desuscripcion(meSuscribo,conexionBroker);
+					enviar_pedido_desuscripcion(meSuscribo,conexion);
+					liberar_conexion(conexion);
 				}
 
 				free(meSuscribo);

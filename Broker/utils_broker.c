@@ -135,7 +135,7 @@ void esperar_cliente(int socket_servidor)
 void serve_client(int* socket)
 {
 	//sem_wait(&llegadaMensajes);
-	//pthread_mutex_lock(&llegadaMensajesTHREAD);
+	pthread_mutex_lock(&llegadaMensajesTHREAD);
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
@@ -143,7 +143,7 @@ void serve_client(int* socket)
 	process_request(cod_op, *socket);
 
 	liberar_conexion(*socket);
-	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
+	pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	//sem_post(&llegadaMensajes);
 }
 
@@ -192,7 +192,7 @@ void process_request(int cod_op, int cliente_fd) {
 	if(esGameBoy(username)||esGameCard(username)||esTeam(username)){
 		switch (cod_op) {
 			case SUSCRIPCION:
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+				//pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
@@ -204,11 +204,11 @@ void process_request(int cod_op, int cliente_fd) {
 				suscribirACola(suscriptor);
 
 				free(suscriptor);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__NEW_POKEMON:
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				newRecibido = deserializar_new_pokemon(cliente_fd);
 
@@ -235,12 +235,12 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(newRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__APPEARED_POKEMON:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 				appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
 
@@ -268,12 +268,12 @@ void process_request(int cod_op, int cliente_fd) {
 				//free(raiz);
 
 				free(appearedRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__GET_POKEMON:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 				getRecibido = deserializar_get_pokemon(cliente_fd);
 
 
@@ -301,12 +301,12 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(getRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__CATCH_POKEMON:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
@@ -338,12 +338,12 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(catchRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__CAUGHT_POKEMON:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
@@ -368,11 +368,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(caughtRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__LOCALIZED_POKEMON:
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 
@@ -409,12 +409,12 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(localizedRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case ACKNOWLEDGED:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				ackRecibido = deserializarAck(cliente_fd);
 
@@ -455,11 +455,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 				sem_post(&usoMemoria);
 
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
 				break;
 			case DESUSCRIBIR:
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+//				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
@@ -474,7 +474,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 				free(suscriptor);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+//				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
 
 				break;

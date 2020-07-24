@@ -60,7 +60,7 @@ t_config* config;
 pthread_t hiloConexion;
 pthread_t hiloTimeout;
 pthread_t hiloReciboMensajes;
-int socket_servidor_gameboy;
+//int socket_servidor_gameboy;
 
 sem_t llegadaMensajes;
 sem_t recibiConexion;

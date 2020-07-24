@@ -74,25 +74,25 @@ int main() {
 	suscriptoresLocalizedPokemon = list_create();
 	suscriptoresNewPokemon = list_create();
 
-//	pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor, NULL);
-/*
+	pthread_create(&hiloReciboMensajes, NULL, (void*) iniciar_servidor, NULL);
+
 	pthread_create(&hiloNew_Envio, NULL, (void*) envioColaNewPokemon, NULL);
 	pthread_create(&hiloAppeared_Envio, NULL, (void*) envioColaAppearedPokemon, NULL);
 	pthread_create(&hiloCatch_Envio, NULL, (void*) envioColaCatchPokemon, NULL);
 	pthread_create(&hiloCaught_Envio, NULL, (void*) envioColaCaughtPokemon, NULL);
 	pthread_create(&hiloGet_Envio, NULL, (void*) envioColaGetPokemon, NULL);
-	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);*/
+	pthread_create(&hiloLocalized_Envio, NULL, (void*) envioColaLocalizedPokemon, NULL);
 
-//	pthread_detach(hiloReciboMensajes);
-/*
+	pthread_detach(hiloReciboMensajes);
+
 	pthread_detach(hiloNew_Envio);
 	pthread_detach(hiloAppeared_Envio);
 	pthread_detach(hiloCatch_Envio);
 	pthread_detach(hiloCaught_Envio);
 	pthread_detach(hiloGet_Envio);
 	pthread_detach(hiloLocalized_Envio);
-*/
-	iniciar_servidor();
+
+	//iniciar_servidor();
 
 
 	sem_init(&terminoPrograma,0,0);
@@ -145,6 +145,67 @@ void leer_config(void) {
 }
 
 
+
+void guardarDumbArchivoParticiones(particion* part){
+	FILE *cache = txt_open_for_append(path);
+
+	char* stringALlenar = string_new();
+
+	if(part->libre){
+		stringALlenar = string_from_format("Particion %d: 0x%x -0x%x . [L]   size:%d b",numeroDePARTICION,part->base,part->base+part->tamanioMensaje-1,part->tamanioMensaje);
+	}
+	else{
+		if(!strcmp(algoritmo_reemplazo,"LRU")){
+			stringALlenar = string_from_format("Particion %d: 0x%x -0x%x . [X]   size:%d b  LRU:<%s>   COLA:<%s>  ID:<%d>"
+					,numeroDePARTICION,part->base,part->base+part->tamanioMensaje-1,part->tamanioMensaje,part->timestamp,colasDeEnum[part->tipoMensaje],part->idMensaje);
+		}
+		if(!strcmp(algoritmo_reemplazo,"FIFO")){
+			stringALlenar = string_from_format("Particion %d: 0x%x -0x%x . [X]   size:%d b             COLA:<%s>  ID:<%d>",numeroDePARTICION,part->base,part->base+part->tamanioMensaje-1,part->tamanioMensaje,colasDeEnum[part->tipoMensaje],part->idMensaje);
+		}
+
+	}
+
+	txt_write_in_file(cache,stringALlenar);
+
+
+	txt_close_file(cache);
+	free(stringALlenar);
+	numeroDePARTICION++;
+}
+
+
+void guardarDumbArchivoBuddy(buddy* unBuddy){
+	FILE *cache = txt_open_for_append(path);
+
+	char* stringALlenar = string_new();
+
+	if(unBuddy->particion->libre){
+		stringALlenar = string_from_format("Buddy %d: 0x%x -0x%x . [L]   size:%d b",
+				numeroDePARTICION,unBuddy->particion->base,unBuddy->particion->base+unBuddy->limite-1,unBuddy->particion->tamanioMensaje);
+	}
+	else{
+		if(!strcmp(algoritmo_reemplazo,"LRU")){
+			stringALlenar = string_from_format("Buddy %d: 0x%x -0x%x . [X]   size:%d b  LRU:<%s>   COLA:<%s>  ID:<%d>"
+					,numeroDePARTICION,unBuddy->particion->base,unBuddy->particion->base+unBuddy->limite-1,unBuddy->particion->tamanioMensaje,
+					unBuddy->particion->timestamp,colasDeEnum[unBuddy->particion->tipoMensaje],unBuddy->particion->idMensaje);
+		}
+		if(!strcmp(algoritmo_reemplazo,"FIFO")){
+			stringALlenar = string_from_format("Buddy %d: 0x%x -0x%x . [X]   size:%d b             COLA:<%s>  ID:<%d>"
+					,numeroDePARTICION,unBuddy->particion->base,unBuddy->particion->base+unBuddy->limite-1,
+					unBuddy->particion->tamanioMensaje,colasDeEnum[unBuddy->particion->tipoMensaje],unBuddy->particion->idMensaje);
+		}
+
+	}
+
+	txt_write_in_file(cache,stringALlenar);
+
+
+	txt_close_file(cache);
+	free(stringALlenar);
+	numeroDePARTICION++;
+}
+
+
 void my_handler(int signum)
 {
     if (signum == SIGUSR1)
@@ -152,7 +213,33 @@ void my_handler(int signum)
     	sem_wait(&usoMemoria);
         log_info(dumpCache,"voy a escribir un dump de la cache!");
 
-        //TODO escribir archivo
+        //TODO quizas es mejor leer por config
+        strcpy(path, "/home/utnso/cache.txt");
+        FILE *cache = txt_open_for_append(path);
+
+
+
+
+		txt_write_in_file(cache,"-----------------------------------------");
+		numeroDePARTICION =1;
+		char* tiempo = temporal_get_string_time();
+		txt_write_in_file(cache,"Dump: %s",tiempo);
+		txt_close_file(cache);
+
+		if(!strcmp(algoritmo_memoria,"PARTICIONES")){
+			list_sort(tablaDeParticiones,baseMasChica);
+			list_iterate(tablaDeParticiones,(void*)guardarDumbArchivoParticiones);
+		}
+		if(!strcmp(algoritmo_memoria,"BS")){
+			list_iterate(tablaDeParticiones,(void*)guardarDumbArchivoBuddy);
+		}
+
+
+		FILE *cache = txt_open_for_append(path);
+		txt_write_in_file(cache,"-----------------------------------------");
+		txt_close_file(cache);
+
+
 
         sem_post(&usoMemoria);
     }

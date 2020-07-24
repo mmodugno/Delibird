@@ -29,6 +29,7 @@
 #include<signal.h>
 #include<semaphore.h>
 #include <signal.h>
+#include <commons/txt.h>
 
 //ID	Base	tamaño de mensaje	Mensaje	Fecha(creacion/uso)
 typedef struct {
@@ -72,9 +73,10 @@ char* algoritmo_particion_libre;
 uint32_t frecuencia_compactacion;
 uint32_t frecuencia;
 char* log_file;
+char *path;
 
 int flagTermino;
-
+int numeroDePARTICION;
 
 t_config* config;
 

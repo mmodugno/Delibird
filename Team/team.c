@@ -26,6 +26,8 @@ int main(int argc, char* argv[]){
 	iniciar_logs();
 
 
+
+
 	sem_init(&hay_entrenador,0,0);
 	sem_init(&nuevo_pokemon,0,0);
 
@@ -52,10 +54,11 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
+
+
 	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
 	if(conexionBroker){
-
 
 		suscribirnos_cola_caught();
 		suscribirnos_cola_localized();
@@ -65,6 +68,7 @@ int main(int argc, char* argv[]){
 
 		//Mando un get por cada uno de mis objetivos globales.
 		dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
+		//close(conexionBroker);
 
 	}
 
