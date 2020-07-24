@@ -169,7 +169,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		if (conexion != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s con id: %d","NEW_POKEMON",newAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)){
@@ -178,7 +178,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		if (conexion != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s con id: %d", "NEW_POKEMON",newAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
@@ -187,7 +187,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar
 		if (conexion != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje  de la cola %s con id: %d","NEW_POKEMON",newAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 }
@@ -199,7 +199,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		if (conexion != -1) {
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s con id: %d","APPEARED_POKEMON",appAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)){
@@ -208,7 +208,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		if (conexion != -1) {
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s con id: %d","APPEARED_POKEMON",appAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 
 	}
@@ -218,7 +218,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* us
 		if (conexion != -1) {
 			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola APPEARED_POKEMON con id: %d",appAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 }
@@ -230,7 +230,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 		if (conexion != -1) {
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
@@ -239,7 +239,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 		if (conexion != -1) {
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
@@ -248,7 +248,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersA
 		if (conexion != -1) {
 			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 }
@@ -260,7 +260,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 		if (conexion != -1) {
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
@@ -269,7 +269,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 		if (conexion != -1) {
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
@@ -278,7 +278,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* use
 		if (conexion != -1) {
 			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 }
@@ -290,7 +290,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 		if (conexion != -1) {
 			enviar_cola_Get_Pokemon(getAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
@@ -299,7 +299,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 		if (conexion != -1) {
 			enviar_cola_Get_Pokemon(getAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
@@ -308,7 +308,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar
 		if (conexion!= -1) {
 			enviar_cola_Get_Pokemon(getAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 }
@@ -320,7 +320,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 		if (conexion != -1) {
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
@@ -329,7 +329,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 		if (conexion != -1) {
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
@@ -338,7 +338,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_
 		if (conexion != -1) {
 			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
 			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
-			liberar_conexion(conexion);
+			//liberar_conexion(conexion);
 		}
 	}
 

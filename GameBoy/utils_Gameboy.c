@@ -499,7 +499,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			if(socketParaEnviarACK!=-1){
 				enviarACK(newRecibido->id,socketParaEnviarACK,"GAMEBOY");
 
-				liberar_conexion(socketParaEnviarACK);
+				//liberar_conexion(socketParaEnviarACK);
 			}
 
 
@@ -524,7 +524,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 			if(socketParaEnviarACK!=-1){
 				enviarACK(appearedRecibido->id,socketParaEnviarACK,"GAMEBOY");
-				liberar_conexion(socketParaEnviarACK);
+				//liberar_conexion(socketParaEnviarACK);
 			}
 
 
@@ -548,7 +548,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 			if(socketParaEnviarACK!=-1){
 				enviarACK(getRecibido->id,socketParaEnviarACK,"GAMEBOY");
-				liberar_conexion(socketParaEnviarACK);
+				//liberar_conexion(socketParaEnviarACK);
 			}
 
 			log_info(logMensajeNuevo,"recibi mensaje de GET_POKEMON (ID = %d) de %s\n con tamanio: %d \n nombre: %s ",
@@ -569,7 +569,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 			if(socketParaEnviarACK!= -1){
 				enviarACK(catchRecibido->id,socketParaEnviarACK,"GAMEBOY");
-				liberar_conexion(socketParaEnviarACK);
+				//liberar_conexion(socketParaEnviarACK);
 			}
 
 
@@ -593,7 +593,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 			if(socketParaEnviarACK!=-1){
 				enviarACK(caughtRecibido->id,socketParaEnviarACK,"GAMEBOY");
-				liberar_conexion(socketParaEnviarACK);
+				//liberar_conexion(socketParaEnviarACK);
 			}
 
 			log_info(logMensajeNuevo,"recibi mensaje de CAUGHT_POKEMON (ID = %d) de %s\n con ID_relativo: %d \n puedoAtraparlo: %d ",
@@ -614,7 +614,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 			socketParaEnviarACK = crear_conexion(ipBroker,puertoBroker);
 			if(socketParaEnviarACK!=-1){
 				enviarACK(localizedRecibido->id,socketParaEnviarACK,"GAMEBOY");
-				liberar_conexion(socketParaEnviarACK);
+				//liberar_conexion(socketParaEnviarACK);
 			}
 
 			posiciones = 0;
