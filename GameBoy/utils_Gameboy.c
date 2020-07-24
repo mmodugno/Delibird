@@ -337,8 +337,7 @@ void liberar_conexion(int socket_cliente)
 
 void iniciar_servidor_gameboy(){
 	int socket_servidor_gameboy;
-	char* ip_gameboy = "127.0.0.9";
-	char* puerto_gameboy = "5009";
+
 
     struct addrinfo hints, *servinfo, *p;
 

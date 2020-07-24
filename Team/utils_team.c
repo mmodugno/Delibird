@@ -15,6 +15,12 @@ void variables_globales(){
 
 	config = leer_config();
 
+	IP_TEAM = config_get_string_value(config,"IP_TEAM");
+	PUERTO_TEAM = config_get_string_value(config,"PUERTO_TEAM");
+
+	IP_BROKER = config_get_string_value(config,"IP_BROKER");
+	PUERTO_BROKER = config_get_string_value(config,"PUERTO_BROKER");
+
 	hacer_entrenadores();
 
 	calcular_objetivo_global();

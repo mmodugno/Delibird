@@ -31,11 +31,11 @@
 #include"datos_team.h"
 
 
-#define IP_TEAM "127.0.0.2"
-#define PUERTO_TEAM "5002"
+char * IP_TEAM ;
+char * PUERTO_TEAM ;
 
-#define IP_BROKER "127.0.0.1"
-#define PUERTO_BROKER "5003"
+char * IP_BROKER;
+char * PUERTO_BROKER;
 
 
 

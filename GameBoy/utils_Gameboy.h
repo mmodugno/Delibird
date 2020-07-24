@@ -65,6 +65,10 @@ pthread_t hiloReciboMensajes;
 sem_t llegadaMensajes;
 sem_t recibiConexion;
 
+char* ip_gameboy ;
+char* puerto_gameboy;
+char* log_file;
+
 
 int crear_conexion(char* ip, char* puerto);
 void enviar_mensaje(char* mensaje, int socket_cliente);
