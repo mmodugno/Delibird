@@ -14,7 +14,7 @@ cd
 
 git clone https://github.com/sisoputnfrba/so-commons-library.git
 cd so-commons-library/
-sudo make install
+    sudo make install
 
 cd
 
@@ -38,21 +38,22 @@ cd
 
 # ________________ Carpeta tp
 
-mkdir Escritorio
+
 
 if test -d /home/utnso/Escritorio/tp-2020-1c-The-X-Team/; then
     sudo rm -r /home/utnso/Escritorio/tp-2020-1c-The-X-Team
 
 fi
 
+mkdir Escritorio
 
-cp -r tp-2020-1c-The-X-Team /home/utnso/Escritorio/tp-2020-1c-The-X-Team
+cp -r tp-2020-1c-The-X-Team/ /home/utnso/Escritorio/tp-2020-1c-The-X-Team
 
 
 
 # ________________ Shared Library
 
-cd /home/utnso/Escritorio/tp-2020-1c-The-X-Team/utils/Debug/
+cd /home/utnso/Escritorio/tp-2020-1c-The-X-Team/utils/Debug
 
 make all
 
