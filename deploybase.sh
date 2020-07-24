@@ -36,31 +36,19 @@ echo -e "BLOCK_SIZE=64\nBLOCKS=1024\nMAGIC_NUMBER=TALL_GRASS" >> Metadata.bin
 
 cd
 
-# ________________ Carpeta tp
-
-
-
-if test -d /home/utnso/Escritorio/tp-2020-1c-The-X-Team/; then
-    sudo rm -r /home/utnso/Escritorio/tp-2020-1c-The-X-Team
-
-fi
-
-mkdir Escritorio
-
-cp -r tp-2020-1c-The-X-Team/ /home/utnso/Escritorio/tp-2020-1c-The-X-Team
 
 
 
 # ________________ Shared Library
 
-cd /home/utnso/Escritorio/tp-2020-1c-The-X-Team/utils/Debug
+cd /home/utnso/tp-2020-1c-The-X-Team/utils/Debug
 
 make all
 
 
 #_________________ GameBoy
 
-cd /home/utnso/Escritorio/tp-2020-1c-The-X-Team/GameBoy/Debug
+cd /home/utnso/tp-2020-1c-The-X-Team/GameBoy/Debug
 
 make all
 
@@ -101,7 +89,7 @@ fi
 echo -e "TIEMPO_DE_REINTENTO_CONEXION=10\n
 TIEMPO_DE_REINTENTO_OPERACION=5\n
 TIEMPO_RETARDO_OPERACION=5\n
-PUNTO_MONTAJE_TALLGRASS=/home/utnso/Escritorio/PuntoMontaje\n
+PUNTO_MONTAJE_TALLGRASS=/home/utnso/PuntoMontaje\n
 IP_BROKER=127.0.0.1\n
 PUERTO_BROKER=6009\n" >> gamecard.config
 
