@@ -101,6 +101,8 @@ t_list* suscriptoresCaughtPokemon;
 t_list* suscriptoresGetPokemon;
 t_list* suscriptoresLocalizedPokemon;
 
+sem_t mutexParProcesar;
+
 t_log* logConexion;
 t_log* logSuscipcion;
 t_log* logMensajeNuevo;

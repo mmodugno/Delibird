@@ -7,8 +7,6 @@
 
 #include "envioMensajes.h"
 
-
-
 void envioColaNewPokemon() {
 	t_list *usersConACK = list_create();
 	t_list *usersSinACK = list_create();
@@ -22,7 +20,7 @@ void envioColaNewPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK,(void*) esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK, (void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -48,7 +46,6 @@ void envioColaNewPokemon() {
 		return menNewQueFalten(unBuddy->particion);
 	}
 
-
 	while (1) {
 
 		sem_wait(&suscripcionAColaNEW);
@@ -56,14 +53,14 @@ void envioColaNewPokemon() {
 		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
 		if (suscriptoresNewPokemon->elements_count > 0) {
 
-
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,(void*) baseMasChica);
+			list_sort(tablaDeParticiones, (void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresNewPokemon->elements_count) {
-					mensajeNewEnMemo = list_find(tablaDeParticiones, (void*) menNewQueFalten);
+					mensajeNewEnMemo = list_find(tablaDeParticiones,
+							(void*) menNewQueFalten);
 					enviarPorTipo(mensajeNewEnMemo, usersSinACK);
 					//list_clean_and_destroy_elements(usersSinACK, free);
 				}
@@ -73,8 +70,18 @@ void envioColaNewPokemon() {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresNewPokemon->elements_count) {
 
-					mensajeNewEnMemoBuddy = list_find(tablaDeParticiones, (void*) menNewQueFaltenEnBuddy);
-					enviarPorTipo(mensajeNewEnMemoBuddy->particion, usersSinACK);
+					mensajeNewEnMemoBuddy = list_find(tablaDeParticiones,
+							(void*) menNewQueFaltenEnBuddy);
+
+					if (mensajeNewEnMemoBuddy == NULL) {
+
+						particion* particionVacia = NULL;
+
+						enviarPorTipo(particionVacia, usersSinACK);
+					} else {
+						enviarPorTipo(mensajeNewEnMemoBuddy->particion,
+								usersSinACK);
+					}
 
 				}
 				//list_clean_and_destroy_elements(usersSinACK, free);
@@ -90,22 +97,22 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaNEW);
-		sleep(1);
+		sleep(4);
 	}
 }
 
 //conectarme con cada uno que necesite mandarle
-bool esTeam(char* username){
-	return !strcmp(username,"TEAM");
+bool esTeam(char* username) {
+	return !strcmp(username, "TEAM");
 }
-bool esGameCard(char* username){
-	return !strcmp(username,"GAMECARD");
+bool esGameCard(char* username) {
+	return !strcmp(username, "GAMECARD");
 }
-bool esGameBoy(char* username){
-	return !strcmp(username,"GAMEBOY");
+bool esGameBoy(char* username) {
+	return !strcmp(username, "GAMEBOY");
 }
 
-void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
+void enviarPorTipo(particion* partAEnviar, t_list* usersAEnviar) {
 	broker_new_pokemon* newEnMemo;
 	broker_get_pokemon* getEnMemo;
 	broker_appeared_pokemon* appEnMemo;
@@ -115,236 +122,276 @@ void enviarPorTipo(particion* partAEnviar,t_list* usersAEnviar){
 
 	if (partAEnviar != NULL && !list_is_empty(usersAEnviar)) {
 		switch (partAEnviar->tipoMensaje) {
-			case NEW_POKEMON:
-				newEnMemo = leerdeMemoriaNEW(partAEnviar);
-				enviarASuscriptoresNEW(newEnMemo,usersAEnviar);
+		case NEW_POKEMON:
+			newEnMemo = leerdeMemoriaNEW(partAEnviar);
+			enviarASuscriptoresNEW(newEnMemo, usersAEnviar);
 
-				free(newEnMemo->datos->nombrePokemon);
-				free(newEnMemo);
-				break;
-			case GET_POKEMON:
-				getEnMemo= leerdeMemoriaGET(partAEnviar);
-				enviarASuscriptoresGET(getEnMemo,usersAEnviar);
+			free(newEnMemo->datos->nombrePokemon);
+			free(newEnMemo);
+			break;
+		case GET_POKEMON:
+			getEnMemo = leerdeMemoriaGET(partAEnviar);
+			enviarASuscriptoresGET(getEnMemo, usersAEnviar);
 
-				free(getEnMemo->datos->nombrePokemon);
-				free(getEnMemo);
-				break;
-			case APPEARED_POKEMON:
-				appEnMemo = leerdeMemoriaAPPEARED(partAEnviar);
-				enviarASuscriptoresAPPEARED(appEnMemo,usersAEnviar);
+			free(getEnMemo->datos->nombrePokemon);
+			free(getEnMemo);
+			break;
+		case APPEARED_POKEMON:
+			appEnMemo = leerdeMemoriaAPPEARED(partAEnviar);
+			enviarASuscriptoresAPPEARED(appEnMemo, usersAEnviar);
 
-				free(appEnMemo->datos->nombrePokemon);
-				free(appEnMemo);
-				break;
-			case LOCALIZED_POKEMON:
-				localizedEnMemo = leerdeMemoriaLOCALIZED(partAEnviar);
-				enviarASuscriptoresLOCALIZED(localizedEnMemo,usersAEnviar);
+			free(appEnMemo->datos->nombrePokemon);
+			free(appEnMemo);
+			break;
+		case LOCALIZED_POKEMON:
+			localizedEnMemo = leerdeMemoriaLOCALIZED(partAEnviar);
+			enviarASuscriptoresLOCALIZED(localizedEnMemo, usersAEnviar);
 
-				free(localizedEnMemo->datos->posX);
-				free(localizedEnMemo->datos->posY);
-				free(localizedEnMemo->datos->nombrePokemon);
-				free(localizedEnMemo);
-				break;
-			case CATCH_POKEMON:
-				catchEnMemo = leerdeMemoriaCATCH(partAEnviar);
-				enviarASuscriptoresCATCH(catchEnMemo,usersAEnviar);
-				free(catchEnMemo->datos->nombrePokemon);
-				free(catchEnMemo);
-				break;
-			case CAUGHT_POKEMON:
-				caughtEnMemo = leerdeMemoriaCAUGHT(partAEnviar);
-				enviarASuscriptoresCAUGHT(caughtEnMemo,usersAEnviar);
-				free(caughtEnMemo);
-				break;
+			free(localizedEnMemo->datos->posX);
+			free(localizedEnMemo->datos->posY);
+			free(localizedEnMemo->datos->nombrePokemon);
+			free(localizedEnMemo);
+			break;
+		case CATCH_POKEMON:
+			catchEnMemo = leerdeMemoriaCATCH(partAEnviar);
+			enviarASuscriptoresCATCH(catchEnMemo, usersAEnviar);
+			free(catchEnMemo->datos->nombrePokemon);
+			free(catchEnMemo);
+			break;
+		case CAUGHT_POKEMON:
+			caughtEnMemo = leerdeMemoriaCAUGHT(partAEnviar);
+			enviarASuscriptoresCAUGHT(caughtEnMemo, usersAEnviar);
+			free(caughtEnMemo);
+			break;
 		}
 	}
 }
 
-void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar ,t_list* usersAEnviar){
+void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar,
+		t_list* usersAEnviar) {
 	//uint32_t noSeConecto = 0;
 
-	if (list_any_satisfy(usersAEnviar, (void*) esTeam)){
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
-		int conexion = crear_conexion(ip_team, puerto_team);
-		if (conexion != -1) {
-			enviar_Cola_New_Pokemon(newAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s con id: %d","NEW_POKEMON",newAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+		if (conexionTeam != -1) {
+			enviar_Cola_New_Pokemon(newAEnviar, conexionTeam);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", newAEnviar->id);
+			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
-		int conexion = crear_conexion(ip_gameboy, puerto_gameboy);
-		if (conexion != -1) {
-			enviar_Cola_New_Pokemon(newAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s con id: %d", "NEW_POKEMON",newAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+		if (conexionGameboy != -1) {
+			enviar_Cola_New_Pokemon(newAEnviar, conexionGameboy);
+			log_info(logEnviarNuevo,
+					"Envie a GAMEBOY el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", newAEnviar->id);
+			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)) {
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
-			enviar_Cola_New_Pokemon(newAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje  de la cola %s con id: %d","NEW_POKEMON",newAEnviar->id);
-			//liberar_conexion(conexion);
+			enviar_Cola_New_Pokemon(newAEnviar, conexion);
+			log_info(logEnviarNuevo,
+					"Envie a GAMECARD el mensaje  de la cola %s con id: %d",
+					"NEW_POKEMON", newAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
 
-void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar, (void*) esTeam)){
+void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar,
+		t_list* usersAEnviar) {
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
-		int conexion = crear_conexion(ip_team, puerto_team);
-		if (conexion != -1) {
-			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola %s con id: %d","APPEARED_POKEMON",appAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+		if (conexionTeam != -1) {
+			enviar_cola_Appeared_Pokemon(appAEnviar, conexionTeam);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM el mensaje de la cola %s con id: %d",
+					"APPEARED_POKEMON", appAEnviar->id);
+			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
-		int conexion = crear_conexion(ip_gameboy, puerto_gameboy);
-		if (conexion != -1) {
-			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola %s con id: %d","APPEARED_POKEMON",appAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+		if (conexionGameboy != -1) {
+			enviar_cola_Appeared_Pokemon(appAEnviar, conexionGameboy);
+			log_info(logEnviarNuevo,
+					"Envie a GAMEBOY el mensaje de la cola %s con id: %d",
+					"APPEARED_POKEMON", appAEnviar->id);
+			liberar_conexion(conexionGameboy);
 		}
 
 	}
-	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)) {
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
-			enviar_cola_Appeared_Pokemon(appAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola APPEARED_POKEMON con id: %d",appAEnviar->id);
-			//liberar_conexion(conexion);
+			enviar_cola_Appeared_Pokemon(appAEnviar, conexion);
+			log_info(logEnviarNuevo,
+					"Envie a GAMECARD el mensaje de la cola APPEARED_POKEMON con id: %d",
+					appAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
 
-void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
+void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar,
+		t_list* usersAEnviar) {
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
-		int conexion = crear_conexion(ip_team, puerto_team);
-		if (conexion != -1) {
-			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+		if (conexionTeam != -1) {
+			enviar_cola_Catch_Pokemon(catchAEnviar, conexionTeam);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM el mensaje de la cola CATCH_POKEMON con id: %d",
+					catchAEnviar->id);
+			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
-		int conexion = crear_conexion(ip_gameboy, puerto_gameboy);
-		if (conexion != -1) {
-			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+		if (conexionGameboy != -1) {
+			enviar_cola_Catch_Pokemon(catchAEnviar, conexionGameboy);
+			log_info(logEnviarNuevo,
+					"Envie a GAMEBOY el mensaje de la cola CATCH_POKEMON con id: %d",
+					catchAEnviar->id);
+			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)) {
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
-			enviar_cola_Catch_Pokemon(catchAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CATCH_POKEMON con id: %d",catchAEnviar->id);
-			//liberar_conexion(conexion);
+			enviar_cola_Catch_Pokemon(catchAEnviar, conexion);
+			log_info(logEnviarNuevo,
+					"Envie a GAMECARD el mensaje de la cola CATCH_POKEMON con id: %d",
+					catchAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
 
-void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
+void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar,
+		t_list* usersAEnviar) {
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
-		int conexion = crear_conexion(ip_team, puerto_team);
-		if (conexion != -1) {
-			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+		if (conexionTeam != -1) {
+			enviar_cola_Caught_Pokemon(caughtAEnviar, conexionTeam);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM el mensaje de la cola CAUGHT_POKEMON con id: %d",
+					caughtAEnviar->id);
+			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
-		int conexion = crear_conexion(ip_gameboy, puerto_gameboy);
-		if (conexion != -1) {
-			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+		if (conexionGameboy != -1) {
+			enviar_cola_Caught_Pokemon(caughtAEnviar, conexionGameboy);
+			log_info(logEnviarNuevo,
+					"Envie a GAMEBOY el mensaje de la cola CAUGHT_POKEMON con id: %d",
+					caughtAEnviar->id);
+			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)) {
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
-			enviar_cola_Caught_Pokemon(caughtAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola CAUGHT_POKEMON con id: %d",caughtAEnviar->id);
-			//liberar_conexion(conexion);
+			enviar_cola_Caught_Pokemon(caughtAEnviar, conexion);
+			log_info(logEnviarNuevo,
+					"Envie a GAMECARD el mensaje de la cola CAUGHT_POKEMON con id: %d",
+					caughtAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
 
-void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
+void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar,
+		t_list* usersAEnviar) {
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
-		int conexion  = crear_conexion(ip_team, puerto_team);
-		if (conexion != -1) {
-			enviar_cola_Get_Pokemon(getAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+		if (conexionTeam != -1) {
+			enviar_cola_Get_Pokemon(getAEnviar, conexionTeam);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM el mensaje de la cola GET_POKEMON con id: %d",
+					getAEnviar->id);
+			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
-		int conexion  = crear_conexion(ip_gameboy, puerto_gameboy);
-		if (conexion != -1) {
-			enviar_cola_Get_Pokemon(getAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+		if (conexionGameboy != -1) {
+			enviar_cola_Get_Pokemon(getAEnviar, conexionGameboy);
+			log_info(logEnviarNuevo,
+					"Envie a GAMEBOY el mensaje de la cola GET_POKEMON con id: %d",
+					getAEnviar->id);
+			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)) {
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
-		if (conexion!= -1) {
-			enviar_cola_Get_Pokemon(getAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola GET_POKEMON con id: %d",getAEnviar->id);
-			//liberar_conexion(conexion);
+		if (conexion != -1) {
+			enviar_cola_Get_Pokemon(getAEnviar, conexion);
+			log_info(logEnviarNuevo,
+					"Envie a GAMECARD el mensaje de la cola GET_POKEMON con id: %d",
+					getAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 }
 
-void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar ,t_list* usersAEnviar){
-	if (list_any_satisfy(usersAEnviar,(void*) esTeam)){
+void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar,
+		t_list* usersAEnviar) {
+	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
-		int conexion = crear_conexion(ip_team, puerto_team);
-		if (conexion != -1) {
-			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionTeam = crear_conexion(ip_team, puerto_team);
+		if (conexionTeam != -1) {
+			enviar_cola_Localized_Pokemon(localizedAEnviar, conexionTeam);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON con id: %d",
+					localizedAEnviar->id);
+			liberar_conexion(conexionTeam);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameBoy)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
-		int conexion = crear_conexion(ip_gameboy, puerto_gameboy);
-		if (conexion != -1) {
-			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMEBOY el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
-			//liberar_conexion(conexion);
+		conexionGameboy = crear_conexion(ip_gameboy, puerto_gameboy);
+		if (conexionGameboy != -1) {
+			enviar_cola_Localized_Pokemon(localizedAEnviar, conexionGameboy);
+			log_info(logEnviarNuevo,
+					"Envie a GAMEBOY el mensaje de la cola LOCALIZED_POKEMON con id: %d",
+					localizedAEnviar->id);
+			liberar_conexion(conexionGameboy);
 		}
 	}
-	if (list_any_satisfy(usersAEnviar,(void*) esGameCard)){
+	if (list_any_satisfy(usersAEnviar, (void*) esGameCard)) {
 		//conexion con GAMECARD
 		int conexion = crear_conexion(ip_gamecard, puerto_gamecard);
 		if (conexion != -1) {
-			enviar_cola_Localized_Pokemon(localizedAEnviar,conexion);
-			log_info(logEnviarNuevo, "Envie a GAMECARD el mensaje de la cola LOCALIZED_POKEMON con id: %d",localizedAEnviar->id);
-			//liberar_conexion(conexion);
+			enviar_cola_Localized_Pokemon(localizedAEnviar, conexion);
+			log_info(logEnviarNuevo,
+					"Envie a GAMECARD el mensaje de la cola LOCALIZED_POKEMON con id: %d",
+					localizedAEnviar->id);
+			liberar_conexion(conexion);
 		}
 	}
 
 }
-
-
 
 void envioColaGetPokemon() {
 	t_list *usersConACK = list_create();
@@ -359,7 +406,7 @@ void envioColaGetPokemon() {
 
 	void llenarUserSinACK(char* userActual) {
 		username = string_duplicate(userActual);
-		if (!list_any_satisfy(usersConACK,(void*) esSuscriptor)) {
+		if (!list_any_satisfy(usersConACK, (void*) esSuscriptor)) {
 			list_add(usersSinACK, userActual);
 		}
 	}
@@ -369,7 +416,7 @@ void envioColaGetPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresGetPokemon,(void*) llenarUserSinACK);
+			list_iterate(suscriptoresGetPokemon, (void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -392,14 +439,14 @@ void envioColaGetPokemon() {
 		//cambio a un if para que mande la señal al semaforo suscripcionACola porque sino se iba a quedar ahi
 		if (suscriptoresGetPokemon->elements_count > 0) {
 
-
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,(void*) baseMasChica);
+			list_sort(tablaDeParticiones, (void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresGetPokemon->elements_count) {
-					mensajeGetEnMemo = list_find(tablaDeParticiones,(void*) menGetQueFalten);
+					mensajeGetEnMemo = list_find(tablaDeParticiones,
+							(void*) menGetQueFalten);
 					enviarPorTipo(mensajeGetEnMemo, usersSinACK);
 				}
 			}
@@ -407,8 +454,18 @@ void envioColaGetPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresGetPokemon->elements_count) {
-					mensajeGetEnMemoBuddy= list_find(tablaDeParticiones, (void*) menGetQueFaltenEnBuddy);
-					enviarPorTipo(mensajeGetEnMemoBuddy->particion,usersSinACK);
+					mensajeGetEnMemoBuddy = list_find(tablaDeParticiones,
+							(void*) menGetQueFaltenEnBuddy);
+
+					if (mensajeGetEnMemoBuddy == NULL) {
+						particion* particionVacia = NULL;
+						enviarPorTipo(particionVacia, usersSinACK);
+
+					} else {
+						enviarPorTipo(mensajeGetEnMemoBuddy->particion,
+								usersSinACK);
+					}
+
 				}
 			}
 
@@ -419,10 +476,9 @@ void envioColaGetPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaGET);
-		sleep(1);
+		sleep(4);
 	}
 }
-
 
 void envioColaLocalizedPokemon() {
 	t_list *usersConACK = list_create();
@@ -447,7 +503,8 @@ void envioColaLocalizedPokemon() {
 			//me fijo que se hayan mandado a todos los suscriptores
 			usersConACK = list_duplicate(part->acknoleged);
 
-			list_iterate(suscriptoresLocalizedPokemon,(void*)  llenarUserSinACK);
+			list_iterate(suscriptoresLocalizedPokemon,
+					(void*) llenarUserSinACK);
 
 			if (usersSinACK->elements_count) {
 				return 1;
@@ -471,12 +528,13 @@ void envioColaLocalizedPokemon() {
 		if (suscriptoresLocalizedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,(void*) baseMasChica);
+			list_sort(tablaDeParticiones, (void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresLocalizedPokemon->elements_count) {
-					mensajeLocalizedEnMemo = list_find(tablaDeParticiones,(void*)  menLocalizedQueFalten);
+					mensajeLocalizedEnMemo = list_find(tablaDeParticiones,
+							(void*) menLocalizedQueFalten);
 					enviarPorTipo(mensajeLocalizedEnMemo, usersSinACK);
 				}
 			}
@@ -484,8 +542,18 @@ void envioColaLocalizedPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresLocalizedPokemon->elements_count) {
-					mensajeLocalizedEnMemoBuddy = list_find(tablaDeParticiones,(void*) menLocalizedQueFaltenEnBuddy);
-					enviarPorTipo(mensajeLocalizedEnMemoBuddy->particion,usersSinACK);
+					mensajeLocalizedEnMemoBuddy = list_find(tablaDeParticiones,
+							(void*) menLocalizedQueFaltenEnBuddy);
+
+					if (mensajeLocalizedEnMemoBuddy == NULL) {
+						particion* particionVacia = NULL;
+						enviarPorTipo(particionVacia, usersSinACK);
+					} else {
+
+						enviarPorTipo(mensajeLocalizedEnMemoBuddy->particion,
+								usersSinACK);
+					}
+
 				}
 			}
 
@@ -496,10 +564,9 @@ void envioColaLocalizedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaLOCALIZED);
-		sleep(1);
+		sleep(4);
 	}
 }
-
 
 void envioColaAppearedPokemon() {
 	t_list *usersConACK = list_create();
@@ -548,12 +615,13 @@ void envioColaAppearedPokemon() {
 		if (suscriptoresAppearedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones,(void*) baseMasChica);
+			list_sort(tablaDeParticiones, (void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresAppearedPokemon->elements_count) {
-					mensajeAppearedEnMemo = list_find(tablaDeParticiones, (void*) menAppearedQueFalten);
+					mensajeAppearedEnMemo = list_find(tablaDeParticiones,
+							(void*) menAppearedQueFalten);
 					enviarPorTipo(mensajeAppearedEnMemo, usersSinACK);
 				}
 			}
@@ -561,8 +629,17 @@ void envioColaAppearedPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresAppearedPokemon->elements_count) {
-					mensajeAppearedEnMemoBuddy = list_find(tablaDeParticiones,(void*) menAppearedQueFaltenEnBuddy);
-					enviarPorTipo(mensajeAppearedEnMemoBuddy->particion,usersSinACK);
+					mensajeAppearedEnMemoBuddy = list_find(tablaDeParticiones,
+							(void*) menAppearedQueFaltenEnBuddy);
+					if (mensajeAppearedEnMemoBuddy == NULL) {
+
+						particion* particionVacia = NULL;
+
+						enviarPorTipo(particionVacia, usersSinACK);
+					} else {
+						enviarPorTipo(mensajeAppearedEnMemoBuddy->particion,
+								usersSinACK);
+					}
 				}
 			}
 
@@ -573,10 +650,9 @@ void envioColaAppearedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaAPPEARED);
-		sleep(1);
+		sleep(4);
 	}
 }
-
 
 void envioColaCatchPokemon() {
 	t_list *usersConACK = list_create();
@@ -626,12 +702,13 @@ void envioColaCatchPokemon() {
 
 			sem_wait(&usoMemoria);
 
-			list_sort(tablaDeParticiones,(void*) baseMasChica);
+			list_sort(tablaDeParticiones, (void*) baseMasChica);
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCatchPokemon->elements_count) {
-					mensajeCatchEnMemo = list_find(tablaDeParticiones, (void*) menCatchQueFalten);
+					mensajeCatchEnMemo = list_find(tablaDeParticiones,
+							(void*) menCatchQueFalten);
 					enviarPorTipo(mensajeCatchEnMemo, usersSinACK);
 				}
 			}
@@ -639,8 +716,19 @@ void envioColaCatchPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresCatchPokemon->elements_count) {
-					mensajeCatchEnMemoBuddy = list_find(tablaDeParticiones, (void*) menCatchQueFaltenEnBuddy);
-					enviarPorTipo(mensajeCatchEnMemoBuddy->particion, usersSinACK);
+					mensajeCatchEnMemoBuddy = list_find(tablaDeParticiones,
+							(void*) menCatchQueFaltenEnBuddy);
+
+					if (mensajeCatchEnMemoBuddy == NULL) {
+
+						particion* particionVacia = NULL;
+
+						enviarPorTipo(particionVacia, usersSinACK);
+					} else {
+						enviarPorTipo(mensajeCatchEnMemoBuddy->particion,
+								usersSinACK);
+					}
+
 				}
 			}
 
@@ -651,10 +739,9 @@ void envioColaCatchPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCATCH);
-		sleep(1);
+		sleep(4);
 	}
 }
-
 
 void envioColaCaughtPokemon() {
 	t_list *usersConACK = list_create();
@@ -704,11 +791,12 @@ void envioColaCaughtPokemon() {
 
 			sem_wait(&usoMemoria);
 
-			list_sort(tablaDeParticiones,(void*) baseMasChica);
+			list_sort(tablaDeParticiones, (void*) baseMasChica);
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCaughtPokemon->elements_count) {
-					mensajeCaughtEnMemo = list_find(tablaDeParticiones, (void*) menCaughtQueFalten);
+					mensajeCaughtEnMemo = list_find(tablaDeParticiones,
+							(void*) menCaughtQueFalten);
 					enviarPorTipo(mensajeCaughtEnMemo, usersSinACK);
 				}
 			}
@@ -716,8 +804,16 @@ void envioColaCaughtPokemon() {
 			if (!strcmp(algoritmo_memoria, "BS")) {
 				//sem_wait(&suscripcionACola);
 				if (suscriptoresCaughtPokemon->elements_count) {
-					mensajeCaughtEnMemoBuddy = list_find(tablaDeParticiones, (void*) menCaughtQueFaltenEnBuddy);
-					enviarPorTipo(mensajeCaughtEnMemoBuddy->particion, usersSinACK);
+					mensajeCaughtEnMemoBuddy = list_find(tablaDeParticiones,
+							(void*) menCaughtQueFaltenEnBuddy);
+					if (mensajeCaughtEnMemoBuddy == NULL) {
+						particion* particionVacia = NULL;
+						enviarPorTipo(particionVacia, usersSinACK);
+					} else {
+						enviarPorTipo(mensajeCaughtEnMemoBuddy->particion,
+								usersSinACK);
+					}
+
 				}
 			}
 
@@ -728,13 +824,11 @@ void envioColaCaughtPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCAUGHT);
-		sleep(1);
+		sleep(4);
 	}
 }
 
-
-int crear_conexion(char *ip, char* puerto)
-{
+int crear_conexion(char *ip, char* puerto) {
 	struct addrinfo hints;
 	struct addrinfo *server_info;
 
@@ -745,26 +839,26 @@ int crear_conexion(char *ip, char* puerto)
 
 	getaddrinfo(ip, puerto, &hints, &server_info);
 
-	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
+	int socket_cliente = socket(server_info->ai_family,
+			server_info->ai_socktype, server_info->ai_protocol);
 
-	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) != 0){
+	if (connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen)
+			!= 0) {
 		//printf("error");
 		freeaddrinfo(server_info);
 		return -1;
 	}
-
 
 	freeaddrinfo(server_info);
 
 	return socket_cliente;
 }
 
-void liberar_conexion(int socket_cliente){
+void liberar_conexion(int socket_cliente) {
 	close(socket_cliente);
 }
 
-
-t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
+t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar) {
 
 	//serializacion
 	//1. uint32_t idMensaje
@@ -774,36 +868,40 @@ t_buffer* serializarMensajeColaNEW(broker_new_pokemon* newAEnviar){
 	//5. uint32_t posY;
 	//6. uint32_t CantidadPokemons;
 
-
 	t_buffer* mensaje = malloc(sizeof(t_buffer));
-	mensaje->size = sizeof(uint32_t)*5 + newAEnviar->datos->tamanioNombre;
+	mensaje->size = sizeof(uint32_t) * 5 + newAEnviar->datos->tamanioNombre;
 	mensaje->stream = malloc(mensaje->size);
 
 	int offset = 0;
 
-	memcpy(mensaje->stream+offset,&(newAEnviar->id),sizeof (uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(newAEnviar->id), sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(newAEnviar->datos->tamanioNombre),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(newAEnviar->datos->tamanioNombre),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,(newAEnviar->datos->nombrePokemon),newAEnviar->datos->tamanioNombre);
-	offset+=newAEnviar->datos->tamanioNombre;
+	memcpy(mensaje->stream + offset, (newAEnviar->datos->nombrePokemon),
+			newAEnviar->datos->tamanioNombre);
+	offset += newAEnviar->datos->tamanioNombre;
 
-	memcpy(mensaje->stream+offset,&(newAEnviar->datos->posX),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(newAEnviar->datos->posX),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(newAEnviar->datos->posY),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(newAEnviar->datos->posY),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(newAEnviar->datos->cantidadPokemon),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(newAEnviar->datos->cantidadPokemon),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
 	return mensaje;
 }
 
-t_buffer* serializarMensajeColaAPPEARED(broker_appeared_pokemon* brokerAppearedPokemon)
-{
+t_buffer* serializarMensajeColaAPPEARED(
+		broker_appeared_pokemon* brokerAppearedPokemon) {
 
 	// serializacion
 	//1. uint32_t idMensaje;
@@ -815,38 +913,44 @@ t_buffer* serializarMensajeColaAPPEARED(broker_appeared_pokemon* brokerAppearedP
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 
-	buffer->size= sizeof(uint32_t)+sizeof(uint32_t) // idMensaje, id
-			+ sizeof(uint32_t)*3 // posX, posY, tamanioNombre
+	buffer->size = sizeof(uint32_t) + sizeof(uint32_t) // idMensaje, id
+			+ sizeof(uint32_t) * 3 // posX, posY, tamanioNombre
 			+ (brokerAppearedPokemon->datos->tamanioNombre); //longitud del strind nombre de pokemon
 
 	buffer->stream = malloc(buffer->size);
 	int offset = 0;
 
+	memcpy(buffer->stream + offset, &(brokerAppearedPokemon->id),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->id),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(buffer->stream + offset,
+			&(brokerAppearedPokemon->datos->tamanioNombre), sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->tamanioNombre),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(buffer->stream + offset,
+			(brokerAppearedPokemon->datos->nombrePokemon),
+			brokerAppearedPokemon->datos->tamanioNombre);
+	offset += brokerAppearedPokemon->datos->tamanioNombre;
 
-	memcpy(buffer->stream+offset,(brokerAppearedPokemon->datos->nombrePokemon), brokerAppearedPokemon->datos->tamanioNombre);
-	offset+=brokerAppearedPokemon->datos->tamanioNombre;
+	memcpy(buffer->stream + offset, &(brokerAppearedPokemon->datos->posX),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posX),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(buffer->stream + offset, &(brokerAppearedPokemon->datos->posY),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->datos->posY),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
-
-	memcpy(buffer->stream+offset,&(brokerAppearedPokemon->id_relativo),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(buffer->stream + offset, &(brokerAppearedPokemon->id_relativo),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
 	return buffer;
 
 }
 
-t_buffer* serializarMensajeColaLOCALIZED(broker_localized_pokemon* brokerLocalizedPokemon)
-{
+t_buffer* serializarMensajeColaLOCALIZED(
+		broker_localized_pokemon* brokerLocalizedPokemon) {
 
 	//serializacion
 	//1. uint32_t idMensaje;
@@ -863,29 +967,39 @@ t_buffer* serializarMensajeColaLOCALIZED(broker_localized_pokemon* brokerLocaliz
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 
-	buffer->size = sizeof(uint32_t)*4 + ((sizeof(uint32_t)*2)*brokerLocalizedPokemon->datos->cantidadPosiciones)
+	buffer->size = sizeof(uint32_t) * 4
+			+ ((sizeof(uint32_t) * 2)
+					* brokerLocalizedPokemon->datos->cantidadPosiciones)
 			+ brokerLocalizedPokemon->datos->tamanioNombre; //longitud del string nombre de pokemon
 
 	buffer->stream = malloc(buffer->size);
 	int offset = 0;
 
 	//id del mensaje
-	memcpy(buffer->stream + offset, &(brokerLocalizedPokemon->id),sizeof(uint32_t));
+	memcpy(buffer->stream + offset, &(brokerLocalizedPokemon->id),
+			sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 
 	//longitud del string nombre de pokemon
-	memcpy(buffer->stream + offset, &(brokerLocalizedPokemon->datos->tamanioNombre),sizeof(uint32_t));
+	memcpy(buffer->stream + offset,
+			&(brokerLocalizedPokemon->datos->tamanioNombre), sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 
 	//string nombre de pokemon
-	memcpy(buffer->stream + offset, (brokerLocalizedPokemon->datos->nombrePokemon),brokerLocalizedPokemon->datos->tamanioNombre);
+	memcpy(buffer->stream + offset,
+			(brokerLocalizedPokemon->datos->nombrePokemon),
+			brokerLocalizedPokemon->datos->tamanioNombre);
 	offset += brokerLocalizedPokemon->datos->tamanioNombre;
 
 	//cantidad de Posciones
-	memcpy(buffer->stream + offset,&(brokerLocalizedPokemon->datos->cantidadPosiciones), sizeof(uint32_t));
+	memcpy(buffer->stream + offset,
+			&(brokerLocalizedPokemon->datos->cantidadPosiciones),
+			sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 
-	for (posiciones = 0;posiciones < brokerLocalizedPokemon->datos->cantidadPosiciones;posiciones++) {
+	for (posiciones = 0;
+			posiciones < brokerLocalizedPokemon->datos->cantidadPosiciones;
+			posiciones++) {
 
 		posX = brokerLocalizedPokemon->datos->posX[posiciones];
 		posY = brokerLocalizedPokemon->datos->posY[posiciones];
@@ -899,13 +1013,14 @@ t_buffer* serializarMensajeColaLOCALIZED(broker_localized_pokemon* brokerLocaliz
 	}
 
 	//id correlativo
-	memcpy(buffer->stream + offset, &(brokerLocalizedPokemon->id_relativo),sizeof(uint32_t));
+	memcpy(buffer->stream + offset, &(brokerLocalizedPokemon->id_relativo),
+			sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 
 	return buffer;
 }
 
-t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar){
+t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar) {
 
 	//serializacion
 	//1. uint32_t idMensaje;
@@ -914,24 +1029,26 @@ t_buffer* serializarMensajeColaGET(broker_get_pokemon* getAEnviar){
 
 	t_buffer* mensaje = malloc(sizeof(t_buffer));
 
-	mensaje->size = sizeof(uint32_t)*2 + getAEnviar->datos->tamanioNombre;
+	mensaje->size = sizeof(uint32_t) * 2 + getAEnviar->datos->tamanioNombre;
 	mensaje->stream = malloc(mensaje->size);
 
 	int offset = 0;
 
-	memcpy(mensaje->stream+offset,&(getAEnviar->id),sizeof (uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(getAEnviar->id), sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(getAEnviar->datos->tamanioNombre),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(getAEnviar->datos->tamanioNombre),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,(getAEnviar->datos->nombrePokemon),getAEnviar->datos->tamanioNombre);
-	offset+=getAEnviar->datos->tamanioNombre;
+	memcpy(mensaje->stream + offset, (getAEnviar->datos->nombrePokemon),
+			getAEnviar->datos->tamanioNombre);
+	offset += getAEnviar->datos->tamanioNombre;
 
 	return mensaje;
 }
 
-t_buffer* serializarMensajeColaCATCH(broker_catch_pokemon* catchAEnviar){
+t_buffer* serializarMensajeColaCATCH(broker_catch_pokemon* catchAEnviar) {
 
 	// serializacion
 	//1. uint32_t id;
@@ -942,30 +1059,34 @@ t_buffer* serializarMensajeColaCATCH(broker_catch_pokemon* catchAEnviar){
 
 	t_buffer* mensaje = malloc(sizeof(t_buffer));
 
-	mensaje->size= sizeof(uint32_t)*4 + (catchAEnviar->datos->tamanioNombre);
+	mensaje->size = sizeof(uint32_t) * 4 + (catchAEnviar->datos->tamanioNombre);
 
 	mensaje->stream = malloc(mensaje->size);
 	int offset = 0;
 
-	memcpy(mensaje->stream+offset,&(catchAEnviar->id),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(catchAEnviar->id), sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(catchAEnviar->datos->tamanioNombre),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(catchAEnviar->datos->tamanioNombre),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,(catchAEnviar->datos->nombrePokemon),catchAEnviar->datos->tamanioNombre);
-	offset+=(catchAEnviar->datos->tamanioNombre);
+	memcpy(mensaje->stream + offset, (catchAEnviar->datos->nombrePokemon),
+			catchAEnviar->datos->tamanioNombre);
+	offset += (catchAEnviar->datos->tamanioNombre);
 
-	memcpy(mensaje->stream+offset,&(catchAEnviar->datos->posX),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(catchAEnviar->datos->posX),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(catchAEnviar->datos->posY),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(catchAEnviar->datos->posY),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
 	return mensaje;
 }
 
-t_buffer* serializarMensajeColaCAUGHT(broker_caught_pokemon* caughtAEnviar){
+t_buffer* serializarMensajeColaCAUGHT(broker_caught_pokemon* caughtAEnviar) {
 
 	// serializacion
 	//1. uint32_t id;
@@ -974,29 +1095,31 @@ t_buffer* serializarMensajeColaCAUGHT(broker_caught_pokemon* caughtAEnviar){
 
 	t_buffer* mensaje = malloc(sizeof(t_buffer));
 
-	mensaje->size = sizeof(uint32_t)*3;
+	mensaje->size = sizeof(uint32_t) * 3;
 	mensaje->stream = malloc(mensaje->size);
 
 	int offset = 0;
 
-	memcpy(mensaje->stream+offset,&(caughtAEnviar->id),sizeof (uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(caughtAEnviar->id), sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(caughtAEnviar->datos->puedoAtraparlo),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(caughtAEnviar->datos->puedoAtraparlo),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
-	memcpy(mensaje->stream+offset,&(caughtAEnviar->id_relativo),sizeof(uint32_t));
-	offset+=sizeof(uint32_t);
+	memcpy(mensaje->stream + offset, &(caughtAEnviar->id_relativo),
+			sizeof(uint32_t));
+	offset += sizeof(uint32_t);
 
 	return mensaje;
 }
 
-void enviar_Cola_New_Pokemon(broker_new_pokemon *brokerNewPokemon, int socket_cliente)
-{
+void enviar_Cola_New_Pokemon(broker_new_pokemon *brokerNewPokemon,
+		int socket_cliente) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__NEW_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->tamanio_username = strlen("BROKER") + 1;
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
 
@@ -1005,24 +1128,24 @@ void enviar_Cola_New_Pokemon(broker_new_pokemon *brokerNewPokemon, int socket_cl
 
 	buffer = serializarMensajeColaNEW(brokerNewPokemon);
 
-	paquete_a_enviar->buffer= buffer;
+	paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+	int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanio_buffer);
 
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
+	send(socket_cliente, bufferStream, tamanio_buffer, 0);
 
 	free(bufferStream);
 	free(paquete_a_enviar->buffer);
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Get_Pokemon(broker_get_pokemon *brokerGetPokemon, int socket_cliente)
-{
+void enviar_cola_Get_Pokemon(broker_get_pokemon *brokerGetPokemon,
+		int socket_cliente) {
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__GET_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->tamanio_username = strlen("BROKER") + 1;
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
 	//serializacion de brokerGetPokemon
@@ -1030,12 +1153,12 @@ void enviar_cola_Get_Pokemon(broker_get_pokemon *brokerGetPokemon, int socket_cl
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaGET(brokerGetPokemon);
 
-	paquete_a_enviar->buffer= buffer;
+	paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+	int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
+	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanio_buffer);
+	send(socket_cliente, bufferStream, tamanio_buffer, 0);
 
 	free(bufferStream);
 
@@ -1048,12 +1171,12 @@ void enviar_cola_Get_Pokemon(broker_get_pokemon *brokerGetPokemon, int socket_cl
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Caught_Pokemon(broker_caught_pokemon *brokerCaughtPokemon,int socket_cliente)
-{
+void enviar_cola_Caught_Pokemon(broker_caught_pokemon *brokerCaughtPokemon,
+		int socket_cliente) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__CAUGHT_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->tamanio_username = strlen("BROKER") + 1;
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
 	//serializacion de brokerCaughtPokemon
@@ -1063,11 +1186,11 @@ void enviar_cola_Caught_Pokemon(broker_caught_pokemon *brokerCaughtPokemon,int s
 
 	paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+	int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
+	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanio_buffer);
 
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
+	send(socket_cliente, bufferStream, tamanio_buffer, 0);
 
 	free(bufferStream);
 
@@ -1080,25 +1203,24 @@ void enviar_cola_Caught_Pokemon(broker_caught_pokemon *brokerCaughtPokemon,int s
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon, int socket_cliente)
-{
+void enviar_cola_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon,
+		int socket_cliente) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__CATCH_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->tamanio_username = strlen("BROKER") + 1;
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
-
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaCATCH(brokerCatchPokemon);
 
-	paquete_a_enviar->buffer= buffer;
+	paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+	int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
+	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanio_buffer);
+	send(socket_cliente, bufferStream, tamanio_buffer, 0);
 
 	free(bufferStream);
 
@@ -1111,25 +1233,24 @@ void enviar_cola_Catch_Pokemon(broker_catch_pokemon *brokerCatchPokemon, int soc
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Localized_Pokemon(broker_localized_pokemon *brokerLocalizedPokemon, int socket_cliente)
-{
+void enviar_cola_Localized_Pokemon(
+		broker_localized_pokemon *brokerLocalizedPokemon, int socket_cliente) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->tamanio_username = strlen("BROKER") + 1;
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
-
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaLOCALIZED(brokerLocalizedPokemon);
 
-	paquete_a_enviar->buffer= buffer;
+	paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+	int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
+	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanio_buffer);
+	send(socket_cliente, bufferStream, tamanio_buffer, 0);
 
 	free(bufferStream);
 
@@ -1137,25 +1258,24 @@ void enviar_cola_Localized_Pokemon(broker_localized_pokemon *brokerLocalizedPoke
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokemon, int socket_cliente)
-{
+void enviar_cola_Appeared_Pokemon(
+		broker_appeared_pokemon *brokerAppearedPokemon, int socket_cliente) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__APPEARED_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen("BROKER")+1;
+	paquete_a_enviar->tamanio_username = strlen("BROKER") + 1;
 	paquete_a_enviar->username = malloc(paquete_a_enviar->tamanio_username);
 	paquete_a_enviar->username = "BROKER";
-
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	buffer = serializarMensajeColaAPPEARED(brokerAppearedPokemon);
 
-	paquete_a_enviar->buffer= buffer;
+	paquete_a_enviar->buffer = buffer;
 
-	int tamanio_buffer=0;
+	int tamanio_buffer = 0;
 
-	void* bufferStream = serializar_paquete(paquete_a_enviar,&tamanio_buffer);
-	send(socket_cliente,bufferStream,tamanio_buffer,0);
+	void* bufferStream = serializar_paquete(paquete_a_enviar, &tamanio_buffer);
+	send(socket_cliente, bufferStream, tamanio_buffer, 0);
 
 	free(bufferStream);
 

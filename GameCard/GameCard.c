@@ -51,6 +51,8 @@ int main(int argc, char* argv[]){
 
 		inicializar_bitarray();
 
+		//sem_init(&sem_mensaje,0,1);
+
 
 		//t_list* listaAux = list_create();
 
@@ -68,11 +70,10 @@ int main(int argc, char* argv[]){
 		//procesarNewPokemon("Charmander",registro1);
 
 
-		//procesarCatchPokemon("Charmander",413,17);
-
+//		procesarCatchPokemon("Prueba",1,2,1);
 
 		//procesarNewPokemon("Messi",registro1);
-		//procesarGetPokemon("Charmander");3
+		//procesarGetPokemon("Gengar",1);
 
 		/*pthread_t hilo_servidor;
 
@@ -88,20 +89,16 @@ int main(int argc, char* argv[]){
 		}
 		*/
 
-
-
-
-		int conexion = crear_conexion(IP_BROKER,PUERTO_BROKER);
-		if(conexion != -1){
-
-			suscribirnos_cola_catch();
-			suscribirnos_cola_new();
-			suscribirnos_cola_get();
-
-		}
-
+		suscribirnos_cola_catch();
+		sleep(1);
+		suscribirnos_cola_new();
+		sleep(1);
+		suscribirnos_cola_get();
+		sleep(1);
 
 		iniciar_servidor();
+
+	//	return 1;
 
 }
 
@@ -135,18 +132,19 @@ void suscribirnos_cola_catch(){
 	int suscripcionGet;
 	suscriptor* meSuscriboGet = malloc(sizeof(suscriptor));
 
-
 	meSuscriboGet->nombreDeSuscriptor = "GAMECARD";
 	meSuscriboGet->tamanioNombreSucriptor = strlen(meSuscriboGet->nombreDeSuscriptor) + 1;
 
-	meSuscriboGet->tipoDeCola = CAUGHT_POKEMON;
+	meSuscriboGet->tipoDeCola = CATCH_POKEMON;
 
 	suscripcionGet = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
-
 	if(suscripcionGet != -1){
 			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-			close(suscripcionGet);
+			printf("Mande a cola CATCH_POKEMON con el socket:%d \n",suscripcionGet);
+			fflush(stdout);
+
+		//	close(suscripcionGet);
 		}
 			free(meSuscriboGet);
 }
@@ -161,12 +159,17 @@ void suscribirnos_cola_new(){
 
 	meSuscriboNew->tipoDeCola = NEW_POKEMON;
 
+
+
 	suscripcionNew = crear_conexion(IP_BROKER,PUERTO_BROKER);
 
 
 	if(suscripcionNew != -1){
 			enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
-			close(suscripcionNew);
+			printf("Mande a cola NEW con el socket: %d \n",suscripcionNew);
+			fflush(stdout);
+
+		//close(suscripcionNew);
 		}
 			free(meSuscriboNew);
 }
@@ -186,7 +189,10 @@ void suscribirnos_cola_get(){
 
 	if(suscripcionGet != -1){
 			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-			close(suscripcionGet);
+			printf("Mande a cola GET con el socket: %d \n",suscripcionGet);
+			fflush(stdout);
+
+			//close(suscripcionGet);
 		}
 			free(meSuscriboGet);
 }

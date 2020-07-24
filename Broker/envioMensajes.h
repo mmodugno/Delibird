@@ -9,10 +9,10 @@
 #define ENVIOMENSAJES_H_
 
 #include "utils_broker.h"
-/*
+
 int conexionTeam;
 int conexionGamecard;
-int conexionGameboy;*/
+int conexionGameboy;
 
 void liberar_conexion(int socket_cliente);
 void enviarASuscriptores(t_paquete* paqueteAEnviar,t_list* usersAEnviar);

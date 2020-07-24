@@ -99,8 +99,8 @@ void modificarArchivoComoConfig(t_config* ,char* ,char* );
 void registrarPokemon(char* , registroDatos* );
 void agregarBloqueParaPokemon(char* ,int );
 int verificarExistenciaPokemon(char* );
-void procesarNewPokemon(char*, registroDatos* );
-void procesarCatchPokemon(char* ,uint32_t , uint32_t );
+void procesarNewPokemon(char*, registroDatos* ,int);
+void procesarCatchPokemon(char* ,uint32_t , uint32_t ,int);
 
 
 ////////// REGISTROS Y BLOQUES
@@ -118,7 +118,7 @@ int sumarSiEstaEnBloque(t_list* ,registroDatos*);
 bool tieneCantidadCero(char*);
 void buscarYeliminarCeros(t_list*);
 void eliminarBloquesVacios(char* );
-void procesarGetPokemon(char* );
+void procesarGetPokemon(char* ,int);
 
 ////////// BITARRAY
 void inicializar_bitarray();

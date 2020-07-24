@@ -53,6 +53,18 @@ int verificarExistenciaPokemon(char* nombrePoke) {
 
 }
 
+int verificarSiExisteArchivo(char* path) {
+
+	int fd = open(path,O_RDWR);
+
+	int existe = fd;
+
+	close(fd);
+
+	return existe;
+
+}
+
 void verificarAperturaArchivo(char* path) {
 
 	char* aux;
@@ -286,7 +298,7 @@ void calcularTamanioMetadata(char* pokemon) {
 }
 
 
-void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
+void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -326,15 +338,18 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 	int conexion = conectarse_con_broker();
 
-	//TODO revisar
-	uint32_t id_rel = 1; //para que no me tire error nomas
-
 	if(conexion < 0){
+		printf("No me pude cpnectar para enviar resouesta de New \n");
+		fflush(stdout);
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 
-		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id_rel);
+		printf("Envio APPEARED \n");
+		fflush(stdout);
+		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
 	}
+
+	close(conexion);
 
 	calcularTamanioMetadata(nombrePoke);
 
@@ -343,7 +358,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro) {
 
 }
 
-void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
+void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
@@ -370,6 +385,8 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 		perror("No existe posicion para el pokemon");
 		resultado = 0;
 	} else {
+		printf("Lo atrapaste!");
+		fflush(stdout);
 		buscarYeliminarCeros(listaBloques);
 		resultado = 1;
 	}
@@ -385,9 +402,6 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 
 	sem_post(&sem_escritura);
 
-	//TODO ver id
-	uint32_t id_rel = 2;
-
 	sleep(tiempo_retardo_operacion);
 
 	config_destroy(configPath);
@@ -401,7 +415,7 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 	if(conexion < 0){
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
-		enviar_caught(conexion,resultado,id_rel);
+		enviar_caught(conexion,resultado,id);
 	}
 
 	config_destroy(configPath);
@@ -410,13 +424,20 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY){
 
 }
 
-void procesarGetPokemon(char* nombrePoke){
+void procesarGetPokemon(char* nombrePoke, int id){
 
 	char* path  = string_from_format("/home/utnso/Escritorio/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
+	t_list* listaRegistros;
+
+	if(verificarSiExisteArchivo(path) == -1){
+		listaRegistros = list_create();
+		printf("No existe el Pokemon");
+	} else {
+
 	verificarAperturaArchivo(path);
 
-	t_list* listaRegistros = obtenerPosiciones(nombrePoke);
+	listaRegistros = obtenerPosiciones(nombrePoke);
 
 	//sleep(tiempo_retardo_operacion);
 
@@ -426,19 +447,21 @@ void procesarGetPokemon(char* nombrePoke){
 
 	config_destroy(configPath);
 
-	int id_rel = 3;
+	}
 
 	int conexion = conectarse_con_broker();
 
 	if(conexion < 0){
 			log_info(logFalloConexion,"Fallo conexion con Broker");
+			printf("No me pude cpnectar para enviar resouesta de New \n");
+				fflush(stdout);
 		} else {
 
 			if(list_is_empty(listaRegistros)) {
 				uint32_t* posicionesX;
 				uint32_t* posicionesY;
 
-				enviar_localized(conexion,nombrePoke,0,posicionesX,posicionesY,id_rel);
+				enviar_localized(conexion,nombrePoke,0,posicionesX,posicionesY,id);
 				} else {
 
 					uint32_t paresDePosiciones = list_size(listaRegistros);
@@ -457,10 +480,17 @@ void procesarGetPokemon(char* nombrePoke){
 
 					}
 
-					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id_rel);
+					printf("Estoy por mandar Localized \n");
+					fflush(stdout);
+
+					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id);
+
+					printf("Mande Localized \n");
+					fflush(stdout);
 				}
 
 		}
+	close(conexion);
 
 }
 
@@ -564,6 +594,63 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 
 	if(list_is_empty(listaBloques)) {
 	return yaRegistrado;
+	}
+
+	if(list_size(listaBloques) == 1 && registro->cantidad == -1){
+		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		int fd = open(primerFd,O_RDWR);
+
+		struct stat sb;
+		fstat(fd,&sb);
+
+		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+
+		char* conjuntoConKey = malloc(sb.st_size);
+
+		strcpy(conjuntoConKey,file_memory);
+
+		if(string_contains(conjuntoConKey,key)){
+			char** bloques;
+
+			char* nuevoConjunto = string_new();
+
+			bloques = string_split(conjuntoConKey,"\n");
+			int k;
+			int tamanio = tamanio_array(bloques);
+
+			for(k=0;k < tamanio;k++){
+
+				if(string_contains(bloques[k],key)){
+
+						int valor = (registro->cantidad);
+
+						registroDatos* reg = string_a_registro(bloques[k]);
+						reg->cantidad = reg->cantidad + valor;
+
+						bloques[k] = registro_a_string(reg);
+
+						string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
+
+						yaRegistrado = 1;
+
+					} else {
+
+						string_append(&nuevoConjunto,bloques[k]);
+
+						if(k != tamanio-1){
+							string_append(&nuevoConjunto,"\n");
+
+						}
+
+					}
+				}
+
+				write(fd,nuevoConjunto,sb.st_size);
+
+			}
+
+		close(fd);
 	}
 
 	//si no esta cortado
@@ -1178,7 +1265,7 @@ void iniciar_servidor(void)
     getaddrinfo(ipGamecard,puertoGamecard, &hints, &servinfo);
 
     int activado = 1;
-   	setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
+
 
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
@@ -1191,6 +1278,8 @@ void iniciar_servidor(void)
         }
         break;
     }
+
+	setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
 
 	listen(socket_servidor, SOMAXCONN);
 
@@ -1253,13 +1342,12 @@ void process_request(int cod_op, int cliente_fd) {
 	uint32_t tamanio_username;
 	int id;
 
-
 	char* username;
 
-	recv(cliente_fd,&tamanio_username,sizeof(uint32_t),MSG_WAITALL);
+	recv(cliente_fd, &tamanio_username, sizeof(uint32_t), MSG_WAITALL);
 
 	username = malloc(tamanio_username);
-	recv(cliente_fd,username,tamanio_username,MSG_WAITALL);
+	recv(cliente_fd, username, tamanio_username, MSG_WAITALL);
 
 	recv(cliente_fd, &tamanio_buffer, sizeof(uint32_t), MSG_WAITALL);
 
@@ -1267,59 +1355,158 @@ void process_request(int cod_op, int cliente_fd) {
 
 	char *nombre;
 
+	//sem_wait(&sem_mensaje);
 
 	switch (cod_op) {
 
 	case GAMECARD__NEW_POKEMON:
 
+		recv(cliente_fd, &id, sizeof(uint32_t), 0);
+		registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
+		//TODO guardar este id para que el appeared de este mensaje tenga el id_relativo que id
 
+		procesarNewPokemon(registroConNombre->nombre,
+				registroConNombre->registro, id);
 
-	recv(cliente_fd,&id,sizeof(uint32_t),0);
-	registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
-	//TODO guardar este id para que el appeared de este mensaje tenga el id_relativo que id
+		free(registroConNombre);
 
-	procesarNewPokemon(registroConNombre->nombre,registroConNombre->registro);
-
-	free(registroConNombre);
-
-
-	break;
-
-
+		break;
 
 	case GAMECARD__CATCH_POKEMON:
 
-	recv(cliente_fd,&id,sizeof(uint32_t),0);
-	registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
+		recv(cliente_fd, &id, sizeof(uint32_t), 0);
+		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
-	//TODO guardar este id para que el CAUGHT de este mensaje tenga el id_relativo que id
-	procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,registroConNombre->registro->posY);
+		//TODO guardar este id para que el CAUGHT de este mensaje tenga el id_relativo que id
+		procesarCatchPokemon(registroConNombre->nombre,
+				registroConNombre->registro->posX,
+				registroConNombre->registro->posY,id);
 
-	free(registroConNombre);
+		free(registroConNombre);
 
-
-	break;
-
-
+		break;
 
 	case GAMECARD__GET_POKEMON:
 
-	recv(cliente_fd,&id,sizeof(uint32_t),0);
-	nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
+		recv(cliente_fd, &id, sizeof(uint32_t), 0);
+		nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
 
-	//TODO guardar este id para que el Localized de este mensaje tenga el id_relativo que id
-	procesarGetPokemon(nombre);
+		//TODO guardar este id para que el Localized de este mensaje tenga el id_relativo que id
+		procesarGetPokemon(nombre,id);
 
-	free(nombre);
+		free(nombre);
 
+		break;
 
-	break;
+	case BROKER__NEW_POKEMON:
+
+		recv(cliente_fd, &id, sizeof(uint32_t), 0);
+		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
+		registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
+
+		printf("Recibo new de broker \n");
+		fflush(stdout);
+
+		int envio_de_ack = crear_conexion(IP_BROKER, PUERTO_BROKER);
+
+		if (envio_de_ack != -1) {
+
+			printf("Envio ACK \n");
+			enviarACK(id, envio_de_ack, "GAMECARD");
+
+		}
+
+	//	printf("Por eliminar socket \n");
+	//	fflush(stdout);
+		//close(envio_de_ack);
+		//printf("sockect muerto \n");
+//		fflush(stdout);
+
+		sleep(1);
+
+		procesarNewPokemon(registroConNombre->nombre,
+				registroConNombre->registro, id);
+
+		free(registroConNombre);
+		//////pthread_mutex_unlock(&llegadaMensajesTHREAD);
+		break;
+
+	case BROKER__GET_POKEMON:
+
+		sem_wait(&sem_mensaje);
+
+		recv(cliente_fd, &id, sizeof(uint32_t), 0);
+		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
+		nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
+
+		printf("Recibo get de broker \n");
+		fflush(stdout);
+
+		int envio_de_ack_get = crear_conexion(IP_BROKER, PUERTO_BROKER);
+
+		if (envio_de_ack_get != -1) {
+
+			printf("Por enviar ACK \n");
+			enviarACK(id, envio_de_ack_get, "GAMECARD");
+
+		}
+
+		printf("Por eliminar socket \n");
+		fflush(stdout);
+	//	close(envio_de_ack_get);
+		printf("sockect muerto \n");
+		fflush(stdout);
+
+		sleep(1);
+
+		procesarGetPokemon(nombre,id);
+
+		free(nombre);
+		//////pthread_mutex_unlock(&llegadaMensajesTHREAD);
+		sem_post(&sem_mensaje);
+
+		break;
+
+	case BROKER__CATCH_POKEMON:
+
+		recv(cliente_fd, &id, sizeof(uint32_t), 0);
+		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
+		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
+
+		printf("Recibo catch de broker \n");
+		fflush(stdout);
+
+		int envio_de_ack_catch = crear_conexion(IP_BROKER, PUERTO_BROKER);
+
+		if (envio_de_ack_catch != -1) {
+
+			printf("Por enviar ACK \n");
+			enviarACK(id, envio_de_ack_catch, "GAMECARD");
+
+		}
+
+		printf("Por eliminar socket \n");
+		fflush(stdout);
+	//	close(envio_de_ack_catch);
+		printf("sockect muerto \n");
+		fflush(stdout);
+
+		sleep(1);
+
+		procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,
+				registroConNombre->registro->posY,id);
+
+		free(registroConNombre);
+		//////pthread_mutex_unlock(&llegadaMensajesTHREAD);
+		break;
 
 	case 0:
-	pthread_exit(NULL);
+		pthread_exit(NULL);
 	case -1:
-	pthread_exit(NULL);
-
+		pthread_exit(NULL);
 
 	}
 	//sem_post(&sem_mensaje);
@@ -1464,7 +1651,7 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 
 }
 
-void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id_rel){
+void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id){
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__CAUGHT_POKEMON;
@@ -1477,7 +1664,7 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id_rel){
 
 	brokerCaughtPokemon->datos->puedoAtraparlo = resultado;
 
-	//brokerCaughtPokemon->id_relativo = id_rel;
+	brokerCaughtPokemon->id_relativo = id;
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
 	serializar_broker_caught_pokemon(brokerCaughtPokemon,buffer);
@@ -1496,7 +1683,7 @@ void enviar_caught(int socket_cliente,uint32_t resultado, uint32_t id_rel){
 	free(paquete_a_enviar);
 }
 
-void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosiciones, uint32_t* posicionesX, uint32_t* posicionesY,uint32_t id_rel) {
+void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosiciones, uint32_t* posicionesX, uint32_t* posicionesY,uint32_t id) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
@@ -1507,7 +1694,7 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 
 	broker_localized_pokemon* brokerLocalizedPokemon = malloc(sizeof(broker_appeared_pokemon));
 	brokerLocalizedPokemon->datos = malloc(sizeof(localized_pokemon));
-	brokerLocalizedPokemon->id_relativo = id_rel;
+	brokerLocalizedPokemon->id_relativo = id;
 	brokerLocalizedPokemon->datos->tamanioNombre = strlen(nombre)+1;
 	brokerLocalizedPokemon->datos->nombrePokemon = nombre;
 	brokerLocalizedPokemon->datos->cantidadPosiciones = paresDePosiciones;

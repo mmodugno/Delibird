@@ -235,7 +235,9 @@ while(1){
 	//if(conectarse_con_broker()!=-1){
 		//log_info(comunicacion_broker_resultado,"me conecte a Broker exitosamente");
 
-		if(conexionBroker>0){
+	int conexionParaCatch = crear_conexion(IP_BROKER,PUERTO_BROKER);
+
+		if(conexionParaCatch>0){
 
 		broker_catch_pokemon *catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 		catchAEnviar->datos=malloc(sizeof(catch_pokemon));
@@ -246,7 +248,7 @@ while(1){
 		catchAEnviar->datos->posX = un_entrenador->objetivo_proximo->posX;
 		catchAEnviar->datos->posY= un_entrenador->objetivo_proximo->posY;
 
-		enviar_catch(un_entrenador,catchAEnviar);
+		enviar_catch(un_entrenador,catchAEnviar,conexionParaCatch);
 		log_info(llegadaDeMensaje,"del catch que envie su ID es %d \n",catchAEnviar->id);
 		un_entrenador->id_catch = catchAEnviar->id; //Nos guardamos el ID para identificar los caught
 
@@ -254,7 +256,7 @@ while(1){
 
 
 		//libero la conexion con el broker
-		close(conexionBroker);
+		//close(conexionParaCatch);
 	}else{
 		log_info(comunicacion_broker_error,"No se pudo conectar con Broker,se realizará la operación por default \n");
 	}
@@ -1099,10 +1101,10 @@ void cpu_team(void){
 
 ////////////////////////////////////RESPUESTAS DEL CAUGHT
 
-void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar) {
+void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar, int socketAEnviar) {
 	//catchAEnviar=malloc(sizeof(broker_catch_pokemon));
 
-	int socketAEnviar = crear_conexion(IP_BROKER, PUERTO_BROKER);
+	//int socketAEnviar = crear_conexion(IP_BROKER, PUERTO_BROKER);
 
 	if (socketAEnviar) {
 
@@ -1132,7 +1134,7 @@ void enviar_catch(entrenador* un_entrenador, broker_catch_pokemon *catchAEnviar)
 		free(bufferStream);
 		free(paquete_a_enviar->buffer);
 		free(paquete_a_enviar);
-		liberar_conexion(socketAEnviar);
+		//liberar_conexion(socketAEnviar);
 	}
 
 }
@@ -1185,8 +1187,15 @@ void enviar_get(char* nombrePokemon, broker_get_pokemon *getAEnviar) {
 
 		free(paquete_a_enviar->buffer);
 		free(paquete_a_enviar);
-		liberar_conexion(socketAEnviar);
+
 	}
+
+	printf("Mande un GET con el socket: %d",socketAEnviar);
+	fflush(stdout);
+
+	//liberar_conexion(socketAEnviar);
+
+	sleep(1);
 
 }
 
@@ -1587,13 +1596,21 @@ void process_request(int cod_op, int cliente_fd) {
 
 			caughtRecibido = deserializar_team_caught_pokemon(cliente_fd);
 
+			envio_de_ack = crear_conexion(IP_BROKER, PUERTO_BROKER);
+
+			if (envio_de_ack != -1) {
+
+			enviarACK(caughtRecibido->id, envio_de_ack, "TEAM");
+			//liberar_conexion(envio_de_ack);
+			}
+
 			//Comparo entre los IDS de los entrenadores si existe el recibido
 			uint32_t id_recibido = caughtRecibido->id_relativo;
 			int i;
 			for(i = 0; i < list_size(entrenadores);i++){
 				entrenador* un_entrenador = list_get(entrenadores,i);
 				if(un_entrenador->id_catch == id_recibido){
-
+					un_entrenador->id_catch = 0;
 				if(caughtRecibido->datos->puedoAtraparlo){
 					resolucionCatch = "se confirma el catch";
 				}
@@ -1604,15 +1621,10 @@ void process_request(int cod_op, int cliente_fd) {
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
 
-					envio_de_ack = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-					if(envio_de_ack != -1){
-
-					enviarACK(caughtRecibido->id,envio_de_ack,"TEAM");
-					liberar_conexion(envio_de_ack);
-					}
-
 					break;
+				}else {
+					printf("No me sirvio el mensaje\n");
+					fflush(stdout);
 				}
 
 			}
@@ -1634,10 +1646,12 @@ void process_request(int cod_op, int cliente_fd) {
 			if(envio_de_ack != -1){
 
 			enviarACK(localizedRecibido->id,envio_de_ack,"TEAM");
-			liberar_conexion(envio_de_ack);
+			//liberar_conexion(envio_de_ack);
 			}
 
 			id = localizedRecibido->id_relativo;
+
+			//sleep(2);
 
 			sem_wait(&mutex_lista);
 
@@ -1675,11 +1689,13 @@ void process_request(int cod_op, int cliente_fd) {
 			if(envio_de_ack != -1){
 
 			enviarACK(appearedRecibidoBROKER->id,envio_de_ack,"TEAM");
-			liberar_conexion(envio_de_ack);
+			//liberar_conexion(envio_de_ack);
 			}
 
 			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de BROKER:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n",
 			appearedRecibidoBROKER->datos->tamanioNombre, appearedRecibidoBROKER->datos->nombrePokemon, appearedRecibidoBROKER->datos->posX, appearedRecibidoBROKER->datos->posY);
+
+			//sleep(2);
 
 			nuevoPoke = hacer_pokemon(appearedRecibidoBROKER->datos->nombrePokemon,appearedRecibidoBROKER->datos->posX,appearedRecibidoBROKER->datos->posY,appearedRecibidoBROKER->datos->tamanioNombre);
 

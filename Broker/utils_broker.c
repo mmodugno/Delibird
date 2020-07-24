@@ -93,7 +93,6 @@ void iniciar_servidor(void)
     getaddrinfo(ip_broker, puerto_broker, &hints, &servinfo);
 
     int activado = 1;
-	setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
 
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
@@ -106,6 +105,8 @@ void iniciar_servidor(void)
         }
         break;
     }
+
+    setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
 
 	listen(socket_servidor, SOMAXCONN);
 
@@ -135,15 +136,15 @@ void esperar_cliente(int socket_servidor)
 void serve_client(int* socket)
 {
 	//sem_wait(&llegadaMensajes);
-//	pthread_mutex_lock(&llegadaMensajesTHREAD);
+	//pthread_mutex_lock(&llegadaMensajesTHREAD);
 	int cod_op;
 	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
 	process_request(cod_op, *socket);
 
-	//liberar_conexion(*socket);
-//	pthread_mutex_unlock(&llegadaMensajesTHREAD);
+	liberar_conexion(*socket);
+	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
 	//sem_post(&llegadaMensajes);
 }
 
@@ -186,17 +187,74 @@ void process_request(int cod_op, int cliente_fd) {
 	broker_caught_pokemon* caughtRecibido;
 	broker_localized_pokemon* localizedRecibido;
 
-	//log_info(logConexion,"%s se conecto al broker",username);
-	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 
-	//if(esGameBoy(username)||esGameCard(username)||esTeam(username)){
+//	sem_wait(&mutexParProcesar);
+
+	printf("Procesando un mensaje de: %s \n",username);
+	fflush(stdout);
+
+
 		switch (cod_op) {
+
+		case ACKNOWLEDGED:
+
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
+
+			ackRecibido = deserializarAck(cliente_fd);
+
+
+			printf("Recibi un ACK \n");
+			fflush(stdout);
+
+			//TODO comentar esto
+			/*
+			log_info(confirmacionRecepcion,
+					"me llego la confirmacion para el ID:%d pero todavia no busque", ackRecibido);*/
+
+			//mutex porque manejo algo de memoria
+			sem_wait(&usoMemoria);
+
+			bool partAck(particion *part) {
+				if (/*(!part->libre) &&*/ (ackRecibido == part->idMensaje)) {
+					return 1;
+				}
+				return 0;
+			}
+
+			bool buddyAck(buddy* unBuddy){
+				return partAck(unBuddy->particion);
+			}
+			/*
+			//TODO comentar, muestra lo que esta en memoria
+			list_iterate(tablaDeParticiones,mostrarParticiones);*/
+
+			if(!strcmp(algoritmo_memoria,"PARTICIONES")) partEncontrada = list_find(tablaDeParticiones, (void*) partAck);
+
+			if(!strcmp(algoritmo_memoria,"BS")) {
+				buddyEncontrado = list_find(tablaDeParticiones,(void*) buddyAck);
+				partEncontrada = buddyEncontrado->particion;
+			}
+
+			//si la encontro lo agrega a su tabla de ACK
+			if(partEncontrada!=NULL){
+				list_add(partEncontrada->acknoleged,username);
+				log_info(confirmacionRecepcion,"ACK de %s ID:%d para la cola %s",username,ackRecibido,colasDeEnum[partEncontrada->tipoMensaje]);
+			}
+
+			sem_post(&usoMemoria);
+
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
+			break;
+
 			case SUSCRIPCION:
+
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
-				//sleep(3);
-
 				suscriptor = deserializar_suscripcion(cliente_fd);
+
+				printf("Recibí una suscripcion \n ");
+				fflush(stdout);
 
 				log_info(logSuscipcion,
 						"recibi mensaje de suscripcion de %s a la cola %s",
@@ -205,16 +263,23 @@ void process_request(int cod_op, int cliente_fd) {
 
 				suscribirACola(suscriptor);
 
-
-
 				free(suscriptor);
+
 				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+
 				break;
 
 			case BROKER__NEW_POKEMON:
+
+
+
+				fflush(stdout);
+
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				newRecibido = deserializar_new_pokemon(cliente_fd);
+
+				printf("Recibi un NEW \n");
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -247,6 +312,8 @@ void process_request(int cod_op, int cliente_fd) {
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 				appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
+				printf("Recibi un APPEARED \n" );
+
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -277,9 +344,10 @@ void process_request(int cod_op, int cliente_fd) {
 
 			case BROKER__GET_POKEMON:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
 				getRecibido = deserializar_get_pokemon(cliente_fd);
 
+				printf("Recibi un GET \n");
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -314,7 +382,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 				catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
-
+				printf("Recibi un CATCH \n");
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -347,9 +415,11 @@ void process_request(int cod_op, int cliente_fd) {
 
 			case BROKER__CAUGHT_POKEMON:
 
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				caughtRecibido = deserializar_caught_pokemon(cliente_fd);
+
+				printf("Recibi un CAUGHT \n");
 
 
 				//mutex
@@ -372,13 +442,15 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(caughtRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+			pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
 			case BROKER__LOCALIZED_POKEMON:
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				localizedRecibido = deserializar_localized_pokemon(cliente_fd);
+
+				printf("Recibi un LOCALIZED \n");
 
 
 				 posiciones = 0;
@@ -413,57 +485,13 @@ void process_request(int cod_op, int cliente_fd) {
 
 				//free(raiz);
 				free(localizedRecibido);
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
+			pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
 
-			case ACKNOWLEDGED:
-
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
-
-				ackRecibido = deserializarAck(cliente_fd);
-
-				//TODO comentar esto
-				/*
-				log_info(confirmacionRecepcion,
-						"me llego la confirmacion para el ID:%d pero todavia no busque", ackRecibido);*/
-
-				//mutex porque manejo algo de memoria
-				sem_wait(&usoMemoria);
-
-				bool partAck(particion *part) {
-					if (/*(!part->libre) &&*/ (ackRecibido == part->idMensaje)) {
-						return 1;
-					}
-					return 0;
-				}
-
-				bool buddyAck(buddy* unBuddy){
-					return partAck(unBuddy->particion);
-				}
-				/*
-				//TODO comentar, muestra lo que esta en memoria
-				list_iterate(tablaDeParticiones,mostrarParticiones);*/
-
-				if(!strcmp(algoritmo_memoria,"PARTICIONES")) partEncontrada = list_find(tablaDeParticiones, (void*) partAck);
-
-				if(!strcmp(algoritmo_memoria,"BS")) {
-					buddyEncontrado = list_find(tablaDeParticiones,(void*) buddyAck);
-					partEncontrada = buddyEncontrado->particion;
-				}
-
-				//si la encontro lo agrega a su tabla de ACK
-				if(partEncontrada!=NULL){
-					list_add(partEncontrada->acknoleged,username);
-					log_info(confirmacionRecepcion,"ACK de %s ID:%d para la cola %s",username,ackRecibido,colasDeEnum[partEncontrada->tipoMensaje]);
-				}
-
-				sem_post(&usoMemoria);
-
-				pthread_mutex_unlock(&llegadaMensajesTHREAD);
-
-				break;
 			case DESUSCRIBIR:
-				pthread_mutex_lock(&llegadaMensajesTHREAD);
+			pthread_mutex_lock(&llegadaMensajesTHREAD);
+
+			printf("Recibi un DESUSCRIPCION");
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
@@ -484,12 +512,19 @@ void process_request(int cod_op, int cliente_fd) {
 				break;
 
 			case 0:
+
+				printf("Recibí un menos cero \n");
+				fflush(stdout);
+
 				pthread_exit(NULL);
 				break;
 			case -1:
 
-				log_info(almacenadoMemoria,"recibi un menos uno");
+				printf("Recibí un menos uno \n");
+				fflush(stdout);
+
 				pthread_exit(NULL);
+
 				break;
 
 
@@ -500,6 +535,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 		}
+
+	//	sem_post(&mutexParProcesar);
 
 
 	//pthread_exit(EXIT_SUCCESS);
@@ -564,8 +601,6 @@ void suscribirACola(suscriptor* suscrip){
 
 
 void desuscribirACola(suscriptor* suscrip){
-
-
 
 	bool suscriptorAEliminar(char* nombreSus){
 		return (!strcmp(nombreSus, suscrip->nombreDeSuscriptor));
@@ -1963,7 +1998,38 @@ bool puedeConsolidarIzquierda(buddy* unBuddy){
 
 }
 
+void serverAlternativo(){
 
+    struct sockaddr_in direccionServidor;
+
+    struct addrinfo hints, *servinfo, *p;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE;
+
+    getaddrinfo(ip_broker, puerto_broker, &hints, &servinfo);
+
+    int servidor = socket(AF_INET, SOCK_STREAM, 0);
+
+    int activado = 1;
+    setsockopt(servidor, SOL_SOCKET, SO_REUSEADDR, &activado, sizeof(activado));
+
+    if(bind(servidor, (void*) &direccionServidor, sizeof(direccionServidor)) != 0){
+        printf("Fallo el bind \n");
+    }
+
+    printf("Estoy escuchando \n");
+    listen(servidor, 100);
+
+    freeaddrinfo(servinfo);
+
+    while(1){
+       	esperar_cliente(servidor);
+       }
+
+}
 
 
 

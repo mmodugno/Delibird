@@ -46,8 +46,8 @@ int main(int argc, char* argv[]){
 
 	//conectarse_con_broker();
 
-	pthread_t hilo_de_conexion_con_broker;
-	pthread_create(&hilo_de_conexion_con_broker,NULL,(void *) conexion_broker,NULL);
+	//pthread_t hilo_de_conexion_con_broker;
+	//pthread_create(&hilo_de_conexion_con_broker,NULL,(void *) conexion_broker,NULL);
 
 
 	pthread_t hilo_principal;
@@ -55,23 +55,16 @@ int main(int argc, char* argv[]){
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
-
-	conexionBroker = crear_conexion(IP_BROKER,PUERTO_BROKER);
-
-	if(conexionBroker){
-
-		suscribirnos_cola_caught();
-		suscribirnos_cola_localized();
-		suscribirnos_cola_appeared();
+	suscribirnos_cola_caught();
+	sleep(1);
+	suscribirnos_cola_localized();
+	sleep(1);
+	suscribirnos_cola_appeared();
+	sleep(1);
 
 		//int j;
-
-		//Mando un get por cada uno de mis objetivos globales.
-		dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
-		//close(conexionBroker);
-
-	}
-
+//Mando un get por cada uno de mis objetivos globales.
+	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
 
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
@@ -154,6 +147,9 @@ void suscribirnos_cola_caught() {
 		liberar_conexion(suscripcionCaught);
 	}
 
+	printf("Mande suscripcon cola caught con el socket: %d \n",suscripcionCaught);
+	fflush(stdout);
+
 	free(meSuscriboCaught);
 }
 
@@ -173,6 +169,11 @@ void suscribirnos_cola_localized(){
 		enviar_pedido_suscripcion(meSuscriboLocalized, suscripcionLocalized);
 		liberar_conexion(suscripcionLocalized);
 	}
+
+	printf("Mande suscripcon cola localized con el socket: %d \n",suscripcionLocalized);
+	fflush(stdout);
+
+
 	free(meSuscriboLocalized);
 }
 
@@ -193,6 +194,10 @@ void suscribirnos_cola_appeared() {
 		enviar_pedido_suscripcion(meSuscriboAppeared, suscripcionAppeared);
 		liberar_conexion(suscripcionAppeared);
 	}
+
+	printf("Mande suscripcon cola appeared con el socket: %d \n",suscripcionAppeared);
+	fflush(stdout);
+
 	free(meSuscriboAppeared);
 }
 

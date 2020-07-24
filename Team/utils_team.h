@@ -221,7 +221,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 void denegar_catch(entrenador* un_entrenador);
 void confirmacion_de_catch(entrenador* un_entrenador);
 void esperar_respuesta_catch(entrenador* un_entrenador);
-void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar);
+void enviar_catch(entrenador* un_entrenador,broker_catch_pokemon *catchAEnviar, int socket);
 void enviar_get(char* nombrePokemon,broker_get_pokemon *getAEnviar);
 
 

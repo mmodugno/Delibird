@@ -21,8 +21,6 @@ int main(int argc, char* argv[]){
 		printf("No hay parametros suficientes\n");
 		return 2;
 	}
-	//leemos todo el archivo de config
-	leer_config();
 
 	logConexion=iniciar_logger("Conexion");
 	logSuscipcion=iniciar_logger("Suscripcion");
@@ -30,7 +28,8 @@ int main(int argc, char* argv[]){
 	//logEnviarNuevo= iniciar_logger("Enviar Mensaje");
 
 
-
+	//leemos todo el archivo de config
+	leer_config();
 
 	//sem_init(&recibiConexion,0,0);
 
@@ -361,7 +360,7 @@ int main(int argc, char* argv[]){
 
 
 				//Abro el server de Gameboy para escuchar los msj q me manda Broker
-				//liberar_conexion(conexionBroker);
+				liberar_conexion(conexionBroker);
 
 				flagTerminoSuscripcion = 0;
 
@@ -382,7 +381,7 @@ int main(int argc, char* argv[]){
 
 				} else{
 					enviar_pedido_desuscripcion(meSuscribo,conexion);
-					//liberar_conexion(conexion);
+					liberar_conexion(conexion);
 				}
 
 				free(meSuscribo);
@@ -407,7 +406,7 @@ int main(int argc, char* argv[]){
 t_log* iniciar_logger(char* tipoDeProceso){
 
 	//preguntar por el tipo de LOG_LEVEL
-	return log_create(log_file,tipoDeProceso,0,LOG_LEVEL_INFO);
+	return log_create("gameboy.log",tipoDeProceso,0,LOG_LEVEL_INFO);
 }
 
 
@@ -423,9 +422,6 @@ void leer_config(void){
 	puertoGamecard = config_get_string_value(config,"PUERTO_GAMECARD");
 	puertoTeam = config_get_string_value(config,"PUERTO_TEAM");
 
-	log_file= config_get_string_value(config,"LOG_FILE");
-
-
 }
 
 //termino todas las conexiones, logs y archivo de config
@@ -439,7 +435,7 @@ void terminar_programa(){
 
 	config_destroy(config);
 
-	//liberar_conexion(conexionBroker);
-	//liberar_conexion(conexionGamecard);
-	//liberar_conexion(conexionTeam);
+	liberar_conexion(conexionBroker);
+	liberar_conexion(conexionGamecard);
+	liberar_conexion(conexionTeam);
 }

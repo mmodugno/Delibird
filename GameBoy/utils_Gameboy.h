@@ -33,8 +33,6 @@ int conexionGamecard;
 int segundosSuscripcion;
 int flagTerminoSuscripcion;
 
-char* log_file;
-
 
 char* ipBroker;
 char* puertoBroker;
