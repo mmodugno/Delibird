@@ -189,10 +189,12 @@ void process_request(int cod_op, int cliente_fd) {
 	//log_info(logConexion,"%s se conecto al broker",username);
 	//falta los case de los otros tipos de mensajes (get,catch,caught)(localized lo dejamos para despues(es de GameCard)
 
-	if(esGameBoy(username)||esGameCard(username)||esTeam(username)){
+	//if(esGameBoy(username)||esGameCard(username)||esTeam(username)){
 		switch (cod_op) {
 			case SUSCRIPCION:
 				//pthread_mutex_lock(&llegadaMensajesTHREAD);
+
+				sleep(3);
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
@@ -202,6 +204,8 @@ void process_request(int cod_op, int cliente_fd) {
 						colasDeEnum[(suscriptor->tipoDeCola)]);
 
 				suscribirACola(suscriptor);
+
+
 
 				free(suscriptor);
 //				pthread_mutex_unlock(&llegadaMensajesTHREAD);
@@ -494,7 +498,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 		}
-	}
+
 
 	//pthread_exit(EXIT_SUCCESS);
 }
@@ -1634,13 +1638,23 @@ void consolidarSiEsPosible(buddy* unBuddy) {
 	int posicionBuddy = posicionBuddyTabla(unBuddy);
 
 	bool posicionPAr(int numero) {
-		return numero%2 == 0;
+		return numero % 2 == 0;
 	}
 
-	if(posicionPAr(posicionBuddy)){
-		consolidarSiEsPosibleADerecha(unBuddy); //creo nuevo buddy , ver bases y limites, usar remove y replace
+	bool esUltimoBuddy(buddy* unBuddy) {
+		return unBuddy->limite == tamanio_memoria-1;
+	}
+
+	if (esUltimoBuddy(unBuddy)) {
+		consolidarSiEsPosibleAIzquierda(unBuddy);
 	} else {
-		consolidarSiEsPosibleAIzquierda(unBuddy); //creo nuevo buddy, ves bases y limites, usar remove y replace
+
+		if (posicionPAr(posicionBuddy)) {
+			consolidarSiEsPosibleADerecha(unBuddy); //creo nuevo buddy , ver bases y limites, usar remove y replace
+		} else {
+			consolidarSiEsPosibleAIzquierda(unBuddy); //creo nuevo buddy, ves bases y limites, usar remove y replace
+		}
+
 	}
 
 }
@@ -1888,16 +1902,27 @@ void consolidarBuddySystem() {
 
 bool buddyPuedeConsolidar(buddy* unBuddy){
 
-	if(posicionBuddyTabla(unBuddy) % 2 == 0){
-		return puedeConsolidarDerecha(unBuddy);
-	} else return puedeConsolidarIzquierda(unBuddy);
+	bool esUltimoBuddy(buddy* unBuddy) {
+		return unBuddy->limite == tamanio_memoria-1;
+	}
 
+	if(esUltimoBuddy(unBuddy)){
+		return puedeConsolidarIzquierda(unBuddy);
+	}
+	else {
+
+		if(posicionBuddyTabla(unBuddy) % 2 == 0){
+		return puedeConsolidarDerecha(unBuddy);
+		}
+		else return puedeConsolidarIzquierda(unBuddy);
+
+	}
 }
 
 bool puedeConsolidarDerecha(buddy* unBuddy){
 
 	//TODO esto lo comente porque no lo usaban
-	int posicionBuddy = posicionBuddyTabla(unBuddy);
+	//int posicionBuddy = posicionBuddyTabla(unBuddy);
 
 	int posicionSiguiente = posicionBuddyTabla(unBuddy) + 1;
 
