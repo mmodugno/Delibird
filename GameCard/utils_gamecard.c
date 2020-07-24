@@ -1306,15 +1306,17 @@ int conectarse_con_broker(void){
 
 }
 
-void serve_client(int* socket)
+void serve_client(int* socketqueMePasan)
 {
+	int socket = *socketqueMePasan;
+	free(socketqueMePasan);
 	//sem_wait(&sem_mensaje);
 	int cod_op;
 
-	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	int i = recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
-	process_request(cod_op, *socket);
+	process_request(cod_op, socket);
 }
 
 void esperar_cliente(int socket_servidor)
@@ -1330,8 +1332,10 @@ void esperar_cliente(int socket_servidor)
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
 	//log_info(logConexion," se conectaron a broker");
+	int *socketAPasar = malloc(sizeof(int));
+	*socketAPasar = socket_cliente;
 
-	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
+	pthread_create(&thread,NULL,(void*)serve_client,socketAPasar);
 	pthread_detach(thread);
 
 }

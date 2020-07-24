@@ -128,20 +128,25 @@ void esperar_cliente(int socket_servidor)
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 
-	pthread_create(&thread,NULL,(void*)serve_client,&socket_cliente);
+	int *socket_paraPasar = malloc(sizeof(int));
+	*socket_paraPasar= socket_cliente;
+
+	pthread_create(&thread,NULL,(void*)serve_client,socket_paraPasar);
 	pthread_detach(thread);
 
 }
 
-void serve_client(int* socket)
+void serve_client(int* socketQuenosPAsan)
 {
+	int socket = *socketQuenosPAsan;
+	free(socketQuenosPAsan);
 	//sem_wait(&llegadaMensajes);
 	//pthread_mutex_lock(&llegadaMensajesTHREAD);
 	int cod_op;
-	int i = recv(*socket, &cod_op, sizeof(op_code), MSG_WAITALL);
+	int i = recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
 	if(i <= 0)
 		cod_op = -1;
-	process_request(cod_op, *socket);
+	process_request(cod_op, socket);
 
 	//liberar_conexion(*socket);
 	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
