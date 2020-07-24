@@ -13,12 +13,13 @@
 
 #ifndef UTILS_GAMECARD_H_
 #define UTILS_GAMECARD_H_
-
+/*
 #define ipGamecard "127.0.0.3"
 #define puertoGamecard "5001"
 
 #define IP_BROKER "127.0.0.1"
 #define PUERTO_BROKER "5003"
+*/
 
 char* username;
 
@@ -78,13 +79,16 @@ t_config* config;
 int tiempo_reintento_conexion;
 int	tiempo_reintento_operacion;
 int	tiempo_retardo_operacion;
-int puertoBroker;
+char* puertoBroker;
 int tamanioBloques;
 int cantidadBloques;
 
 char *nombreConfig;
 char* punto_montaje;
 char* ipBroker;
+
+char* ipGamecard;
+char* puertoGamecard ;
 
 ////////// CONFIGURACIONES INICIALES
 void crearDirectorio(char*  ,char* );
