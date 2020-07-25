@@ -107,7 +107,8 @@ PUNTO_MONTAJE_TALLGRASS=/home/utnso/PuntoMontaje\n
 IP_BROKER=127.0.0.1\n
 IP_GAMECARD=127.0.0.3\n
 PUERTO_BROKER=5003\n
-PUERTO_GAMECARD=5001\n" >> gamecard.config
+PUERTO_GAMECARD=5001\n
+LOG_FILE=/home/utnso/gamecard.log" >> gamecard.config
 
 #Ya estamos en la carpeta del debug, entonces compilamos gamecard desde aca:
 
