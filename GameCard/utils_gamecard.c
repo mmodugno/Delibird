@@ -603,6 +603,66 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	return yaRegistrado;
 	}
 
+	if(list_size(listaBloques) == 1) {
+		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
+
+		int fd = open(primerFd,O_RDWR);
+
+		struct stat sb;
+		fstat(fd,&sb);
+
+		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+
+				char* conjuntoConKey = malloc(sb.st_size);
+
+				strcpy(conjuntoConKey,file_memory);
+
+				if(string_contains(conjuntoConKey,key)){
+					char** bloques;
+
+					char* nuevoConjunto = string_new();
+
+					bloques = string_split(conjuntoConKey,"\n");
+					int k;
+					int tamanio = tamanio_array(bloques);
+
+					for(k=0;k < tamanio;k++){
+
+						if(string_contains(bloques[k],key)){
+
+								int valor = (registro->cantidad);
+
+								registroDatos* reg = string_a_registro(bloques[k]);
+								reg->cantidad = reg->cantidad + valor;
+
+								bloques[k] = registro_a_string(reg);
+
+								string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
+
+								yaRegistrado = 1;
+
+							} else {
+
+								string_append(&nuevoConjunto,bloques[k]);
+
+								if(k != tamanio-1){
+									string_append(&nuevoConjunto,"\n");
+
+								}
+
+							}
+						}
+
+						write(fd,nuevoConjunto,sb.st_size);
+
+					}
+
+				close(fd);
+
+			return yaRegistrado;
+		}
+
+
 	if(list_size(listaBloques) == 1 && registro->cantidad == -1){
 		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 

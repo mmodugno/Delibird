@@ -60,17 +60,18 @@ int main(int argc, char* argv[]){
 		//list_add(listaAux,"2");
 
 
-		//registroDatos* registro1 = hacerRegistro(4,1,1);
+//		registroDatos* registro1 = hacerRegistro(4,1,5);
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
 
 
-		//procesarNewPokemon("Pikachu",registro1);
-		//procesarNewPokemon("Charmander",registro1);
+		/*procesarNewPokemon("Squirtle",registro1,99);
+		procesarNewPokemon("Squirtle",registro1,99);
 
-
-//		procesarCatchPokemon("Prueba",1,2,1);
+		procesarCatchPokemon("Squirtle",4,1,99);
+		procesarCatchPokemon("Squirtle",4,1,99);
+		procesarCatchPokemon("Squirtle",4,1,99);*/
 
 		//procesarNewPokemon("Messi",registro1);
 		//procesarGetPokemon("Gedasdsngar",1);
@@ -98,7 +99,7 @@ int main(int argc, char* argv[]){
 
 		iniciar_servidor();
 
-	//	return 1;
+		//return 1;
 
 }
 
