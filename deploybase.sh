@@ -67,7 +67,7 @@ if test -e gameboy.config; then
 fi
 
 echo -e "IP_BROKER=127.0.0.1\n
-10.109.32.4\n
+IP_TEAM=10.109.32.4\n
 IP_GAMECARD=127.0.0.3\n
 PUERTO_BROKER=5003\n
 PUERTO_TEAM=5002\n
