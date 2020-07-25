@@ -579,3 +579,10 @@
  posY: 5 
 , conid relativo: 44 e id: 45 
 . 
+[INFO] 05:10:01:837 NUEVO MENSAJE/(6359:6377): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: picachu 
+ posX: 2 
+ posY: 3 
+, conid relativo: 4 e id: 1 
+. 

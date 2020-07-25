@@ -60,7 +60,7 @@ char* ip_broker;
 char* puerto_broker;
 char* ip_team;
 char* puerto_team;
-char* ip_team2;
+//char* ip_team2;
 char* puerto_team2;
 char* ip_gameboy;
 char* puerto_gameboy;

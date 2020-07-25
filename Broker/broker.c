@@ -123,7 +123,7 @@ void leer_config(void) {
 	ip_team = config_get_string_value(config, "IP_TEAM");
 	puerto_team = config_get_string_value(config, "PUERTO_TEAM");
 
-	ip_team2 = config_get_string_value(config, "IP_TEAM2");
+	//ip_team2 = config_get_string_value(config, "IP_TEAM2");
 	puerto_team2 = config_get_string_value(config, "PUERTO_TEAM2");
 
 

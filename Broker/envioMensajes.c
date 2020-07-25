@@ -182,7 +182,7 @@ void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar,t_list* usersAEnviar)
 					"NEW_POKEMON", newAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
-		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		conexionTeam2 = crear_conexion(ip_team, puerto_team2);
 		if (conexionTeam2 != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
@@ -227,7 +227,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar,
 					"APPEARED_POKEMON", appAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
-		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		conexionTeam2 = crear_conexion(ip_team, puerto_team2);
 		if (conexionTeam2 != -1) {
 			enviar_cola_Appeared_Pokemon(appAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
@@ -273,7 +273,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar,
 					catchAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
-		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		conexionTeam2 = crear_conexion(ip_team, puerto_team2);
 		if (conexionTeam2 != -1) {
 			enviar_cola_Catch_Pokemon(catchAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
@@ -318,7 +318,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar,
 					caughtAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
-		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		conexionTeam2 = crear_conexion(ip_team, puerto_team2);
 		if (conexionTeam2 != -1) {
 			enviar_cola_Caught_Pokemon(caughtAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
@@ -363,7 +363,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar,
 					getAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
-		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		conexionTeam2 = crear_conexion(ip_team, puerto_team2);
 		if (conexionTeam2 != -1) {
 			enviar_cola_Get_Pokemon(getAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
@@ -408,7 +408,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar,
 					localizedAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
-		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		conexionTeam2 = crear_conexion(ip_team, puerto_team2);
 		if (conexionTeam2 != -1) {
 			enviar_cola_Localized_Pokemon(localizedAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
