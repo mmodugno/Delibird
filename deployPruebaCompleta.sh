@@ -110,7 +110,7 @@ IP_BROKER=127.0.0.1\n
 PUERTO_BROKER=5003\n
 IP_TEAM=127.0.0.2\n
 PUERTO_TEAM=5005\n
-LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_FIFO.txt\n" >> pruebas_RR.config
+LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_RR.txt\n" >> pruebas_RR.config
 
 if test -e pruebas_SJFSD.config; then
     rm pruebas_SJFSD.config
@@ -130,7 +130,7 @@ IP_BROKER=127.0.0.1\n
 PUERTO_BROKER=5003\n
 IP_TEAM=127.0.0.2\n
 PUERTO_TEAM=5002\n
-LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_FIFO.txt\n" >> pruebas_SJFSD.config
+LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_SJFSD.txt\n" >> pruebas_SJFSD.config
 
 
 if test -e pruebas_SJFCD.config; then
@@ -152,7 +152,7 @@ IP_BROKER=127.0.0.1\n
 PUERTO_BROKER=5003\n
 IP_TEAM=127.0.0.2\n
 PUERTO_TEAM=5005\n
-LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_FIFO.txt\n" >> pruebas_SJFCD.config
+LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_SJFCD.txt\n" >> pruebas_SJFCD.config
 
 
 
