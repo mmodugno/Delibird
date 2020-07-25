@@ -54,11 +54,12 @@ void envioColaNewPokemon() {
 		if (suscriptoresNewPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones, (void*) baseMasChica);
+
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresNewPokemon->elements_count) {
+					list_sort(tablaDeParticiones, (void*) baseMasChica);
 					mensajeNewEnMemo = list_find(tablaDeParticiones,
 							(void*) menNewQueFalten);
 					enviarPorTipo(mensajeNewEnMemo, usersSinACK);
@@ -97,7 +98,7 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaNEW);
-		sleep(1);
+		sleep(2);
 	}
 }
 
@@ -488,11 +489,12 @@ void envioColaGetPokemon() {
 		if (suscriptoresGetPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones, (void*) baseMasChica);
+
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresGetPokemon->elements_count) {
+					list_sort(tablaDeParticiones, (void*) baseMasChica);
 					mensajeGetEnMemo = list_find(tablaDeParticiones,
 							(void*) menGetQueFalten);
 					enviarPorTipo(mensajeGetEnMemo, usersSinACK);
@@ -524,7 +526,7 @@ void envioColaGetPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaGET);
-		sleep(1);
+		sleep(2);
 	}
 }
 
@@ -576,11 +578,12 @@ void envioColaLocalizedPokemon() {
 		if (suscriptoresLocalizedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones, (void*) baseMasChica);
+
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresLocalizedPokemon->elements_count) {
+					list_sort(tablaDeParticiones, (void*) baseMasChica);
 					mensajeLocalizedEnMemo = list_find(tablaDeParticiones,
 							(void*) menLocalizedQueFalten);
 					enviarPorTipo(mensajeLocalizedEnMemo, usersSinACK);
@@ -612,7 +615,7 @@ void envioColaLocalizedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaLOCALIZED);
-		sleep(1);
+		sleep(2);
 	}
 }
 
@@ -699,7 +702,7 @@ void envioColaAppearedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaAPPEARED);
-		sleep(1);
+		sleep(2);
 	}
 }
 
@@ -751,11 +754,12 @@ void envioColaCatchPokemon() {
 
 			sem_wait(&usoMemoria);
 
-			list_sort(tablaDeParticiones, (void*) baseMasChica);
+
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresCatchPokemon->elements_count) {
+					list_sort(tablaDeParticiones, (void*) baseMasChica);
 					mensajeCatchEnMemo = list_find(tablaDeParticiones,
 							(void*) menCatchQueFalten);
 					enviarPorTipo(mensajeCatchEnMemo, usersSinACK);
@@ -788,7 +792,7 @@ void envioColaCatchPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCATCH);
-		sleep(1);
+		sleep(2);
 	}
 }
 
@@ -873,7 +877,7 @@ void envioColaCaughtPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCAUGHT);
-		sleep(1);
+		sleep(2);
 	}
 }
 

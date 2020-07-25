@@ -20,15 +20,9 @@ int main(int argc, char* argv[]){
 
 		nombreConfig = argv[1];
 
-
-
-
 		sem_init(&sem_mensaje,0,1);
 
 		leer_config();
-
-
-
 
 		username = malloc(strlen("GAMECARD"+1));
 		username = "GAMECARD";
@@ -79,7 +73,7 @@ int main(int argc, char* argv[]){
 //		procesarCatchPokemon("Prueba",1,2,1);
 
 		//procesarNewPokemon("Messi",registro1);
-		//procesarGetPokemon("Gengar",1);
+		//procesarGetPokemon("Gedasdsngar",1);
 
 		/*pthread_t hilo_servidor;
 

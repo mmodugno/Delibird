@@ -1229,12 +1229,18 @@ broker_new_pokemon* leerdeMemoriaNEW(particion* part) {
 	memcpy(&(newEnMemo->datos->tamanioNombre),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
 
+	int i ;
+
 	newEnMemo->datos->nombrePokemon = malloc(newEnMemo->datos->tamanioNombre);
 
-	memcpy((newEnMemo->datos->nombrePokemon),memoria+offset,newEnMemo->datos->tamanioNombre);
-	memcpy((newEnMemo->datos->nombrePokemon)+newEnMemo->datos->tamanioNombre-1," ",1);
-	string_trim_right(&newEnMemo->datos->nombrePokemon);
-	offset+=(newEnMemo->datos->tamanioNombre-1);
+		for(i=0;i<newEnMemo->datos->tamanioNombre;i++){
+			memcpy((newEnMemo->datos->nombrePokemon)+i,"\0",1);
+		}
+
+		memcpy((newEnMemo->datos->nombrePokemon),memoria+offset,newEnMemo->datos->tamanioNombre-1);
+	/*	memcpy((appEnMemoria->datos->nombrePokemon)+appEnMemoria->datos->tamanioNombre-1," ",1);
+		string_trim_right(&appEnMemoria->datos->nombrePokemon);*/
+		offset+=(newEnMemo->datos->tamanioNombre-1);
 
 	memcpy(&(newEnMemo->datos->posX),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -1392,11 +1398,16 @@ broker_get_pokemon* leerdeMemoriaGET(particion* part) {
 	offset+=sizeof(uint32_t);
 
 	getEnMemo->datos->nombrePokemon = malloc(getEnMemo->datos->tamanioNombre);
+	int i;
+	for (i = 0; i < getEnMemo->datos->tamanioNombre; i++) {
+		memcpy((getEnMemo->datos->nombrePokemon) + i, "\0", 1);
+	}
 
-	memcpy((getEnMemo->datos->nombrePokemon),memoria+offset,getEnMemo->datos->tamanioNombre);
-	memcpy((getEnMemo->datos->nombrePokemon)+getEnMemo->datos->tamanioNombre-1," ",1);
-	string_trim_right(&getEnMemo->datos->nombrePokemon);
-	offset+=(getEnMemo->datos->tamanioNombre-1);
+	memcpy((getEnMemo->datos->nombrePokemon), memoria + offset,
+			getEnMemo->datos->tamanioNombre - 1);
+	/*	memcpy((appEnMemoria->datos->nombrePokemon)+appEnMemoria->datos->tamanioNombre-1," ",1);
+	 string_trim_right(&appEnMemoria->datos->nombrePokemon);*/
+	offset += (getEnMemo->datos->tamanioNombre - 1);
 
 
 	if (!strcmp(algoritmo_reemplazo, "LRU")) {
@@ -1432,9 +1443,16 @@ broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part) {
 	offset+=sizeof(uint32_t);
 
 	localizedEnMemo->datos->nombrePokemon = malloc(localizedEnMemo->datos->tamanioNombre);
+	int i;
+	for (i = 0; i < localizedEnMemo->datos->tamanioNombre; i++) {
+		memcpy((localizedEnMemo->datos->nombrePokemon) + i, "\0", 1);
+	}
 
-	memcpy((localizedEnMemo->datos->nombrePokemon),memoria+offset,localizedEnMemo->datos->tamanioNombre-1);
-	offset+=(localizedEnMemo->datos->tamanioNombre-1);
+	memcpy((localizedEnMemo->datos->nombrePokemon), memoria + offset,
+			localizedEnMemo->datos->tamanioNombre - 1);
+	/*	memcpy((appEnMemoria->datos->nombrePokemon)+appEnMemoria->datos->tamanioNombre-1," ",1);
+	 string_trim_right(&appEnMemoria->datos->nombrePokemon);*/
+	offset += (localizedEnMemo->datos->tamanioNombre - 1);
 
 	memcpy(&(localizedEnMemo->datos->cantidadPosiciones),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -1601,6 +1619,8 @@ void actualizarComoOcupadoEnLista(buddy* unBuddy,buddy* unBuddyParaAgregar) {
 	buddyQueSustituye->particion->libre = 0;
 
 	buddyQueSustituye->particion->tipoMensaje = unBuddyParaAgregar->particion->tipoMensaje;
+
+	buddyQueSustituye->particion->idCorrelativo = unBuddyParaAgregar->particion->idCorrelativo;
 
 	char* horarioActual = temporal_get_string_time();
 

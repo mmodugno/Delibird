@@ -360,55 +360,65 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 
 void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
+	uint32_t resultado;
 
 	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-
 	verificarDirectorioPokemon(nombrePoke);
-	verificarAperturaArchivo(path);
 
+	if(verificarSiExisteArchivo(path) == -1){
 
-	t_config* configPath = config_create(path);
+		sleep(tiempo_retardo_operacion);
+		resultado= 0;
 
-	int cantidad = -1;
-	registroDatos* regAux = hacerRegistro(posX,posY,cantidad);
-
-	t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
-
-	sem_wait(&sem_escritura);
-
-	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,regAux);
-
-	uint32_t resultado;
-
-	if(!yaRegistrado){
-		perror("No existe posicion para el pokemon \n");
-		resultado = 0;
 	} else {
-		printf("Lo atrapaste! a %s\n",nombrePoke);
-		fflush(stdout);
-		buscarYeliminarCeros(listaBloques);
-		resultado = 1;
+
+		verificarAperturaArchivo(path);
+
+		t_config* configPath = config_create(path);
+
+			int cantidad = -1;
+			registroDatos* regAux = hacerRegistro(posX,posY,cantidad);
+
+			t_list* listaBloques = crear_lista(config_get_array_value(configPath,"BLOCKS"));
+
+			sem_wait(&sem_escritura);
+
+			int yaRegistrado = sumarSiEstaEnBloque(listaBloques,regAux);
+
+			if(!yaRegistrado){
+				perror("No existe posicion para el pokemon \n");
+				resultado = 0;
+			} else {
+				printf("Lo atrapaste! a %s\n",nombrePoke);
+				fflush(stdout);
+				buscarYeliminarCeros(listaBloques);
+				resultado = 1;
+			}
+
+
+			sem_wait(&mutex_bit_array);
+
+			eliminarBloquesVacios(nombrePoke);
+
+			actualizar_bitmap();
+
+			sem_post(&mutex_bit_array);
+
+			sem_post(&sem_escritura);
+
+			config_destroy(configPath);
+
+			sleep(tiempo_retardo_operacion);
+
+			configPath = config_create(path);
+
+			cerrarArchivoMetadataPoke(configPath);
+
+			config_destroy(configPath);
+
+			calcularTamanioMetadata(nombrePoke);
 	}
-
-
-	sem_wait(&mutex_bit_array);
-
-	eliminarBloquesVacios(nombrePoke);
-
-	actualizar_bitmap();
-
-	sem_post(&mutex_bit_array);
-
-	sem_post(&sem_escritura);
-
-	sleep(tiempo_retardo_operacion);
-
-	config_destroy(configPath);
-
-	configPath = config_create(path);
-
-	cerrarArchivoMetadataPoke(configPath);
 
 	int conexion = conectarse_con_broker();
 
@@ -418,9 +428,6 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 		enviar_caught(conexion,resultado,id);
 	}
 
-	config_destroy(configPath);
-
-	calcularTamanioMetadata(nombrePoke);
 
 }
 
@@ -1144,7 +1151,6 @@ void verificarDirectorioPokemon(char* nombrePoke){
 
 	if( f < 0 ){
 	perror("No existe el pokemon");
-	exit(1);
 	}
 
 	close(f);

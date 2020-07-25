@@ -262,3 +262,651 @@
  posX: 4 
  posY: 6 
 
+[INFO] 02:17:45:450 NUEVO MENSAJE/(6613:6620): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+
+[INFO] 02:17:46:454 NUEVO MENSAJE/(6613:6631): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+
+[INFO] 02:17:46:458 NUEVO MENSAJE/(6622:6630): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+
+[INFO] 02:21:13:346 NUEVO MENSAJE/(25130:25147): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+
+[INFO] 02:21:13:346 NUEVO MENSAJE/(25137:25146): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+
+[INFO] 02:21:15:346 NUEVO MENSAJE/(25130:25161): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+
+[INFO] 02:21:15:349 NUEVO MENSAJE/(25137:25160): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+
+[INFO] 02:29:47:747 NUEVO MENSAJE/(3937:3954): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 02:29:47:754 NUEVO MENSAJE/(3944:3953): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 02:29:49:755 NUEVO MENSAJE/(3937:3969): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 4 
+. 
+[INFO] 02:29:49:759 NUEVO MENSAJE/(3944:3968): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 4 
+. 
+[INFO] 02:29:49:773 CAMBIO DE COLA/(3937:3941): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 02:29:54:774 MOVIMIENTO DE ENTRENADOR/(3937:3939): entrenador 1: se movio a (4,6)
+[INFO] 02:29:54:775 OPERACION ATRAPAR/(3937:3939): ATRAPAR POKEMON: Flareon con posicion (4, 6) 
+
+[INFO] 02:29:54:782 NUEVO MENSAJE/(3937:3939): del catch que envie su ID es 15 
+
+[INFO] 02:29:54:782 CAMBIO DE COLA/(3937:3939): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 02:35:57:842 NUEVO MENSAJE/(3937:4194): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 21 
+. 
+[INFO] 02:35:57:848 NUEVO MENSAJE/(3944:4193): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 21 
+. 
+[INFO] 02:35:59:846 NUEVO MENSAJE/(3937:4198): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 24 e id: 20 
+. 
+[INFO] 02:35:59:852 NUEVO MENSAJE/(3944:4197): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 24 e id: 20 
+. 
+[INFO] 02:39:57:949 NUEVO MENSAJE/(9458:20084): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 02:39:59:955 NUEVO MENSAJE/(9458:24698): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 4 
+. 
+[INFO] 02:41:55:239 NUEVO MENSAJE/(22669:22676): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 02:41:57:234 NUEVO MENSAJE/(22669:22684): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 4 
+. 
+[INFO] 02:42:55:250 NUEVO MENSAJE/(22669:22727): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 21 
+. 
+[INFO] 02:53:49:798 NUEVO MENSAJE/(23476:23483): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 02:53:51:783 NUEVO MENSAJE/(23476:23491): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 4 
+. 
+[INFO] 02:54:33:800 NUEVO MENSAJE/(23476:23544): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 22 
+. 
+[INFO] 03:10:03:162 NUEVO MENSAJE/(24526:24548): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 2 
+, conid relativo: 2 e id: 2 
+. 
+[INFO] 03:10:03:182 CAMBIO DE COLA/(24526:24530): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 03:10:05:160 NUEVO MENSAJE/(24526:24557): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 03:10:08:183 MOVIMIENTO DE ENTRENADOR/(24526:24529): entrenador 2: se movio a (5,2)
+[INFO] 03:10:08:183 OPERACION ATRAPAR/(24526:24529): ATRAPAR POKEMON: Squirtle con posicion (5, 2) 
+
+[INFO] 03:10:08:190 NUEVO MENSAJE/(24526:24529): del catch que envie su ID es 16 
+
+[INFO] 03:10:08:190 CAMBIO DE COLA/(24526:24529): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 03:10:09:161 NUEVO MENSAJE/(24526:24587): recibi mensaje LOCALIZED de BROKER con id relativo: 6, id: 15 , nombre: Squirtle so/ne appe, y cantidad de posiciones 0:
+
+[INFO] 03:11:27:188 NUEVO MENSAJE/(24526:24640): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 23 
+. 
+[INFO] 03:11:29:190 NUEVO MENSAJE/(24526:24653): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 24 e id: 22 
+. 
+[INFO] 03:11:31:188 NUEVO MENSAJE/(24526:24657): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 23 e id: 21 
+. 
+[INFO] 03:26:47:112 NUEVO MENSAJE/(30941:30948): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+, conid relativo: 1 e id: 1 
+. 
+[INFO] 03:26:47:116 CAMBIO DE COLA/(30941:30945): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 03:26:49:113 NUEVO MENSAJE/(30941:30965): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 2 
+, conid relativo: 2 e id: 2 
+. 
+[INFO] 03:26:51:109 NUEVO MENSAJE/(30941:30975): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 03:26:52:119 MOVIMIENTO DE ENTRENADOR/(30941:30943): entrenador 1: se movio a (9,9)
+[INFO] 03:26:52:119 OPERACION ATRAPAR/(30941:30943): ATRAPAR POKEMON: Pikachu con posicion (9, 9) 
+
+[INFO] 03:26:52:126 NUEVO MENSAJE/(30941:30943): del catch que envie su ID es 12 
+
+[INFO] 03:26:52:127 CAMBIO DE COLA/(30941:30943): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 03:26:52:127 CAMBIO DE COLA/(30941:30945): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 03:26:57:130 MOVIMIENTO DE ENTRENADOR/(30941:30944): entrenador 2: se movio a (5,2)
+[INFO] 03:26:57:131 OPERACION ATRAPAR/(30941:30944): ATRAPAR POKEMON: Squirtle con posicion (5, 2) 
+
+[INFO] 03:26:57:138 NUEVO MENSAJE/(30941:30944): del catch que envie su ID es 17 
+
+[INFO] 03:26:57:138 CAMBIO DE COLA/(30941:30944): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 03:27:15:124 NUEVO MENSAJE/(30941:31034): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 23 
+. 
+[INFO] 03:27:17:118 NUEVO MENSAJE/(30941:31047): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 23 e id: 21 
+. 
+[INFO] 03:27:19:123 NUEVO MENSAJE/(30941:31051): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 24 e id: 22 
+. 
+[INFO] 03:32:00:731 NUEVO MENSAJE/(31361:31368): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+, conid relativo: 1 e id: 1 
+. 
+[INFO] 03:32:00:743 CAMBIO DE COLA/(31361:31365): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 03:32:02:737 NUEVO MENSAJE/(31361:31376): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 2 
+, conid relativo: 2 e id: 2 
+. 
+[INFO] 03:32:04:730 NUEVO MENSAJE/(31361:31385): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 3 
+. 
+[INFO] 03:32:05:755 MOVIMIENTO DE ENTRENADOR/(31361:31363): entrenador 1: se movio a (9,9)
+[INFO] 03:32:05:756 OPERACION ATRAPAR/(31361:31363): ATRAPAR POKEMON: Pikachu con posicion (9, 9) 
+
+[INFO] 03:32:05:762 NUEVO MENSAJE/(31361:31363): del catch que envie su ID es 12 
+
+[INFO] 03:32:05:762 CAMBIO DE COLA/(31361:31363): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 03:32:05:762 CAMBIO DE COLA/(31361:31365): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 03:32:08:731 NUEVO MENSAJE/(31361:31407): recibi mensaje LOCALIZED de BROKER con id relativo: 14, id: 16 , nombre: Gengar, y cantidad de posiciones 0:
+
+[INFO] 03:32:10:766 MOVIMIENTO DE ENTRENADOR/(31361:31364): entrenador 2: se movio a (5,2)
+[INFO] 03:32:10:767 OPERACION ATRAPAR/(31361:31364): ATRAPAR POKEMON: Squirtle con posicion (5, 2) 
+
+[INFO] 03:32:10:780 NUEVO MENSAJE/(31361:31364): del catch que envie su ID es 19 
+
+[INFO] 03:32:10:780 CAMBIO DE COLA/(31361:31364): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 03:32:14:736 NUEVO MENSAJE/(31361:31434): recibi mensaje CAUGHT de BROKER con id relativo 12:, id: 21 y se deniega el catch 
+
+[INFO] 03:32:14:741 NUEVO MENSAJE/(31361:31434): No se agarró al pokemon Pikachu
+[INFO] 03:32:14:741 CAMBIO DE COLA/(31361:31365): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 03:32:14:742 CAMBIO DE COLA/(31361:31363): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 03:32:20:738 NUEVO MENSAJE/(31361:31447): recibi mensaje CAUGHT de BROKER con id relativo 19:, id: 23 y se deniega el catch 
+
+[INFO] 03:32:20:741 NUEVO MENSAJE/(31361:31447): No se agarró al pokemon Squirtle
+[INFO] 03:32:20:744 CAMBIO DE COLA/(31361:31365): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 03:32:20:744 CAMBIO DE COLA/(31361:31364): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 03:32:50:752 NUEVO MENSAJE/(31361:31467): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 23 e id: 27 
+. 
+[INFO] 03:32:52:752 NUEVO MENSAJE/(31361:31471): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 29 
+. 
+[INFO] 03:32:54:755 NUEVO MENSAJE/(31361:31475): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 24 e id: 28 
+. 
+[INFO] 03:35:24:805 NUEVO MENSAJE/(31361:31540): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 1 
+ posY: 2 
+, conid relativo: 36 e id: 37 
+. 
+[INFO] 03:35:24:807 CAMBIO DE COLA/(31361:31365): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 03:35:29:811 MOVIMIENTO DE ENTRENADOR/(31361:31362): entrenador 0: se movio a (1,2)
+[INFO] 03:35:29:812 OPERACION ATRAPAR/(31361:31362): ATRAPAR POKEMON: Pikachu con posicion (1, 2) 
+
+[INFO] 03:35:29:818 NUEVO MENSAJE/(31361:31362): del catch que envie su ID es 38 
+
+[INFO] 03:35:29:819 CAMBIO DE COLA/(31361:31362): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 03:35:29:819 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:35:29:819 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:35:38:787 NUEVO MENSAJE/(31361:31553): recibi mensaje CAUGHT de BROKER con id relativo 38:, id: 39 y se confirma el catch 
+
+[INFO] 03:35:38:790 CAMBIO DE COLA/(31361:31365): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 03:35:38:791 CAMBIO DE COLA/(31361:31362): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 03:35:54:831 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:35:54:834 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:36:19:841 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:36:19:843 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:36:44:849 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:36:44:853 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:37:09:862 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:37:09:867 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:37:34:874 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:37:34:878 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:37:59:887 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:37:59:891 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:38:24:902 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:38:24:902 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:38:49:921 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:38:49:925 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:39:14:932 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:39:14:936 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:39:39:948 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:39:39:951 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:40:04:963 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:40:04:963 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:40:29:974 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:40:29:995 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:40:55:3 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:40:55:6 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:41:16:882 NUEVO MENSAJE/(31361:31867): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 49 e id: 50 
+. 
+[INFO] 03:41:18:883 NUEVO MENSAJE/(31361:31883): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 48 e id: 51 
+. 
+[INFO] 03:41:20:13 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:41:20:17 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:41:45:27 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:41:45:31 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:42:10:40 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:42:10:43 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:42:35:52 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:42:35:55 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:43:00:63 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:43:00:67 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:43:25:79 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:43:25:82 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:43:50:89 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:43:50:95 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:44:15:108 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:44:15:110 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:44:40:124 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:44:40:128 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:45:05:150 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:45:05:162 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:45:30:169 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:45:30:172 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:45:55:177 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:45:55:178 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:46:20:190 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:46:20:194 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:46:45:202 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:46:45:206 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:47:10:213 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:47:10:216 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:47:35:230 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:47:35:239 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:48:00:244 DETECCION_DEADLOCK/(31361:31365): Inicio de deteccion de deadlock
+[INFO] 03:48:00:248 RESULTADO_DE_DEADLOCK/(31361:31365): No se detectó nuevo deadlock 
+
+[INFO] 03:58:37:864 NUEVO MENSAJE/(32661:32673): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+, conid relativo: 1 e id: 1 
+. 
+[INFO] 03:58:37:883 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 03:58:39:876 NUEVO MENSAJE/(32661:32686): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 2 
+, conid relativo: 2 e id: 2 
+. 
+[INFO] 03:58:42:890 MOVIMIENTO DE ENTRENADOR/(32661:32663): entrenador 1: se movio a (9,9)
+[INFO] 03:58:42:891 OPERACION ATRAPAR/(32661:32663): ATRAPAR POKEMON: Pikachu con posicion (9, 9) 
+
+[INFO] 03:58:42:896 NUEVO MENSAJE/(32661:32663): del catch que envie su ID es 15 
+
+[INFO] 03:58:42:896 CAMBIO DE COLA/(32661:32663): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 03:58:42:896 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 03:58:43:865 NUEVO MENSAJE/(32661:32714): recibi mensaje LOCALIZED de BROKER con id relativo: 6, id: 14 , nombre: Squirtle, y cantidad de posiciones 0:
+
+[INFO] 03:58:45:866 NUEVO MENSAJE/(32661:32726): recibi mensaje LOCALIZED de BROKER con id relativo: 13, id: 17 , nombre: Gengar, y cantidad de posiciones 0:
+
+[INFO] 03:58:47:899 MOVIMIENTO DE ENTRENADOR/(32661:32664): entrenador 2: se movio a (5,2)
+[INFO] 03:58:47:899 OPERACION ATRAPAR/(32661:32664): ATRAPAR POKEMON: Squirtle con posicion (5, 2) 
+
+[INFO] 03:58:47:915 NUEVO MENSAJE/(32661:32664): del catch que envie su ID es 19 
+
+[INFO] 03:58:47:915 CAMBIO DE COLA/(32661:32664): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 03:58:51:870 NUEVO MENSAJE/(32661:32744): recibi mensaje CAUGHT de BROKER con id relativo 15:, id: 20 y se deniega el catch 
+
+[INFO] 03:58:51:872 NUEVO MENSAJE/(32661:32744): No se agarró al pokemon Pikachu
+[INFO] 03:58:51:878 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 03:58:51:878 CAMBIO DE COLA/(32661:32663): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 03:58:57:870 NUEVO MENSAJE/(32661:32753): recibi mensaje CAUGHT de BROKER con id relativo 19:, id: 21 y se deniega el catch 
+
+[INFO] 03:58:57:873 NUEVO MENSAJE/(32661:32753): No se agarró al pokemon Squirtle
+[INFO] 03:58:57:875 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 03:58:57:875 CAMBIO DE COLA/(32661:32664): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 03:59:23:883 NUEVO MENSAJE/(32661:303): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 24 e id: 26 
+. 
+[INFO] 03:59:25:885 NUEVO MENSAJE/(32661:307): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 25 e id: 27 
+. 
+[INFO] 03:59:27:884 NUEVO MENSAJE/(32661:312): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 23 e id: 25 
+. 
+[INFO] 04:00:35:907 NUEVO MENSAJE/(32661:373): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 1 
+ posY: 2 
+, conid relativo: 34 e id: 35 
+. 
+[INFO] 04:00:35:927 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 04:00:40:928 MOVIMIENTO DE ENTRENADOR/(32661:32662): entrenador 0: se movio a (1,2)
+[INFO] 04:00:40:929 OPERACION ATRAPAR/(32661:32662): ATRAPAR POKEMON: Pikachu con posicion (1, 2) 
+
+[INFO] 04:00:40:934 NUEVO MENSAJE/(32661:32662): del catch que envie su ID es 36 
+
+[INFO] 04:00:40:934 CAMBIO DE COLA/(32661:32662): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 04:00:40:935 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:00:40:935 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:00:49:903 NUEVO MENSAJE/(32661:388): recibi mensaje CAUGHT de BROKER con id relativo 36:, id: 37 y se confirma el catch 
+
+[INFO] 04:00:49:912 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 04:00:49:915 CAMBIO DE COLA/(32661:32662): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 04:00:51:910 NUEVO MENSAJE/(32661:398): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 1 
+ posY: 4 
+, conid relativo: 38 e id: 39 
+. 
+[INFO] 04:00:51:911 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 04:00:56:919 MOVIMIENTO DE ENTRENADOR/(32661:32663): entrenador 1: se movio a (1,4)
+[INFO] 04:00:56:919 OPERACION ATRAPAR/(32661:32663): ATRAPAR POKEMON: Gengar con posicion (1, 4) 
+
+[INFO] 04:00:56:933 NUEVO MENSAJE/(32661:32663): del catch que envie su ID es 40 
+
+[INFO] 04:00:56:933 CAMBIO DE COLA/(32661:32663): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 04:01:01:917 NUEVO MENSAJE/(32661:412): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 1 
+ posY: 4 
+, conid relativo: 41 e id: 42 
+. 
+[INFO] 04:01:01:920 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 04:01:05:910 NUEVO MENSAJE/(32661:420): recibi mensaje CAUGHT de BROKER con id relativo 40:, id: 43 y se confirma el catch 
+
+[INFO] 04:01:06:923 MOVIMIENTO DE ENTRENADOR/(32661:32664): entrenador 2: se movio a (1,4)
+[INFO] 04:01:06:924 OPERACION ATRAPAR/(32661:32664): ATRAPAR POKEMON: Squirtle con posicion (1, 4) 
+
+[INFO] 04:01:06:934 NUEVO MENSAJE/(32661:32664): del catch que envie su ID es 46 
+
+[INFO] 04:01:06:934 CAMBIO DE COLA/(32661:32664): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 04:01:06:934 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 04:01:06:934 CAMBIO DE COLA/(32661:32663): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 04:01:06:935 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:01:06:935 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:01:07:919 NUEVO MENSAJE/(32661:438): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 2 
+ posY: 5 
+, conid relativo: 44 e id: 45 
+. 
+[INFO] 04:01:07:922 CAMBIO DE COLA/(32661:32665): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 04:01:12:930 MOVIMIENTO DE ENTRENADOR/(32661:32663): entrenador 1: se movio a (2,5)
+[INFO] 04:01:12:931 OPERACION ATRAPAR/(32661:32663): ATRAPAR POKEMON: Squirtle con posicion (2, 5) 
+
+[INFO] 04:01:12:939 NUEVO MENSAJE/(32661:32663): del catch que envie su ID es 47 
+
+[INFO] 04:01:12:939 CAMBIO DE COLA/(32661:32663): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 04:01:31:958 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:01:31:962 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:01:56:986 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:01:56:990 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:02:21:999 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:02:21:2 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:02:47:27 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:02:47:28 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:03:12:35 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:03:12:35 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:03:37:44 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:03:37:44 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+
+[INFO] 04:04:02:54 DETECCION_DEADLOCK/(32661:32665): Inicio de deteccion de deadlock
+[INFO] 04:04:02:54 RESULTADO_DE_DEADLOCK/(32661:32665): No se detectó nuevo deadlock 
+

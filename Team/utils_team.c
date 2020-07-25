@@ -1588,7 +1588,8 @@ void process_request(int cod_op, int cliente_fd) {
 				}
 				else{ resolucionCatch = "se deniega el catch"; }
 
-			log_info(llegadaDeMensaje,"recibi mensaje CAUGHT de BROKER con id %d: y %s \n",caughtRecibido->id_relativo,resolucionCatch);
+			log_info(llegadaDeMensaje,"recibi mensaje CAUGHT de BROKER con id relativo %d:, "
+					"id: %d y %s \n",caughtRecibido->id_relativo,caughtRecibido->id,resolucionCatch);
 
 					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
 					else { denegar_catch(un_entrenador); }
@@ -1629,8 +1630,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 			if(list_any_satisfy(lista_ids_get,(void*) esIDRecibido)){
 
-			log_info(llegadaDeMensaje,"recibi mensaje LOCALIZED de BROKER con id: %d, nombre: %s, y cantidad de posiciones %d:\n"
-			,id, localizedRecibido->datos->nombrePokemon, localizedRecibido->datos->cantidadPosiciones);
+			log_info(llegadaDeMensaje,"recibi mensaje LOCALIZED de BROKER con id relativo: %d, id: %d , nombre: %s, y cantidad de posiciones %d:\n"
+			,id,localizedRecibido->id ,localizedRecibido->datos->nombrePokemon, localizedRecibido->datos->cantidadPosiciones);
 
 				int i;
 				//Hacemos un appeared por cada pokemon que nos mandan
@@ -1664,8 +1665,9 @@ void process_request(int cod_op, int cliente_fd) {
 			//liberar_conexion(envio_de_ack);
 			}
 
-			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de BROKER:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n",
-			appearedRecibidoBROKER->datos->tamanioNombre, appearedRecibidoBROKER->datos->nombrePokemon, appearedRecibidoBROKER->datos->posX, appearedRecibidoBROKER->datos->posY);
+			log_info(llegadaDeMensaje,"recibi mensaje appeared pokemon de BROKER:  \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n, con"
+					"id relativo: %d e id: %d \n. ",
+			appearedRecibidoBROKER->datos->tamanioNombre, appearedRecibidoBROKER->datos->nombrePokemon, appearedRecibidoBROKER->datos->posX, appearedRecibidoBROKER->datos->posY,appearedRecibidoBROKER->id_relativo,appearedRecibidoBROKER->id);
 
 			//sleep(2);
 
