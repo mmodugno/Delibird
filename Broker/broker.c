@@ -41,8 +41,6 @@ int main() {
 	sem_init(&suscripcionAColaNEW,0,1);
 	sem_init(&mutexParProcesar,0,1);
 
-
-
 	//int prueba = crear_conexion(ip_gameboy,puerto_gameboy);
 	//productor-consumidor
 	/*

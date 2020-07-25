@@ -26,6 +26,10 @@ void mostrarParticiones(particion* unaParticion) {
 void iniciarMemoria() {
 
 	memoria = malloc(tamanio_memoria);
+
+	printf("Memoria de: %d",tamanio_memoria);
+	fflush(stdout);
+
 	frecuencia = 0;
 
 	if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
@@ -276,15 +280,12 @@ void process_request(int cod_op, int cliente_fd) {
 
 			case BROKER__NEW_POKEMON:
 
-
-
-				fflush(stdout);
-
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				newRecibido = deserializar_new_pokemon(cliente_fd);
 
 				printf("Recibi un NEW \n");
+				fflush(stdout);
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -451,6 +452,7 @@ void process_request(int cod_op, int cliente_fd) {
 				break;
 
 			case BROKER__LOCALIZED_POKEMON:
+
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 				localizedRecibido = deserializar_localized_pokemon(cliente_fd);

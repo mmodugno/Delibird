@@ -72,11 +72,10 @@ int main(int argc, char* argv[]){
 	//int j;
 	//Mando un get por cada uno de mis objetivos globales.
 	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
-
+/*
 
  //PRUEBAS DE TP:
 
-/*
 	pokemon* pikachu = hacer_pokemon("Pikachu",9, 9,sizeof("Pikachu"));
 		aparece_nuevo_pokemon(pikachu);
 
@@ -91,8 +90,8 @@ int main(int argc, char* argv[]){
 
 	pokemon* squirte2 = hacer_pokemon("Squirtle",5,5,sizeof("Squirtle"));
 		aparece_nuevo_pokemon(squirte2);
-
 */
+
 
 	//	PRUEBAS COMPLETAS DE TP
 

@@ -133,8 +133,11 @@ int i;
 
  }
 
-
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio){
+
+	printf("Haciendo nuevo Pokemon: %s \n",nombre);
+	fflush(stdout);
+
 	 pokemon* poke = malloc(sizeof(pokemon));
 	 poke->nombre = nombre;
 	 poke->posX = posX;
@@ -210,6 +213,10 @@ void aparece_nuevo_pokemon(pokemon* poke){
 
 	 if (dictionary_has_key(objetivo_global, poke->nombre) && (dictionary_get(objetivo_global, poke->nombre) > 0) ){
 		 //ME SIRVE EL POKEMON
+
+		 printf("Agrego pokemon en mapa %s \n",poke->nombre);
+		 fflush(stdout);
+
 		 queue_push(pokemones_en_el_mapa,poke);
 	 }
 	 else{
@@ -823,6 +830,9 @@ int i,j;
 				if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
 
 							planificar_deadlock_multiple(entrenador0,entrenador1);
+
+							cant_deadlocks+=1;
+
 
 							break;
 					}

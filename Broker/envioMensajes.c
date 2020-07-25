@@ -156,12 +156,14 @@ void enviarPorTipo(particion* partAEnviar, t_list* usersAEnviar) {
 		case CATCH_POKEMON:
 			catchEnMemo = leerdeMemoriaCATCH(partAEnviar);
 			enviarASuscriptoresCATCH(catchEnMemo, usersAEnviar);
+
 			free(catchEnMemo->datos->nombrePokemon);
 			free(catchEnMemo);
 			break;
 		case CAUGHT_POKEMON:
 			caughtEnMemo = leerdeMemoriaCAUGHT(partAEnviar);
 			enviarASuscriptoresCAUGHT(caughtEnMemo, usersAEnviar);
+
 			free(caughtEnMemo);
 			break;
 		}
