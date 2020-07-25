@@ -60,13 +60,13 @@ int main(int argc, char* argv[]){
 		//list_add(listaAux,"2");
 
 
-//		registroDatos* registro1 = hacerRegistro(4,1,5);
+		/*registroDatos* registro1 = hacerRegistro(4,1,5);
 		//registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
 
 
-		/*procesarNewPokemon("Squirtle",registro1,99);
+		procesarNewPokemon("Squirtle",registro1,99);
 		procesarNewPokemon("Squirtle",registro1,99);
 
 		procesarCatchPokemon("Squirtle",4,1,99);
@@ -150,7 +150,7 @@ void suscribirnos_cola_catch(){
 			printf("Mande a cola CATCH_POKEMON con el socket:%d \n",suscripcionGet);
 			fflush(stdout);
 
-		//	close(suscripcionGet);
+			close(suscripcionGet);
 		}
 			free(meSuscriboGet);
 }
@@ -175,7 +175,7 @@ void suscribirnos_cola_new(){
 			printf("Mande a cola NEW con el socket: %d \n",suscripcionNew);
 			fflush(stdout);
 
-		//close(suscripcionNew);
+		close(suscripcionNew);
 		}
 			free(meSuscriboNew);
 }
@@ -198,7 +198,7 @@ void suscribirnos_cola_get(){
 			printf("Mande a cola GET con el socket: %d \n",suscripcionGet);
 			fflush(stdout);
 
-			//close(suscripcionGet);
+			close(suscripcionGet);
 		}
 			free(meSuscriboGet);
 }

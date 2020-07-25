@@ -1692,7 +1692,7 @@ void enviar_appeared(int socket_cliente,char* nombrePokemon, int posX,int posY, 
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__APPEARED_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen(username);
+	paquete_a_enviar->tamanio_username =strlen(username)+1;
 	paquete_a_enviar->username = username;
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
@@ -1757,7 +1757,7 @@ void enviar_localized(int socket_cliente, char* nombre, uint32_t paresDePosicion
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__LOCALIZED_POKEMON;
-	paquete_a_enviar->tamanio_username =strlen(username);
+	paquete_a_enviar->tamanio_username =strlen(username)+1;
 	paquete_a_enviar->username = username;
 
 	t_buffer* buffer = malloc(sizeof(t_buffer));
