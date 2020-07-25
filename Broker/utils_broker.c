@@ -27,8 +27,8 @@ void iniciarMemoria() {
 
 	memoria = malloc(tamanio_memoria);
 
-	printf("Memoria de: %d",tamanio_memoria);
-	fflush(stdout);
+//	printf("Memoria de: %d",tamanio_memoria);
+//	fflush(stdout);
 
 	frecuencia = 0;
 
@@ -199,8 +199,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 //	sem_wait(&mutexParProcesar);
 
-	printf("Procesando un mensaje de: %s \n",username);
-	fflush(stdout);
+	//printf("Procesando un mensaje de: %s \n",username);
+	//fflush(stdout);
 
 
 		switch (cod_op) {
@@ -212,8 +212,8 @@ void process_request(int cod_op, int cliente_fd) {
 			ackRecibido = deserializarAck(cliente_fd);
 
 
-			printf("Recibi un ACK \n");
-			fflush(stdout);
+			//printf("Recibi un ACK \n");
+			//fflush(stdout);
 
 			//TODO comentar esto
 			/*
@@ -262,8 +262,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
-				printf("Recibí una suscripcion \n ");
-				fflush(stdout);
+				//printf("Recibí una suscripcion \n ");
+				//fflush(stdout);
 
 				log_info(logSuscipcion,
 						"recibi mensaje de suscripcion de %s a la cola %s",
@@ -284,8 +284,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 				newRecibido = deserializar_new_pokemon(cliente_fd);
 
-				printf("Recibi un NEW \n");
-				fflush(stdout);
+				//printf("Recibi un NEW \n");
+				//fflush(stdout);
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -318,7 +318,7 @@ void process_request(int cod_op, int cliente_fd) {
 				pthread_mutex_lock(&llegadaMensajesTHREAD);
 				appearedRecibido = deserializar_appeared_pokemon(cliente_fd);
 
-				printf("Recibi un APPEARED \n" );
+				//printf("Recibi un APPEARED \n" );
 
 
 				//mutex
@@ -353,7 +353,7 @@ void process_request(int cod_op, int cliente_fd) {
 			pthread_mutex_lock(&llegadaMensajesTHREAD);
 				getRecibido = deserializar_get_pokemon(cliente_fd);
 
-				printf("Recibi un GET \n");
+				//printf("Recibi un GET \n");
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -388,7 +388,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 				catchRecibido = deserializar_catch_pokemon(cliente_fd);
 
-				printf("Recibi un CATCH \n");
+//				printf("Recibi un CATCH \n");
 
 				//mutex
 				sem_wait(&idsDeMensajes);
@@ -425,7 +425,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 				caughtRecibido = deserializar_caught_pokemon(cliente_fd);
 
-				printf("Recibi un CAUGHT \n");
+			//	printf("Recibi un CAUGHT \n");
 
 
 				//mutex
@@ -457,7 +457,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 				localizedRecibido = deserializar_localized_pokemon(cliente_fd);
 
-				printf("Recibi un LOCALIZED \n");
+				//printf("Recibi un LOCALIZED \n");
 
 
 				 posiciones = 0;
@@ -498,7 +498,7 @@ void process_request(int cod_op, int cliente_fd) {
 			case DESUSCRIBIR:
 			pthread_mutex_lock(&llegadaMensajesTHREAD);
 
-			printf("Recibi un DESUSCRIPCION");
+			//printf("Recibi un DESUSCRIPCION");
 
 				suscriptor = deserializar_suscripcion(cliente_fd);
 
@@ -520,15 +520,15 @@ void process_request(int cod_op, int cliente_fd) {
 
 			case 0:
 
-				printf("Recibí un menos cero \n");
-				fflush(stdout);
+				//printf("Recibí un menos cero \n");
+//				fflush(stdout);
 
 				pthread_exit(NULL);
 				break;
 			case -1:
 
-				printf("Recibí un menos uno \n");
-				fflush(stdout);
+				//printf("Recibí un menos uno \n");
+				//fflush(stdout);
 
 				pthread_exit(NULL);
 

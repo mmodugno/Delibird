@@ -147,8 +147,8 @@ void suscribirnos_cola_catch(){
 
 	if(suscripcionGet != -1){
 			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-			printf("Mande a cola CATCH_POKEMON con el socket:%d \n",suscripcionGet);
-			fflush(stdout);
+			//printf("Mande a cola CATCH_POKEMON con el socket:%d \n",suscripcionGet);
+			//fflush(stdout);
 
 			close(suscripcionGet);
 		}
@@ -172,8 +172,8 @@ void suscribirnos_cola_new(){
 
 	if(suscripcionNew != -1){
 			enviar_pedido_suscripcion(meSuscriboNew, suscripcionNew);
-			printf("Mande a cola NEW con el socket: %d \n",suscripcionNew);
-			fflush(stdout);
+		//	printf("Mande a cola NEW con el socket: %d \n",suscripcionNew);
+		//	fflush(stdout);
 
 		close(suscripcionNew);
 		}
@@ -195,8 +195,8 @@ void suscribirnos_cola_get(){
 
 	if(suscripcionGet != -1){
 			enviar_pedido_suscripcion(meSuscriboGet, suscripcionGet);
-			printf("Mande a cola GET con el socket: %d \n",suscripcionGet);
-			fflush(stdout);
+			//printf("Mande a cola GET con el socket: %d \n",suscripcionGet);
+			//fflush(stdout);
 
 			close(suscripcionGet);
 		}

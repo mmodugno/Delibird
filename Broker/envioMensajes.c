@@ -234,7 +234,7 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar,
 			enviar_cola_Appeared_Pokemon(appAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
 					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
-					"NEW_POKEMON", appAEnviar->id);
+					"APPEARED_POKEMON", appAEnviar->id);
 			liberar_conexion(conexionTeam2);
 		}
 	}
@@ -280,7 +280,7 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar,
 			enviar_cola_Catch_Pokemon(catchAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
 					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
-					"NEW_POKEMON", catchAEnviar->id);
+					"CATCH_POKEMON", catchAEnviar->id);
 			liberar_conexion(conexionTeam2);
 		}
 	}
@@ -325,7 +325,7 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar,
 			enviar_cola_Caught_Pokemon(caughtAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
 					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
-					"NEW_POKEMON", caughtAEnviar->id);
+					"CAUGHT_POKEMON", caughtAEnviar->id);
 			liberar_conexion(conexionTeam2);
 		}
 	}
@@ -370,7 +370,7 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar,
 			enviar_cola_Get_Pokemon(getAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
 					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
-					"NEW_POKEMON", getAEnviar->id);
+					"GET_POKEMON", getAEnviar->id);
 			liberar_conexion(conexionTeam2);
 		}
 	}
@@ -415,7 +415,7 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar,
 			enviar_cola_Localized_Pokemon(localizedAEnviar, conexionTeam2);
 			log_info(logEnviarNuevo,
 					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
-					"NEW_POKEMON", localizedAEnviar->id);
+					"LOCALIZED_POKEMON", localizedAEnviar->id);
 			liberar_conexion(conexionTeam2);
 		}
 	}

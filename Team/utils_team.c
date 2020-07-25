@@ -135,8 +135,8 @@ int i;
 
 pokemon* hacer_pokemon(char* nombre, uint32_t posX, uint32_t posY, uint32_t tamanio){
 
-	printf("Haciendo nuevo Pokemon: %s \n",nombre);
-	fflush(stdout);
+	//printf("Haciendo nuevo Pokemon: %s \n",nombre);
+	//fflush(stdout);
 
 	 pokemon* poke = malloc(sizeof(pokemon));
 	 poke->nombre = nombre;
@@ -1206,8 +1206,8 @@ void enviar_get(char* nombrePokemon, broker_get_pokemon *getAEnviar) {
 
 	}
 
-	printf("Mande un GET con el socket: %d",socketAEnviar);
-	fflush(stdout);
+	//printf("Mande un GET con el socket: %d",socketAEnviar);
+	//fflush(stdout);
 
 	//liberar_conexion(socketAEnviar);
 

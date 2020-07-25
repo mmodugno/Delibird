@@ -148,8 +148,8 @@ void suscribirnos_cola_caught() {
 		liberar_conexion(suscripcionCaught);
 	}
 
-	printf("Mande suscripcon cola caught con el socket: %d \n",suscripcionCaught);
-	fflush(stdout);
+	//printf("Mande suscripcon cola caught con el socket: %d \n",suscripcionCaught);
+	//fflush(stdout);
 
 	free(meSuscriboCaught);
 }
@@ -171,8 +171,8 @@ void suscribirnos_cola_localized(){
 		liberar_conexion(suscripcionLocalized);
 	}
 
-	printf("Mande suscripcon cola localized con el socket: %d \n",suscripcionLocalized);
-	fflush(stdout);
+	//printf("Mande suscripcon cola localized con el socket: %d \n",suscripcionLocalized);
+	//fflush(stdout);
 
 
 	free(meSuscriboLocalized);
@@ -196,34 +196,14 @@ void suscribirnos_cola_appeared() {
 		liberar_conexion(suscripcionAppeared);
 	}
 
-	printf("Mande suscripcon cola appeared con el socket: %d \n",suscripcionAppeared);
-	fflush(stdout);
+	//printf("Mande suscripcon cola appeared con el socket: %d \n",suscripcionAppeared);
+	//fflush(stdout);
 
 	free(meSuscriboAppeared);
 }
 
 
 void terminar_programa(void){
-
-	int conexion = conectarse_con_broker();
-
-	if(conexion > 0){
-		enviar_pedido_desuscripcion( meSuscriboCaught,conexion);
-		liberar_conexion(conexion);
-	}
-
-	conexion = conectarse_con_broker();
-	if(conexion > 0){
-		enviar_pedido_desuscripcion( meSuscriboLocalized,conexion);
-		liberar_conexion(conexion);
-	}
-
-	conexion = conectarse_con_broker();
-	if(conexion > 0){
-		enviar_pedido_desuscripcion( meSuscriboAppeared,conexion);
-		liberar_conexion(conexion);
-	}
-
 
 	destruir_logs();
 

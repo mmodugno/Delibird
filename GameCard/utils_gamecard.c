@@ -75,8 +75,8 @@ void verificarAperturaArchivo(char* path) {
 
 	if(!strcmp(aux,"Y")){
 
-		printf("Abierto, reintentando en: %d segundos \n",tiempo_reintento_operacion);
-		fflush(stdout);
+		//printf("Abierto, reintentando en: %d segundos \n",tiempo_reintento_operacion);
+		//fflush(stdout);
 		sleep(tiempo_reintento_operacion);
 		verificarAperturaArchivo(path);
 
@@ -339,13 +339,13 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 	int conexion = conectarse_con_broker();
 
 	if(conexion < 0){
-		printf("No me pude cpnectar para enviar resouesta de New \n");
-		fflush(stdout);
+		//printf("No me pude cpnectar para enviar resouesta de New \n");
+		//fflush(stdout);
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 
-		printf("Envio APPEARED de %s \n",nombrePoke);
-		fflush(stdout);
+		//printf("Envio APPEARED de %s \n",nombrePoke);
+		//fflush(stdout);
 		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
 	}
 
@@ -390,7 +390,7 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 				perror("No existe posicion para el pokemon \n");
 				resultado = 0;
 			} else {
-				printf("Lo atrapaste! a %s\n",nombrePoke);
+				printf("Has atrapado al pokemon %s!\n",nombrePoke);
 				fflush(stdout);
 				buscarYeliminarCeros(listaBloques);
 				resultado = 1;
@@ -460,8 +460,8 @@ void procesarGetPokemon(char* nombrePoke, int id){
 
 	if(conexion < 0){
 			log_info(logFalloConexion,"Fallo conexion con Broker");
-			printf("No me pude cpnectar para enviar resouesta de New \n");
-				fflush(stdout);
+			//printf("No me pude cpnectar para enviar resouesta de New \n");
+				//fflush(stdout);
 		} else {
 
 			if(list_is_empty(listaRegistros)) {
@@ -487,13 +487,13 @@ void procesarGetPokemon(char* nombrePoke, int id){
 
 					}
 
-					printf("Estoy por mandar Localized a %s\n",nombrePoke);
-					fflush(stdout);
+					//printf("Estoy por mandar Localized a %s\n",nombrePoke);
+					//fflush(stdout);
 
 					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id);
 
-					printf("Mande Localized \n");
-					fflush(stdout);
+					//printf("Mande Localized \n");
+					//fflush(stdout);
 				}
 
 		}
@@ -1475,14 +1475,14 @@ void process_request(int cod_op, int cliente_fd) {
 
 		registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
 
-		printf("Recibo new de broker \n");
-		fflush(stdout);
+		//printf("Recibo new de broker \n");
+		//fflush(stdout);
 
 		int envio_de_ack = crear_conexion(ipBroker,puertoBroker);
 
 		if (envio_de_ack != -1) {
 
-			printf("Envio ACK \n");
+			//printf("Envio ACK \n");
 			enviarACK(id, envio_de_ack, "GAMECARD");
 
 		}
@@ -1511,14 +1511,14 @@ void process_request(int cod_op, int cliente_fd) {
 
 		nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
 
-		printf("Recibo get de broker \n");
-		fflush(stdout);
+		//printf("Recibo get de broker \n");
+		//fflush(stdout);
 
 		int envio_de_ack_get = crear_conexion(ipBroker,puertoBroker);
 
 		if (envio_de_ack_get != -1) {
 
-			printf("Por enviar ACK \n");
+			//printf("Por enviar ACK \n");
 			enviarACK(id, envio_de_ack_get, "GAMECARD");
 
 		}
@@ -1546,14 +1546,14 @@ void process_request(int cod_op, int cliente_fd) {
 
 		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
-		printf("Recibo catch de broker \n");
-		fflush(stdout);
+		//printf("Recibo catch de broker \n");
+		//fflush(stdout);
 
 		int envio_de_ack_catch = crear_conexion(ipBroker,puertoBroker);
 
 		if (envio_de_ack_catch != -1) {
 
-			printf("Por enviar ACK \n");
+			//printf("Por enviar ACK \n");
 			enviarACK(id, envio_de_ack_catch, "GAMECARD");
 
 		}
@@ -1562,7 +1562,7 @@ void process_request(int cod_op, int cliente_fd) {
 		fflush(stdout);
 	//	close(envio_de_ack_catch);
 		printf("sockect muerto \n");*/
-		fflush(stdout);
+	//	fflush(stdout);
 
 		sleep(1);
 
