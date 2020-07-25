@@ -67,7 +67,7 @@ if test -e gameboy.config; then
 fi
 
 echo -e "IP_BROKER=127.0.0.1\n
-IP_TEAM=127.0.0.2\n
+10.109.32.4\n
 IP_GAMECARD=127.0.0.3\n
 PUERTO_BROKER=5003\n
 PUERTO_TEAM=5002\n
@@ -199,7 +199,7 @@ ALPHA=0.5\n
 ESTIMACION_INICIAL=5\n
 IP_BROKER=127.0.0.1\n
 PUERTO_BROKER=5003\n
-IP_TEAM=127.0.0.2\n
+IP_TEAM=10.109.32.4\n
 PUERTO_TEAM=5002\n
 LOG_FILE=/home/utnso/tp-2020-1c-The-X-Team/Team/log_pruebas_SJFSD.txt\n" >> pruebas_SJFSD.config
 
