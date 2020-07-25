@@ -97,7 +97,7 @@ void envioColaNewPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaNEW);
-		sleep(4);
+		sleep(1);
 	}
 }
 
@@ -167,19 +167,27 @@ void enviarPorTipo(particion* partAEnviar, t_list* usersAEnviar) {
 	}
 }
 
-void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar,
-		t_list* usersAEnviar) {
+void enviarASuscriptoresNEW(broker_new_pokemon* newAEnviar,t_list* usersAEnviar) {
 	//uint32_t noSeConecto = 0;
 
 	if (list_any_satisfy(usersAEnviar, (void*) esTeam)) {
 		//conexion con TEAM
 		conexionTeam = crear_conexion(ip_team, puerto_team);
+
 		if (conexionTeam != -1) {
 			enviar_Cola_New_Pokemon(newAEnviar, conexionTeam);
 			log_info(logEnviarNuevo,
 					"Envie a TEAM el mensaje de la cola %s con id: %d",
 					"NEW_POKEMON", newAEnviar->id);
 			liberar_conexion(conexionTeam);
+		}
+		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		if (conexionTeam2 != -1) {
+			enviar_Cola_New_Pokemon(newAEnviar, conexionTeam2);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", newAEnviar->id);
+			liberar_conexion(conexionTeam2);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
@@ -217,6 +225,14 @@ void enviarASuscriptoresAPPEARED(broker_appeared_pokemon* appAEnviar,
 					"Envie a TEAM el mensaje de la cola %s con id: %d",
 					"APPEARED_POKEMON", appAEnviar->id);
 			liberar_conexion(conexionTeam);
+		}
+		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		if (conexionTeam2 != -1) {
+			enviar_cola_Appeared_Pokemon(appAEnviar, conexionTeam2);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", appAEnviar->id);
+			liberar_conexion(conexionTeam2);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
@@ -256,6 +272,14 @@ void enviarASuscriptoresCATCH(broker_catch_pokemon* catchAEnviar,
 					catchAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
+		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		if (conexionTeam2 != -1) {
+			enviar_cola_Catch_Pokemon(catchAEnviar, conexionTeam2);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", catchAEnviar->id);
+			liberar_conexion(conexionTeam2);
+		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
@@ -292,6 +316,14 @@ void enviarASuscriptoresCAUGHT(broker_caught_pokemon* caughtAEnviar,
 					"Envie a TEAM el mensaje de la cola CAUGHT_POKEMON con id: %d",
 					caughtAEnviar->id);
 			liberar_conexion(conexionTeam);
+		}
+		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		if (conexionTeam2 != -1) {
+			enviar_cola_Caught_Pokemon(caughtAEnviar, conexionTeam2);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", caughtAEnviar->id);
+			liberar_conexion(conexionTeam2);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
@@ -330,6 +362,14 @@ void enviarASuscriptoresGET(broker_get_pokemon* getAEnviar,
 					getAEnviar->id);
 			liberar_conexion(conexionTeam);
 		}
+		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		if (conexionTeam2 != -1) {
+			enviar_cola_Get_Pokemon(getAEnviar, conexionTeam2);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", getAEnviar->id);
+			liberar_conexion(conexionTeam2);
+		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
 		//conexion con GAMEBOY
@@ -366,6 +406,14 @@ void enviarASuscriptoresLOCALIZED(broker_localized_pokemon* localizedAEnviar,
 					"Envie a TEAM el mensaje de la cola LOCALIZED_POKEMON con id: %d",
 					localizedAEnviar->id);
 			liberar_conexion(conexionTeam);
+		}
+		conexionTeam2 = crear_conexion(ip_team2, puerto_team2);
+		if (conexionTeam2 != -1) {
+			enviar_cola_Localized_Pokemon(localizedAEnviar, conexionTeam2);
+			log_info(logEnviarNuevo,
+					"Envie a TEAM2 el mensaje de la cola %s con id: %d",
+					"NEW_POKEMON", localizedAEnviar->id);
+			liberar_conexion(conexionTeam2);
 		}
 	}
 	if (list_any_satisfy(usersAEnviar, (void*) esGameBoy)) {
@@ -476,7 +524,7 @@ void envioColaGetPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaGET);
-		sleep(4);
+		sleep(1);
 	}
 }
 
@@ -564,7 +612,7 @@ void envioColaLocalizedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaLOCALIZED);
-		sleep(4);
+		sleep(1);
 	}
 }
 
@@ -615,11 +663,12 @@ void envioColaAppearedPokemon() {
 		if (suscriptoresAppearedPokemon->elements_count > 0) {
 
 			sem_wait(&usoMemoria);
-			list_sort(tablaDeParticiones, (void*) baseMasChica);
+
 
 			//BUSCO UN MENSAJE QUE NO HAYA ENVIADO
 			if (!strcmp(algoritmo_memoria, "PARTICIONES")) {
 				if (suscriptoresAppearedPokemon->elements_count) {
+					list_sort(tablaDeParticiones, (void*) baseMasChica);
 					mensajeAppearedEnMemo = list_find(tablaDeParticiones,
 							(void*) menAppearedQueFalten);
 					enviarPorTipo(mensajeAppearedEnMemo, usersSinACK);
@@ -650,7 +699,7 @@ void envioColaAppearedPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaAPPEARED);
-		sleep(4);
+		sleep(1);
 	}
 }
 
@@ -739,7 +788,7 @@ void envioColaCatchPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCATCH);
-		sleep(4);
+		sleep(1);
 	}
 }
 
@@ -824,7 +873,7 @@ void envioColaCaughtPokemon() {
 			sem_post(&usoMemoria);
 		}
 		sem_post(&suscripcionAColaCAUGHT);
-		sleep(4);
+		sleep(1);
 	}
 }
 
@@ -941,8 +990,7 @@ t_buffer* serializarMensajeColaAPPEARED(
 			sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 
-	memcpy(buffer->stream + offset, &(brokerAppearedPokemon->id_relativo),
-			sizeof(uint32_t));
+	memcpy(buffer->stream + offset, &(brokerAppearedPokemon->id_relativo),sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 
 	return buffer;
@@ -1258,8 +1306,7 @@ void enviar_cola_Localized_Pokemon(
 	free(paquete_a_enviar);
 }
 
-void enviar_cola_Appeared_Pokemon(
-		broker_appeared_pokemon *brokerAppearedPokemon, int socket_cliente) {
+void enviar_cola_Appeared_Pokemon(broker_appeared_pokemon *brokerAppearedPokemon, int socket_cliente) {
 
 	t_paquete* paquete_a_enviar = malloc(sizeof(t_paquete));
 	paquete_a_enviar->codigo_operacion = BROKER__APPEARED_POKEMON;

@@ -55,21 +55,23 @@ int main(int argc, char* argv[]){
 	pthread_create(&hilo_principal,NULL,(void *) algoritmo_aplicado,NULL);
 
 
-	suscribirnos_cola_caught();
-	sleep(1);
-	suscribirnos_cola_localized();
-	sleep(1);
-	suscribirnos_cola_appeared();
-	sleep(1);
 
-		//int j;
-//Mando un get por cada uno de mis objetivos globales.
-	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
+
+
 
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
+	suscribirnos_cola_appeared();
+	sleep(1);
+	suscribirnos_cola_caught();
+	sleep(1);
+	suscribirnos_cola_localized();
+	sleep(1);
 
+	//int j;
+	//Mando un get por cada uno de mis objetivos globales.
+	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
 
 
  //PRUEBAS DE TP:

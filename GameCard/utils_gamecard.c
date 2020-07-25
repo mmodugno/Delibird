@@ -344,7 +344,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 		log_info(logFalloConexion,"Fallo conexion con Broker");
 	} else {
 
-		printf("Envio APPEARED \n");
+		printf("Envio APPEARED de %s \n",nombrePoke);
 		fflush(stdout);
 		enviar_appeared(conexion,nombrePoke,registro->posX,registro->posY,id);
 	}
@@ -382,10 +382,10 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 	uint32_t resultado;
 
 	if(!yaRegistrado){
-		perror("No existe posicion para el pokemon");
+		perror("No existe posicion para el pokemon \n");
 		resultado = 0;
 	} else {
-		printf("Lo atrapaste!");
+		printf("Lo atrapaste! a %s\n",nombrePoke);
 		fflush(stdout);
 		buscarYeliminarCeros(listaBloques);
 		resultado = 1;
@@ -432,7 +432,7 @@ void procesarGetPokemon(char* nombrePoke, int id){
 
 	if(verificarSiExisteArchivo(path) == -1){
 		listaRegistros = list_create();
-		printf("No existe el Pokemon");
+		printf("No existe el Pokemon %s",nombrePoke);
 	} else {
 
 	verificarAperturaArchivo(path);
@@ -480,7 +480,7 @@ void procesarGetPokemon(char* nombrePoke, int id){
 
 					}
 
-					printf("Estoy por mandar Localized \n");
+					printf("Estoy por mandar Localized a %s\n",nombrePoke);
 					fflush(stdout);
 
 					enviar_localized(conexion,nombrePoke,paresDePosiciones,posicionesX,posicionesY,id);
@@ -1456,12 +1456,12 @@ void process_request(int cod_op, int cliente_fd) {
 			enviarACK(id, envio_de_ack_get, "GAMECARD");
 
 		}
-
+/*
 		printf("Por eliminar socket \n");
 		fflush(stdout);
 	//	close(envio_de_ack_get);
 		printf("sockect muerto \n");
-		fflush(stdout);
+		fflush(stdout);*/
 
 		sleep(1);
 
@@ -1491,11 +1491,11 @@ void process_request(int cod_op, int cliente_fd) {
 			enviarACK(id, envio_de_ack_catch, "GAMECARD");
 
 		}
-
+/*
 		printf("Por eliminar socket \n");
 		fflush(stdout);
 	//	close(envio_de_ack_catch);
-		printf("sockect muerto \n");
+		printf("sockect muerto \n");*/
 		fflush(stdout);
 
 		sleep(1);

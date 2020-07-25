@@ -1,0 +1,12 @@
+[INFO] 01:29:07:415 NUEVO MENSAJE/(5736:5746): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon³ 
+ posX: 2 
+ posY: 2 
+
+[INFO] 01:29:08:423 NUEVO MENSAJE/(5736:5752): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon³ 
+ posX: 4 
+ posY: 6 
+

@@ -1232,7 +1232,9 @@ broker_new_pokemon* leerdeMemoriaNEW(particion* part) {
 	newEnMemo->datos->nombrePokemon = malloc(newEnMemo->datos->tamanioNombre);
 
 	memcpy((newEnMemo->datos->nombrePokemon),memoria+offset,newEnMemo->datos->tamanioNombre);
-	offset+=newEnMemo->datos->tamanioNombre;
+	memcpy((newEnMemo->datos->nombrePokemon)+newEnMemo->datos->tamanioNombre-1," ",1);
+	string_trim_right(&newEnMemo->datos->nombrePokemon);
+	offset+=(newEnMemo->datos->tamanioNombre-1);
 
 	memcpy(&(newEnMemo->datos->posX),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -1262,6 +1264,7 @@ broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part) {
 	appEnMemoria->id= part->idMensaje;
 	//ver id correlativo si lo usa
 	appEnMemoria->id_relativo = part->idCorrelativo;
+	int i;
 
 
 	//deserializacion
@@ -1274,9 +1277,14 @@ broker_appeared_pokemon* leerdeMemoriaAPPEARED(particion* part) {
 	offset+=sizeof(uint32_t);
 
 	appEnMemoria->datos->nombrePokemon = malloc(appEnMemoria->datos->tamanioNombre);
+	for(i=0;i<appEnMemoria->datos->tamanioNombre;i++){
+		memcpy((appEnMemoria->datos->nombrePokemon)+i,"\0",1);
+	}
 
-	memcpy((appEnMemoria->datos->nombrePokemon),memoria+offset,appEnMemoria->datos->tamanioNombre);
-	offset+=appEnMemoria->datos->tamanioNombre;
+	memcpy((appEnMemoria->datos->nombrePokemon),memoria+offset,appEnMemoria->datos->tamanioNombre-1);
+/*	memcpy((appEnMemoria->datos->nombrePokemon)+appEnMemoria->datos->tamanioNombre-1," ",1);
+	string_trim_right(&appEnMemoria->datos->nombrePokemon);*/
+	offset+=(appEnMemoria->datos->tamanioNombre-1);
 
 	memcpy(&(appEnMemoria->datos->posX),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -1301,6 +1309,7 @@ broker_catch_pokemon* leerdeMemoriaCATCH(particion* part) {
 	catchEnMemo->datos = malloc(sizeof(catch_pokemon));
 
 	catchEnMemo->id = part->idMensaje;
+	int i;
 	//ver id correlativo si lo usa
 	//catchEnMemo->id_relativo = part->idCorrelativo;
 
@@ -1314,9 +1323,14 @@ broker_catch_pokemon* leerdeMemoriaCATCH(particion* part) {
 	offset+=sizeof(uint32_t);
 
 	catchEnMemo->datos->nombrePokemon = malloc(catchEnMemo->datos->tamanioNombre);
+	for(i=0;i<catchEnMemo->datos->tamanioNombre;i++){
+		memcpy((catchEnMemo->datos->nombrePokemon)+i,"\0",1);
+	}
 
-	memcpy((catchEnMemo->datos->nombrePokemon),memoria+offset,catchEnMemo->datos->tamanioNombre);
-	offset+=catchEnMemo->datos->tamanioNombre;
+	memcpy((catchEnMemo->datos->nombrePokemon),memoria+offset,catchEnMemo->datos->tamanioNombre-1);
+/*	memcpy((catchEnMemo->datos->nombrePokemon)+catchEnMemo->datos->tamanioNombre-1," ",1);
+	string_trim_right(&catchEnMemo->datos->nombrePokemon);*/
+	offset+=(catchEnMemo->datos->tamanioNombre-1);
 
 	memcpy(&(catchEnMemo->datos->posX),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -1380,7 +1394,9 @@ broker_get_pokemon* leerdeMemoriaGET(particion* part) {
 	getEnMemo->datos->nombrePokemon = malloc(getEnMemo->datos->tamanioNombre);
 
 	memcpy((getEnMemo->datos->nombrePokemon),memoria+offset,getEnMemo->datos->tamanioNombre);
-	offset+=getEnMemo->datos->tamanioNombre;
+	memcpy((getEnMemo->datos->nombrePokemon)+getEnMemo->datos->tamanioNombre-1," ",1);
+	string_trim_right(&getEnMemo->datos->nombrePokemon);
+	offset+=(getEnMemo->datos->tamanioNombre-1);
 
 
 	if (!strcmp(algoritmo_reemplazo, "LRU")) {
@@ -1417,8 +1433,8 @@ broker_localized_pokemon* leerdeMemoriaLOCALIZED(particion* part) {
 
 	localizedEnMemo->datos->nombrePokemon = malloc(localizedEnMemo->datos->tamanioNombre);
 
-	memcpy((localizedEnMemo->datos->nombrePokemon),memoria+offset,localizedEnMemo->datos->tamanioNombre);
-	offset+=localizedEnMemo->datos->tamanioNombre;
+	memcpy((localizedEnMemo->datos->nombrePokemon),memoria+offset,localizedEnMemo->datos->tamanioNombre-1);
+	offset+=(localizedEnMemo->datos->tamanioNombre-1);
 
 	memcpy(&(localizedEnMemo->datos->cantidadPosiciones),memoria+offset,sizeof(uint32_t));
 	offset+=sizeof(uint32_t);
@@ -1953,7 +1969,7 @@ void eliminarVictima(){
 
 	list_add_all(tablaDeParticiones,nuevaLista);
 
-	log_info(almacenadoMemoria,
+	log_info(eliminacionMemoria,
 					"se libera la base: %d y limite: %d",
 	aELiminar->particion->base,aELiminar->limite);
 

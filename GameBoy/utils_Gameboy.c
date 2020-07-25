@@ -528,7 +528,7 @@ void process_request_gameboy(int cod_op, int cliente_fd) { //Descifra los mensaj
 
 
 			log_info(logMensajeNuevo,"recibi mensaje de APPEARED_POKEMON (ID = %d) de %s \n con tamanio: %d \n nombre: %s \n posX: %d \n posY: %d \n con id_relativo: %d",
-					appearedRecibido,
+					appearedRecibido->id,
 					username,
 					appearedRecibido->datos->tamanioNombre,
 					appearedRecibido->datos->nombrePokemon,

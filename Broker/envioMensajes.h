@@ -11,6 +11,7 @@
 #include "utils_broker.h"
 
 int conexionTeam;
+int conexionTeam2;
 int conexionGamecard;
 int conexionGameboy;
 

@@ -403,15 +403,15 @@ void* transformarBrokerLocalizedPokemon(broker_localized_pokemon *locRecibido,ui
 	uint32_t posiciones =0;
 
 	void *pokeTransformado = malloc(sizeof(uint32_t)+sizeof(uint32_t)+((sizeof(uint32_t)*2)*(locRecibido->datos->cantidadPosiciones))
-			+ strlen(locRecibido->datos->nombrePokemon)+1 );
+			+ strlen(locRecibido->datos->nombrePokemon) );
 
 	*offset=0;
 
 	memcpy(pokeTransformado+*offset,&(locRecibido->datos->tamanioNombre),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
 
-	memcpy(pokeTransformado+*offset,(locRecibido->datos->nombrePokemon),locRecibido->datos->tamanioNombre);
-	*offset+=locRecibido->datos->tamanioNombre;
+	memcpy(pokeTransformado+*offset,(locRecibido->datos->nombrePokemon),locRecibido->datos->tamanioNombre-1);
+	*offset+=(locRecibido->datos->tamanioNombre-1);
 
 	memcpy(pokeTransformado+*offset,&(locRecibido->datos->cantidadPosiciones),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
@@ -438,15 +438,15 @@ void* transformarBrokerNewPokemon(broker_new_pokemon *newRecibido,uint32_t* offs
 	//4. uint32_t posY;
 	//5. uint32_t CantidadPokemons;
 
-	void *pokeTransformado = malloc((sizeof(uint32_t)*4 )+ newRecibido->datos->tamanioNombre);
+	void *pokeTransformado = malloc((sizeof(uint32_t)*4 )+ newRecibido->datos->tamanioNombre-1);
 
 	*offset=0;
 
 	memcpy(pokeTransformado+*offset,&(newRecibido->datos->tamanioNombre),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
 
-	memcpy(pokeTransformado+*offset,(newRecibido->datos->nombrePokemon),newRecibido->datos->tamanioNombre);
-	*offset+=newRecibido->datos->tamanioNombre;
+	memcpy(pokeTransformado+*offset,(newRecibido->datos->nombrePokemon),newRecibido->datos->tamanioNombre-1);
+	*offset+=(newRecibido->datos->tamanioNombre-1);
 
 	memcpy(pokeTransformado+*offset,&(newRecibido->datos->posX),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
@@ -467,14 +467,14 @@ void* transformarBrokerAppearedPokemon(broker_appeared_pokemon *appRecibido,uint
 	//3. uint32_t posX;
 	//4. uint32_t posY;
 
-	void *pokeTransformado = malloc((sizeof(uint32_t)*4)+appRecibido->datos->tamanioNombre);
+	void *pokeTransformado = malloc((sizeof(uint32_t)*4)+appRecibido->datos->tamanioNombre-1);
 	*offset=0;
 
 	memcpy(pokeTransformado+*offset,&(appRecibido->datos->tamanioNombre),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
 
-	memcpy(pokeTransformado+*offset,(appRecibido->datos->nombrePokemon),appRecibido->datos->tamanioNombre);
-	*offset+=appRecibido->datos->tamanioNombre;
+	memcpy(pokeTransformado+*offset,(appRecibido->datos->nombrePokemon),appRecibido->datos->tamanioNombre-1);
+	*offset+=(appRecibido->datos->tamanioNombre-1);
 
 	memcpy(pokeTransformado+*offset,&(appRecibido->datos->posX),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
@@ -489,14 +489,14 @@ void* transformarBrokerGetPokemon(broker_get_pokemon *getRecibido,uint32_t* offs
 	//serializacion
 	//1. uint32_t tamanioNombre;
 	//2. char* nombrePokemon;
-	void *pokeTransformado = malloc(sizeof(uint32_t)+getRecibido->datos->tamanioNombre);
+	void *pokeTransformado = malloc(sizeof(uint32_t)+getRecibido->datos->tamanioNombre-1);
 	*offset =0;
 
 	memcpy(pokeTransformado+*offset,&(getRecibido->datos->tamanioNombre),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
 
-	memcpy(pokeTransformado+*offset,(getRecibido->datos->nombrePokemon),getRecibido->datos->tamanioNombre);
-	*offset+=getRecibido->datos->tamanioNombre;
+	memcpy(pokeTransformado+*offset,(getRecibido->datos->nombrePokemon),getRecibido->datos->tamanioNombre-1);
+	*offset+=(getRecibido->datos->tamanioNombre-1);
 
 	return pokeTransformado;
 }
@@ -508,14 +508,14 @@ void* transformarBrokerCatchPokemon(broker_catch_pokemon *catchRecibido,uint32_t
 	//3. uint32_t posX;
 	//4. uint32_t posY;
 
-	void *pokeTransformado = malloc((sizeof(uint32_t)*3)+catchRecibido->datos->tamanioNombre);
+	void *pokeTransformado = malloc((sizeof(uint32_t)*3)+catchRecibido->datos->tamanioNombre-1);
 	*offset=0;
 
 	memcpy(pokeTransformado+*offset,&(catchRecibido->datos->tamanioNombre),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
 
-	memcpy(pokeTransformado+*offset,(catchRecibido->datos->nombrePokemon),catchRecibido->datos->tamanioNombre);
-	*offset+=catchRecibido->datos->tamanioNombre;
+	memcpy(pokeTransformado+*offset,(catchRecibido->datos->nombrePokemon),catchRecibido->datos->tamanioNombre-1);
+	*offset+=(catchRecibido->datos->tamanioNombre-1);
 
 	memcpy(pokeTransformado+*offset,&(catchRecibido->datos->posX),sizeof(uint32_t));
 	*offset+=sizeof(uint32_t);
