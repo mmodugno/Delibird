@@ -55,15 +55,17 @@ typedef struct{
     int cuantos_puede_cazar;
     int id;
     pthread_t hiloDeEntrenador;
-    sem_t sem_entrenador;
+    //sem_t sem_entrenador;
     sem_t espera_de_catch;
     pokemon* objetivo_proximo;
     int ciclos_cpu;
-    sem_t nuevoPoke;
+    pthread_mutex_t nuevoPoke;
     uint32_t id_catch;
-
     float rafaga_estimada;
     float rafaga_real;
+
+    pthread_mutex_t sem_entrenador;
+
 
 }entrenador;
 
@@ -128,7 +130,7 @@ pthread_t hilo_servidor;
 //SEMAFOROS
 sem_t en_ejecucion;
 sem_t hay_entrenador;
-sem_t nuevo_pokemon;
+pthread_mutex_t nuevo_pokemon;
 sem_t semaforo_mensaje;
 sem_t mutex_lista;
 

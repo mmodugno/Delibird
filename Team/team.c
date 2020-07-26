@@ -29,7 +29,13 @@ int main(int argc, char* argv[]){
 
 
 	sem_init(&hay_entrenador,0,0);
-	sem_init(&nuevo_pokemon,0,0);
+	//sem_init(&nuevo_pokemon,0,0);
+
+	 if (pthread_mutex_init(&(nuevo_pokemon), 0) != 0)
+		 {
+			 printf("\n mutex ejecucion de entrenador failed\n");
+
+		 }
 
 	sem_init(&mutex_lista,0,1);
 	sem_init(&en_ejecucion,0,1);
@@ -62,6 +68,7 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
+	/*
 	suscribirnos_cola_appeared();
 	sleep(1);
 	suscribirnos_cola_caught();
@@ -69,10 +76,11 @@ int main(int argc, char* argv[]){
 	suscribirnos_cola_localized();
 	sleep(1);
 
+*/
 	//int j;
 	//Mando un get por cada uno de mis objetivos globales.
 	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
-/*
+
 
  //PRUEBAS DE TP:
 
@@ -90,13 +98,13 @@ int main(int argc, char* argv[]){
 
 	pokemon* squirte2 = hacer_pokemon("Squirtle",5,5,sizeof("Squirtle"));
 		aparece_nuevo_pokemon(squirte2);
-*/
+
 
 
 	//	PRUEBAS COMPLETAS DE TP
 
-/*
 
+/*
 	pokemon* jolteon = hacer_pokemon("Jolteon",2,2,sizeof("Jolteon"));
 		aparece_nuevo_pokemon(jolteon);
 
@@ -111,8 +119,8 @@ int main(int argc, char* argv[]){
 
 	pokemon* vaporeon = hacer_pokemon("Vaporeon",4,10,sizeof("Vaporeon"));
 		aparece_nuevo_pokemon(vaporeon);
-*/
 
+*/
 
  	pthread_join(hilo_principal,NULL);
 
