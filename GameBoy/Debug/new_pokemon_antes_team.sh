@@ -1,6 +1,6 @@
 #!/bin/sh
-LD_LIBRARY_PATH="/home/utnso/tp-2020-1c-The-X-Team/utils/Debug" ./gameboy BROKER APPEARED_POKEMON Pikachu 9 9 1
-LD_LIBRARY_PATH="/home/utnso/tp-2020-1c-The-X-Team/utils/Debug" ./gameboy BROKER APPEARED_POKEMON Squirtle 5 2 2
+./gameboy BROKER NEW_POKEMON Pikachu 9 9 1
+./gameboy BROKER NEW_POKEMON Squirtle 5 2 1
 
-LD_LIBRARY_PATH="/home/utnso/tp-2020-1c-The-X-Team/utils/Debug" ./gameboy BROKER APPEARED_POKEMON Jolteon 2 2 3
-LD_LIBRARY_PATH="/home/utnso/tp-2020-1c-The-X-Team/utils/Debug" ./gameboy BROKER APPEARED_POKEMON Flareon 4 6 4
+./gameboy BROKER NEW_POKEMON Jolteon 2 2 1
+./gameboy BROKER NEW_POKEMON Flareon 4 6 1
