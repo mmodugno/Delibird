@@ -607,7 +607,8 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 void planifico_con_RR(void){
 
 
-while(1){
+while( list_size(entrenadores) != list_size(entrenadores_finalizados)){
+
 	while(validacion_nuevo_pokemon()){
 		quantum = leer_quantum();
 
@@ -688,15 +689,15 @@ while(1){
 	}
 
 
-	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
+	//if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
 		pthread_cancel(hilo_servidor);
 		printf("\n FINALIZO EL PROGRAMA \n");
 
-		break;
-	}
+	//	break;
+	//}
 
-
+sleep(2);
 }
 }
 
@@ -734,7 +735,8 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 				log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
 			}
 			sem_post(&en_ejecucion);
-			sem_wait(&(entrenador->sem_entrenador));
+			pthread_mutex_lock(&(entrenador->sem_entrenador));
+			//sem_wait(&(entrenador->sem_entrenador));
 	}
 
 	}
@@ -766,7 +768,8 @@ void mover_entrenador_RR(entrenador* entrenador,int x, int y){
 					log_info(cambioDeCola,"cambio a READY de entrenador: %d \n ",entrenador->id);
 				}
 				sem_post(&en_ejecucion);
-				sem_wait(&(entrenador->sem_entrenador));
+				pthread_mutex_lock(&(entrenador->sem_entrenador));
+				//sem_wait(&(entrenador->sem_entrenador));
 		}
 
 		}
@@ -807,8 +810,8 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 		sem_post(&en_ejecucion);
 
-		sem_wait(&(entrenador0->sem_entrenador));
-
+		//sem_wait(&(entrenador0->sem_entrenador));
+		pthread_mutex_lock(&(entrenador0->sem_entrenador));
 		quantum = leer_quantum();
 	}
 
@@ -909,8 +912,8 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 			}
 
 			sem_post(&en_ejecucion);
-
-			sem_wait(&(entrenador0->sem_entrenador));
+			pthread_mutex_lock(&(entrenador0->sem_entrenador));
+			//sem_wait(&(entrenador0->sem_entrenador));
 
 			quantum = leer_quantum();
 		}
@@ -980,7 +983,8 @@ void planificar_entrenador_segun_rafaga(void){
 
 	entrenador_exec->rafaga_real = distancia_real;
 
-	sem_post(&(entrenador_exec->nuevoPoke));
+	pthread_mutex_unlock(&(entrenador_exec->nuevoPoke));
+	//sem_post(&(entrenador_exec->nuevoPoke));
 
 }
 
@@ -1004,7 +1008,7 @@ float calcular_rafaga_siguiente(entrenador* un_entrenador, pokemon* poke){
 
 void planifico_con_desalojo(void){
 
-while(1){
+while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 	while(validacion_nuevo_pokemon()){
 		quantum = leer_quantum();
 
@@ -1015,7 +1019,9 @@ while(1){
 		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
-		sem_post(&(entrenador_exec->sem_entrenador));
+		//sem_post(&(entrenador_exec->sem_entrenador));
+		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
+
 		//Fin de seccion critica
 	}
 
@@ -1059,7 +1065,8 @@ while(1){
 			log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 		}
 
-		sem_post(&(entrenador_exec->sem_entrenador));
+		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
+		//sem_post(&(entrenador_exec->sem_entrenador));
 
 
 	}
@@ -1109,18 +1116,16 @@ while(1){
 		}
 
 
+	sleep(2);
 
-	if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
-		pthread_cancel(hilo_servidor);
-		printf("\n FINALIZO EL PROGRAMA \n");
-
-		break;
 	}
+	pthread_cancel(hilo_servidor);
+	printf("\n FINALIZO EL PROGRAMA \n");
 
 
 }
-}
+
 
 
 /////////////////////////////////////////////////METRICAS

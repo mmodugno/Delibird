@@ -1,0 +1,278 @@
+[INFO] 19:50:10:866 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:50:13:867 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (3,3)
+[INFO] 19:50:13:867 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:50:16:868 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (4,2)
+[INFO] 19:50:16:868 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:50:19:869 MOVIMIENTO DE ENTRENADOR/(4540:4541): entrenador 0: se movio a (2,3)
+[INFO] 19:50:19:869 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:50:19:869 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:50:22:870 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (5,2)
+[INFO] 19:50:22:871 OPERACION ATRAPAR/(4540:4543): ATRAPAR POKEMON: Squirtle con posicion (5, 2) 
+
+[INFO] 19:50:22:871 ERROR EN COMUNICACION/(4540:4543): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:50:22:871 CAMBIO DE COLA/(4540:4543): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 19:50:22:871 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:50:22:871 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:50:25:872 MOVIMIENTO DE ENTRENADOR/(4540:4541): entrenador 0: se movio a (2,4)
+[INFO] 19:50:25:872 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:50:25:872 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:50:25:872 CAMBIO DE COLA/(4540:4543): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 19:50:25:873 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:50:25:873 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:50:28:873 MOVIMIENTO DE ENTRENADOR/(4540:4541): entrenador 0: se movio a (2,5)
+[INFO] 19:50:31:874 MOVIMIENTO DE ENTRENADOR/(4540:4541): entrenador 0: se movio a (2,6)
+[INFO] 19:50:34:875 MOVIMIENTO DE ENTRENADOR/(4540:4541): entrenador 0: se movio a (2,7)
+[INFO] 19:50:37:876 MOVIMIENTO DE ENTRENADOR/(4540:4541): entrenador 0: se movio a (2,8)
+[INFO] 19:50:37:876 OPERACION ATRAPAR/(4540:4541): ATRAPAR POKEMON: Onix con posicion (2, 8) 
+
+[INFO] 19:50:37:877 ERROR EN COMUNICACION/(4540:4541): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:50:37:877 CAMBIO DE COLA/(4540:4541): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 19:50:37:877 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:50:37:877 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:50:40:878 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (4,3)
+[INFO] 19:50:40:878 DETECCION_DEADLOCK/(4540:4544): Inicio de deteccion de deadlock
+[INFO] 19:50:40:878 RESULTADO_DE_DEADLOCK/(4540:4544): No se detectó nuevo deadlock
+[INFO] 19:50:40:878 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:50:43:879 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (6,2)
+[INFO] 19:50:46:880 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (6,3)
+[INFO] 19:50:49:880 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (6,4)
+[INFO] 19:50:52:880 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (6,5)
+[INFO] 19:50:55:881 MOVIMIENTO DE ENTRENADOR/(4540:4543): entrenador 2: se movio a (6,6)
+[INFO] 19:50:55:881 OPERACION ATRAPAR/(4540:4543): ATRAPAR POKEMON: Gengar con posicion (6, 6) 
+
+[INFO] 19:50:55:881 ERROR EN COMUNICACION/(4540:4543): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:50:55:882 CAMBIO DE COLA/(4540:4543): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 19:50:55:882 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:50:55:882 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:50:55:882 CAMBIO DE COLA/(4540:4541): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 19:50:55:882 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:50:55:882 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:50:58:885 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (5,3)
+[INFO] 19:50:58:885 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 1 
+ 
+[INFO] 19:50:58:885 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:50:58:885 CAMBIO DE COLA/(4540:4543): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 19:50:58:885 CAMBIO DE COLA/(4540:4544): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:50:58:885 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:51:01:890 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (6,3)
+[INFO] 19:51:04:891 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (7,3)
+[INFO] 19:51:07:891 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (8,3)
+[INFO] 19:51:07:891 DETECCION_DEADLOCK/(4540:4544): Inicio de deteccion de deadlock
+[INFO] 19:51:07:891 RESULTADO_DE_DEADLOCK/(4540:4544): Se detectó deadlock
+[INFO] 19:51:10:895 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,3)
+[INFO] 19:51:13:906 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,4)
+[INFO] 19:51:16:906 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,5)
+[INFO] 19:51:19:907 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,6)
+[INFO] 19:51:22:911 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,7)
+[INFO] 19:51:25:915 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,8)
+[INFO] 19:51:28:918 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (9,9)
+[INFO] 19:51:28:921 OPERACION ATRAPAR/(4540:4542): ATRAPAR POKEMON: Pikachu con posicion (9, 9) 
+
+[INFO] 19:51:28:921 ERROR EN COMUNICACION/(4540:4542): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:51:28:921 CAMBIO DE COLA/(4540:4542): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 19:51:28:921 CAMBIO DE COLA/(4540:4542): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 19:51:28:922 CAMBIO DE COLA/(4540:4544): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:51:31:922 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (8,9)
+[INFO] 19:51:34:923 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (7,9)
+[INFO] 19:51:34:923 DETECCION_DEADLOCK/(4540:4544): Inicio de deteccion de deadlock
+[INFO] 19:51:34:923 RESULTADO_DE_DEADLOCK/(4540:4544): Se detectó deadlock
+[INFO] 19:51:37:926 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (6,9)
+[INFO] 19:51:40:927 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (5,9)
+[INFO] 19:51:43:928 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (5,8)
+[INFO] 19:51:46:929 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (5,7)
+[INFO] 19:51:49:929 MOVIMIENTO DE ENTRENADOR/(4540:4542): entrenador 1: se movio a (5,6)
+[INFO] 19:52:50:335 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:52:53:335 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (3,3)
+[INFO] 19:52:53:336 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:52:56:339 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (4,2)
+[INFO] 19:52:56:339 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:52:59:340 MOVIMIENTO DE ENTRENADOR/(4644:4645): entrenador 0: se movio a (2,3)
+[INFO] 19:52:59:340 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:52:59:340 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:53:02:341 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (5,2)
+[INFO] 19:53:02:341 OPERACION ATRAPAR/(4644:4647): ATRAPAR POKEMON: Squirtle con posicion (5, 2) 
+
+[INFO] 19:53:02:342 ERROR EN COMUNICACION/(4644:4647): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:53:02:342 CAMBIO DE COLA/(4644:4647): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 19:53:02:342 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:53:02:342 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:53:05:343 MOVIMIENTO DE ENTRENADOR/(4644:4645): entrenador 0: se movio a (2,4)
+[INFO] 19:53:05:343 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:53:05:343 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:53:05:343 CAMBIO DE COLA/(4644:4647): cambio a BLOCK-READY de entrenador: 2 
+ 
+[INFO] 19:53:05:343 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:53:05:343 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:53:08:344 MOVIMIENTO DE ENTRENADOR/(4644:4645): entrenador 0: se movio a (2,5)
+[INFO] 19:53:11:345 MOVIMIENTO DE ENTRENADOR/(4644:4645): entrenador 0: se movio a (2,6)
+[INFO] 19:53:14:345 MOVIMIENTO DE ENTRENADOR/(4644:4645): entrenador 0: se movio a (2,7)
+[INFO] 19:53:17:345 MOVIMIENTO DE ENTRENADOR/(4644:4645): entrenador 0: se movio a (2,8)
+[INFO] 19:53:17:346 OPERACION ATRAPAR/(4644:4645): ATRAPAR POKEMON: Onix con posicion (2, 8) 
+
+[INFO] 19:53:17:346 ERROR EN COMUNICACION/(4644:4645): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:53:17:346 CAMBIO DE COLA/(4644:4645): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 19:53:17:346 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:53:17:346 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:53:20:347 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (4,3)
+[INFO] 19:53:20:347 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:53:20:347 RESULTADO_DE_DEADLOCK/(4644:4648): No se detectó nuevo deadlock
+[INFO] 19:53:22:348 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:53:25:349 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (6,2)
+[INFO] 19:53:28:350 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (6,3)
+[INFO] 19:53:31:351 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (6,4)
+[INFO] 19:53:34:352 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (6,5)
+[INFO] 19:53:37:352 MOVIMIENTO DE ENTRENADOR/(4644:4647): entrenador 2: se movio a (6,6)
+[INFO] 19:53:37:352 OPERACION ATRAPAR/(4644:4647): ATRAPAR POKEMON: Gengar con posicion (6, 6) 
+
+[INFO] 19:53:37:353 ERROR EN COMUNICACION/(4644:4647): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:53:37:353 CAMBIO DE COLA/(4644:4647): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 19:53:37:353 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:53:37:353 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 19:53:37:353 CAMBIO DE COLA/(4644:4645): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 19:53:37:353 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 0 
+ 
+[INFO] 19:53:37:353 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:53:40:353 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (5,3)
+[INFO] 19:53:40:353 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 1 
+ 
+[INFO] 19:53:40:353 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:53:40:353 CAMBIO DE COLA/(4644:4647): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 19:53:40:353 CAMBIO DE COLA/(4644:4648): cambio a READY a entrenador: 2 
+ 
+[INFO] 19:53:40:353 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:53:43:354 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (6,3)
+[INFO] 19:53:47:355 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (7,3)
+[INFO] 19:53:47:355 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:53:47:355 RESULTADO_DE_DEADLOCK/(4644:4648): Se detectó deadlock
+[INFO] 19:53:50:356 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (8,3)
+[INFO] 19:53:54:358 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,3)
+[INFO] 19:53:58:359 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,4)
+[INFO] 19:54:02:360 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,5)
+[INFO] 19:54:06:362 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,6)
+[INFO] 19:54:10:362 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,7)
+[INFO] 19:54:14:364 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,8)
+[INFO] 19:54:14:365 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:54:14:365 RESULTADO_DE_DEADLOCK/(4644:4648): Se detectó deadlock
+[INFO] 19:54:17:366 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (9,9)
+[INFO] 19:54:18:366 OPERACION ATRAPAR/(4644:4646): ATRAPAR POKEMON: Pikachu con posicion (9, 9) 
+
+[INFO] 19:54:18:367 ERROR EN COMUNICACION/(4644:4646): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:54:18:367 CAMBIO DE COLA/(4644:4646): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 19:54:20:367 CAMBIO DE COLA/(4644:4646): cambio a BLOCK-READY de entrenador: 1 
+ 
+[INFO] 19:54:22:368 CAMBIO DE COLA/(4644:4648): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 19:54:25:369 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (8,9)
+[INFO] 19:54:29:370 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (7,9)
+[INFO] 19:54:33:370 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (6,9)
+[INFO] 19:54:37:372 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (5,9)
+[INFO] 19:54:41:372 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (5,8)
+[INFO] 19:54:41:372 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:54:41:372 RESULTADO_DE_DEADLOCK/(4644:4648): Se detectó deadlock
+[INFO] 19:54:44:373 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (5,7)
+[INFO] 19:54:48:375 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (5,6)
+[INFO] 19:54:52:376 MOVIMIENTO DE ENTRENADOR/(4644:4646): entrenador 1: se movio a (5,5)
+[INFO] 19:54:53:376 OPERACION ATRAPAR/(4644:4646): ATRAPAR POKEMON: Squirtle con posicion (5, 5) 
+
+[INFO] 19:54:53:377 ERROR EN COMUNICACION/(4644:4646): No se pudo conectar con Broker,se realizará la operación por default 
+
+[INFO] 19:54:53:377 CAMBIO DE COLA/(4644:4646): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 19:54:55:377 CAMBIO DE COLA/(4644:4646): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 19:55:07:380 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:55:07:380 RESULTADO_DE_DEADLOCK/(4644:4648): Se detectó deadlock multiple
+[INFO] 19:55:07:380 OPERACION INTERCAMBIO/(4644:4681): intercambio entre entrenadores 0 y 1
+[INFO] 19:55:10:382 MOVIMIENTO DE ENTRENADOR/(4644:4681): entrenador 0: se movio a (5,5)
+[INFO] 19:55:13:383 CAMBIO DE COLA/(4644:4681): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 19:55:15:384 CAMBIO DE COLA/(4644:4681): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 19:55:17:384 CAMBIO DE COLA/(4644:4681): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 19:55:19:385 CAMBIO DE COLA/(4644:4681): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 19:55:21:386 CAMBIO DE COLA/(4644:4681): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 19:55:23:387 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:55:23:387 RESULTADO_DE_DEADLOCK/(4644:4648): Se detectó deadlock
+[INFO] 19:55:23:387 OPERACION INTERCAMBIO/(4644:4684): intercambio entre entrenadores 2 y 1 
+
+[INFO] 19:55:23:387 CAMBIO DE COLA/(4644:4684): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 19:55:26:388 MOVIMIENTO DE ENTRENADOR/(4644:4684): entrenador 2: se movio a (5,5)
+[INFO] 19:55:31:389 DETECCION_DEADLOCK/(4644:4648): Inicio de deteccion de deadlock
+[INFO] 19:55:31:390 RESULTADO_DE_DEADLOCK/(4644:4648): No se detectó nuevo deadlock
+[INFO] 19:55:41:389 CAMBIO DE COLA/(4644:4684): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 19:55:41:389 CAMBIO DE COLA/(4644:4684): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 19:55:41:394 RESULTADO TEAM/(4644:4644): Ciclos de cpu entrenador 0: 17
+[INFO] 19:55:41:394 RESULTADO TEAM/(4644:4644): Ciclos de cpu entrenador 1: 21
+[INFO] 19:55:41:394 RESULTADO TEAM/(4644:4644): Ciclos de cpu entrenador 2: 14
+[INFO] 19:55:41:394 RESULTADO TEAM/(4644:4644): Ciclos de cpu totales: 52
+[INFO] 19:55:41:394 RESULTADO TEAM/(4644:4644): Cantidad de deadlocks producidos: 5
+[INFO] 19:55:41:394 RESULTADO TEAM/(4644:4644): Cantidad de deadlocks resueltos: 2
