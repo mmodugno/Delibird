@@ -65,9 +65,9 @@ void variables_globales(){
 	 entrenador* un_entrenador = malloc(sizeof(entrenador));
 
 	 un_entrenador->ciclos_cpu =0;
-	 sem_init(&(un_entrenador->sem_entrenador),0,0);
+	// sem_init(&(un_entrenador->sem_entrenador),0,0);
 	 sem_init(&(un_entrenador->espera_de_catch),0,0);
-	 sem_init(&(un_entrenador->nuevoPoke),0,0);
+	// sem_init(&(un_entrenador->nuevoPoke),0,0);
 
 	 pthread_t hiloEntrenador;
 
@@ -75,6 +75,16 @@ void variables_globales(){
 	 un_entrenador->objetivos =crear_lista(string_split(objetivosconfig,"|"));
 	 un_entrenador->pokemones =crear_lista(string_split(pokemonsconfig,"|"));
 
+	 if (pthread_mutex_init(&(un_entrenador->sem_entrenador), 0) != 0)
+	 {
+		 printf("\n mutex ejecucion de entrenador failed\n");
+
+	 }
+	 if (pthread_mutex_init(&(un_entrenador->nuevoPoke), 0) != 0)
+		 {
+			 printf("\n mutex ejecucion de entrenador failed\n");
+
+		 }
 
 	 un_entrenador->id = id_creada;
 
@@ -127,6 +137,11 @@ int i;
 		entrenador* entrenador_listo = configurar_entrenador(list_get(posiciones,i),list_get(pokemones,i),list_get(objetivos,i),i);
 		list_add(entrenadores,entrenador_listo);
 		list_add(entrenadores_new,entrenador_listo);
+		//pthread_mutex_lock(&(entrenador_listo->sem_entrenador));
+		//pthread_mutex_lock(&(nuevo_pokemon));
+		pthread_mutex_trylock(&(entrenador_listo->sem_entrenador));
+		pthread_mutex_trylock(&(entrenador_listo->nuevoPoke));
+
 		sem_post(&hay_entrenador);
 	 }
 
@@ -229,8 +244,12 @@ void procedimiento_de_caza(entrenador* un_entrenador){
 
 while(1){
 
-	sem_wait(&(un_entrenador->nuevoPoke));
-	sem_wait(&(un_entrenador->sem_entrenador));
+	pthread_mutex_lock(&(un_entrenador->nuevoPoke));
+	pthread_mutex_lock(&(un_entrenador->sem_entrenador));
+
+	//sem_wait(&(un_entrenador->nuevoPoke));
+	//sem_wait(&(un_entrenador->sem_entrenador));
+
 
 	//log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
@@ -288,9 +307,12 @@ while(1){
 			confirmacion_de_catch(un_entrenador);
 		}
 
+	pthread_mutex_lock(&(un_entrenador->sem_entrenador));
+
 	sem_wait(&(un_entrenador->espera_de_catch));
 
-	sem_wait(&(un_entrenador->sem_entrenador));
+	//sem_wait(&(un_entrenador->sem_entrenador));
+
 
 	 //Espera que le llegue al sistema una respuesta a su catch
 
@@ -371,7 +393,8 @@ void planificar_entrenador(void){
 	}
 
 	entrenador_exec->objetivo_proximo = proximo_objetivo;
-	sem_post(&(entrenador_exec->nuevoPoke));
+	pthread_mutex_unlock(&(entrenador_exec->nuevoPoke));
+	//sem_post(&(entrenador_exec->nuevoPoke));
 
 }
 
@@ -380,7 +403,7 @@ void planificar_entrenador(void){
 
 void planifico_sin_desalojo(void){
 
-while(1){
+while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 
 //Se fija si hay nuevos pokemones, y alguien para cazarlos
 while(validacion_nuevo_pokemon()){
@@ -399,7 +422,9 @@ while(validacion_nuevo_pokemon()){
 
 	cambio_contexto +=1;
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-	sem_post(&(entrenador_exec->sem_entrenador));
+
+	pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
+	//sem_post(&(entrenador_exec->sem_entrenador));
 
 }
 
@@ -413,7 +438,8 @@ while(queue_size(entrenadores_ready)>0){
 		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
-		sem_post(&(entrenador_exec->sem_entrenador));
+		//sem_post(&(entrenador_exec->sem_entrenador));
+		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
 }
 
 
@@ -460,16 +486,17 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 		sem_post(&en_ejecucion);
 	}
 
-
-if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
+sleep(2);
+}
+//if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
 	pthread_cancel(hilo_servidor);
 	printf("\n FINALIZO EL PROGRAMA \n");
 
-	break;
-}
+	//break;
 
-}
+
+
 }
 
 void deteccion_y_recuperacion_deadlock(){
@@ -595,7 +622,8 @@ while(1){
 		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
-		sem_post(&(entrenador_exec->sem_entrenador));
+		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
+		//sem_post(&(entrenador_exec->sem_entrenador));
 		//Fin de seccion critica
 	}
 
@@ -612,7 +640,8 @@ while(1){
 		cambio_contexto +=1;
 		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
-		sem_post(&(entrenador_exec->sem_entrenador));
+		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
+		//sem_post(&(entrenador_exec->sem_entrenador));
 	}
 
 	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
