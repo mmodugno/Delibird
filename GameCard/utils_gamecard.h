@@ -123,6 +123,7 @@ bool tieneCantidadCero(char*);
 void buscarYeliminarCeros(t_list*);
 void eliminarBloquesVacios(char* );
 void procesarGetPokemon(char* ,int);
+bool tieneUnEspacioComoPrimerCaracter(char* );
 
 ////////// BITARRAY
 void inicializar_bitarray();

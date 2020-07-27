@@ -60,17 +60,15 @@ int main(int argc, char* argv[]){
 		//list_add(listaAux,"2");
 
 
-		/*registroDatos* registro1 = hacerRegistro(4,1,5);
-		//registroDatos* registro2 = hacerRegistro(4,2,1);
+		//registroDatos* registro1 = hacerRegistro(4,1,5);
+		registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
+		procesarNewPokemon("Squirtle",registro2,99);
+		//procesarNewPokemon("Squirtle",registro1,99);
 
-
-		procesarNewPokemon("Squirtle",registro1,99);
-		procesarNewPokemon("Squirtle",registro1,99);
-
-		procesarCatchPokemon("Squirtle",4,1,99);
-		procesarCatchPokemon("Squirtle",4,1,99);
+		procesarCatchPokemon("Squirtle",4,2,99);
+		/*procesarCatchPokemon("Squirtle",4,1,99);
 		procesarCatchPokemon("Squirtle",4,1,99);*/
 
 		//procesarNewPokemon("Messi",registro1);
@@ -90,20 +88,18 @@ int main(int argc, char* argv[]){
 		}
 		*/
 
-		suscribirnos_cola_catch();
-		sleep(1);
-		suscribirnos_cola_new();
-		sleep(1);
-		suscribirnos_cola_get();
-		sleep(1);
+		//suscribirnos_cola_catch();
+		//sleep(1);
+		//suscribirnos_cola_new();
+		//sleep(1);
+		//suscribirnos_cola_get();
+		//sleep(1);
 
-		iniciar_servidor();
+		//iniciar_servidor();
 
-		//return 1;
+		return 1;
 
 }
-
-
 
 void leer_config(void){
 
