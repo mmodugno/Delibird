@@ -1,0 +1,1233 @@
+[INFO] 16:18:06:499 NUEVO MENSAJE/(6008:6027): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 7 
+. 
+[INFO] 16:18:06:505 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:18:08:506 NUEVO MENSAJE/(6008:6039): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+, conid relativo: 0 e id: 8 
+. 
+[INFO] 16:18:08:507 MOVIMIENTO DE ENTRENADOR/(6008:6010): entrenador 1: se movio a (5,5)
+[INFO] 16:18:08:508 CAMBIO DE COLA/(6008:6010): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:18:08:511 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:18:09:163 NUEVO MENSAJE/(6008:6048): recibi mensaje LOCALIZED de BROKER con id relativo: 9, id: 12 , nombre: Umbreon, y cantidad de posiciones 0:
+
+[INFO] 16:18:10:511 MOVIMIENTO DE ENTRENADOR/(6008:6010): entrenador 1: se movio a (4,5)
+[INFO] 16:18:10:512 CAMBIO DE COLA/(6008:6010): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:18:10:512 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:18:12:179 NUEVO MENSAJE/(6008:6084): recibi mensaje LOCALIZED de BROKER con id relativo: 11, id: 22 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:18:12:512 MOVIMIENTO DE ENTRENADOR/(6008:6010): entrenador 1: se movio a (4,6)
+[INFO] 16:18:12:512 CAMBIO DE COLA/(6008:6010): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:18:12:512 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:18:12:513 OPERACION ATRAPAR/(6008:6010): ATRAPAR POKEMON: Flareon con posicion (4, 6) 
+
+[INFO] 16:18:12:515 NUEVO MENSAJE/(6008:6010): del catch que envie su ID es 23 
+
+[INFO] 16:18:12:515 CAMBIO DE COLA/(6008:6010): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 16:18:18:532 NUEVO MENSAJE/(6008:6118): recibi mensaje CAUGHT de BROKER con id relativo 23:, id: 28 y se confirma el catch 
+
+[INFO] 16:18:18:535 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:18:18:535 CAMBIO DE COLA/(6008:6010): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 16:18:19:183 NUEVO MENSAJE/(6008:6131): recibi mensaje LOCALIZED de BROKER con id relativo: 14, id: 30 , nombre: Vaporeon, y cantidad de posiciones 0:
+
+[INFO] 16:18:22:183 NUEVO MENSAJE/(6008:6149): recibi mensaje LOCALIZED de BROKER con id relativo: 18, id: 33 , nombre: Jolteon, y cantidad de posiciones 1:
+
+[INFO] 16:18:22:184 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:18:24:183 NUEVO MENSAJE/(6008:6163): recibi mensaje LOCALIZED de BROKER con id relativo: 21, id: 35 , nombre: Flareon, y cantidad de posiciones 0:
+
+[INFO] 16:18:24:184 MOVIMIENTO DE ENTRENADOR/(6008:6009): entrenador 0: se movio a (2,2)
+[INFO] 16:18:24:184 CAMBIO DE COLA/(6008:6009): cambio a READY de entrenador: 0 
+ 
+[INFO] 16:18:24:187 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:18:24:187 OPERACION ATRAPAR/(6008:6009): ATRAPAR POKEMON: Jolteon con posicion (2, 2) 
+
+[INFO] 16:18:24:189 NUEVO MENSAJE/(6008:6009): del catch que envie su ID es 36 
+
+[INFO] 16:18:24:189 CAMBIO DE COLA/(6008:6009): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 16:18:25:188 NUEVO MENSAJE/(6008:6173): recibi mensaje LOCALIZED de BROKER con id relativo: 21, id: 37 , nombre: Flareon, y cantidad de posiciones 0:
+
+[INFO] 16:18:26:184 NUEVO MENSAJE/(6008:6184): recibi mensaje LOCALIZED de BROKER con id relativo: 21, id: 39 , nombre: Flareon, y cantidad de posiciones 0:
+
+[INFO] 16:18:30:219 NUEVO MENSAJE/(6008:6189): recibi mensaje CAUGHT de BROKER con id relativo 36:, id: 40 y se confirma el catch 
+
+[INFO] 16:18:30:220 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:18:30:220 CAMBIO DE COLA/(6008:6009): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 16:19:17:300 NUEVO MENSAJE/(6008:6225): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+, conid relativo: 41 e id: 47 
+. 
+[INFO] 16:19:17:307 NUEVO MENSAJE/(6008:6228): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+, conid relativo: 42 e id: 48 
+. 
+[INFO] 16:19:17:338 NUEVO MENSAJE/(6008:6236): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+, conid relativo: 43 e id: 49 
+. 
+[INFO] 16:19:17:347 NUEVO MENSAJE/(6008:6238): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 44 e id: 50 
+. 
+[INFO] 16:19:17:351 NUEVO MENSAJE/(6008:6243): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 45 e id: 51 
+. 
+[INFO] 16:19:17:355 NUEVO MENSAJE/(6008:6249): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 46 e id: 52 
+. 
+[INFO] 16:19:17:358 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:19:19:359 MOVIMIENTO DE ENTRENADOR/(6008:6011): entrenador 2: se movio a (10,9)
+[INFO] 16:19:19:359 CAMBIO DE COLA/(6008:6011): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:19:19:359 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:19:21:360 MOVIMIENTO DE ENTRENADOR/(6008:6012): entrenador 3: se movio a (8,2)
+[INFO] 16:19:21:360 CAMBIO DE COLA/(6008:6012): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:19:21:360 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:19:23:361 MOVIMIENTO DE ENTRENADOR/(6008:6013): entrenador 4: se movio a (3,9)
+[INFO] 16:19:23:361 CAMBIO DE COLA/(6008:6013): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:19:23:361 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:19:25:364 MOVIMIENTO DE ENTRENADOR/(6008:6011): entrenador 2: se movio a (10,8)
+[INFO] 16:19:25:364 CAMBIO DE COLA/(6008:6011): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:19:25:364 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:19:27:364 MOVIMIENTO DE ENTRENADOR/(6008:6012): entrenador 3: se movio a (7,2)
+[INFO] 16:19:27:364 CAMBIO DE COLA/(6008:6012): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:19:27:364 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:19:29:364 MOVIMIENTO DE ENTRENADOR/(6008:6013): entrenador 4: se movio a (4,9)
+[INFO] 16:19:29:365 CAMBIO DE COLA/(6008:6013): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:19:29:365 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:19:31:365 MOVIMIENTO DE ENTRENADOR/(6008:6011): entrenador 2: se movio a (10,7)
+[INFO] 16:19:31:365 CAMBIO DE COLA/(6008:6011): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:19:31:365 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:19:33:366 MOVIMIENTO DE ENTRENADOR/(6008:6012): entrenador 3: se movio a (7,1)
+[INFO] 16:19:33:366 CAMBIO DE COLA/(6008:6012): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:19:33:366 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:19:35:366 MOVIMIENTO DE ENTRENADOR/(6008:6013): entrenador 4: se movio a (4,10)
+[INFO] 16:19:35:367 CAMBIO DE COLA/(6008:6013): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:19:35:367 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:19:37:368 MOVIMIENTO DE ENTRENADOR/(6008:6011): entrenador 2: se movio a (10,6)
+[INFO] 16:19:37:368 CAMBIO DE COLA/(6008:6011): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:19:37:368 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:19:37:368 OPERACION ATRAPAR/(6008:6012): ATRAPAR POKEMON: Espeon con posicion (7, 1) 
+
+[INFO] 16:19:37:371 NUEVO MENSAJE/(6008:6012): del catch que envie su ID es 59 
+
+[INFO] 16:19:37:371 CAMBIO DE COLA/(6008:6012): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 16:19:37:371 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:19:37:371 OPERACION ATRAPAR/(6008:6013): ATRAPAR POKEMON: Vaporeon con posicion (4, 10) 
+
+[INFO] 16:19:37:374 NUEVO MENSAJE/(6008:6013): del catch que envie su ID es 60 
+
+[INFO] 16:19:37:374 CAMBIO DE COLA/(6008:6013): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 16:19:37:374 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:19:37:375 OPERACION ATRAPAR/(6008:6011): ATRAPAR POKEMON: Umbreon con posicion (10, 6) 
+
+[INFO] 16:19:37:382 NUEVO MENSAJE/(6008:6011): del catch que envie su ID es 61 
+
+[INFO] 16:19:37:382 CAMBIO DE COLA/(6008:6011): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 16:19:37:382 DETECCION_DEADLOCK/(6008:6014): Inicio de deteccion de deadlock
+[INFO] 16:19:37:382 RESULTADO_DE_DEADLOCK/(6008:6014): Se detectó deadlock 
+
+[INFO] 16:19:43:407 NUEVO MENSAJE/(6008:6301): recibi mensaje CAUGHT de BROKER con id relativo 59:, id: 62 y se confirma el catch 
+
+[INFO] 16:19:43:408 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:19:43:408 CAMBIO DE COLA/(6008:6012): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 16:19:43:421 NUEVO MENSAJE/(6008:6305): recibi mensaje CAUGHT de BROKER con id relativo 60:, id: 63 y se confirma el catch 
+
+[INFO] 16:19:43:422 NUEVO MENSAJE/(6008:6307): recibi mensaje CAUGHT de BROKER con id relativo 61:, id: 64 y se confirma el catch 
+
+[INFO] 16:19:43:422 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:19:43:422 CAMBIO DE COLA/(6008:6013): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 16:19:43:422 CAMBIO DE COLA/(6008:6014): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:19:43:423 CAMBIO DE COLA/(6008:6011): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 16:29:21:319 NUEVO MENSAJE/(6498:6515): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 2 
+, conid relativo: 2 e id: 5 
+. 
+[INFO] 16:29:23:319 NUEVO MENSAJE/(6498:6528): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+, conid relativo: 1 e id: 6 
+. 
+[INFO] 16:29:24:383 NUEVO MENSAJE/(6498:6545): recibi mensaje LOCALIZED de BROKER con id relativo: 10, id: 14 , nombre: Umbreon, y cantidad de posiciones 0:
+
+[INFO] 16:29:31:397 NUEVO MENSAJE/(6498:6585): recibi mensaje LOCALIZED de BROKER con id relativo: 13, id: 24 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:29:33:387 NUEVO MENSAJE/(6498:6598): recibi mensaje LOCALIZED de BROKER con id relativo: 13, id: 26 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:29:34:384 NUEVO MENSAJE/(6498:6604): recibi mensaje LOCALIZED de BROKER con id relativo: 16, id: 27 , nombre: Vaporeon, y cantidad de posiciones 0:
+
+[INFO] 16:29:36:395 NUEVO MENSAJE/(6498:6616): recibi mensaje LOCALIZED de BROKER con id relativo: 18, id: 29 , nombre: Jolteon, y cantidad de posiciones 1:
+
+[INFO] 16:29:36:399 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:29:38:391 NUEVO MENSAJE/(6498:6630): recibi mensaje LOCALIZED de BROKER con id relativo: 16, id: 31 , nombre: Vaporeon, y cantidad de posiciones 0:
+
+[INFO] 16:29:38:405 MOVIMIENTO DE ENTRENADOR/(6498:6499): entrenador 0: se movio a (2,2)
+[INFO] 16:29:38:407 OPERACION ATRAPAR/(6498:6499): ATRAPAR POKEMON: Jolteon con posicion (2, 2) 
+
+[INFO] 16:29:38:415 NUEVO MENSAJE/(6498:6499): del catch que envie su ID es 32 
+
+[INFO] 16:29:38:415 CAMBIO DE COLA/(6498:6499): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 16:29:39:394 NUEVO MENSAJE/(6498:6640): recibi mensaje LOCALIZED de BROKER con id relativo: 20, id: 33 , nombre: Flareon, y cantidad de posiciones 1:
+
+[INFO] 16:29:39:395 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:29:40:407 NUEVO MENSAJE/(6498:6646): recibi mensaje LOCALIZED de BROKER con id relativo: 16, id: 34 , nombre: Vaporeon, y cantidad de posiciones 0:
+
+[INFO] 16:29:41:396 MOVIMIENTO DE ENTRENADOR/(6498:6500): entrenador 1: se movio a (5,5)
+[INFO] 16:29:42:400 NUEVO MENSAJE/(6498:6657): recibi mensaje LOCALIZED de BROKER con id relativo: 20, id: 36 , nombre: Flareon, y cantidad de posiciones 1:
+
+[INFO] 16:29:43:398 MOVIMIENTO DE ENTRENADOR/(6498:6500): entrenador 1: se movio a (4,5)
+[INFO] 16:29:43:398 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:29:44:428 NUEVO MENSAJE/(6498:6662): recibi mensaje CAUGHT de BROKER con id relativo 32:, id: 37 y se confirma el catch 
+
+[INFO] 16:29:45:398 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (3,9)
+[INFO] 16:29:45:399 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 4 
+ 
+[INFO] 16:29:45:399 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:29:45:399 CAMBIO DE COLA/(6498:6499): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 16:29:45:400 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 0 
+ 
+[INFO] 16:29:45:400 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:29:47:400 MOVIMIENTO DE ENTRENADOR/(6498:6500): entrenador 1: se movio a (4,6)
+[INFO] 16:29:47:401 OPERACION ATRAPAR/(6498:6500): ATRAPAR POKEMON: Flareon con posicion (4, 6) 
+
+[INFO] 16:29:47:403 NUEVO MENSAJE/(6498:6500): del catch que envie su ID es 38 
+
+[INFO] 16:29:47:403 CAMBIO DE COLA/(6498:6500): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 16:29:47:403 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 1 
+ 
+[INFO] 16:29:47:403 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:29:49:407 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,9)
+[INFO] 16:29:51:408 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,8)
+[INFO] 16:29:53:415 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,7)
+[INFO] 16:29:53:432 NUEVO MENSAJE/(6498:6672): recibi mensaje CAUGHT de BROKER con id relativo 38:, id: 39 y se confirma el catch 
+
+[INFO] 16:29:55:415 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,6)
+[INFO] 16:29:55:415 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 4 
+ 
+[INFO] 16:29:55:416 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:29:55:416 CAMBIO DE COLA/(6498:6500): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 16:29:55:416 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 1 
+ 
+[INFO] 16:29:55:416 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:29:55:419 OPERACION ATRAPAR/(6498:6503): ATRAPAR POKEMON: Flareon con posicion (4, 6) 
+
+[INFO] 16:29:55:430 NUEVO MENSAJE/(6498:6503): del catch que envie su ID es 40 
+
+[INFO] 16:29:55:430 CAMBIO DE COLA/(6498:6503): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 16:30:01:443 NUEVO MENSAJE/(6498:6682): recibi mensaje CAUGHT de BROKER con id relativo 40:, id: 41 y se deniega el catch 
+
+[INFO] 16:30:01:445 NUEVO MENSAJE/(6498:6682): No se agarró al pokemon Flareon
+[INFO] 16:30:01:451 CAMBIO DE COLA/(6498:6503): cambio a BLOCK-READY de entrenador: 4 
+ 
+[INFO] 16:32:54:640 NUEVO MENSAJE/(6498:6780): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+, conid relativo: 42 e id: 48 
+. 
+[INFO] 16:32:54:659 NUEVO MENSAJE/(6498:6782): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+, conid relativo: 43 e id: 49 
+. 
+[INFO] 16:32:54:663 NUEVO MENSAJE/(6498:6784): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+, conid relativo: 44 e id: 50 
+. 
+[INFO] 16:32:54:679 NUEVO MENSAJE/(6498:6786): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 45 e id: 51 
+. 
+[INFO] 16:32:54:683 NUEVO MENSAJE/(6498:6798): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 46 e id: 52 
+. 
+[INFO] 16:32:54:684 NUEVO MENSAJE/(6498:6800): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 47 e id: 53 
+. 
+[INFO] 16:32:54:691 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:32:56:691 MOVIMIENTO DE ENTRENADOR/(6498:6501): entrenador 2: se movio a (10,9)
+[INFO] 16:32:56:691 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:32:58:692 MOVIMIENTO DE ENTRENADOR/(6498:6502): entrenador 3: se movio a (8,2)
+[INFO] 16:32:58:693 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:33:00:693 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,7)
+[INFO] 16:33:00:693 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 4 
+ 
+[INFO] 16:33:00:693 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:33:02:694 MOVIMIENTO DE ENTRENADOR/(6498:6502): entrenador 3: se movio a (7,2)
+[INFO] 16:33:04:694 MOVIMIENTO DE ENTRENADOR/(6498:6502): entrenador 3: se movio a (7,1)
+[INFO] 16:33:04:694 OPERACION ATRAPAR/(6498:6502): ATRAPAR POKEMON: Espeon con posicion (7, 1) 
+
+[INFO] 16:33:04:699 NUEVO MENSAJE/(6498:6502): del catch que envie su ID es 60 
+
+[INFO] 16:33:04:699 CAMBIO DE COLA/(6498:6502): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 16:33:04:699 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 3 
+ 
+[INFO] 16:33:04:699 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:33:06:700 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,8)
+[INFO] 16:33:08:701 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,9)
+[INFO] 16:33:10:701 MOVIMIENTO DE ENTRENADOR/(6498:6503): entrenador 4: se movio a (4,10)
+[INFO] 16:33:10:701 OPERACION ATRAPAR/(6498:6503): ATRAPAR POKEMON: Vaporeon con posicion (4, 10) 
+
+[INFO] 16:33:10:705 NUEVO MENSAJE/(6498:6503): del catch que envie su ID es 61 
+
+[INFO] 16:33:10:706 CAMBIO DE COLA/(6498:6503): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 16:33:10:706 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 4 
+ 
+[INFO] 16:33:10:706 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:33:10:714 NUEVO MENSAJE/(6498:6852): recibi mensaje CAUGHT de BROKER con id relativo 60:, id: 62 y se confirma el catch 
+
+[INFO] 16:33:12:706 MOVIMIENTO DE ENTRENADOR/(6498:6501): entrenador 2: se movio a (10,8)
+[INFO] 16:33:12:706 DETECCION_DEADLOCK/(6498:6504): Inicio de deteccion de deadlock
+[INFO] 16:33:12:706 RESULTADO_DE_DEADLOCK/(6498:6504): Se detectó deadlock
+[INFO] 16:33:12:706 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 2 
+ 
+[INFO] 16:33:12:706 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:33:12:707 CAMBIO DE COLA/(6498:6502): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 16:33:12:707 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 3 
+ 
+[INFO] 16:33:12:707 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:33:14:707 MOVIMIENTO DE ENTRENADOR/(6498:6501): entrenador 2: se movio a (10,7)
+[INFO] 16:33:16:711 MOVIMIENTO DE ENTRENADOR/(6498:6501): entrenador 2: se movio a (10,6)
+[INFO] 16:33:16:712 OPERACION ATRAPAR/(6498:6501): ATRAPAR POKEMON: Umbreon con posicion (10, 6) 
+
+[INFO] 16:33:16:719 NUEVO MENSAJE/(6498:6501): del catch que envie su ID es 63 
+
+[INFO] 16:33:16:719 CAMBIO DE COLA/(6498:6501): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 16:33:16:726 NUEVO MENSAJE/(6498:6863): recibi mensaje CAUGHT de BROKER con id relativo 61:, id: 64 y se confirma el catch 
+
+[INFO] 16:33:16:727 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 2 
+ 
+[INFO] 16:33:16:727 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:33:16:727 CAMBIO DE COLA/(6498:6503): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 16:33:22:736 NUEVO MENSAJE/(6498:6870): recibi mensaje CAUGHT de BROKER con id relativo 63:, id: 65 y se confirma el catch 
+
+[INFO] 16:33:22:738 CAMBIO DE COLA/(6498:6504): cambio a READY a entrenador: 4 
+ 
+[INFO] 16:33:22:738 CAMBIO DE COLA/(6498:6504): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:33:22:738 CAMBIO DE COLA/(6498:6501): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 16:33:37:721 DETECCION_DEADLOCK/(6498:6504): Inicio de deteccion de deadlock
+[INFO] 16:33:37:721 RESULTADO_DE_DEADLOCK/(6498:6504): Se detectó deadlock multiple
+[INFO] 16:33:37:727 OPERACION INTERCAMBIO/(6498:6876): intercambio entre entrenadores 0 y 4
+[INFO] 16:33:39:736 MOVIMIENTO DE ENTRENADOR/(6498:6876): entrenador 0: se movio a (4,10)
+[INFO] 16:33:41:736 CAMBIO DE COLA/(6498:6876): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:33:41:736 CAMBIO DE COLA/(6498:6876): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:33:41:737 CAMBIO DE COLA/(6498:6876): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:33:41:737 CAMBIO DE COLA/(6498:6876): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:33:41:737 CAMBIO DE COLA/(6498:6876): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 16:33:41:737 DETECCION_DEADLOCK/(6498:6504): Inicio de deteccion de deadlock
+[INFO] 16:33:41:737 RESULTADO_DE_DEADLOCK/(6498:6504): Se detectó deadlock multiple
+[INFO] 16:33:41:742 OPERACION INTERCAMBIO/(6498:6879): intercambio entre entrenadores 1 y 4
+[INFO] 16:33:43:746 MOVIMIENTO DE ENTRENADOR/(6498:6879): entrenador 1: se movio a (4,10)
+[INFO] 16:33:45:747 CAMBIO DE COLA/(6498:6879): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:33:45:747 CAMBIO DE COLA/(6498:6879): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:33:45:747 CAMBIO DE COLA/(6498:6879): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:33:45:747 CAMBIO DE COLA/(6498:6879): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:33:45:747 CAMBIO DE COLA/(6498:6879): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 16:33:45:747 DETECCION_DEADLOCK/(6498:6504): Inicio de deteccion de deadlock
+[INFO] 16:33:45:748 RESULTADO_DE_DEADLOCK/(6498:6504): Se detectó deadlock multiple
+[INFO] 16:33:45:753 OPERACION INTERCAMBIO/(6498:6881): intercambio entre entrenadores 3 y 2
+[INFO] 16:33:47:762 MOVIMIENTO DE ENTRENADOR/(6498:6881): entrenador 3: se movio a (10,6)
+[INFO] 16:33:49:763 CAMBIO DE COLA/(6498:6881): cambio a READY a entrenador: 3 en espera de Intercambio 
+ 
+[INFO] 16:33:49:763 CAMBIO DE COLA/(6498:6881): cambio a READY a entrenador: 3 en espera de Intercambio 
+ 
+[INFO] 16:33:49:763 CAMBIO DE COLA/(6498:6881): cambio a READY a entrenador: 3 en espera de Intercambio 
+ 
+[INFO] 16:33:49:763 CAMBIO DE COLA/(6498:6881): cambio a READY a entrenador: 3 en espera de Intercambio 
+ 
+[INFO] 16:33:49:763 CAMBIO DE COLA/(6498:6881): cambio a EXIT de entrenador: 3 
+ 
+[INFO] 16:33:49:763 DETECCION_DEADLOCK/(6498:6504): Inicio de deteccion de deadlock
+[INFO] 16:33:49:763 RESULTADO_DE_DEADLOCK/(6498:6504): Se detectó deadlock
+[INFO] 16:33:49:771 OPERACION INTERCAMBIO/(6498:6882): intercambio entre entrenadores 4 y 2 
+
+[INFO] 16:33:49:771 CAMBIO DE COLA/(6498:6882): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:33:51:779 MOVIMIENTO DE ENTRENADOR/(6498:6882): entrenador 4: se movio a (10,6)
+[INFO] 16:34:01:780 CAMBIO DE COLA/(6498:6882): cambio a EXIT de entrenador: 4 
+ 
+[INFO] 16:34:01:780 CAMBIO DE COLA/(6498:6882): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Ciclos de cpu entrenador 0: 17
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Ciclos de cpu entrenador 1: 13
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Ciclos de cpu entrenador 2: 5
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Ciclos de cpu entrenador 3: 17
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Ciclos de cpu entrenador 4: 26
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Ciclos de cpu totales: 78
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Cantidad de deadlocks producidos: 5
+[INFO] 16:34:01:781 RESULTADO TEAM/(6498:6498): Cantidad de deadlocks resueltos: 4
+[INFO] 16:49:47:469 NUEVO MENSAJE/(7206:7223): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 8 
+. 
+[INFO] 16:49:47:502 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:49:49:468 NUEVO MENSAJE/(7206:7233): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Jolteon 
+ posX: 2 
+ posY: 2 
+, conid relativo: 3 e id: 7 
+. 
+[INFO] 16:49:49:502 MOVIMIENTO DE ENTRENADOR/(7206:7208): entrenador 1: se movio a (5,5)
+[INFO] 16:49:49:503 CAMBIO DE COLA/(7206:7208): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:49:49:503 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:49:51:86 NUEVO MENSAJE/(7206:7250): recibi mensaje LOCALIZED de BROKER con id relativo: 9, id: 12 , nombre: Umbreon, y cantidad de posiciones 0:
+
+[INFO] 16:49:51:503 MOVIMIENTO DE ENTRENADOR/(7206:7207): entrenador 0: se movio a (2,2)
+[INFO] 16:49:51:503 CAMBIO DE COLA/(7206:7207): cambio a READY de entrenador: 0 
+ 
+[INFO] 16:49:51:503 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:49:53:88 NUEVO MENSAJE/(7206:7275): recibi mensaje LOCALIZED de BROKER con id relativo: 11, id: 18 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:49:53:504 MOVIMIENTO DE ENTRENADOR/(7206:7208): entrenador 1: se movio a (4,5)
+[INFO] 16:49:53:504 CAMBIO DE COLA/(7206:7208): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:49:53:504 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:49:53:504 OPERACION ATRAPAR/(7206:7207): ATRAPAR POKEMON: Jolteon con posicion (2, 2) 
+
+[INFO] 16:49:53:508 NUEVO MENSAJE/(7206:7207): del catch que envie su ID es 20 
+
+[INFO] 16:49:53:508 CAMBIO DE COLA/(7206:7207): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 16:49:53:508 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:49:55:128 NUEVO MENSAJE/(7206:7300): recibi mensaje LOCALIZED de BROKER con id relativo: 11, id: 24 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:49:55:511 MOVIMIENTO DE ENTRENADOR/(7206:7208): entrenador 1: se movio a (4,6)
+[INFO] 16:49:55:512 CAMBIO DE COLA/(7206:7208): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:49:55:528 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:49:55:528 OPERACION ATRAPAR/(7206:7208): ATRAPAR POKEMON: Flareon con posicion (4, 6) 
+
+[INFO] 16:49:55:533 NUEVO MENSAJE/(7206:7208): del catch que envie su ID es 25 
+
+[INFO] 16:49:55:533 CAMBIO DE COLA/(7206:7208): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 16:49:56:128 NUEVO MENSAJE/(7206:7310): recibi mensaje LOCALIZED de BROKER con id relativo: 14, id: 26 , nombre: Vaporeon, y cantidad de posiciones 0:
+
+[INFO] 16:49:59:527 NUEVO MENSAJE/(7206:7325): recibi mensaje CAUGHT de BROKER con id relativo 20:, id: 29 y se confirma el catch 
+
+[INFO] 16:49:59:549 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:49:59:549 CAMBIO DE COLA/(7206:7207): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 16:50:01:551 NUEVO MENSAJE/(7206:7337): recibi mensaje CAUGHT de BROKER con id relativo 25:, id: 31 y se confirma el catch 
+
+[INFO] 16:50:01:557 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:50:01:559 CAMBIO DE COLA/(7206:7208): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 16:50:03:133 NUEVO MENSAJE/(7206:7350): recibi mensaje LOCALIZED de BROKER con id relativo: 17, id: 33 , nombre: Jolteon, y cantidad de posiciones 0:
+
+[INFO] 16:50:06:139 NUEVO MENSAJE/(7206:7368): recibi mensaje LOCALIZED de BROKER con id relativo: 21, id: 36 , nombre: Flareon, y cantidad de posiciones 0:
+
+[INFO] 16:50:39:922 NUEVO MENSAJE/(7206:7404): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+, conid relativo: 38 e id: 43 
+. 
+[INFO] 16:50:40:42 NUEVO MENSAJE/(7206:7421): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+, conid relativo: 37 e id: 45 
+. 
+[INFO] 16:50:40:43 NUEVO MENSAJE/(7206:7422): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 40 e id: 46 
+. 
+[INFO] 16:50:40:44 NUEVO MENSAJE/(7206:7423): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 41 e id: 47 
+. 
+[INFO] 16:50:40:45 NUEVO MENSAJE/(7206:7424): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 42 e id: 48 
+. 
+[INFO] 16:50:40:46 NUEVO MENSAJE/(7206:7420): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+, conid relativo: 39 e id: 44 
+. 
+[INFO] 16:50:40:47 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:50:42:50 MOVIMIENTO DE ENTRENADOR/(7206:7209): entrenador 2: se movio a (10,9)
+[INFO] 16:50:42:53 CAMBIO DE COLA/(7206:7209): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:50:42:53 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:50:44:54 MOVIMIENTO DE ENTRENADOR/(7206:7210): entrenador 3: se movio a (8,2)
+[INFO] 16:50:44:55 CAMBIO DE COLA/(7206:7210): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:50:44:55 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:50:46:55 MOVIMIENTO DE ENTRENADOR/(7206:7211): entrenador 4: se movio a (3,9)
+[INFO] 16:50:46:55 CAMBIO DE COLA/(7206:7211): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:50:46:55 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:50:48:56 MOVIMIENTO DE ENTRENADOR/(7206:7209): entrenador 2: se movio a (10,8)
+[INFO] 16:50:48:57 CAMBIO DE COLA/(7206:7209): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:50:48:57 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:50:50:57 MOVIMIENTO DE ENTRENADOR/(7206:7210): entrenador 3: se movio a (7,2)
+[INFO] 16:50:50:57 CAMBIO DE COLA/(7206:7210): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:50:50:57 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:50:52:58 MOVIMIENTO DE ENTRENADOR/(7206:7211): entrenador 4: se movio a (4,9)
+[INFO] 16:50:52:58 CAMBIO DE COLA/(7206:7211): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:50:52:58 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:50:54:59 MOVIMIENTO DE ENTRENADOR/(7206:7209): entrenador 2: se movio a (10,7)
+[INFO] 16:50:54:59 CAMBIO DE COLA/(7206:7209): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:50:54:59 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:50:56:60 MOVIMIENTO DE ENTRENADOR/(7206:7210): entrenador 3: se movio a (7,1)
+[INFO] 16:50:56:60 CAMBIO DE COLA/(7206:7210): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:50:56:60 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:50:58:61 MOVIMIENTO DE ENTRENADOR/(7206:7211): entrenador 4: se movio a (4,10)
+[INFO] 16:50:58:61 CAMBIO DE COLA/(7206:7211): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:50:58:61 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:00:61 MOVIMIENTO DE ENTRENADOR/(7206:7209): entrenador 2: se movio a (10,6)
+[INFO] 16:51:00:61 CAMBIO DE COLA/(7206:7209): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:51:00:61 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:51:00:62 OPERACION ATRAPAR/(7206:7210): ATRAPAR POKEMON: Espeon con posicion (7, 1) 
+
+[INFO] 16:51:00:66 NUEVO MENSAJE/(7206:7210): del catch que envie su ID es 55 
+
+[INFO] 16:51:00:66 CAMBIO DE COLA/(7206:7210): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 16:51:00:66 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:51:00:66 OPERACION ATRAPAR/(7206:7211): ATRAPAR POKEMON: Vaporeon con posicion (4, 10) 
+
+[INFO] 16:51:00:67 NUEVO MENSAJE/(7206:7211): del catch que envie su ID es 56 
+
+[INFO] 16:51:00:67 CAMBIO DE COLA/(7206:7211): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 16:51:00:68 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:00:68 OPERACION ATRAPAR/(7206:7209): ATRAPAR POKEMON: Umbreon con posicion (10, 6) 
+
+[INFO] 16:51:00:69 NUEVO MENSAJE/(7206:7209): del catch que envie su ID es 57 
+
+[INFO] 16:51:00:69 CAMBIO DE COLA/(7206:7209): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 16:51:00:69 DETECCION_DEADLOCK/(7206:7212): Inicio de deteccion de deadlock
+[INFO] 16:51:00:69 RESULTADO_DE_DEADLOCK/(7206:7212): Se detectó deadlock 
+
+[INFO] 16:51:06:129 NUEVO MENSAJE/(7206:7488): recibi mensaje CAUGHT de BROKER con id relativo 57:, id: 59 y se confirma el catch 
+
+[INFO] 16:51:06:131 NUEVO MENSAJE/(7206:7490): recibi mensaje CAUGHT de BROKER con id relativo 56:, id: 60 y se confirma el catch 
+
+[INFO] 16:51:06:132 NUEVO MENSAJE/(7206:7486): recibi mensaje CAUGHT de BROKER con id relativo 55:, id: 58 y se confirma el catch 
+
+[INFO] 16:51:06:143 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:06:143 CAMBIO DE COLA/(7206:7209): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 16:51:06:143 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:51:06:144 CAMBIO DE COLA/(7206:7211): cambio a BLOCK-DEADLOCK de entrenador: 4 
+ 
+[INFO] 16:51:06:144 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:51:06:144 CAMBIO DE COLA/(7206:7210): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 16:51:25:94 DETECCION_DEADLOCK/(7206:7212): Inicio de deteccion de deadlock
+[INFO] 16:51:25:94 RESULTADO_DE_DEADLOCK/(7206:7212): Se detectó deadlock multiple 
+[INFO] 16:51:25:102 OPERACION INTERCAMBIO/(7206:7505): intercambio entre entrenadores 0 y 4
+[INFO] 16:51:27:118 MOVIMIENTO DE ENTRENADOR/(7206:7505): entrenador 0: se movio a (4,10)
+[INFO] 16:51:29:118 CAMBIO DE COLA/(7206:7505): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:51:29:119 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:51:29:119 CAMBIO DE COLA/(7206:7505): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:51:29:119 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:51:29:119 CAMBIO DE COLA/(7206:7505): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:51:29:119 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:51:29:120 CAMBIO DE COLA/(7206:7505): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:51:29:120 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:51:29:120 CAMBIO DE COLA/(7206:7505): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 16:51:29:120 DETECCION_DEADLOCK/(7206:7212): Inicio de deteccion de deadlock
+[INFO] 16:51:29:120 RESULTADO_DE_DEADLOCK/(7206:7212): Se detectó deadlock multiple 
+[INFO] 16:51:29:125 OPERACION INTERCAMBIO/(7206:7507): intercambio entre entrenadores 1 y 4
+[INFO] 16:51:31:129 MOVIMIENTO DE ENTRENADOR/(7206:7507): entrenador 1: se movio a (4,10)
+[INFO] 16:51:33:129 CAMBIO DE COLA/(7206:7507): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:51:33:130 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:51:33:130 CAMBIO DE COLA/(7206:7507): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:51:33:130 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:51:33:130 CAMBIO DE COLA/(7206:7507): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:51:33:130 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:51:33:131 CAMBIO DE COLA/(7206:7507): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:51:33:131 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:51:33:131 CAMBIO DE COLA/(7206:7507): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 16:51:33:131 DETECCION_DEADLOCK/(7206:7212): Inicio de deteccion de deadlock
+[INFO] 16:51:33:131 RESULTADO_DE_DEADLOCK/(7206:7212): Se detectó deadlock multiple 
+[INFO] 16:51:33:139 OPERACION INTERCAMBIO/(7206:7509): intercambio entre entrenadores 2 y 4
+[INFO] 16:51:35:147 MOVIMIENTO DE ENTRENADOR/(7206:7509): entrenador 2: se movio a (4,10)
+[INFO] 16:51:37:148 CAMBIO DE COLA/(7206:7509): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:51:37:149 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:37:149 CAMBIO DE COLA/(7206:7509): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:51:37:149 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:37:149 CAMBIO DE COLA/(7206:7509): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:51:37:149 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:37:150 CAMBIO DE COLA/(7206:7509): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:51:37:150 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:51:37:150 CAMBIO DE COLA/(7206:7509): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 16:51:37:150 DETECCION_DEADLOCK/(7206:7212): Inicio de deteccion de deadlock
+[INFO] 16:51:37:151 RESULTADO_DE_DEADLOCK/(7206:7212): Se detectó deadlock 
+
+[INFO] 16:51:37:154 OPERACION INTERCAMBIO/(7206:7514): intercambio entre entrenadores 4 y 3 
+
+[INFO] 16:51:39:166 MOVIMIENTO DE ENTRENADOR/(7206:7514): entrenador 4: se movio a (7,1)
+[INFO] 16:51:41:167 CAMBIO DE COLA/(7206:7514): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 16:51:41:167 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:51:41:168 CAMBIO DE COLA/(7206:7514): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 16:51:41:168 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:51:41:168 CAMBIO DE COLA/(7206:7514): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 16:51:41:168 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:51:41:168 CAMBIO DE COLA/(7206:7514): cambio a READY a entrenador: 4 en espera de Intercambio 
+ 
+[INFO] 16:51:41:169 CAMBIO DE COLA/(7206:7212): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:51:41:169 CAMBIO DE COLA/(7206:7514): cambio a EXIT de entrenador: 4 
+ 
+[INFO] 16:51:41:169 CAMBIO DE COLA/(7206:7514): cambio a EXIT de entrenador: 3 
+ 
+[INFO] 16:51:41:169 DETECCION_DEADLOCK/(7206:7212): Inicio de deteccion de deadlock
+[INFO] 16:51:41:169 RESULTADO_DE_DEADLOCK/(7206:7212): No se detectó nuevo deadlock 
+
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Ciclos de cpu entrenador 0: 17
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Ciclos de cpu entrenador 1: 13
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Ciclos de cpu entrenador 2: 20
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Ciclos de cpu entrenador 3: 4
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Ciclos de cpu entrenador 4: 21
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Ciclos de cpu totales: 75
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Cantidad de deadlocks producidos: 5
+[INFO] 16:51:41:170 RESULTADO TEAM/(7206:7206): Cantidad de deadlocks resueltos: 4
+[INFO] 16:55:01:932 NUEVO MENSAJE/(7636:7653): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Flareon 
+ posX: 4 
+ posY: 6 
+, conid relativo: 4 e id: 8 
+. 
+[INFO] 16:55:01:946 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:55:03:935 NUEVO MENSAJE/(7636:7661): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Pikachu 
+ posX: 9 
+ posY: 9 
+, conid relativo: 1 e id: 7 
+. 
+[INFO] 16:55:03:949 MOVIMIENTO DE ENTRENADOR/(7636:7638): entrenador 1: se movio a (5,5)
+[INFO] 16:55:03:950 CAMBIO DE COLA/(7636:7638): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:55:03:952 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:55:05:23 NUEVO MENSAJE/(7636:7674): recibi mensaje LOCALIZED de BROKER con id relativo: 9, id: 12 , nombre: Umbreon, y cantidad de posiciones 0:
+
+[INFO] 16:55:05:953 MOVIMIENTO DE ENTRENADOR/(7636:7638): entrenador 1: se movio a (4,5)
+[INFO] 16:55:05:953 CAMBIO DE COLA/(7636:7638): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:55:05:954 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:55:07:27 NUEVO MENSAJE/(7636:7700): recibi mensaje LOCALIZED de BROKER con id relativo: 11, id: 19 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:55:07:955 MOVIMIENTO DE ENTRENADOR/(7636:7638): entrenador 1: se movio a (4,6)
+[INFO] 16:55:07:955 CAMBIO DE COLA/(7636:7638): cambio a READY de entrenador: 1 
+ 
+[INFO] 16:55:07:959 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:55:07:959 OPERACION ATRAPAR/(7636:7638): ATRAPAR POKEMON: Flareon con posicion (4, 6) 
+
+[INFO] 16:55:07:963 NUEVO MENSAJE/(7636:7638): del catch que envie su ID es 21 
+
+[INFO] 16:55:07:963 CAMBIO DE COLA/(7636:7638): Cambio a BLOCKED de entrenador: 1 
+ 
+[INFO] 16:55:13:974 NUEVO MENSAJE/(7636:7733): recibi mensaje CAUGHT de BROKER con id relativo 21:, id: 26 y se confirma el catch 
+
+[INFO] 16:55:13:974 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:55:13:975 CAMBIO DE COLA/(7636:7638): cambio a BLOCK-DEADLOCK de entrenador: 1 
+ 
+[INFO] 16:55:14:29 NUEVO MENSAJE/(7636:7740): recibi mensaje LOCALIZED de BROKER con id relativo: 11, id: 27 , nombre: Espeon, y cantidad de posiciones 0:
+
+[INFO] 16:55:15:29 NUEVO MENSAJE/(7636:7752): recibi mensaje LOCALIZED de BROKER con id relativo: 15, id: 29 , nombre: Vaporeon, y cantidad de posiciones 0:
+
+[INFO] 16:55:17:59 NUEVO MENSAJE/(7636:7764): recibi mensaje LOCALIZED de BROKER con id relativo: 18, id: 31 , nombre: Jolteon, y cantidad de posiciones 1:
+
+[INFO] 16:55:17:59 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:55:19:60 MOVIMIENTO DE ENTRENADOR/(7636:7637): entrenador 0: se movio a (2,2)
+[INFO] 16:55:19:60 CAMBIO DE COLA/(7636:7637): cambio a READY de entrenador: 0 
+ 
+[INFO] 16:55:19:63 NUEVO MENSAJE/(7636:7776): recibi mensaje LOCALIZED de BROKER con id relativo: 18, id: 33 , nombre: Jolteon, y cantidad de posiciones 1:
+
+[INFO] 16:55:19:68 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:20:66 NUEVO MENSAJE/(7636:7782): recibi mensaje LOCALIZED de BROKER con id relativo: 22, id: 34 , nombre: Flareon, y cantidad de posiciones 0:
+
+[INFO] 16:55:21:74 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (8,2)
+[INFO] 16:55:21:74 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:21:74 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:55:21:74 OPERACION ATRAPAR/(7636:7637): ATRAPAR POKEMON: Jolteon con posicion (2, 2) 
+
+[INFO] 16:55:21:77 NUEVO MENSAJE/(7636:7637): del catch que envie su ID es 36 
+
+[INFO] 16:55:21:77 CAMBIO DE COLA/(7636:7637): Cambio a BLOCKED de entrenador: 0 
+ 
+[INFO] 16:55:21:77 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:23:66 NUEVO MENSAJE/(7636:7803): recibi mensaje LOCALIZED de BROKER con id relativo: 22, id: 38 , nombre: Flareon, y cantidad de posiciones 0:
+
+[INFO] 16:55:23:80 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (7,2)
+[INFO] 16:55:23:80 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:23:83 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:25:84 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (6,2)
+[INFO] 16:55:25:84 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:25:84 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:27:85 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (5,2)
+[INFO] 16:55:27:86 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:27:90 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:27:119 NUEVO MENSAJE/(7636:7808): recibi mensaje CAUGHT de BROKER con id relativo 36:, id: 39 y se confirma el catch 
+
+[INFO] 16:55:29:90 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,2)
+[INFO] 16:55:29:91 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:29:91 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:55:29:91 CAMBIO DE COLA/(7636:7637): cambio a BLOCK-DEADLOCK de entrenador: 0 
+ 
+[INFO] 16:55:29:91 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:31:95 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (3,2)
+[INFO] 16:55:31:95 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:31:95 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:33:96 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (2,2)
+[INFO] 16:55:33:96 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:55:33:102 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:33:103 OPERACION ATRAPAR/(7636:7640): ATRAPAR POKEMON: Jolteon con posicion (2, 2) 
+
+[INFO] 16:55:33:107 NUEVO MENSAJE/(7636:7640): del catch que envie su ID es 40 
+
+[INFO] 16:55:33:110 CAMBIO DE COLA/(7636:7640): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 16:55:39:127 NUEVO MENSAJE/(7636:7818): recibi mensaje CAUGHT de BROKER con id relativo 40:, id: 41 y se deniega el catch 
+
+[INFO] 16:55:39:127 NUEVO MENSAJE/(7636:7818): No se agarró al pokemon Jolteon
+[INFO] 16:55:39:131 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:55:39:131 CAMBIO DE COLA/(7636:7640): cambio a BLOCK-READY de entrenador: 3 
+ 
+[INFO] 16:56:20:848 NUEVO MENSAJE/(7636:7857): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 5 
+ nombre: Onix 
+ posX: 2 
+ posY: 8 
+, conid relativo: 42 e id: 48 
+. 
+[INFO] 16:56:20:854 NUEVO MENSAJE/(7636:7858): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Gengar 
+ posX: 6 
+ posY: 6 
+, conid relativo: 43 e id: 49 
+. 
+[INFO] 16:56:20:856 NUEVO MENSAJE/(7636:7861): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 8 
+ nombre: Umbreon 
+ posX: 10 
+ posY: 6 
+, conid relativo: 45 e id: 51 
+. 
+[INFO] 16:56:20:857 NUEVO MENSAJE/(7636:7860): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Squirtle 
+ posX: 5 
+ posY: 5 
+, conid relativo: 44 e id: 50 
+. 
+[INFO] 16:56:20:862 NUEVO MENSAJE/(7636:7862): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 7 
+ nombre: Espeon 
+ posX: 7 
+ posY: 1 
+, conid relativo: 46 e id: 52 
+. 
+[INFO] 16:56:20:864 NUEVO MENSAJE/(7636:7866): recibi mensaje appeared pokemon de BROKER:  
+ con tamanio: 9 
+ nombre: Vaporeon 
+ posX: 4 
+ posY: 10 
+, conid relativo: 47 e id: 53 
+. 
+[INFO] 16:56:20:866 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:56:22:867 MOVIMIENTO DE ENTRENADOR/(7636:7639): entrenador 2: se movio a (10,9)
+[INFO] 16:56:22:867 CAMBIO DE COLA/(7636:7639): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:56:22:867 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:24:868 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (3,9)
+[INFO] 16:56:24:868 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:24:869 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:26:869 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (3,2)
+[INFO] 16:56:26:869 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:26:869 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:56:28:870 MOVIMIENTO DE ENTRENADOR/(7636:7639): entrenador 2: se movio a (10,8)
+[INFO] 16:56:28:870 CAMBIO DE COLA/(7636:7639): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:56:28:870 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:30:870 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (4,9)
+[INFO] 16:56:30:870 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:30:870 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:32:871 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,2)
+[INFO] 16:56:32:871 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:32:871 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:56:34:871 MOVIMIENTO DE ENTRENADOR/(7636:7639): entrenador 2: se movio a (10,7)
+[INFO] 16:56:34:871 CAMBIO DE COLA/(7636:7639): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:56:34:872 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:36:872 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (5,9)
+[INFO] 16:56:36:872 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:36:872 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:38:872 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,3)
+[INFO] 16:56:38:873 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:38:873 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:56:40:873 MOVIMIENTO DE ENTRENADOR/(7636:7639): entrenador 2: se movio a (10,6)
+[INFO] 16:56:40:873 CAMBIO DE COLA/(7636:7639): cambio a READY de entrenador: 2 
+ 
+[INFO] 16:56:40:873 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:42:874 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (6,9)
+[INFO] 16:56:42:874 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:42:874 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:44:875 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,4)
+[INFO] 16:56:44:875 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:44:875 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:56:44:875 OPERACION ATRAPAR/(7636:7639): ATRAPAR POKEMON: Umbreon con posicion (10, 6) 
+
+[INFO] 16:56:44:879 NUEVO MENSAJE/(7636:7639): del catch que envie su ID es 60 
+
+[INFO] 16:56:44:879 CAMBIO DE COLA/(7636:7639): Cambio a BLOCKED de entrenador: 2 
+ 
+[INFO] 16:56:44:879 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:46:880 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,9)
+[INFO] 16:56:46:880 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:46:880 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:48:881 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,5)
+[INFO] 16:56:48:881 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:48:881 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:50:882 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,8)
+[INFO] 16:56:50:882 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:50:882 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:50:895 NUEVO MENSAJE/(7636:7926): recibi mensaje CAUGHT de BROKER con id relativo 60:, id: 61 y se confirma el catch 
+
+[INFO] 16:56:52:883 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,6)
+[INFO] 16:56:52:883 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:52:883 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:54:884 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,7)
+[INFO] 16:56:54:884 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:54:884 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:56:54:884 CAMBIO DE COLA/(7636:7639): cambio a BLOCK-DEADLOCK de entrenador: 2 
+ 
+[INFO] 16:56:54:884 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:56:56:885 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,7)
+[INFO] 16:56:56:885 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:56:56:885 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:56:58:885 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,6)
+[INFO] 16:56:58:885 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:56:58:886 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:57:00:886 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,8)
+[INFO] 16:57:00:886 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:57:00:886 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:02:886 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,5)
+[INFO] 16:57:02:887 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:57:02:887 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:57:04:888 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,9)
+[INFO] 16:57:04:888 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:57:04:888 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:06:889 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,4)
+[INFO] 16:57:06:889 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:57:06:890 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:57:08:890 MOVIMIENTO DE ENTRENADOR/(7636:7640): entrenador 3: se movio a (4,10)
+[INFO] 16:57:08:890 CAMBIO DE COLA/(7636:7640): cambio a READY de entrenador: 3 
+ 
+[INFO] 16:57:08:891 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:10:891 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,3)
+[INFO] 16:57:10:891 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:57:10:891 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:57:10:892 OPERACION ATRAPAR/(7636:7640): ATRAPAR POKEMON: Vaporeon con posicion (4, 10) 
+
+[INFO] 16:57:10:893 NUEVO MENSAJE/(7636:7640): del catch que envie su ID es 62 
+
+[INFO] 16:57:10:893 CAMBIO DE COLA/(7636:7640): Cambio a BLOCKED de entrenador: 3 
+ 
+[INFO] 16:57:10:894 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:12:894 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,2)
+[INFO] 16:57:12:894 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:57:12:894 DETECCION_DEADLOCK/(7636:7642): Inicio de deteccion de deadlock
+[INFO] 16:57:12:894 RESULTADO_DE_DEADLOCK/(7636:7642): Se detectó deadlock multiple 
+[INFO] 16:57:12:894 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:14:899 MOVIMIENTO DE ENTRENADOR/(7636:7641): entrenador 4: se movio a (7,1)
+[INFO] 16:57:14:899 CAMBIO DE COLA/(7636:7641): cambio a READY de entrenador: 4 
+ 
+[INFO] 16:57:14:899 OPERACION INTERCAMBIO/(7636:7937): intercambio entre entrenadores 1 y 0
+[INFO] 16:57:16:901 MOVIMIENTO DE ENTRENADOR/(7636:7937): entrenador 1: se movio a (2,2)
+[INFO] 16:57:16:905 NUEVO MENSAJE/(7636:7939): recibi mensaje CAUGHT de BROKER con id relativo 62:, id: 63 y se confirma el catch 
+
+[INFO] 16:57:18:901 CAMBIO DE COLA/(7636:7937): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:57:18:901 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:18:901 OPERACION ATRAPAR/(7636:7641): ATRAPAR POKEMON: Espeon con posicion (7, 1) 
+
+[INFO] 16:57:18:902 NUEVO MENSAJE/(7636:7641): del catch que envie su ID es 64 
+
+[INFO] 16:57:18:902 CAMBIO DE COLA/(7636:7641): Cambio a BLOCKED de entrenador: 4 
+ 
+[INFO] 16:57:18:902 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 3 
+ 
+[INFO] 16:57:18:902 CAMBIO DE COLA/(7636:7640): cambio a BLOCK-DEADLOCK de entrenador: 3 
+ 
+[INFO] 16:57:18:903 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:57:18:907 CAMBIO DE COLA/(7636:7937): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:57:18:909 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:57:18:909 CAMBIO DE COLA/(7636:7937): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:57:18:909 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:57:18:910 CAMBIO DE COLA/(7636:7937): cambio a READY a entrenador: 1 en espera de Intercambio 
+ 
+[INFO] 16:57:18:910 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 1 
+ 
+[INFO] 16:57:18:910 CAMBIO DE COLA/(7636:7937): cambio a EXIT de entrenador: 1 
+ 
+[INFO] 16:57:18:910 DETECCION_DEADLOCK/(7636:7642): Inicio de deteccion de deadlock
+[INFO] 16:57:18:911 RESULTADO_DE_DEADLOCK/(7636:7642): Se detectó deadlock multiple 
+[INFO] 16:57:18:919 OPERACION INTERCAMBIO/(7636:7950): intercambio entre entrenadores 0 y 3
+[INFO] 16:57:20:928 MOVIMIENTO DE ENTRENADOR/(7636:7950): entrenador 0: se movio a (4,10)
+[INFO] 16:57:22:929 CAMBIO DE COLA/(7636:7950): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:57:22:929 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:57:22:929 CAMBIO DE COLA/(7636:7950): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:57:22:929 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:57:22:930 CAMBIO DE COLA/(7636:7950): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:57:22:930 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:57:22:930 CAMBIO DE COLA/(7636:7950): cambio a READY a entrenador: 0 en espera de Intercambio 
+ 
+[INFO] 16:57:22:930 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 0 
+ 
+[INFO] 16:57:22:930 CAMBIO DE COLA/(7636:7950): cambio a EXIT de entrenador: 0 
+ 
+[INFO] 16:57:22:931 DETECCION_DEADLOCK/(7636:7642): Inicio de deteccion de deadlock
+[INFO] 16:57:22:931 RESULTADO_DE_DEADLOCK/(7636:7642): Se detectó deadlock 
+
+[INFO] 16:57:22:935 OPERACION INTERCAMBIO/(7636:7952): intercambio entre entrenadores 2 y 3 
+
+[INFO] 16:57:24:921 NUEVO MENSAJE/(7636:7954): recibi mensaje CAUGHT de BROKER con id relativo 64:, id: 65 y se confirma el catch 
+
+[INFO] 16:57:24:943 MOVIMIENTO DE ENTRENADOR/(7636:7952): entrenador 2: se movio a (4,10)
+[INFO] 16:57:26:944 CAMBIO DE COLA/(7636:7952): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:57:26:944 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 4 
+ 
+[INFO] 16:57:26:945 CAMBIO DE COLA/(7636:7641): cambio a EXIT de entrenador: 4 
+ 
+[INFO] 16:57:26:945 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:57:26:947 CAMBIO DE COLA/(7636:7952): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:57:26:947 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:57:26:948 CAMBIO DE COLA/(7636:7952): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:57:26:948 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:57:26:949 CAMBIO DE COLA/(7636:7952): cambio a READY a entrenador: 2 en espera de Intercambio 
+ 
+[INFO] 16:57:26:949 CAMBIO DE COLA/(7636:7642): cambio a EXEC de entrenador: 2 
+ 
+[INFO] 16:57:26:950 CAMBIO DE COLA/(7636:7952): cambio a EXIT de entrenador: 2 
+ 
+[INFO] 16:57:26:950 CAMBIO DE COLA/(7636:7952): cambio a EXIT de entrenador: 3 
+ 
+[INFO] 16:57:26:951 DETECCION_DEADLOCK/(7636:7642): Inicio de deteccion de deadlock
+[INFO] 16:57:26:951 RESULTADO_DE_DEADLOCK/(7636:7642): No se detectó nuevo deadlock 
+
+[INFO] 16:57:26:955 RESULTADO TEAM/(7636:7636): Ciclos de cpu entrenador 0: 17
+[INFO] 16:57:26:955 RESULTADO TEAM/(7636:7636): Ciclos de cpu entrenador 1: 15
+[INFO] 16:57:26:955 RESULTADO TEAM/(7636:7636): Ciclos de cpu entrenador 2: 20
+[INFO] 16:57:26:955 RESULTADO TEAM/(7636:7636): Ciclos de cpu entrenador 3: 19
+[INFO] 16:57:26:956 RESULTADO TEAM/(7636:7636): Ciclos de cpu entrenador 4: 14
+[INFO] 16:57:26:956 RESULTADO TEAM/(7636:7636): Ciclos de cpu totales: 85
+[INFO] 16:57:26:956 RESULTADO TEAM/(7636:7636): Cantidad de deadlocks producidos: 3
+[INFO] 16:57:26:956 RESULTADO TEAM/(7636:7636): Cantidad de deadlocks resueltos: 3

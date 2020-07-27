@@ -121,7 +121,7 @@ void enviarPorTipo(particion* partAEnviar, t_list* usersAEnviar) {
 	broker_catch_pokemon* catchEnMemo;
 	broker_caught_pokemon* caughtEnMemo;
 
-	if (partAEnviar != NULL && !list_is_empty(usersAEnviar)) {
+	if (partAEnviar != NULL || !list_is_empty(usersAEnviar)) {
 		switch (partAEnviar->tipoMensaje) {
 		case NEW_POKEMON:
 			newEnMemo = leerdeMemoriaNEW(partAEnviar);
