@@ -403,6 +403,8 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
 			actualizar_bitmap();
 
+			msync(bitArray->bitarray,1,MS_SYNC);
+
 			sem_post(&mutex_bit_array);
 
 			sem_post(&sem_escritura);
@@ -942,8 +944,6 @@ void buscarYeliminarCeros(t_list* listaBloques){
 	}
 
 
-
-
 }
 
 char* listToString(t_list* lista) {
@@ -987,21 +987,49 @@ void eliminarBloquesVacios(char* nombrePoke){
 		int bloqueAux = atoi(list_get(listaBloques,i));
 		char* rutaActual = obtener_ruta_bloque(bloqueAux);
 
-		if(!estaVacioConRuta(rutaActual)){
+		if(!estaVacioConRuta(rutaActual) && !tieneUnEspacioComoPrimerCaracter(rutaActual)){
 			stringNuevaLista = agregarBloqueALista(nuevaListaBloques,atoi(list_get(listaBloques,i)));
 			list_add(nuevaListaBloques,list_get(listaBloques,i));
 		}
 		else{
-					bitarray_clean_bit(bitArray,bloqueAux-1);
+			bitarray_clean_bit(bitArray,bloqueAux-1);
 		}
 	}
 
+	if(string_is_empty(stringNuevaLista)){
+		config_set_value(configPoke,"BLOCKS","[]");
+	}else {
 	config_set_value(configPoke,"BLOCKS",stringNuevaLista);
+	}
 
 	config_save(configPoke);
 
 	config_destroy(configPoke);
 
+
+}
+
+bool tieneUnEspacioComoPrimerCaracter(char* rutaActual) {
+
+	int fd = open(rutaActual,O_RDWR);
+
+	struct stat sb;
+	fstat(fd,&sb);
+
+	char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+
+	if(!strcmp(file_memory,"\n")){
+
+	vaciarArchivo(rutaActual);
+
+	return 1;
+
+	} else{
+	return 0;
+	}
+
+	free(file_memory);
+	close(fd);
 
 }
 
