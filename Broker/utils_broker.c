@@ -738,6 +738,39 @@ void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uin
 			if (!strcmp(algoritmo_particion_libre, "BF")) {
 				algoritmoBestFit(datoAAgregar, particionEncontrada);
 			}
+			//TODO manda el mensaje cuando lo agrega a memoria
+			switch(datoAAgregar->tipoMensaje){
+				case NEW_POKEMON:
+					sem_wait(&suscripcionAColaNEW);
+					enviarPorTipo(datoAAgregar, suscriptoresNewPokemon);
+					sem_post(&suscripcionAColaNEW);
+					break;
+				case APPEARED_POKEMON:
+					sem_wait(&suscripcionAColaAPPEARED);
+					enviarPorTipo(datoAAgregar, suscriptoresAppearedPokemon);
+					sem_post(&suscripcionAColaAPPEARED);
+					break;
+				case LOCALIZED_POKEMON:
+					sem_wait(&suscripcionAColaLOCALIZED);
+					enviarPorTipo(datoAAgregar, suscriptoresLocalizedPokemon);
+					sem_post(&suscripcionAColaLOCALIZED);
+					break;
+				case GET_POKEMON:
+					sem_wait(&suscripcionAColaGET);
+					enviarPorTipo(datoAAgregar, suscriptoresGetPokemon);
+					sem_post(&suscripcionAColaGET);
+					break;
+				case CATCH_POKEMON:
+					sem_wait(&suscripcionAColaCATCH);
+					enviarPorTipo(datoAAgregar, suscriptoresCatchPokemon);
+					sem_post(&suscripcionAColaCATCH);
+					break;
+				case CAUGHT_POKEMON:
+					sem_wait(&suscripcionAColaCAUGHT);
+					enviarPorTipo(datoAAgregar, suscriptoresCaughtPokemon);
+					sem_post(&suscripcionAColaCAUGHT);
+					break;
+			}
 		} else {
 			log_info(almacenadoMemoria,
 					"El dato a agregar es mas grande que la memoria");
@@ -751,6 +784,39 @@ void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uin
 			tipoMensaje, idCorrelativo, tamanioAgregar);
 
 			agregarEnBuddy(buddyAAgregar);
+			//TODO manda el mensaje cuando lo agrega a memoria
+			switch(buddyAAgregar->particion->tipoMensaje){
+				case NEW_POKEMON:
+					sem_wait(&suscripcionAColaNEW);
+					enviarPorTipo(buddyAAgregar->particion, suscriptoresNewPokemon);
+					sem_post(&suscripcionAColaNEW);
+					break;
+				case APPEARED_POKEMON:
+					sem_wait(&suscripcionAColaAPPEARED);
+					enviarPorTipo(buddyAAgregar->particion, suscriptoresAppearedPokemon);
+					sem_post(&suscripcionAColaAPPEARED);
+					break;
+				case LOCALIZED_POKEMON:
+					sem_wait(&suscripcionAColaLOCALIZED);
+					enviarPorTipo(buddyAAgregar->particion, suscriptoresLocalizedPokemon);
+					sem_post(&suscripcionAColaLOCALIZED);
+					break;
+				case GET_POKEMON:
+					sem_wait(&suscripcionAColaGET);
+					enviarPorTipo(buddyAAgregar->particion, suscriptoresGetPokemon);
+					sem_post(&suscripcionAColaGET);
+					break;
+				case CATCH_POKEMON:
+					sem_wait(&suscripcionAColaCATCH);
+					enviarPorTipo(buddyAAgregar->particion, suscriptoresCatchPokemon);
+					sem_post(&suscripcionAColaCATCH);
+					break;
+				case CAUGHT_POKEMON:
+					sem_wait(&suscripcionAColaCAUGHT);
+					enviarPorTipo(buddyAAgregar->particion, suscriptoresCaughtPokemon);
+					sem_post(&suscripcionAColaCAUGHT);
+					break;
+			}
 
 	}
 	sem_post(&usoMemoria);
