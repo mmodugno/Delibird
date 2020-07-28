@@ -181,7 +181,8 @@ void calcular_objetivo_global(void);
 void agregar_un_objetivo(char * pokemon_a_agregar);
 void quitar_un_objetivo(char* pokemon_a_quitar);
 
-#define ANSI_COLOR_BLUE    "\x1b[34m"
+
+#define ANSI_COLOR_BLUE    "\x1B[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_RED     "\x1b[31m"
