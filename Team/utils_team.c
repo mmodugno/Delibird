@@ -695,13 +695,14 @@ while( list_size(entrenadores) != list_size(entrenadores_finalizados)){
 
 	//if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
-		pthread_cancel(hilo_servidor);
-		printf(ANSI_COLOR_BLUE "  \n FINALIZO EL PROGRAMA \n" ANSI_COLOR_RESET);
-	//	break;
-	//}
+		
 
 sleep(2);
 }
+	pthread_cancel(hilo_servidor);
+		printf(ANSI_COLOR_BLUE "  \n FINALIZO EL PROGRAMA \n" ANSI_COLOR_RESET);
+	//	break;
+	//}
 }
 
 
