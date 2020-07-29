@@ -21,6 +21,7 @@ int main(int argc, char* argv[]){
 		nombreConfig = argv[1];
 
 		sem_init(&sem_mensaje,0,1);
+		sem_init(&sem_escritura,0,1);
 
 		leer_config();
 
@@ -45,7 +46,7 @@ int main(int argc, char* argv[]){
 
 		crearFilesAndBlocks();
 
-		sem_init(&sem_escritura,0,1);
+		sem_init(&mutex_verificar,0,1);
 
 		inicializar_bitmap();
 

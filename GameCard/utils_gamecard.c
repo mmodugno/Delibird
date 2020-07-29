@@ -69,6 +69,8 @@ int verificarSiExisteArchivo(char* path) {
 
 void verificarAperturaArchivo(char* path) {
 
+
+
 	char* aux;
 
 	t_config* configAux = config_create(path);
@@ -84,7 +86,10 @@ void verificarAperturaArchivo(char* path) {
 
 	} else {
 	modificarArchivoComoConfig(configAux,"OPEN","Y");
+
 	}
+
+
 
 	config_destroy(configAux);
 }
@@ -306,9 +311,12 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
 	int existe = verificarExistenciaPokemon(nombrePoke);
-	verificarAperturaArchivo(path);
 
 	t_list* listaBloques;
+
+	sem_wait(&mutex_verificar);
+	verificarAperturaArchivo(path);
+	sem_post(&mutex_verificar);
 
 	if(existe){
 

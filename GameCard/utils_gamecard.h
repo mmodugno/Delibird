@@ -68,6 +68,7 @@ sem_t sem_conexion;
 sem_t sem_escritura;
 sem_t sem_mensaje;
 sem_t mutex_bit_array;
+sem_t mutex_verificar;
 
 FILE* metadata;
 FILE* metadataFiles;
