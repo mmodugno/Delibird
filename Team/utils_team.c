@@ -316,9 +316,13 @@ while(1){
 
 	 //Espera que le llegue al sistema una respuesta a su catch
 
+
+
 	if(conectarse_con_broker()==-1){
-	printf("\n Agarró al pokemon %s \n",un_entrenador->objetivo_proximo->nombre);
+	printf(ANSI_COLOR_GREEN "\n Agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->objetivo_proximo->nombre);
+
 	}
+
 
 
 	analizar_proxima_cola(un_entrenador); //ANALIZA A QUE COLA O LISTA SE MUEVE
@@ -448,7 +452,7 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 		validar_deadlock=0;
 		sem_wait(&en_ejecucion);
 
-		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+		log_warning(inicio_deadlock,"Inicio de deteccion de deadlock");
 
 		if(hay_deadlock_multiple()){
 
@@ -491,7 +495,7 @@ sleep(2);
 //if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
 	pthread_cancel(hilo_servidor);
-	printf("\n FINALIZO EL PROGRAMA \n");
+	printf(ANSI_COLOR_BLUE "  \n FINALIZO EL PROGRAMA \n" ANSI_COLOR_RESET);
 
 	//break;
 
@@ -566,9 +570,9 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 
 
 void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
-	printf("\n Inicio operacion de deadlock \n ");
+	//printf("\n Inicio operacion de deadlock \n ");
 
-	log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d \n",entrenador0->id,entrenador1->id);
+	log_warning(operacion_de_intercambio,"intercambio entre entrenadores %d y %d \n",entrenador0->id,entrenador1->id);
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
@@ -590,7 +594,7 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
 
-	printf("\n Intercambio de %s y %s \n ",poke1, nombre_pokemon);
+	printf( ANSI_COLOR_GREEN "\n Intercambio de %s y %s \n " ANSI_COLOR_RESET ,poke1, nombre_pokemon);
 
 	entrenador0->ciclos_cpu += 5;
 
@@ -691,14 +695,14 @@ while( list_size(entrenadores) != list_size(entrenadores_finalizados)){
 
 	//if(list_size(entrenadores) == list_size(entrenadores_finalizados)){
 
-		pthread_cancel(hilo_servidor);
-		printf("\n FINALIZO EL PROGRAMA \n");
-
-	//	break;
-	//}
+		
 
 sleep(2);
 }
+	pthread_cancel(hilo_servidor);
+		printf(ANSI_COLOR_BLUE "  \n FINALIZO EL PROGRAMA \n" ANSI_COLOR_RESET);
+	//	break;
+	//}
 }
 
 
@@ -1121,8 +1125,7 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 
 	}
 	pthread_cancel(hilo_servidor);
-	printf("\n FINALIZO EL PROGRAMA \n");
-
+	printf(ANSI_COLOR_BLUE "  \n FINALIZO EL PROGRAMA \n" ANSI_COLOR_RESET);
 
 }
 
@@ -1285,8 +1288,8 @@ void confirmacion_de_catch(entrenador* un_entrenador){
 }
 
 
-void denegar_catch(entrenador* un_entrenador){
-	log_info(llegadaDeMensaje,"No se agarró al pokemon %s", un_entrenador->objetivo_proximo->nombre);
+void denegar_catch(entrenador* un_entrenador){//TODO
+	log_info(llegadaDeMensaje,ANSI_COLOR_RED "No se agarró al pokemon %s" ANSI_COLOR_RESET , un_entrenador->objetivo_proximo->nombre);
 
 	desbloquear_entrenador(un_entrenador);
 
@@ -1413,7 +1416,7 @@ void analizar_proxima_cola(entrenador* un_entrenador){
 	if(!puede_cazar(un_entrenador)){
 			if(cumplio_objetivo(un_entrenador)){
 				list_add(entrenadores_finalizados,un_entrenador);
-				log_info(cambioDeCola,"cambio a EXIT de entrenador: %d \n ",un_entrenador->id);
+				log_info(cambioDeCola, ANSI_COLOR_BLUE "cambio a EXIT de entrenador: %d \n " ANSI_COLOR_RESET ,un_entrenador->id);
 			}
 
 			else{
@@ -1635,7 +1638,10 @@ void process_request(int cod_op, int cliente_fd) {
 			log_info(llegadaDeMensaje,"recibi mensaje CAUGHT de BROKER con id relativo %d:, "
 					"id: %d y %s \n",caughtRecibido->id_relativo,caughtRecibido->id,resolucionCatch);
 
-					if(caughtRecibido->datos->puedoAtraparlo) confirmacion_de_catch(un_entrenador);
+					if(caughtRecibido->datos->puedoAtraparlo){
+						confirmacion_de_catch(un_entrenador);
+						printf(ANSI_COLOR_GREEN "\n Agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->objetivo_proximo->nombre);
+					}
 					else { denegar_catch(un_entrenador); }
 
 					break;

@@ -8,7 +8,6 @@
 
 #include "team.h"
 
-
 int main(int argc, char* argv[]){
 
 	if(argc == 1){
@@ -48,7 +47,9 @@ int main(int argc, char* argv[]){
 
 
 	char* algoritmo = config_get_string_value(config,"ALGORITMO_PLANIFICACION");
-	printf("Algoritmo de planificacion = %s \n \n",algoritmo);
+
+	printf(ANSI_COLOR_BLUE "Algoritmo de planificacion = %s" ANSI_COLOR_RESET "\n \n ",algoritmo);
+
 
 	//conectarse_con_broker();
 
