@@ -139,6 +139,10 @@ void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
 	getAEnviar->datos = malloc(sizeof(get_pokemon));
 	enviar_get(nombrePoke,getAEnviar);
 
+	printf("Mande a: \n",nombrePoke);
+
+free(getAEnviar);
+
 }
 
 void suscribirnos_cola_caught() {

@@ -10,6 +10,7 @@
 
 
 pthread_mutex_t llegadaMensajesTHREAD = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t planificacion_deadlock = PTHREAD_MUTEX_INITIALIZER;
 
 void variables_globales(){
 
@@ -352,6 +353,8 @@ int i,j;
 
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
 
+					entrenador_deadlock-=2;
+
 					if(leer_algoritmo_planificacion() == RR){
 						planificar_deadlock(entrenador0,entrenador1);
 						//planificar_deadlock_RR(entrenador0,entrenador1);
@@ -364,14 +367,14 @@ int i,j;
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
+				//if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				break;
 			}
 			else{
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
-				if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
+				//if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				espera_de_deadlock();
 				break;
@@ -459,7 +462,7 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 
 			log_info(resultado_deadlock,"Se detectó deadlock multiple \n");
 
-			entrenador_deadlock-=1;
+			//entrenador_deadlock-=1;
 
 
 			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
@@ -469,7 +472,7 @@ if(validar_deadlock && list_is_empty(entrenadores_new)){
 
 		if(hay_deadlock()){
 			log_info(resultado_deadlock,"Se detectó deadlock \n");
-			entrenador_deadlock-=2;
+			//entrenador_deadlock-=2;
 			cant_deadlocks +=1;
 
 
@@ -653,18 +656,17 @@ while( list_size(entrenadores) != list_size(entrenadores_finalizados)){
 	}
 
 	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
-	if(validar_deadlock && list_is_empty(entrenadores_new) && queue_is_empty(entrenadores_block_ready)
-			&& list_is_empty(entrenadores_blocked)){
+	if(validar_deadlock && list_is_empty(entrenadores_new) && queue_is_empty(entrenadores_block_ready)){
 		validar_deadlock=0;
 		sem_wait(&en_ejecucion);
 
-		log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+		log_warning(inicio_deadlock,"Inicio de deteccion de deadlock");
 
 		if(hay_deadlock_multiple()){
 
 			log_info(resultado_deadlock,"Se detectó deadlock multiple ");
 
-			entrenador_deadlock-=1;
+			//entrenador_deadlock-=1;
 
 
 			pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
@@ -674,7 +676,7 @@ while( list_size(entrenadores) != list_size(entrenadores_finalizados)){
 
 		if(hay_deadlock()){
 			log_info(resultado_deadlock,"Se detectó deadlock \n");
-			entrenador_deadlock-=2;
+			//entrenador_deadlock-=2;
 			cant_deadlocks +=1;
 
 
@@ -859,6 +861,7 @@ bool validacion_nuevo_pokemon(void){
 
 void manejar_deadlock_multiple(){
 int i,j;
+pthread_mutex_lock(&planificacion_deadlock);
 	for(i = 0; i < (list_size(entrenadores_en_deadlock)-1);i++){
 			for(j = 1; j < (list_size(entrenadores_en_deadlock)); j++){
 				entrenador* entrenador0 = list_get(entrenadores_en_deadlock,i); // otro for para comparar con el resto
@@ -866,13 +869,19 @@ int i,j;
 
 				nombre_pokemon = list_get(entrenador0->objetivos,0);
 
+
+				if(entrenador_deadlock == 2) break;
+
 				//Si algun pokemon del 1 es el que 0 necesita, se planifican:
 				if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
+
+							entrenador_deadlock-=1;
 
 							planificar_deadlock_multiple(entrenador0,entrenador1);
 
 							cant_deadlocks+=1;
 
+							printf("Hay %d entrenadores en deadlock",entrenador_deadlock);
 
 							break;
 					}
@@ -883,11 +892,13 @@ int i,j;
 			//entrenador_deadlock+=1;
 			break;
 		}
+	pthread_mutex_unlock(&planificacion_deadlock);
+	pthread_t espera_deadlock;
+	pthread_create(&espera_deadlock,NULL,(void *) espera_de_deadlock,NULL);
 
 }
 
 void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador1){
-
 
 		entrenador_exec = entrenador0;
 
@@ -951,7 +962,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		analizar_proxima_cola(entrenador0);
 
-		validar_deadlock +=1;
+		//validar_deadlock +=1;
 
 		sem_post(&en_ejecucion);
 }
@@ -1089,13 +1100,13 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 			validar_deadlock=0;
 			sem_wait(&en_ejecucion);
 
-			log_info(inicio_deadlock,"Inicio de deteccion de deadlock");
+			log_warning(inicio_deadlock,"Inicio de deteccion de deadlock");
 
 			if(hay_deadlock_multiple()){
 
 				log_info(resultado_deadlock,"Se detectó deadlock multiple");
 
-				entrenador_deadlock-=1;
+				//entrenador_deadlock-=1;
 
 
 				pthread_create(&hilo_deadlock,NULL,(void *) manejar_deadlock_multiple,NULL);
@@ -1105,7 +1116,7 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 
 			if(hay_deadlock()){
 				log_info(resultado_deadlock,"Se detectó deadlock");
-				entrenador_deadlock-=2;
+				//entrenador_deadlock-=2;
 
 
 
