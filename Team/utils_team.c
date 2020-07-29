@@ -346,10 +346,16 @@ int i,j;
 
 			nombre_pokemon = list_get(entrenador0->objetivos,0);
 
+			//TODO
+			printf("el entrenador %d necesita al poke: %s  y tiene a %s \n",entrenador0->id,nombre_pokemon,list_get(entrenador0->pokemones,0));
+
+			printf("el entrenador %d necesita al poke: %s  y tiene a %s \n",entrenador1->id,list_get(entrenador1->objetivos,0),list_get(entrenador1->pokemones,0));
+
 			//Si algun pokemon del 1 es el que 0 necesita y viceversa, se planifican:
 			if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
 
 				nombre_pokemon = list_get(entrenador1->objetivos,0);
+
 
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
 
