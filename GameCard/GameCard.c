@@ -61,12 +61,11 @@ int main(int argc, char* argv[]){
 
 
 		//registroDatos* registro1 = hacerRegistro(4,1,5);
-		registroDatos* registro2 = hacerRegistro(4,2,1);
+	//	registroDatos* registro2 = hacerRegistro(4,2,1);
 		//registroDatos* registro3 = hacerRegistro(4,3,1);
 
 		//procesarNewPokemon("Squirtle",registro2,99);
 		//procesarNewPokemon("Squirtle",registro1,99);
-
 		//procesarCatchPokemon("Squirtle",4,2,99);
 		/*procesarCatchPokemon("Squirtle",4,1,99);
 		procesarCatchPokemon("Squirtle",4,1,99);*/

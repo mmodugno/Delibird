@@ -353,7 +353,8 @@ int i,j;
 				if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
 
 					if(leer_algoritmo_planificacion() == RR){
-						planificar_deadlock_RR(entrenador0,entrenador1);
+						planificar_deadlock(entrenador0,entrenador1);
+						//planificar_deadlock_RR(entrenador0,entrenador1);
 
 						}
 						else{
@@ -529,7 +530,7 @@ void deteccion_y_recuperacion_deadlock(){
 
 //Funcion de deteccion deadlock
 void espera_de_deadlock(void){
-	sleep(25);
+	sleep(15);
 	validar_deadlock = 1;
 }
 
@@ -579,18 +580,20 @@ void planificar_deadlock(entrenador* entrenador0,entrenador* entrenador1){
 	log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 
 	mover_entrenador(entrenador0,entrenador1->posX,entrenador1->posY);
-	int retardo = leer_retardo_cpu() * 5;
+	int retardo = leer_retardo_cpu();//le saque un *5
 
 	sleep(retardo); //IRIA sleep(retardo)
 
 	//intercambio
 	nombre_pokemon = list_get(entrenador0->objetivos,0);
+	printf("Pokemon 1 es: %s de entrenador: %d \n",nombre_pokemon,entrenador0->id);
 	char* poke1 = nombre_pokemon;
 
 	list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
 
 	nombre_pokemon = list_get(entrenador1->objetivos,0);
+	printf("Pokemon 2 es: %s de entrenador: %d \n",nombre_pokemon,entrenador1->id);
 	list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 	list_remove_by_condition(entrenador1->objetivos,(void*)pokemon_repetido);
 
@@ -650,7 +653,8 @@ while( list_size(entrenadores) != list_size(entrenadores_finalizados)){
 	}
 
 	//Para que no se valide tdo el tiempo, tiene un contador validar_deadlock que se aumenta despues de 10 segundos
-	if(validar_deadlock && list_is_empty(entrenadores_new)){
+	if(validar_deadlock && list_is_empty(entrenadores_new) && queue_is_empty(entrenadores_block_ready)
+			&& list_is_empty(entrenadores_blocked)){
 		validar_deadlock=0;
 		sem_wait(&en_ejecucion);
 
@@ -803,7 +807,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 
 	//intercambio
 
-	while(cpu_a_usar > quantum){
+	/*while(cpu_a_usar > quantum){
 		cpu_a_usar -= quantum;
 
 		//printf("\n ------ Realizando algoritmo de Deadlock de entrenadores %d y %d ------\n \n",entrenador0->id,entrenador1->id);
@@ -817,7 +821,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 		//sem_wait(&(entrenador0->sem_entrenador));
 		pthread_mutex_lock(&(entrenador0->sem_entrenador));
 		quantum = leer_quantum();
-	}
+	}*/
 
 
 
@@ -875,10 +879,12 @@ int i,j;
 					printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
 				}
+
+			//entrenador_deadlock+=1;
 			break;
 		}
 
-	}
+}
 
 void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador1){
 
@@ -904,7 +910,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		//intercambio
 
-		while(cpu_a_usar > quantum){
+	/*	while(cpu_a_usar > quantum){
 			cpu_a_usar -= quantum;
 
 
@@ -920,16 +926,19 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 			//sem_wait(&(entrenador0->sem_entrenador));
 
 			quantum = leer_quantum();
-		}
+		}*/
 
 
 		nombre_pokemon = list_get(entrenador0->objetivos,0);
 
+		printf("Pokemon 1 es: %s de entrenador: %d \n",nombre_pokemon,entrenador0->id);
 
 		list_remove_by_condition(entrenador0->objetivos,(void*)pokemon_repetido);
 		list_remove_by_condition(entrenador1->pokemones,(void*)pokemon_repetido);
 
 		nombre_pokemon = list_get(entrenador0->pokemones, 0);
+
+		printf("Pokemon 2 es: %s de entrenador: %d \n",nombre_pokemon,entrenador1->id);
 
 		list_remove_by_condition(entrenador0->pokemones,(void*)pokemon_repetido);
 		list_add(entrenador1->pokemones,nombre_pokemon);
