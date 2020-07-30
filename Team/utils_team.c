@@ -361,14 +361,8 @@ int i,j;
 
 					entrenador_deadlock-=2;
 
-					if(leer_algoritmo_planificacion() == RR){
-						planificar_deadlock(entrenador0,entrenador1);
-						//planificar_deadlock_RR(entrenador0,entrenador1);
+					planificar_deadlock(entrenador0,entrenador1);
 
-						}
-						else{
-							planificar_deadlock(entrenador0,entrenador1);
-						}
 
 					break;
 				}
@@ -881,15 +875,32 @@ pthread_mutex_lock(&planificacion_deadlock);
 				//Si algun pokemon del 1 es el que 0 necesita, se planifican:
 				if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
 
-							entrenador_deadlock-=1;
+					nombre_pokemon = list_get(entrenador1->objetivos,0);
 
-							planificar_deadlock_multiple(entrenador0,entrenador1);
 
-							cant_deadlocks+=1;
+					if(list_any_satisfy(entrenador0->pokemones,(void*)pokemon_repetido)){
 
-							printf("Hay %d entrenadores en deadlock",entrenador_deadlock);
+						entrenador_deadlock-=2;
 
-							break;
+						planificar_deadlock(entrenador0,entrenador1);
+
+
+						break;
+					}
+					else{
+
+
+
+				entrenador_deadlock-=1;
+
+				planificar_deadlock_multiple(entrenador0,entrenador1);
+
+				cant_deadlocks+=1;
+
+				printf("Hay %d entrenadores en deadlock",entrenador_deadlock);
+
+				break;
+						}
 					}
 					printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
