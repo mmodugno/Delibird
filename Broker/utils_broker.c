@@ -241,7 +241,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 			if(!strcmp(algoritmo_memoria,"BS")) {
 				buddyEncontrado = list_find(tablaDeParticiones,(void*) buddyAck);
-				partEncontrada = buddyEncontrado->particion;
+				if(buddyEncontrado == NULL) partEncontrada = NULL;
+				else partEncontrada = buddyEncontrado->particion;
 			}
 
 			//si la encontro lo agrega a su tabla de ACK
@@ -783,40 +784,50 @@ void agregarAMemoria(void * dato, uint32_t idMensaje, tipoDeCola tipoMensaje,uin
 			buddyAAgregar->particion = crearEntradaParticionBasica(dato, idMensaje,
 			tipoMensaje, idCorrelativo, tamanioAgregar);
 
-			agregarEnBuddy(buddyAAgregar);
+			uint32_t base = agregarEnBuddy(buddyAAgregar);
+
+			bool esLaBaseQBusco(buddy* unBuddy){
+				return unBuddy->particion->base == base;
+			}
+
+			buddy* buddyAenviar = list_find(tablaDeParticiones,(void*)esLaBaseQBusco);
+
+
 			//TODO manda el mensaje cuando lo agrega a memoria
-			switch(buddyAAgregar->particion->tipoMensaje){
+			switch(buddyAenviar->particion->tipoMensaje){
 				case NEW_POKEMON:
 					sem_wait(&suscripcionAColaNEW);
-					enviarPorTipo(buddyAAgregar->particion, suscriptoresNewPokemon);
+					enviarPorTipo(buddyAenviar->particion, suscriptoresNewPokemon);
 					sem_post(&suscripcionAColaNEW);
 					break;
 				case APPEARED_POKEMON:
 					sem_wait(&suscripcionAColaAPPEARED);
-					enviarPorTipo(buddyAAgregar->particion, suscriptoresAppearedPokemon);
+					enviarPorTipo(buddyAenviar->particion, suscriptoresAppearedPokemon);
 					sem_post(&suscripcionAColaAPPEARED);
 					break;
 				case LOCALIZED_POKEMON:
 					sem_wait(&suscripcionAColaLOCALIZED);
-					enviarPorTipo(buddyAAgregar->particion, suscriptoresLocalizedPokemon);
+					enviarPorTipo(buddyAenviar->particion, suscriptoresLocalizedPokemon);
 					sem_post(&suscripcionAColaLOCALIZED);
 					break;
 				case GET_POKEMON:
 					sem_wait(&suscripcionAColaGET);
-					enviarPorTipo(buddyAAgregar->particion, suscriptoresGetPokemon);
+					enviarPorTipo(buddyAenviar->particion, suscriptoresGetPokemon);
 					sem_post(&suscripcionAColaGET);
 					break;
 				case CATCH_POKEMON:
 					sem_wait(&suscripcionAColaCATCH);
-					enviarPorTipo(buddyAAgregar->particion, suscriptoresCatchPokemon);
+					enviarPorTipo(buddyAenviar->particion, suscriptoresCatchPokemon);
 					sem_post(&suscripcionAColaCATCH);
 					break;
 				case CAUGHT_POKEMON:
 					sem_wait(&suscripcionAColaCAUGHT);
-					enviarPorTipo(buddyAAgregar->particion, suscriptoresCaughtPokemon);
+					enviarPorTipo(buddyAenviar->particion, suscriptoresCaughtPokemon);
 					sem_post(&suscripcionAColaCAUGHT);
 					break;
 			}
+
+			free(buddyAAgregar);
 
 	}
 	sem_post(&usoMemoria);
@@ -1580,7 +1591,7 @@ void dividirEnDos(buddy* unBuddy) {
 
 }
 
-void agregarEnBuddy(buddy* unBuddyParaAgregar){
+uint32_t  agregarEnBuddy(buddy* unBuddyParaAgregar){
 
 	t_list* buddiesTotales = tablaDeParticiones;
 
@@ -1628,6 +1639,8 @@ void agregarEnBuddy(buddy* unBuddyParaAgregar){
 					buddyMenor->particion->base, buddyMenor->particion->libre,
 					buddyMenor->limite,
 					unBuddyParaAgregar->particion->tamanioMensaje);
+
+			return buddyMenor->particion->base;
 
 		} else {
 
@@ -1695,6 +1708,7 @@ void actualizarComoOcupadoEnLista(buddy* unBuddy,buddy* unBuddyParaAgregar) {
 	string_append(&buddyQueSustituye->particion->timestamp,horarioActual);
 
 	list_replace(tablaDeParticiones,j,buddyQueSustituye);
+
 
 }
 

@@ -180,7 +180,7 @@ void liberar_conexion(int socket_cliente);
 
 
 /* buddy */
-void agregarEnBuddy(buddy* );
+uint32_t  agregarEnBuddy(buddy* );
 int tamanioBuddy(buddy* );
 void actualizarComoOcupadoEnLista(buddy* , buddy* );
 void dividirEnDos(buddy* );
