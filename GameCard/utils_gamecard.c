@@ -1507,7 +1507,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarGetPokemon(nombre,id);
 
 		free(nombre);
-		thread_mutex_unlock(&llegadaMensajesTHREAD);
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
 
 	case BROKER__NEW_POKEMON:
