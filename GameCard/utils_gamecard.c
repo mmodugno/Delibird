@@ -310,15 +310,11 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 
 	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	sem_wait(&mutex_verificar);
-
 	int existe = verificarExistenciaPokemon(nombrePoke);
 
 	t_list* listaBloques;
 
-
 	verificarAperturaArchivo(path);
-	sem_post(&mutex_verificar);
 
 	if(existe){
 
@@ -1472,7 +1468,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 	case GAMECARD__NEW_POKEMON:
 
-		//pthread_mutex_lock(&llegadaMensajesTHREAD);
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
 
 		recv(cliente_fd, &id, sizeof(uint32_t), 0);
 		registroConNombre = deserializar_new_pokemon_Gamecard(cliente_fd);
@@ -1483,13 +1479,13 @@ void process_request(int cod_op, int cliente_fd) {
 
 		free(registroConNombre);
 
-		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 
 
 		break;
 
 	case GAMECARD__CATCH_POKEMON:
-		//pthread_mutex_lock(&llegadaMensajesTHREAD);
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
 		recv(cliente_fd, &id, sizeof(uint32_t), 0);
 		registroConNombre = deserializar_catch_pokemon_Gamecard(cliente_fd);
 
@@ -1499,11 +1495,11 @@ void process_request(int cod_op, int cliente_fd) {
 				registroConNombre->registro->posY,id);
 
 		free(registroConNombre);
-		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
+		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
 
 	case GAMECARD__GET_POKEMON:
-		////pthread_mutex_lock(&llegadaMensajesTHREAD);
+		pthread_mutex_lock(&llegadaMensajesTHREAD);
 		recv(cliente_fd, &id, sizeof(uint32_t), 0);
 		nombre = deserializar_get_pokemon_Gamecard(cliente_fd);
 
@@ -1511,7 +1507,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarGetPokemon(nombre,id);
 
 		free(nombre);
-		//thread_mutex_unlock(&llegadaMensajesTHREAD);
+		thread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
 
 	case BROKER__NEW_POKEMON:
