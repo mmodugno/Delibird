@@ -215,7 +215,7 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 			int indiceSiguienteLibre = buscarIndicePrimerBloqueLibre();
 
 			bitarray_set_bit(bitArray,indiceSiguienteLibre-1);
-
+			actualizar_bitmap();
 			char* path = obtener_ruta_bloque(indiceSiguienteLibre);
 
 			FILE* archivoBloqueLibre = txt_open_for_append(path);
