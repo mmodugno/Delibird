@@ -457,7 +457,7 @@ void procesarGetPokemon(char* nombrePoke, int id){
 
 	listaRegistros = obtenerPosiciones(nombrePoke);
 
-	//sleep(tiempo_retardo_operacion);
+	sleep(tiempo_retardo_operacion);
 
 	t_config* configPath = config_create(path);
 
