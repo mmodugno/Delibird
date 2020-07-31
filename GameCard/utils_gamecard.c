@@ -310,11 +310,13 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 
 	char* path  = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
+	sem_wait(&mutex_verificar);
+
 	int existe = verificarExistenciaPokemon(nombrePoke);
 
 	t_list* listaBloques;
 
-	sem_wait(&mutex_verificar);
+
 	verificarAperturaArchivo(path);
 	sem_post(&mutex_verificar);
 
