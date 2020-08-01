@@ -69,6 +69,10 @@ int main(int argc, char* argv[]){
 
 	pthread_create(&hilo_servidor,NULL,(void *) iniciar_servidor,NULL);
 
+
+
+	if(conectarse_con_broker()==-1){
+
 	printf("Suscribiendome a las colas appeared, caught y localized\n");
 	suscribirnos_cola_appeared();
 	sleep(1);
@@ -81,6 +85,7 @@ int main(int argc, char* argv[]){
 	//int j;
 	//Mando un get por cada uno de mis objetivos globales.
 	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
+	}
 
 
  //PRUEBAS DE TP:
@@ -139,7 +144,6 @@ void enviar_get_por_objetivo(char* nombrePoke,void* cantidad){
 	getAEnviar->datos = malloc(sizeof(get_pokemon));
 	enviar_get(nombrePoke,getAEnviar);
 
-	printf("Mande a: \n",nombrePoke);
 
 free(getAEnviar);
 
@@ -307,4 +311,6 @@ int j;
 	log_info(resultado,"Ciclos de cpu totales: %d", cpu_totales);
 	log_info(resultado,"Cantidad de deadlocks producidos: %d", cant_deadlocks);
 	log_info(resultado,"Cantidad de deadlocks resueltos: %d", cant_deadlocks_resueltos);
+	log_info(resultado,"Cantidad de cambios de contexto: %d", cambio_contexto);
+
 }

@@ -346,10 +346,6 @@ int i,j;
 
 			nombre_pokemon = list_get(entrenador0->objetivos,0);
 
-			//TODO
-			printf("el entrenador %d necesita al poke: %s  y tiene a %s \n",entrenador0->id,nombre_pokemon,list_get(entrenador0->pokemones,0));
-
-			printf("el entrenador %d necesita al poke: %s  y tiene a %s \n",entrenador1->id,list_get(entrenador1->objetivos,0),list_get(entrenador1->pokemones,0));
 
 			//Si algun pokemon del 1 es el que 0 necesita y viceversa, se planifican:
 			if(list_any_satisfy(entrenador1->pokemones,(void*)pokemon_repetido)){
@@ -545,12 +541,14 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 		if(entrenador->posX < x){
 			entrenador->posX = entrenador->posX + 1;
 			entrenador->ciclos_cpu += 1;
-			usleep(tiempo);
+			sleep(tiempo);
+			log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		else {
 			entrenador->posX = entrenador->posX -1;
 			entrenador->ciclos_cpu += 1;
-			usleep(tiempo);
+			sleep(tiempo);
+			log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 	}
 
@@ -558,18 +556,17 @@ void mover_entrenador(entrenador* entrenador,int x, int y){
 		if(entrenador->posY < y){
 			entrenador->posY = entrenador->posY + 1;
 			entrenador->ciclos_cpu += 1;
-			usleep(tiempo);
+			sleep(tiempo);
+			log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 		else {
 			entrenador->posY = entrenador->posY -1;
 			entrenador->ciclos_cpu += 1;
-			usleep(tiempo);
+			sleep(tiempo);
+			log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 		}
 	}
 
-	sleep(tiempo);
-
-	log_info(movimiento_entrenador,"entrenador %d: se movio a (%d,%d)",entrenador->id,entrenador->posX,entrenador->posY);
 }
 
 
@@ -928,9 +925,9 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		sem_wait(&en_ejecucion);
 
-		log_info(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
+		//TODO warning o info
+		log_warning(operacion_de_intercambio,"intercambio entre entrenadores %d y %d",entrenador0->id,entrenador1->id);
 
-		//mover_entrenador_RR(entrenador0,x,y);
 		mover_entrenador(entrenador0,x,y);
 
 
