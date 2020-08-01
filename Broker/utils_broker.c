@@ -181,7 +181,7 @@ void process_request(int cod_op, int cliente_fd) {
 	char* posicionesString = string_new();
 	void *raiz;
 
-	//log_info(logConexion,"recibi una nueva conexion de %s",username);
+	log_info(logConexion,"recibi una nueva conexion de %s",username);
 
 
 	uint32_t ackRecibido;
