@@ -108,7 +108,7 @@ int main() {
 t_log* iniciar_logger(char* tipoDeProceso, char* archivoLog) {
 
 	//preguntar por el tipo de LOG_LEVEL
-	return log_create(archivoLog, tipoDeProceso, 0, LOG_LEVEL_INFO);
+	return log_create(archivoLog, tipoDeProceso, 1, LOG_LEVEL_INFO);
 }
 
 void leer_config(void) {
