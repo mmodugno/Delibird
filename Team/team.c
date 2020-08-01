@@ -71,7 +71,7 @@ int main(int argc, char* argv[]){
 
 
 
-	if(conectarse_con_broker()==-1){
+	//if(conectarse_con_broker()==-1){
 
 	printf("Suscribiendome a las colas appeared, caught y localized\n");
 	suscribirnos_cola_appeared();
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]){
 	//int j;
 	//Mando un get por cada uno de mis objetivos globales.
 	dictionary_iterator(objetivo_global,enviar_get_por_objetivo); //(char*,void*)
-	}
+	//}
 
 
  //PRUEBAS DE TP:
