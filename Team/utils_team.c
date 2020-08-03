@@ -894,7 +894,7 @@ pthread_mutex_lock(&planificacion_deadlock);
 
 				cant_deadlocks+=1;
 
-				printf("Hay %d entrenadores en deadlock",entrenador_deadlock);
+		
 
 				break;
 						}
@@ -933,27 +933,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		sleep(leer_retardo_cpu());
 
-		//intercambio
-
-	/*	while(cpu_a_usar > quantum){
-			cpu_a_usar -= quantum;
-
-
-			log_info(cambioDeCola,"cambio a READY a entrenador: %d en espera de Intercambio \n ",entrenador0->id);
-
-			if(leer_algoritmo_planificacion() == SJFCD) list_add(lista_entrenadores_ready,entrenador0);
-			else{
-			queue_push(entrenadores_ready, entrenador0);
-			}
-
-			sem_post(&en_ejecucion);
-			pthread_mutex_lock(&(entrenador0->sem_entrenador));
-			//sem_wait(&(entrenador0->sem_entrenador));
-
-			quantum = leer_quantum();
-		}*/
-
-
+		
 		nombre_pokemon = list_get(entrenador0->objetivos,0);
 
 		printf("Pokemon 1 es: %s de entrenador: %d \n",nombre_pokemon,entrenador0->id);
