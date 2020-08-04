@@ -148,9 +148,14 @@ void serve_client(int* socketQuenosPAsan)
 	//pthread_mutex_lock(&llegadaMensajesTHREAD);
 	int cod_op;
 	int i = recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL);
-	if(i <= 0)
+	if(i !=4){
+		liberar_conexion(socket);
 		cod_op = -1;
-	process_request(cod_op, socket);
+	}
+	else{
+		process_request(cod_op, socket);
+	}
+
 
 	//liberar_conexion(*socket);
 	//pthread_mutex_unlock(&llegadaMensajesTHREAD);
