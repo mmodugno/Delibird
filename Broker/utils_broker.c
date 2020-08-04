@@ -181,7 +181,7 @@ void process_request(int cod_op, int cliente_fd) {
 	char* posicionesString = string_new();
 	void *raiz;
 
-	if(esGameBoy(username)||esTeam(username)||esGameCard(username)){
+	if(cod_op!=-1){
 		log_info(logConexion,"recibi una nueva conexion de %s",username);
 	}
 
