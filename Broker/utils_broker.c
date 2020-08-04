@@ -102,7 +102,7 @@ void iniciar_servidor(void)
     {
         if ((socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
             continue;
-
+	setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
         if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
             close(socket_servidor);
             continue;
@@ -110,7 +110,7 @@ void iniciar_servidor(void)
         break;
     }
 
-    setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
+    
 
 	listen(socket_servidor, SOMAXCONN);
 
