@@ -1480,7 +1480,6 @@ void iniciar_servidor(void)
     getaddrinfo(IP_TEAM, PUERTO_TEAM, &hints, &servinfo);
 
     int activado = 1;
-   	setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
 
 
     for (p=servinfo; p != NULL; p = p->ai_next)
@@ -1488,6 +1487,8 @@ void iniciar_servidor(void)
         if ((socket_servidor = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
             continue;
 
+        int i = setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
+			printf("lo que me devolvio setsockopt es %d \n",i);
         if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
             close(socket_servidor);
             continue;

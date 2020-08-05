@@ -349,12 +349,12 @@ void iniciar_servidor_gameboy(){
     getaddrinfo(ip_gameboy, puerto_gameboy, &hints, &servinfo);
 
     int activado = 1;
-	setsockopt(socket_servidor_gameboy,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
+
 
     for (p=servinfo; p != NULL; p = p->ai_next) {
         if ((socket_servidor_gameboy = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
             continue;
-
+        setsockopt(socket_servidor_gameboy,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
         if (bind(socket_servidor_gameboy, p->ai_addr, p->ai_addrlen) == -1) {
             close(socket_servidor_gameboy);
             continue;
