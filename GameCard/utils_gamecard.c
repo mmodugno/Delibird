@@ -1479,6 +1479,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarNewPokemon(registroConNombre->nombre,
 				registroConNombre->registro, id);
 
+		free(registroConNombre->nombre);
 		free(registroConNombre);
 
 		pthread_mutex_unlock(&llegadaMensajesTHREAD);
@@ -1496,6 +1497,7 @@ void process_request(int cod_op, int cliente_fd) {
 				registroConNombre->registro->posX,
 				registroConNombre->registro->posY,id);
 
+		free(registroConNombre->nombre);
 		free(registroConNombre);
 		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
@@ -1542,6 +1544,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarNewPokemon(registroConNombre->nombre,
 				registroConNombre->registro, id);
 
+		free(registroConNombre->nombre);
 		free(registroConNombre);
 		////////pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
@@ -1614,6 +1617,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,
 				registroConNombre->registro->posY,id);
 
+		free(registroConNombre->nombre);
 		free(registroConNombre);
 		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
