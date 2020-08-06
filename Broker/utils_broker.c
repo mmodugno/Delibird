@@ -319,6 +319,8 @@ void process_request(int cod_op, int cliente_fd) {
 				//agregarACola(NEW_POKEMON,newRecibido);
 
 				//free(raiz);
+				free(newRecibido->datos->nombrePokemon);
+				free(newRecibido->datos);
 				free(newRecibido);
 				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
@@ -353,7 +355,8 @@ void process_request(int cod_op, int cliente_fd) {
 				//agregarACola(APPEARED_POKEMON,appearedRecibido);
 
 				//free(raiz);
-
+				free(appearedRecibido->datos->nombrePokemon);
+				free(appearedRecibido->datos);
 				free(appearedRecibido);
 				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
@@ -388,6 +391,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 				//free(raiz);
+				free(getRecibido->datos->nombrePokemon);
+				free(getRecibido->datos);
 				free(getRecibido);
 				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
@@ -425,6 +430,8 @@ void process_request(int cod_op, int cliente_fd) {
 
 
 				//free(raiz);
+				free(catchRecibido->datos->nombrePokemon);
+				free(catchRecibido->datos);
 				free(catchRecibido);
 				pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
@@ -457,6 +464,7 @@ void process_request(int cod_op, int cliente_fd) {
 				//agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
 				//free(raiz);
+				free(caughtRecibido->datos);
 				free(caughtRecibido);
 			pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
@@ -501,6 +509,10 @@ void process_request(int cod_op, int cliente_fd) {
 				//agregarACola(CAUGHT_POKEMON,caughtRecibido);
 
 				//free(raiz);
+				free(localizedRecibido->datos->posX);
+				free(localizedRecibido->datos->posY);
+				free(localizedRecibido->datos->nombrePokemon);
+				free(localizedRecibido->datos);
 				free(localizedRecibido);
 			pthread_mutex_unlock(&llegadaMensajesTHREAD);
 				break;
