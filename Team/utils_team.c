@@ -320,7 +320,7 @@ while(1){
 
 
 	if(conectarse_con_broker()==-1){
-	printf(ANSI_COLOR_GREEN "\n Agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->objetivo_proximo->nombre);
+	printf(ANSI_COLOR_GREEN "\n El entrenador %d agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->id,un_entrenador->objetivo_proximo->nombre);
 
 	}
 
@@ -363,14 +363,12 @@ int i,j;
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				//if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				break;
 			}
 			else{
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
-				//if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				espera_de_deadlock();
 				break;
@@ -1082,7 +1080,7 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 	}
 
 
-	if(validar_deadlock && list_is_empty(entrenadores_new)){
+	if(validar_deadlock && list_is_empty(entrenadores_new) && list_is_empty(lista_entrenadores_block_ready)){
 			validar_deadlock=0;
 			sem_wait(&en_ejecucion);
 
@@ -1647,7 +1645,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 					if(caughtRecibido->datos->puedoAtraparlo){
 						confirmacion_de_catch(un_entrenador);
-						printf(ANSI_COLOR_GREEN "\n Agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->objetivo_proximo->nombre);
+						printf(ANSI_COLOR_GREEN "\n El entrenador %d agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->id,un_entrenador->objetivo_proximo->nombre);
 					}
 					else { denegar_catch(un_entrenador); }
 
