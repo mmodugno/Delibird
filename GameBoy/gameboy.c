@@ -407,7 +407,7 @@ int main(int argc, char* argv[]){
 t_log* iniciar_logger(char* tipoDeProceso){
 
 	//preguntar por el tipo de LOG_LEVEL
-	return log_create(log_file,tipoDeProceso,0,LOG_LEVEL_INFO);
+	return log_create(log_file,tipoDeProceso,1,LOG_LEVEL_INFO);
 }
 
 

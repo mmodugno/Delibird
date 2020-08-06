@@ -320,7 +320,7 @@ while(1){
 
 
 	if(conectarse_con_broker()==-1){
-	printf(ANSI_COLOR_GREEN "\n Agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->objetivo_proximo->nombre);
+	printf(ANSI_COLOR_GREEN "\n El entrenador %d agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->id,un_entrenador->objetivo_proximo->nombre);
 
 	}
 
@@ -363,14 +363,12 @@ int i,j;
 					break;
 				}
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
-				//if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				break;
 			}
 			else{
 				printf(" \n No se puede manejar el deadlock con entrenador:%d y entrenador:%d \n",entrenador0->id,entrenador1->id);
 
-				//if(entrenador0->id != entrenador1->id) entrenador_deadlock+=2;
 
 				espera_de_deadlock();
 				break;
@@ -789,7 +787,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
-	int cpu_a_usar = 5;
+	//int cpu_a_usar = 5;
 
 	int x = entrenador1->posX;
 	int y = entrenador1->posY;
@@ -918,7 +916,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
-		int cpu_a_usar = 5;
+	//int cpu_a_usar = 5;
 
 		int x = entrenador1->posX;
 		int y = entrenador1->posY;
@@ -1043,22 +1041,6 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 		//Fin de seccion critica
 	}
 
-/*
-	while(!queue_is_empty(entrenadores_ready)){
-		quantum = leer_quantum();
-
-		entrenador_exec = queue_peek(entrenadores_ready);
-		queue_pop(entrenadores_ready);
-
-		proximo_objetivo = entrenador_exec->objetivo_proximo;
-
-		sem_wait(&en_ejecucion);
-		cambio_contexto +=1;
-		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-
-		sem_post(&(entrenador_exec->sem_entrenador));
-	}
-*/
 
 	while(!list_is_empty(lista_entrenadores_ready)){
 		quantum = leer_quantum();
@@ -1078,19 +1060,27 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 		//entrenador_exec->rafaga_real = distancia_real;
 
 		if(anterior_entrenador->id != entrenador_exec->id){
-			log_info(cambioDeCola,"cambio a READY a entrenador: %d \n ",anterior_entrenador->id);
+
+			bool anteriorEntrenadorEnReady(entrenador* entrenador0){
+				return entrenador0->id == anterior_entrenador->id;
+			}
+
+			if(list_any_satisfy(lista_entrenadores_ready,(void*) anteriorEntrenadorEnReady)){
+			log_info(cambioDeCola,"cambio a READY a entrenador: %d \n ",anterior_entrenador->id); //TODO
+			}
+
 			cambio_contexto +=1;
 			log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 		}
 
 		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
-		//sem_post(&(entrenador_exec->sem_entrenador));
+
 
 
 	}
 
 
-	if(validar_deadlock && list_is_empty(entrenadores_new)){
+	if(validar_deadlock && list_is_empty(entrenadores_new) && list_is_empty(lista_entrenadores_block_ready)){
 			validar_deadlock=0;
 			sem_wait(&en_ejecucion);
 
@@ -1488,7 +1478,7 @@ void iniciar_servidor(void)
             continue;
 
         int i = setsockopt(socket_servidor,SOL_SOCKET,SO_REUSEADDR,&activado,sizeof(activado));
-			printf("lo que me devolvio setsockopt es %d \n",i);
+			//printf("lo que me devolvio setsockopt es %d \n",i);
         if (bind(socket_servidor, p->ai_addr, p->ai_addrlen) == -1) {
             close(socket_servidor);
             continue;
@@ -1655,7 +1645,7 @@ void process_request(int cod_op, int cliente_fd) {
 
 					if(caughtRecibido->datos->puedoAtraparlo){
 						confirmacion_de_catch(un_entrenador);
-						printf(ANSI_COLOR_GREEN "\n Agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->objetivo_proximo->nombre);
+						printf(ANSI_COLOR_GREEN "\n El entrenador %d agarró al pokemon %s \n" ANSI_COLOR_RESET,un_entrenador->id,un_entrenador->objetivo_proximo->nombre);
 					}
 					else { denegar_catch(un_entrenador); }
 
