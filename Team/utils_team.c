@@ -789,7 +789,7 @@ void planificar_deadlock_RR(entrenador* entrenador0,entrenador* entrenador1) {
 	entrenador_exec = entrenador0;
 	list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
-	int cpu_a_usar = 5;
+	//int cpu_a_usar = 5;
 
 	int x = entrenador1->posX;
 	int y = entrenador1->posY;
@@ -918,7 +918,7 @@ void planificar_deadlock_multiple(entrenador* entrenador0,entrenador* entrenador
 
 		list_remove_by_condition(entrenadores_en_deadlock, (void*)entrenador_en_exec);
 
-		int cpu_a_usar = 5;
+	//int cpu_a_usar = 5;
 
 		int x = entrenador1->posX;
 		int y = entrenador1->posY;
@@ -1043,22 +1043,6 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 		//Fin de seccion critica
 	}
 
-/*
-	while(!queue_is_empty(entrenadores_ready)){
-		quantum = leer_quantum();
-
-		entrenador_exec = queue_peek(entrenadores_ready);
-		queue_pop(entrenadores_ready);
-
-		proximo_objetivo = entrenador_exec->objetivo_proximo;
-
-		sem_wait(&en_ejecucion);
-		cambio_contexto +=1;
-		log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
-
-		sem_post(&(entrenador_exec->sem_entrenador));
-	}
-*/
 
 	while(!list_is_empty(lista_entrenadores_ready)){
 		quantum = leer_quantum();
@@ -1078,13 +1062,21 @@ while(list_size(entrenadores) != list_size(entrenadores_finalizados)){
 		//entrenador_exec->rafaga_real = distancia_real;
 
 		if(anterior_entrenador->id != entrenador_exec->id){
-			log_info(cambioDeCola,"cambio a READY a entrenador: %d \n ",anterior_entrenador->id);
+
+			bool anteriorEntrenadorEnReady(entrenador* entrenador0){
+				return entrenador0->id == anterior_entrenador->id;
+			}
+
+			if(list_any_satisfy(lista_entrenadores_ready,(void*) anteriorEntrenadorEnReady)){
+			log_info(cambioDeCola,"cambio a READY a entrenador: %d \n ",anterior_entrenador->id); //TODO
+			}
+
 			cambio_contexto +=1;
 			log_info(cambioDeCola,"cambio a EXEC de entrenador: %d \n ",entrenador_exec->id);
 		}
 
 		pthread_mutex_unlock(&(entrenador_exec->sem_entrenador));
-		//sem_post(&(entrenador_exec->sem_entrenador));
+
 
 
 	}
