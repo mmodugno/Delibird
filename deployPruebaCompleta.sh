@@ -17,7 +17,7 @@ cd /home/utnso/PuntoMontaje
 mkdir Metadata
 
 cd Metadata/
-echo -e "BLOCK_SIZE=64BLOCKS=1024MAGIC_NUMBER=TALL_GRASS" >> Metadata.bin
+echo -e "BLOCK_SIZE=64\nBLOCKS=1024\nMAGIC_NUMBER=TALL_GRASS" >> Metadata.bin
 
 cd
 
