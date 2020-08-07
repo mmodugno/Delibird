@@ -111,7 +111,7 @@ while(!estaVacioConRuta(string_from_format("/home/utnso/Escritorio/PuntoMontaje/
 	char* path = obtener_ruta_bloque(contador);
 
 	FILE* crearArchivo = txt_open_for_append(path);
-
+	free(path);
 	txt_close_file(crearArchivo);
 
 	return contador;
@@ -141,6 +141,18 @@ char* agregarBloqueALista(t_list* bloques, int nuevoBloque) {
 	return nuevosBloques;
 }
 
+void vaciarArrayStrings(char** bloque){
+	int conta = 0;
+	while(bloque[conta] != NULL) {
+		free(bloque[conta]);
+		conta++;
+	}
+
+		free(bloque);
+
+
+}
+
 void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 	char* path = string_from_format("%s/TallGrass/Files/%s/Metadata.bin",punto_montaje,nombrePoke);
@@ -157,12 +169,11 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 		int indiceLibre = buscarIndicePrimerBloqueLibre();
 
 		char* pathLibre = obtener_ruta_bloque(indiceLibre);
-
-		//mutexLock
 		FILE* bloqueLibre = txt_open_for_append(pathLibre);
-
-		txt_write_in_file(bloqueLibre,registro_a_string(registro));
-
+		free(pathLibre);
+		char* regString = registro_a_string(registro);
+		txt_write_in_file(bloqueLibre,regString);
+		free(regString);
 		sem_wait(&mutex_bit_array);
 
 		bitarray_set_bit(bitArray,indiceLibre-1);
@@ -173,12 +184,14 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 		msync(bitArray->bitarray,1,MS_SYNC);
 
-		config_set_value(configAux,"BLOCKS",string_from_format("[%d]",indiceLibre));
+		char* indiceLibres = string_from_format("[%d]",indiceLibre);
+
+		config_set_value(configAux,"BLOCKS",indiceLibres);
 
 		config_save(configAux);
 
 		txt_close_file(bloqueLibre);
-		//mutexUNlock
+		free(indiceLibres);
 
 	} else {
 
@@ -190,6 +203,8 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 
 		FILE* archivoBloque = txt_open_for_append(path);
+
+		free(path);
 
 		if(entraDatoEnBloque(registro,bloque)){
 
@@ -253,11 +268,16 @@ void registrarPokemon(char* nombrePoke, registroDatos* registro) {
 
 			txt_close_file(bloqueLibre);
 
+			free(pathLibre);
+
 		}
 
-		config_destroy(configAux);
-}
+	}
 
+	config_destroy(configAux);
+	free(path);
+
+	eliminarLista(listaBloques);
 
 }
 
@@ -296,11 +316,19 @@ void calcularTamanioMetadata(char* pokemon) {
 
 		tamanio = tamanio + tamanioActual;
 
+		free(pathbBLoque);
+
 		}
 
-	modificarArchivoComoConfig(configAux,"SIZE",string_itoa(tamanio));
+	char* num = string_itoa(tamanio);
 
+	modificarArchivoComoConfig(configAux,"SIZE",num);
+	eliminarLista(listaBloques);
 	config_destroy(configAux);
+	free(path);
+	free(num);
+	free(bloques);
+	//vaciarArrayStrings(bloques);
 
 }
 
@@ -331,6 +359,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 	sem_wait(&sem_escritura);
 
 	int yaRegistrado = sumarSiEstaEnBloque(listaBloques,registro);
+	eliminarLista(listaBloques);
 
 	if(!yaRegistrado){
 	registrarPokemon(nombrePoke,registro);
@@ -358,7 +387,7 @@ void procesarNewPokemon(char* nombrePoke, registroDatos* registro, int id) {
 	}
 
 	close(conexion);
-
+	free(path);
 	calcularTamanioMetadata(nombrePoke);
 
 	sleep(tiempo_retardo_operacion);
@@ -410,8 +439,6 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
 			eliminarBloquesVacios(nombrePoke);
 
-			actualizar_bitmap();
-
 			msync(bitArray->bitarray,1,MS_SYNC);
 
 			sem_post(&mutex_bit_array);
@@ -422,11 +449,11 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 
 			sleep(tiempo_retardo_operacion);
 
-			configPath = config_create(path);
+			t_config* configPath2 = config_create(path);
 
-			cerrarArchivoMetadataPoke(configPath);
+			cerrarArchivoMetadataPoke(configPath2);
 
-			config_destroy(configPath);
+			config_destroy(configPath2);
 
 			calcularTamanioMetadata(nombrePoke);
 	}
@@ -438,6 +465,8 @@ void procesarCatchPokemon(char* nombrePoke,uint32_t posX, uint32_t posY,int id){
 	} else {
 		enviar_caught(conexion,resultado,id);
 	}
+
+	free(path);
 
 
 }
@@ -543,8 +572,9 @@ int tamanioRestante(FILE* arch) {
 
 void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
+	char* ruta = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
 
-	t_config* configPoke = config_create(string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+	t_config* configPoke = config_create(ruta);
 
 	char** bloques = config_get_array_value(configPoke,"BLOCKS");
 
@@ -556,6 +586,8 @@ void agregarBloqueParaPokemon(char* nombrePoke,int indiceSiguienteLibre){
 
 	config_destroy(configPoke);
 
+	free(ruta);
+
 
 }
 
@@ -563,7 +595,9 @@ t_list* obtenerPosiciones(char* nombrePoke){
 
 	int j = 0;
 
-	t_config* configPoke = config_create(string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+	char* ruta = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+
+	t_config* configPoke = config_create(ruta);
 
 	char** bloques = config_get_array_value(configPoke,"BLOCKS");
 
@@ -597,6 +631,8 @@ t_list* obtenerPosiciones(char* nombrePoke){
 
 	config_destroy(configPoke);
 
+	free(ruta);
+
 	return listaRegistros;
 }
 
@@ -611,6 +647,7 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	//si la lista es vacia
 
 	if(list_is_empty(listaBloques)) {
+	free(key);
 	return yaRegistrado;
 	}
 
@@ -624,7 +661,7 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 
 		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
 
-				char* conjuntoConKey = malloc(sb.st_size);
+				char* conjuntoConKey = malloc(sb.st_size+1);
 
 				strcpy(conjuntoConKey,file_memory);
 
@@ -647,7 +684,7 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 								reg->cantidad = reg->cantidad + valor;
 
 								bloques[k] = registro_a_string(reg);
-
+								free(reg);
 								string_append(&nuevoConjunto,bloques[k]); //ya incluye salto de linea en hacer registro
 
 								yaRegistrado = 1;
@@ -665,11 +702,14 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 						}
 
 						write(fd,nuevoConjunto,sb.st_size);
-
+						free(nuevoConjunto);
+						vaciarArrayStrings(bloques);
 					}
 
 				close(fd);
-
+				free(key);
+				free(conjuntoConKey);
+				free(primerFd);
 			return yaRegistrado;
 		}
 
@@ -725,10 +765,11 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 				}
 
 				write(fd,nuevoConjunto,sb.st_size);
-
+				vaciarArrayStrings(bloques);
 			}
 
 		close(fd);
+		free(conjuntoConKey);
 	}
 
 	//si no esta cortado
@@ -737,7 +778,7 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
 		int fd = open(primerFd,O_RDWR);
-
+		free(primerFd);
 		struct stat sb;
 		fstat(fd,&sb);
 
@@ -792,12 +833,15 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 				}
 
 				write(fd,nuevoConjunto,sb.st_size);
+				free(nuevoConjunto);
 				break;
 			}
 
 		close(fd);
 		i++;
 
+		//free(file_memory);
+		free(keyCompleta);
 	}
 
 
@@ -829,6 +873,9 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 	strcpy(conjunto,file_memory2);
 
 	llenarConjunto(conjunto,file_memory,file_memory2,sb,sb2);
+
+	//free(file_memory);
+	//free(file_memory2);
 
 	char** bloques;
 
@@ -870,17 +917,20 @@ int sumarSiEstaEnBloque(t_list* listaBloques,registroDatos* registro) {
 		char* subtring = string_substring_from(nuevoConjunto,tamanioBloques);
 
 		write(fd,nuevoConjunto,tamanioBloques);
-		write(fd2,subtring,sb2.st_size);
+		write(fd2,subtring,strlen(subtring));
 
 		close(fd);
 		close(fd2);
-
-
+		//vaciarArrayStrings(bloques);
+		free(nuevoConjunto);
+		free(subtring);
 		break;
 		}
 
 		j++;
 	}
+
+	free(key);
 
 	return yaRegistrado;
 
@@ -896,21 +946,21 @@ void buscarYeliminarCeros(t_list* listaBloques){
 		char* primerFd = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
 		int fd = open(primerFd,O_RDWR);
-
+		free(primerFd);
 		struct stat sb;
 		fstat(fd,&sb);
 
 		char* file_memory = mmap(NULL,sb.st_size,PROT_READ,MAP_PRIVATE,fd,0);
 
 		string_append(&todasLasPosiciones,file_memory);
-
+		//free(file_memory);
 		close(fd);
 	}
 
 	char** arrayPosiciones = string_split(todasLasPosiciones,"\n");
 
 	t_list* listaTodosPosiciones = crear_lista(arrayPosiciones);
-//todo ver q onda
+
 
 	while(list_any_satisfy(listaTodosPosiciones,(void*) tieneCantidadCero)) {
 		list_remove_by_condition(listaTodosPosiciones, (void*) tieneCantidadCero);
@@ -918,6 +968,8 @@ void buscarYeliminarCeros(t_list* listaBloques){
 
 
 	char* nuevasPosiciones = listToString(listaTodosPosiciones);
+
+	eliminarLista(listaTodosPosiciones);
 
 	string_append(&nuevasPosiciones,"\n");
 
@@ -928,6 +980,8 @@ void buscarYeliminarCeros(t_list* listaBloques){
 		char* ruta = obtener_ruta_bloque(atoi(list_get(listaBloques,i)));
 
 		vaciarArchivo(ruta);
+
+		free(ruta);
 	}
 
 	int k = 0;
@@ -949,9 +1003,11 @@ void buscarYeliminarCeros(t_list* listaBloques){
 			}
 
 			k++;
+			free(unFd);
 			close(fd);
 	}
 
+	//vaciarArrayStrings(arrayPosiciones);
 
 }
 
@@ -979,7 +1035,9 @@ char* listToString(t_list* lista) {
 
 void eliminarBloquesVacios(char* nombrePoke){
 
-	t_config* configPoke = config_create(string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke));
+	char* ruta = string_from_format("/home/utnso/PuntoMontaje/TallGrass/Files/%s/Metadata.bin",nombrePoke);
+
+	t_config* configPoke = config_create(ruta);
 
 	char** bloques = config_get_array_value(configPoke,"BLOCKS");
 
@@ -1002,7 +1060,10 @@ void eliminarBloquesVacios(char* nombrePoke){
 		}
 		else{
 			bitarray_clean_bit(bitArray,bloqueAux-1);
+			actualizar_bitmap();
 		}
+
+		free(rutaActual);
 	}
 
 	if(string_is_empty(stringNuevaLista)){
@@ -1015,7 +1076,16 @@ void eliminarBloquesVacios(char* nombrePoke){
 
 	config_destroy(configPoke);
 
+	eliminarLista(listaBloques);
+//	eliminarLista(nuevaListaBloques);
 
+	//free(ruta);
+
+}
+
+void eliminarLista(t_list* lista) {
+	if(list_size(lista) == 0) list_destroy(lista);
+	else list_destroy_and_destroy_elements(lista, (void* )free);
 }
 
 bool tieneUnEspacioComoPrimerCaracter(char* rutaActual) {
@@ -1037,7 +1107,7 @@ bool tieneUnEspacioComoPrimerCaracter(char* rutaActual) {
 	return 0;
 	}
 
-	free(file_memory);
+	//free(file_memory);
 	close(fd);
 
 }
@@ -1092,8 +1162,8 @@ char* registro_a_string(registroDatos* registro) {
 
 	char* reg_string = string_from_format("%s=%s\n",key, value);
 
-	//free(key);
-	//free(value);
+	free(key);
+	free(value);
 
 	return reg_string;
 }
@@ -1122,7 +1192,10 @@ int tam_registro(registroDatos* registro) {
 }
 
 bool entraDatoEnBloque(registroDatos* registro, int nroBloque) {
-	return tamanioArchivoDadoPath(obtener_ruta_bloque(nroBloque))+tamanioRegistro(registro) < tamanioBloques;
+	char* ruta = obtener_ruta_bloque(nroBloque);
+	bool entra = tamanioArchivoDadoPath(ruta)+tamanioRegistro(registro) < tamanioBloques;
+	free(ruta);
+	return entra;
 }
 
 bool estaVacio(FILE* arch) {
@@ -1151,7 +1224,11 @@ char* obtener_ruta_bloque(int nro_bloque) {
 
 int tamanioRegistro(registroDatos* registro) {
 
-	int tamanio = strlen(string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad));
+	char* reg = string_from_format("%d-%d=%d",registro->posX,registro->posY,registro->cantidad);
+
+	int tamanio = strlen(reg);
+
+	free(reg);
 
 	return tamanio;
 }
@@ -1251,6 +1328,8 @@ void verificarDirectorioPokemon(char* nombrePoke){
 	}
 
 	close(f);
+
+	free(ruta);
 
 }
 
@@ -1480,6 +1559,7 @@ void process_request(int cod_op, int cliente_fd) {
 				registroConNombre->registro, id);
 
 		free(registroConNombre->nombre);
+		free(registroConNombre->registro);
 		free(registroConNombre);
 
 		pthread_mutex_unlock(&llegadaMensajesTHREAD);
@@ -1497,7 +1577,7 @@ void process_request(int cod_op, int cliente_fd) {
 				registroConNombre->registro->posX,
 				registroConNombre->registro->posY,id);
 
-		free(registroConNombre->nombre);
+		//free(registroConNombre->nombre);
 		free(registroConNombre);
 		pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;
@@ -1544,7 +1624,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarNewPokemon(registroConNombre->nombre,
 				registroConNombre->registro, id);
 
-		free(registroConNombre->nombre);
+		//free(registroConNombre->nombre);
 		free(registroConNombre);
 		////////pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
@@ -1617,7 +1697,7 @@ void process_request(int cod_op, int cliente_fd) {
 		procesarCatchPokemon(registroConNombre->nombre,registroConNombre->registro->posX,
 				registroConNombre->registro->posY,id);
 
-		free(registroConNombre->nombre);
+		//free(registroConNombre->nombre);
 		free(registroConNombre);
 		//pthread_mutex_unlock(&llegadaMensajesTHREAD);
 		break;

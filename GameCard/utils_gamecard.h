@@ -110,6 +110,7 @@ void procesarCatchPokemon(char* ,uint32_t , uint32_t ,int);
 
 ////////// REGISTROS Y BLOQUES
 
+void eliminarLista(t_list* );
 t_list* obtenerPosiciones(char* nombrePoke);
 int tamanioRegistro(registroDatos* );
 char* registro_a_string(registroDatos* );
@@ -125,6 +126,7 @@ void buscarYeliminarCeros(t_list*);
 void eliminarBloquesVacios(char* );
 void procesarGetPokemon(char* ,int);
 bool tieneUnEspacioComoPrimerCaracter(char* );
+void vaciarArrayStrings(char** );
 
 ////////// BITARRAY
 void inicializar_bitarray();
